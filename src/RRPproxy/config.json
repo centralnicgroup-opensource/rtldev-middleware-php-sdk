@@ -1,0 +1,19 @@
+{
+    "env" : {
+        "ote": {
+            "url": "https://api-ote.rrpproxy.net/api/call.cgi"
+        },
+        "live": {
+            "url": "https://api.rrpproxy.net/api/call.cgi"
+        }
+    },
+    "parameters": {
+         "login": "s_login",
+         "password": "s_pw",
+         "session": "s_sessionid",
+         "subuser": "subuser"
+    },
+    "roleSeparator": ":",
+    "socketTimeout": 300000,
+    "needsIDNConvert": false
+}

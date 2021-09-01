@@ -1,0 +1,48 @@
+{
+  "name": "php-sdk",
+  "description": "PHP SDK for the insanely fast CNIC Backend APIs (HEXONET, RRPproxy)",
+  "version": "0.0.0-development",
+  "private": true,
+  "author": {
+    "name": "Kai Schwarz",
+    "email": "kai.schwarz@centralnic.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "homepage": "https://github.com/centralnic-reseller/php-sdk",
+  "repository": "github:centralnic-reseller/php-sdk.git",
+  "bugs": "https://github.com/centralnic-reseller/php-sdk/issues",
+  "maintainers": [
+    {
+      "name": "Kai Schwarz",
+      "email": "kai.schwarz@centralnic.com"
+    }
+  ],
+  "keywords": [
+    "hexonet",
+    "rrpproxy",
+    "cnic",
+    "domain",
+    "api",
+    "connector",
+    "isp",
+    "ispapi",
+    "ssl",
+    "cert",
+    "dns",
+    "backorder",
+    "premium",
+    "preregistration",
+    "registration",
+    "application"
+  ],
+  "devDependencies": {
+    "npm": ">=6.13.4",
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
+    "semantic-release": "^17.0.2"
+  }
+}

@@ -1,0 +1,52 @@
+{
+	"name": "centralnic-reseller/php-sdk",
+	"type": "library",
+	"description": "API connector library for the insanely fast CNIC API Backends (HEXONET, RRPproxy)",
+	"keywords": [
+		"SDK",
+		"api",
+		"connector",
+		"hexonet",
+		"rrpproxy",
+		"cnic",
+		"domain",
+		"ssl",
+		"domain",
+		"isp",
+		"ispapi",
+		"cert",
+		"dns",
+		"backorder",
+		"premium",
+		"preregistration",
+		"registration",
+		"application"
+	],
+	"homepage": "https://github.com/centralnic-reseller/php-sdk",
+	"readme": "README.md",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Kai Schwarz",
+			"email": "kai.schwarz@centralnic.com",
+			"homepage": "https://centralnicgroup.com",
+			"role": "Chief Development Officer"
+		}
+	],
+	"require": {
+		"php": ">=7.4.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"CNIC\\": "src/"
+		}
+	},
+	"scripts": {
+		"docs": "rm -rf build && ./phpDocumentor.phar -sourcecode on --defaultpackagename=CNIC --directory src",
+		"phpStan": "phpstan analyze -c phpstan.neon",
+		"phpCompatibility": "./scripts/phpcompatibility.sh",
+		"codeCheck": "phpcs --ignore=\"*/vendor/*\" --standard=PSR12 -s -q -n --colors src tests",
+		"codeFix": "phpcbf --ignore=\"*/vendor/*\" --standard=PSR12 -q src tests",
+		"test": "phpunit"
+	}
+}
