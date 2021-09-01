@@ -1,0 +1,15 @@
+/tests/logs/*.txt
+/tests/logs/*.log
+basic-test.php
+vendor
+report
+docs
+node_modules
+package-lock.json
+composer.lock
+build/api-cache
+.phpunit.result.cache
+php-sdk.phar
+php-sdk.phar.gz
+phpDocumentor.phar
+phpdoc.phar

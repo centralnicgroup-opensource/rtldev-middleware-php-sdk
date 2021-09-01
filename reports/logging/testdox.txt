@@ -1,0 +1,47 @@
+RRPproxy Client (CNICTEST\RRPproxyClient)
+ [x] Get p o s t data secured
+ [x] Get p o s t data obj
+ [x] Get p o s t data str
+ [x] Get p o s t data null
+ [x] Get session
+ [x] Get session i d set
+ [x] Get u r l
+ [x] Get user agent
+ [x] Set user agent
+ [x] Set user agent modules
+ [x] Set u r l
+ [x] Set o t p set
+ [x] Set o t p reset
+ [x] Set session set
+ [x] Set session credentials
+ [x] Set session reset
+ [x] Save reuse session
+ [x] Set remote i p address set
+ [x] Set remote i p address reset
+ [x] Set credentials set
+ [x] Set credentials reset
+ [x] Set role credentials set
+ [x] Set role credentials reset
+ [ ] Login creds o k
+ [x] Login creds f a i l
+ [ ] Login extended creds o k
+ [ ] Logout o k
+ [x] Logout f a i l
+ [x] Request flatten command
+ [x] Idna to ascii
+ [x] Request a u t o idn convert
+ [x] Request a u t o idn convert 1a
+ [ ] Request a u t o idn convert
+ [ ] Request a u t o idn convert
+ [x] Request code tmp error dbg
+ [x] Request code tmp error no dbg
+ [x] Request next response page no last
+ [x] Request next response page last
+ [x] Request next response page no first
+ [x] Request all response pages o k
+ [ ] Set user view
+ [x] Reset user view
+ [x] Set proxy
+ [x] Set referer
+ [x] Use high performance connection setup
+
