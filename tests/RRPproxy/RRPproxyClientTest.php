@@ -17,14 +17,16 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass(): void
     {
-        session_start();
-        self::$cl = CF::getClient("RRPproxy");
+        //session_start();
+        self::$cl = CF::getClient([
+            "registrar" => "RRPproxy"
+        ]);
     }
 
     public static function tearDownAfterClass(): void
     {
         self::$cl = null;
-        session_destroy();
+        //session_destroy();
     }
 
     public function testGetPOSTDataSecured(): void
@@ -184,7 +186,9 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setSession("12345678")
                 ->saveSession($_SESSION);
-        $cl2 = CF::getClient("RRPproxy");
+        $cl2 = CF::getClient([
+            "registrar" => "RRPproxy"
+        ]);
         $cl2->reuseSession($_SESSION);
         $tmp = $cl2->getPOSTData([
             "COMMAND" => "StatusAccount"
@@ -311,7 +315,6 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestFlattenCommand(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         self::$cl->setCredentials("qmtest", "7VxeB-FpDhv")
                 ->useOTESystem();
         $r = self::$cl->request([
@@ -333,12 +336,11 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestAUTOIdnConvert(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         self::$cl->setCredentials("qmtest", "7VxeB-FpDhv")
                 ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "CheckDomains",
-            "DOMAIN" => ["example.com", "dömäin.example", "example.net"]
+            "DOMAIN" => ["example.com", "dömäin.com", "example.net"]
         ]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
@@ -346,52 +348,50 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->getDescription(), "Command completed successfully");
         $cmd = $r->getCommand();
         $keys = array_keys($cmd);
+        // TODO: may run over sub-checkresults to see them not as error returned
+        // TODO: check response for converted idn name eventually
         $this->assertEquals(in_array("DOMAIN0", $keys), true);
         $this->assertEquals(in_array("DOMAIN1", $keys), true);
         $this->assertEquals(in_array("DOMAIN2", $keys), true);
         $this->assertEquals(in_array("DOMAIN", $keys), false);
         $this->assertEquals($cmd["DOMAIN0"], "example.com");
-        $this->assertEquals($cmd["DOMAIN1"], "xn--dmin-moa0i.example");
+        $this->assertEquals($cmd["DOMAIN1"], "dömäin.com");
         $this->assertEquals($cmd["DOMAIN2"], "example.net");
     }
 
     public function testRequestAUTOIdnConvert2(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
+        $this->markTestSkipped('RSRTPM-3167');//TODO
         self::$cl->setCredentials("qmtest", "7VxeB-FpDhv")
                 ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "QueryObjectlogList",
-            "OBJECTID" => "dömäin.example",
+            "OBJECTID" => "dömäin.com",
             "OBJECTCLASS" => "DOMAIN",
             "MINDATE" => date("Y-m-d H:i:s"),
-            "OPERATIONTYPE" => "INBOUND_TRANSFER",
-            "OPERATIONSTATUS" => "SUCCESSFUL",
-            "ORDERBY" => "LOGDATEDESC",
             "LIMIT" => 1
         ]);
         $this->assertInstanceOf(R::class, $r);
+        print_r($r->getPlain());
+        die();
         $this->assertEquals($r->isSuccess(), true);
         $cmd = $r->getCommand();
         $this->assertEquals($r->getCode(), 200);
         $keys = array_keys($cmd);
         $this->assertEquals(in_array("OBJECTID", $keys), true);
-        $this->assertEquals($cmd["OBJECTID"], "xn--dmin-moa0i.example");
+        $this->assertEquals($cmd["OBJECTID"], "dömäin.com");
     }
 
     public function testRequestAUTOIdnConvert3(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
+        $this->markTestSkipped('RSRTPM-3167');//TODO
         self::$cl->setCredentials("qmtest", "7VxeB-FpDhv")
                 ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "QueryObjectlogList",
-            "OBJECTID" => "dömäin.example",
+            "OBJECTID" => "dömäin.com",
             "OBJECTCLASS" => "SSLCERT",
             "MINDATE" => date("Y-m-d H:i:s"),
-            "OPERATIONTYPE" => "INBOUND_TRANSFER",
-            "OPERATIONSTATUS" => "SUCCESSFUL",
-            "ORDERBY" => "LOGDATEDESC",
             "LIMIT" => 1
         ]);
         $this->assertInstanceOf(R::class, $r);
@@ -400,17 +400,16 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->getCode(), 541);
         $keys = array_keys($cmd);
         $this->assertEquals(in_array("OBJECTID", $keys), true);
-        $this->assertEquals($cmd["OBJECTID"], "dömäin.example");
+        $this->assertEquals($cmd["OBJECTID"], "dömäin.com");
     }
 
 
     public function testRequestCodeTmpErrorDbg(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         self::$cl->enableDebugMode()
                 ->setCredentials("qmtest", "7VxeB-FpDhv")
                 ->useOTESystem();
-        $r = self::$cl->request(["COMMAND" => "GetUserIndex"]);
+        $r = self::$cl->request(["COMMAND" => "StatusAccount"]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
@@ -420,9 +419,8 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestCodeTmpErrorNoDbg(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         self::$cl->disableDebugMode();
-        $r = self::$cl->request([ "COMMAND" => "GetUserIndex" ]);
+        $r = self::$cl->request([ "COMMAND" => "StatusAccount" ]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
@@ -432,7 +430,6 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestNextResponsePageNoLast(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         $r = self::$cl->request([
             "COMMAND" => "QueryDomainList",
             "LIMIT" => 2,
@@ -455,7 +452,6 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestNextResponsePageLast(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         $r = self::$cl->request([
@@ -470,7 +466,6 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestNextResponsePageNoFirst(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         self::$cl->disableDebugMode();
         $r = self::$cl->request([
             "COMMAND" => "QueryDomainList",
@@ -493,11 +488,10 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestAllResponsePagesOK(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         $pages = self::$cl->requestAllResponsePages([
-            "COMMAND" => "QueryUserList",
+            "COMMAND" => "QueryDomainList",
             "FIRST" => 0,
-            "LIMIT" => 10
+            "LIMIT" => 100
         ]);
         $this->assertGreaterThan(0, count($pages));
         foreach ($pages as &$p) {
@@ -509,9 +503,9 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testSetUserView(): void
     {
         $this->markTestSkipped('RSRTPM-3111');//TODO
-        self::$cl->setUserView("hexotestman.com");
+        self::$cl->setUserView("docutest01");
         $r = self::$cl->request([
-            "COMMAND" => "GetUserIndex"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
@@ -519,10 +513,9 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testResetUserView(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
         self::$cl->setUserView();
         $r = self::$cl->request([
-            "COMMAND" => "GetUserIndex"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);

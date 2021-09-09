@@ -34,7 +34,8 @@
 		}
 	],
 	"require": {
-		"php": ">=7.4.0"
+		"php": ">=7.4.0",
+		"phpunit/phpunit": "^9.5"
 	},
 	"autoload": {
 		"psr-4": {
@@ -47,6 +48,6 @@
 		"phpCompatibility": "./scripts/phpcompatibility.sh",
 		"codeCheck": "phpcs --ignore=\"*/vendor/*\" --standard=PSR12 -s -q -n --colors src tests",
 		"codeFix": "phpcbf --ignore=\"*/vendor/*\" --standard=PSR12 -q src tests",
-		"test": "phpunit"
+		"test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html"
 	}
 }

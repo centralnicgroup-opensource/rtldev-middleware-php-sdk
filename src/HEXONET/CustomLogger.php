@@ -9,8 +9,8 @@
 
 namespace MYCUSTOMNAMESPACE;
 
-use CNIC\Logger as L;
-use CNIC\Response as R;
+use CNIC\HEXONET\Logger as L;
+use CNIC\HEXONET\Response as R;
 
 /**
  * MYCUSTOMNAMESPACE Logger

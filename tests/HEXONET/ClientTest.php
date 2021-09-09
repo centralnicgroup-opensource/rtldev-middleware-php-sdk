@@ -17,14 +17,16 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass(): void
     {
-        session_start();
-        self::$cl = CF::getClient("HEXONET");
+        //session_start();
+        self::$cl = CF::getClient([
+            "registrar" => "HEXONET"
+        ]);
     }
 
     public static function tearDownAfterClass(): void
     {
         self::$cl = null;
-        session_destroy();
+        //session_destroy();
     }
 
     public function testGetPOSTDataSecured(): void
@@ -188,7 +190,9 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setSession("12345678")
                 ->saveSession($_SESSION);
-        $cl2 = CF::getClient("HEXONET");
+        $cl2 = CF::getClient([
+            "registrar" => "HEXONET"
+        ]);
         $cl2->reuseSession($_SESSION);
         $tmp = $cl2->getPOSTData([
             "COMMAND" => "StatusAccount"

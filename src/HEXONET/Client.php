@@ -440,8 +440,8 @@ class Client
         $cfg = [
             "CONNECTION_URL" => $this->socketURL
         ];
-        $curl = curl_init($cfg["CONNECTION_URL"]);
         $data = $this->getPOSTData($mycmd);
+        $curl = curl_init($cfg["CONNECTION_URL"] . "?" . $data);
         if ($curl === false) {
             $r = new Response("nocurl", $mycmd, $cfg);
             if ($this->debugMode) {
@@ -454,8 +454,8 @@ class Client
             //CURLOPT_VERBOSE         => true,
             CURLOPT_CONNECTTIMEOUT  =>  5000,
             CURLOPT_TIMEOUT         =>  $this->settings["socketTimeout"],
-            CURLOPT_POST            =>  1,
-            CURLOPT_POSTFIELDS      =>  $data,
+            CURLOPT_CUSTOMREQUEST   => "GET",
+            CURLOPT_POSTFIELDS      => $data,
             CURLOPT_HEADER          =>  0,
             CURLOPT_RETURNTRANSFER  =>  1,
             CURLOPT_USERAGENT       =>  $this->getUserAgent(),
