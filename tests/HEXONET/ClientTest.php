@@ -39,7 +39,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         ], true);
         self::$cl->setCredentials("", "");
         $this->assertEquals(
-            "s_entity=54cd&s_login=test.user&s_pw=%2A%2A%2A&COMMAND=CheckAuthentication&SUBUSER=test.user&PASSWORD=%2A%2A%2A",
+            "s_entity=54cd&s_login=test.user&s_pw=%2A%2A%2A&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3Dtest.user%0APASSWORD%3D%2A%2A%2A",
             $enc
         );
     }
@@ -51,13 +51,13 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
             "AUTH" => "gwrgwqg%&\\44t3*"
         ]);
         //$this->assertEquals($enc, "s_entity=54cd&COMMAND=ModifyDomain%0AAUTH%3Dgwrgwqg%25%26%5C44t3%2A");
-        $this->assertEquals("s_entity=54cd&COMMAND=ModifyDomain&AUTH=gwrgwqg%25%26%5C44t3%2A", $enc);
+        $this->assertEquals("s_entity=54cd&s_command=COMMAND%3DModifyDomain%0AAUTH%3Dgwrgwqg%25%26%5C44t3%2A", $enc);
     }
 
     public function testGetPOSTDataStr(): void
     {
-        $enc = self::$cl->getPOSTData("command=statusaccount");
-        $this->assertEquals("s_entity=54cd&COMMAND=statusaccount", $enc);
+        $enc = self::$cl->getPOSTData("command=StatusAccount");
+        $this->assertEquals("s_entity=54cd&s_command=COMMAND%3DStatusAccount", $enc);
     }
 
     public function testGetPOSTDataNull(): void
@@ -66,7 +66,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
             "COMMAND" => "ModifyDomain",
             "AUTH" => null
         ]);
-        $this->assertEquals($enc, "s_entity=54cd&COMMAND=ModifyDomain");
+        $this->assertEquals($enc, "s_entity=54cd&s_command=COMMAND%3DModifyDomain");
     }
 
     public function testEnableDebugMode(): void
@@ -92,7 +92,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $sess = "testsession12345";
         $sessid = self::$cl->setSession($sess)->getSession();
         $this->assertEquals($sessid, $sess);
-        self::$cl->setSession("");
+        self::$cl->setSession();
     }
 
     public function testGetURL(): void
@@ -138,22 +138,32 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->setURL($oldurl);
     }
 
+    public function testSetOTPSetThrows(): void
+    {
+        unset(self::$cl->settings["parameters"]["otp"]);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Feature `OTP` not supported");
+        self::$cl->setOTP("12345678");        
+    }
+
     public function testSetOTPSet(): void
     {
+        // restore what we dropped in previous test
+        self::$cl->settings["parameters"]["otp"] = "s_otp";
         self::$cl->setOTP("12345678");
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_otp=12345678&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_otp=12345678&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetOTPReset(): void
     {
-        self::$cl->setOTP("");
+        self::$cl->setOTP();
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionSet(): void
@@ -162,7 +172,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionCredentials(): void
@@ -174,16 +184,16 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionReset(): void
     {
-        self::$cl->setSession("");
+        self::$cl->setSession();
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSaveReuseSession(): void
@@ -197,26 +207,36 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = $cl2->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&COMMAND=StatusAccount");
-        self::$cl->setSession("");
+        $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&s_command=COMMAND%3DStatusAccount");
+        self::$cl->setSession();
+    }
+
+    public function testSetRemoteIPAddressSetThrows(): void
+    {
+        unset(self::$cl->settings["parameters"]["ipfilter"]);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Feature `IP Filter` not supported");
+        self::$cl->setRemoteIPAddress("10.10.10.10");
     }
 
     public function testSetRemoteIPAddressSet(): void
     {
+        // restore what we dropped in previous test
+        self::$cl->settings["parameters"]["ipfilter"] = "s_remoteaddr";
         self::$cl->setRemoteIPAddress("10.10.10.10");
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_remoteaddr=10.10.10.10&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_remoteaddr=10.10.10.10&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetRemoteIPAddressReset(): void
     {
-        self::$cl->setRemoteIPAddress("");
+        self::$cl->setRemoteIPAddress();
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetCredentialsSet(): void
@@ -225,7 +245,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_login=myaccountid&s_pw=mypassword&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetCredentialsReset(): void
@@ -234,7 +254,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetRoleCredentialsSet(): void
@@ -243,7 +263,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&s_login=myaccountid%21myroleid&s_pw=mypassword&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_login=myaccountid%21myroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetRoleCredentialsReset(): void
@@ -252,7 +272,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_entity=54cd&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testLoginCredsOK(): void
@@ -317,8 +337,39 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isError(), true);
     }
 
+    public function testRequestCurlInitFail(): void
+    {
+        $this->markTestSkipped("Re-Activate with PHP8. PHP 7.4 throws an error.");
+        self::$cl->settings["env"]["ote"]["url"] = "\0";
+        self::$cl->setCredentials("test.user", "test.passw0rd")
+                ->useOTESystem();
+        $r = self::$cl->request([
+            "COMMAND" => "StatusAccount"
+        ]);
+        $this->assertInstanceOf(R::class, $r);
+        $this->assertEquals($r->isSuccess(), false);
+        $this->assertEquals($r->getCode(), 421);
+        $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error");
+    }
+
+     public function testRequestCurlExecFail2(): void
+    {
+        self::$cl->settings["env"]["ote"]["url"] = "http://gregeragregaegaegag.com/geragaerg/call.cgi";
+        self::$cl->setCredentials("test.user", "test.passw0rd")
+                ->useOTESystem();
+        $r = self::$cl->request([
+            "COMMAND" => "StatusAccount"
+        ]);
+        $this->assertInstanceOf(R::class, $r);
+        $this->assertEquals($r->isSuccess(), false);
+        $this->assertEquals($r->getCode(), 421);
+        $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error");
+    }
+
     public function testRequestFlattenCommand(): void
     {
+        // restore
+        self::$cl->settings["env"]["ote"]["url"] = "https://api.ispapi.net/api/call.cgi";
         self::$cl->setCredentials("test.user", "test.passw0rd")
                 ->useOTESystem();
         $r = self::$cl->request([
@@ -526,16 +577,20 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetProxy(): void
     {
+        $this->assertEquals(self::$cl->getProxy(), null);
         self::$cl->setProxy("127.0.0.1");
         $this->assertEquals(self::$cl->getProxy(), "127.0.0.1");
-        self::$cl->setProxy("");
+        self::$cl->setProxy();
+        $this->assertEquals(self::$cl->getProxy(), null);
     }
 
     public function testSetReferer(): void
     {
+        $this->assertEquals(self::$cl->getReferer(), null);
         self::$cl->setReferer("https://www.hexonet.net/");
         $this->assertEquals(self::$cl->getReferer(), "https://www.hexonet.net/");
-        self::$cl->setReferer("");
+        self::$cl->setReferer();
+        $this->assertEquals(self::$cl->getReferer(), null);
     }
 
     public function testUseHighPerformanceConnectionSetup(): void

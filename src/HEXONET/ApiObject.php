@@ -7,8 +7,6 @@
 
 namespace CNIC\HEXONET;
 
-use CNIC\ClientFactory as CF;
-
 /**
  * HEXONET API Object
  *
@@ -20,22 +18,11 @@ class ApiObject
     protected $id = null;
     protected $class = null;
     protected $cl = null;
+    protected $status = null;
 
-    public function __construct($params, $logger = null)
+    public function __construct($cf)
     {
-        // TODO move this away to upper layer
-        /*if (!$params) {
-            $params = \getregistrarconfigoptions($registrar);
-        }*/
-        // TODO need to find a nice way of injecting this
-        /*
-        $modules = [];
-        foreach (self::getModuleVersions($params) as $key => $val) {
-            $modules[] = "$key/$val";
-        }
-        */
-
-        $this->cl = CF::getClient($params, $logger);
+        $this->cl = $cf;
     }
 
     public function setId($objectid)
@@ -46,5 +33,73 @@ class ApiObject
     public function setClass($objectclass)
     {
         $this->class = $objectclass;
+        return $this->loadStatus();
+    }
+
+    public function loadStatus($refresh = false)
+    {
+        if (
+            is_null($this->status)
+            || $refresh
+        ) {
+            $this->status = $this->cl->request([
+                "COMMAND" => "Status" . ucfirst(strtolower($this->class)),
+                "DOMAIN" => $this->id
+            ]);
+        }
+        return $this;
+    }
+
+    public function convert()
+    {
+        if (preg_match($this->class)) {
+            $r = $this->cl->request([
+                "COMMAND" => "ConvertIDN",
+                "DOMAIN" => [$this->id]
+            ]);
+            if ($r->isSuccess()) {
+                $d = $r->getRecord(0);
+                if (!empty($d["IDN"])) {
+                    return [
+                        "idn" => $d["IDN"],
+                        "punycode" => $d["ACE"],
+                        "domain" => $this->id
+                    ];
+                }
+            }
+        }
+        return [
+            "idn" => $this->id,
+            "punycode" => $this->id,
+            "domain" => $this->id
+        ];
+    }
+
+    public function convertbulk($domains)
+    {
+        $r = $this->cl->request([
+            "COMMAND" => "ConvertIDN",
+            "DOMAIN" => $domains
+        ]);
+        $list = [];
+        foreach ($domains as $domain) {
+            $list[] = [
+                "idn" => $domain,
+                "punycode" => $domain,
+                "domain" => $domain
+            ];
+        }
+        if ($r->isSuccess()) {
+            $recs = $r->getRecords();
+            foreach ($recs as $idx => $rec) {
+                $d = $rec->getData();
+                if (empty($d["IDN"])) {
+                    continue;
+                }
+                $list[$idx]["idn"] = $d["IDN"];
+                $list[$idx]["punycode"] = $d["ACE"];
+            }
+        }
+        return $list;
     }
 }

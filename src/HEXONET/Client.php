@@ -130,7 +130,14 @@ class Client
         if (!empty($data)) {
             $data .= "&";
         }
-        return ( $data . http_build_query($command) );
+        $tmp = "";
+        foreach ($command as $key => $val) {
+            if (isset($val)) {
+                $tmp .= $key . "=" . preg_replace("/\r|\n/", "", $val) . "\n";
+            }
+        }
+        $tmp = substr($tmp, 0, -1);
+        return ( $data . "s_command=". rawurlencode( $tmp ) );
     }
 
     /**
@@ -182,12 +189,16 @@ class Client
 
     /**
      * Set proxy to use for API communication
-     * @param string $proxy proxy to use
+     * @param string $proxy proxy to use (optional, for reset)
      * @return $this
      */
-    public function setProxy($proxy)
+    public function setProxy($proxy = "")
     {
-        $this->curlopts[CURLOPT_PROXY] = $proxy;
+        if (empty($proxy)) {
+            unset($this->curlopts[CURLOPT_PROXY]);
+        } else {
+            $this->curlopts[CURLOPT_PROXY] = $proxy;
+        }
         return $this;
     }
 
@@ -205,12 +216,16 @@ class Client
 
     /**
      * Set Referer to use for API communication
-     * @param string $referer Referer
+     * @param string $referer Referer (optional, for reset)
      * @return $this
      */
-    public function setReferer($referer)
+    public function setReferer($referer = "")
     {
-        $this->curlopts[CURLOPT_REFERER] = $referer;
+        if (empty($referer)) {
+            unset($this->curlopts[CURLOPT_REFERER]);
+        } else {
+            $this->curlopts[CURLOPT_REFERER] = $referer;
+        }
         return $this;
     }
 
@@ -275,11 +290,11 @@ class Client
 
     /**
      * Set one time password to be used for API communication
-     * @param string $value one time password
+     * @param string $value one time password (optional, for reset)
      * @throws \Exception in case this feature is not supported
      * @return $this
      */
-    public function setOTP($value)
+    public function setOTP($value = "")
     {
         if (!empty($value) && !isset($this->settings["parameters"]["otp"])) {
             throw new \Exception("Feature `OTP` not supported");
@@ -290,10 +305,10 @@ class Client
 
     /**
      * Set an API session id to be used for API communication
-     * @param string $value API session id
+     * @param string $value API session id (optional, for reset)
      * @return $this
      */
-    public function setSession($value)
+    public function setSession($value = "")
     {
         $this->socketConfig->setSession($value);
         return $this;
@@ -302,11 +317,11 @@ class Client
     /**
      * Set an Remote IP Address to be used for API communication
      * To be used in case you have an active ip filter setting.
-     * @param string $value Remote IP Address
+     * @param string $value Remote IP Address (optional, for reset)
      * @throws \Exception in case this feature is unsupported
      * @return $this
      */
-    public function setRemoteIPAddress($value)
+    public function setRemoteIPAddress($value = "")
     {
         if (!empty($value) && !isset($this->settings["parameters"]["ipfilter"])) {
             throw new \Exception("Feature `IP Filter` not supported");
@@ -441,7 +456,10 @@ class Client
             "CONNECTION_URL" => $this->socketURL
         ];
         $data = $this->getPOSTData($mycmd);
-        $curl = curl_init($cfg["CONNECTION_URL"] . "?" . $data);
+        $curl = curl_init($cfg["CONNECTION_URL"]);
+        // PHP 7.3 return false vs. 7.4 throws an Exception
+        // when setting the URL to "\0"
+        // @codeCoverageIgnoreStart
         if ($curl === false) {
             $r = new Response("nocurl", $mycmd, $cfg);
             if ($this->debugMode) {
@@ -450,16 +468,17 @@ class Client
             }
             return $r;
         }
+        // @codeCoverageIgnoreEnd
         curl_setopt_array($curl, [
             //CURLOPT_VERBOSE         => true,
-            CURLOPT_CONNECTTIMEOUT  =>  5000,
-            CURLOPT_TIMEOUT         =>  $this->settings["socketTimeout"],
-            CURLOPT_CUSTOMREQUEST   => "GET",
+            CURLOPT_CONNECTTIMEOUT  => 5000,
+            CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
+            CURLOPT_POST            => 1,
             CURLOPT_POSTFIELDS      => $data,
-            CURLOPT_HEADER          =>  0,
-            CURLOPT_RETURNTRANSFER  =>  1,
-            CURLOPT_USERAGENT       =>  $this->getUserAgent(),
-            CURLOPT_HTTPHEADER      =>  [
+            CURLOPT_HEADER          => 0,
+            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_USERAGENT       => $this->getUserAgent(),
+            CURLOPT_HTTPHEADER      => [
                 "Expect:",
                 "Content-type: text/html; charset=UTF-8"
             ]
@@ -535,16 +554,6 @@ class Client
     public function setUserView($uid = "")
     {
         $this->socketConfig->setUser($uid);
-        return $this;
-    }
-
-    /**
-     * Reset data view back from subuser to user
-     * @return $this
-     */
-    public function resetUserView()
-    {
-        $this->socketConfig->setUser("");
         return $this;
     }
 

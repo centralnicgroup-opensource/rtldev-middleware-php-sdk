@@ -18,7 +18,11 @@
          "ipfilter": "s_remoteaddr",
          "entity": "s_entity"
     },
+    "maxGroupSize": 255,
+    "maxSearchGroupSize": 25,
     "roleSeparator": "!",
     "socketTimeout": 300000,
-    "needsIDNConvert": true
+    "needsIDNConvert": true,
+    "supportsPremiumDomains": true,
+    "maxDNSuggestions": 100
 }
