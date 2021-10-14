@@ -122,22 +122,7 @@ class Client
         } else {
             $command = $cmd;
         }
-        $command = array_change_key_case($command, CASE_UPPER);
-        if ($secured && isset($command["PASSWORD"])) {
-            $command["PASSWORD"] = "***";
-        }
-        $data = $this->socketConfig->getPOSTData($secured);
-        if (!empty($data)) {
-            $data .= "&";
-        }
-        $tmp = "";
-        foreach ($command as $key => $val) {
-            if (isset($val)) {
-                $tmp .= $key . "=" . preg_replace("/\r|\n/", "", $val) . "\n";
-            }
-        }
-        $tmp = substr($tmp, 0, -1);
-        return ( $data . "s_command=". rawurlencode( $tmp ) );
+        return $this->socketConfig->getPOSTData($command, $secured);
     }
 
     /**
@@ -332,11 +317,11 @@ class Client
 
     /**
      * Set Credentials to be used for API communication
-     * @param string $uid account name
-     * @param string $pw account password
+     * @param string $uid account name (optional, for reset)
+     * @param string $pw account password (optional, for reset)
      * @return $this
      */
-    public function setCredentials($uid, $pw)
+    public function setCredentials($uid = "", $pw = "")
     {
         $this->socketConfig->setLogin($uid);
         $this->socketConfig->setPassword($pw);
@@ -345,12 +330,12 @@ class Client
 
     /**
      * Set Credentials to be used for API communication
-     * @param string $uid account name
-     * @param string $role role user id
-     * @param string $pw role user password
+     * @param string $uid account name (optional, for reset)
+     * @param string $role role user id (optional, for reset)
+     * @param string $pw role user password (optional, for reset)
      * @return $this
      */
-    public function setRoleCredentials($uid, $role, $pw)
+    public function setRoleCredentials($uid = "", $role = "", $pw = "")
     {
         $login = $uid;
         if (!empty($role)) {
@@ -450,7 +435,6 @@ class Client
         $mycmd = $this->flattenCommand($cmd);
         // auto convert umlaut names to punycode
         $mycmd = $this->autoIDNConvert($mycmd);
-
         // request command to API
         $cfg = [
             "CONNECTION_URL" => $this->socketURL
@@ -470,7 +454,7 @@ class Client
         }
         // @codeCoverageIgnoreEnd
         curl_setopt_array($curl, [
-            //CURLOPT_VERBOSE         => true,
+            CURLOPT_VERBOSE         => $this->debugMode,
             CURLOPT_CONNECTTIMEOUT  => 5000,
             CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
             CURLOPT_POST            => 1,
@@ -480,7 +464,8 @@ class Client
             CURLOPT_USERAGENT       => $this->getUserAgent(),
             CURLOPT_HTTPHEADER      => [
                 "Expect:",
-                "Content-type: text/html; charset=UTF-8"
+                "Content-Type: application/x-www-form-urlencoded",//UTF-8 implied
+                "Content-Length: " . strlen($data)
             ]
         ] + $this->curlopts);
         $r = curl_exec($curl);

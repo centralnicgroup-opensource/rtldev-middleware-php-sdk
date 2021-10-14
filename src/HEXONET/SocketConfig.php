@@ -75,7 +75,7 @@ class SocketConfig
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */
-    public function getPOSTData($secured = false)
+    public function getPOSTData($command = [], $secured = false)
     {
         $params = [];
         if (strlen($this->entity) && isset($this->parameters["entity"])) {
@@ -99,7 +99,20 @@ class SocketConfig
         if (strlen($this->user) && isset($this->parameters["subuser"])) {
             $params[$this->parameters["subuser"]] = $this->user;
         }
-        return http_build_query($params);
+        if (!empty($command) && isset($this->parameters["command"])) {
+            $newcommand = "";
+            foreach ($command as $key => $val) {
+                if (is_null($val)) {
+                    continue;
+                }
+                if ($secured && preg_match("/^PASSWORD$/i", $key)) {
+                    $val = "***";
+                }
+                $newcommand .= "{$key}={$val}\n";
+            }
+            $params[$this->parameters["command"]] = substr($newcommand, 0, -1);
+        }
+        return http_build_query($params);//RFC1738 x-www-form-urlencoded as default
     }
 
     /**

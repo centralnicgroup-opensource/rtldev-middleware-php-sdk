@@ -1,19 +1,24 @@
 {
-    "env" : {
-        "ote": {
-            "url": "https://api-ote.rrpproxy.net/api/call.cgi"
-        },
-        "live": {
-            "url": "https://api.rrpproxy.net/api/call.cgi"
-        }
+  "env": {
+    "ote": {
+      "url": "https://api-ote.rrpproxy.net/api/call.cgi"
     },
-    "parameters": {
-         "login": "s_login",
-         "password": "s_pw",
-         "session": "s_sessionid",
-         "subuser": "subuser"
-    },
-    "roleSeparator": ":",
-    "socketTimeout": 300000,
-    "needsIDNConvert": false
+    "live": {
+      "url": "https://api.rrpproxy.net/api/call.cgi"
+    }
+  },
+  "parameters": {
+    "command": "s_command",
+    "login": "s_login",
+    "password": "s_pw",
+    "session": "s_sessionid",
+    "subuser": "subuser"
+  },
+  "maxGroupSize": 32,
+  "maxSearchGroupSize": 25,
+  "roleSeparator": ":",
+  "socketTimeout": 300000,
+  "needsIDNConvert": false,
+  "supportsPremiumDomains": true,
+  "maxDNSuggestions": 100
 }

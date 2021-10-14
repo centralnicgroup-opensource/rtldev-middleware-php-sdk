@@ -31,7 +31,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
         $this->setOTP($otp);
         $rr = $this->request([
             "COMMAND" => "StartSession",
-            "PERSISTENT" => 1
+            "persistent" => 1
         ]);
         if ($rr->isSuccess()) {
             $col = $rr->getColumn("SESSIONID");
@@ -61,7 +61,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
     {
         $rr = $this->request(["COMMAND" => "StopSession"]);
         if ($rr->isSuccess()) {
-            $this->setSession("");
+            $this->setSession();
         }
         return $rr;
     }

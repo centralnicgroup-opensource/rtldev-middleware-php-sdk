@@ -1,28 +1,29 @@
 {
-    "env" : {
-        "ote": {
-            "url": "https://api.ispapi.net/api/call.cgi",
-            "entity": "1234"
-        },
-        "live": {
-            "url": "https://api.ispapi.net/api/call.cgi",
-            "entity": "54cd"
-        }
+  "env": {
+    "ote": {
+      "url": "https://api.ispapi.net/api/call.cgi",
+      "entity": "1234"
     },
-    "parameters": {
-         "login": "s_login",
-         "otp": "s_otp",
-         "password": "s_pw",
-         "session": "s_session",
-         "subuser": "s_user",
-         "ipfilter": "s_remoteaddr",
-         "entity": "s_entity"
-    },
-    "maxGroupSize": 255,
-    "maxSearchGroupSize": 25,
-    "roleSeparator": "!",
-    "socketTimeout": 300000,
-    "needsIDNConvert": true,
-    "supportsPremiumDomains": true,
-    "maxDNSuggestions": 100
+    "live": {
+      "url": "https://api.ispapi.net/api/call.cgi",
+      "entity": "54cd"
+    }
+  },
+  "parameters": {
+    "command": "s_command",
+    "login": "s_login",
+    "otp": "s_otp",
+    "password": "s_pw",
+    "session": "s_session",
+    "subuser": "s_user",
+    "ipfilter": "s_remoteaddr",
+    "entity": "s_entity"
+  },
+  "maxGroupSize": 255,
+  "maxSearchGroupSize": 25,
+  "roleSeparator": "!",
+  "socketTimeout": 300000,
+  "needsIDNConvert": true,
+  "supportsPremiumDomains": true,
+  "maxDNSuggestions": 100
 }

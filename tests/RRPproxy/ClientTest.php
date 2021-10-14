@@ -37,9 +37,9 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
             "SUBUSER" => "qmtest",
             "PASSWORD" => "7VxeB-FpDhv"
         ], true);
-        self::$cl->setCredentials("", "");
+        self::$cl->setCredentials();
         $this->assertEquals(
-            "s_login=qmtest&s_pw=%2A%2A%2A&COMMAND=CheckAuthentication&SUBUSER=qmtest&PASSWORD=%2A%2A%2A",
+            "s_login=qmtest&s_pw=%2A%2A%2A&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3Dqmtest%0APASSWORD%3D%2A%2A%2A",
             $enc
         );
     }
@@ -50,13 +50,13 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
             "COMMAND" => "ModifyDomain",
             "AUTH" => "gwrgwqg%&\\44t3*"
         ]);
-        $this->assertEquals("COMMAND=ModifyDomain&AUTH=gwrgwqg%25%26%5C44t3%2A", $enc);
+        $this->assertEquals("s_command=COMMAND%3DModifyDomain%0AAUTH%3Dgwrgwqg%25%26%5C44t3%2A", $enc);
     }
 
     public function testGetPOSTDataStr(): void
     {
-        $enc = self::$cl->getPOSTData("command=statusaccount");
-        $this->assertEquals("COMMAND=statusaccount", $enc);
+        $enc = self::$cl->getPOSTData("COMMAND=StatusAccount");
+        $this->assertEquals("s_command=COMMAND%3DStatusAccount", $enc);
     }
 
     public function testGetPOSTDataNull(): void
@@ -65,19 +65,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
             "COMMAND" => "ModifyDomain",
             "AUTH" => null
         ]);
-        $this->assertEquals($enc, "COMMAND=ModifyDomain");
-    }
-
-    public function testEnableDebugMode(): void
-    {
-        self::$cl->enableDebugMode();
-        $this->assertEquals(1, 1);//suppress warning for risky test
-    }
-
-    public function testDisableDebugMode(): void
-    {
-        self::$cl->disableDebugMode();
-        $this->assertEquals(1, 1);//suppress warning for risky test
+        $this->assertEquals("s_command=COMMAND%3DModifyDomain", $enc);
     }
 
     public function testGetSession(): void
@@ -91,7 +79,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $sess = "testsession12345";
         $sessid = self::$cl->setSession($sess)->getSession();
         $this->assertEquals($sessid, $sess);
-        self::$cl->setSession("");
+        self::$cl->setSession();
     }
 
     public function testGetURL(): void
@@ -146,11 +134,11 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetOTPReset(): void
     {
-        self::$cl->setOTP("");
+        self::$cl->setOTP();
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionSet(): void
@@ -159,7 +147,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_sessionid=12345678&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionCredentials(): void
@@ -170,16 +158,16 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_sessionid=12345678&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionReset(): void
     {
-        self::$cl->setSession("");
+        self::$cl->setSession();
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSaveReuseSession(): void
@@ -193,8 +181,8 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $tmp = $cl2->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_sessionid=12345678&COMMAND=StatusAccount");
-        self::$cl->setSession("");
+        $this->assertEquals($tmp, "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount");
+        self::$cl->setSession();
     }
 
     public function testSetRemoteIPAddressSet(): void
@@ -205,11 +193,11 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetRemoteIPAddressReset(): void
     {
-        self::$cl->setRemoteIPAddress("");
+        self::$cl->setRemoteIPAddress();
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetCredentialsSet(): void
@@ -218,16 +206,16 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_login=myaccountid&s_pw=mypassword&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetCredentialsReset(): void
     {
-        self::$cl->setCredentials("", "");
+        self::$cl->setCredentials();
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetRoleCredentialsSet(): void
@@ -236,25 +224,30 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $tmp = self::$cl->getPOSTData([
           "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "s_login=myaccountid%3Amyroleid&s_pw=mypassword&COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_login=myaccountid%3Amyroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetRoleCredentialsReset(): void
     {
-        self::$cl->setRoleCredentials("", "", "");
+        self::$cl->setRoleCredentials();
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
-        $this->assertEquals($tmp, "COMMAND=StatusAccount");
+        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
     public function testLoginCredsOK(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
+        /**
+         * curl -X POST --data-urlencode 's_command=COMMAND%3DStartSession%0Apersistent%3D1' --data-urlencode 's_login=qmtest' --data-urlencode 's_pw=7VxeB-FpDhv' https://api-ote.rrpproxy.net/api/call.cgi
+         */
+        $this->markTestSkipped('RSRTPM-3111');
         self::$cl->useOTESystem()
                 ->setCredentials("qmtest", "7VxeB-FpDhv");
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
+        var_dump($r->getPlain());
+        die();
         $this->assertEquals($r->isSuccess(), true);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
@@ -523,16 +516,20 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetProxy(): void
     {
+        $this->assertEquals(self::$cl->getProxy(), null);
         self::$cl->setProxy("127.0.0.1");
         $this->assertEquals(self::$cl->getProxy(), "127.0.0.1");
-        self::$cl->setProxy("");
+        self::$cl->setProxy();
+        $this->assertEquals(self::$cl->getProxy(), null);
     }
 
     public function testSetReferer(): void
     {
+        $this->assertEquals(self::$cl->getReferer(), null);
         self::$cl->setReferer("https://www.hexonet.net/");
         $this->assertEquals(self::$cl->getReferer(), "https://www.hexonet.net/");
-        self::$cl->setReferer("");
+        self::$cl->setReferer();
+        $this->assertEquals(self::$cl->getReferer(), null);
     }
 
     public function testUseHighPerformanceConnectionSetup(): void

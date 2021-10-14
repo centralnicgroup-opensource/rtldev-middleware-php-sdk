@@ -37,7 +37,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
             "SUBUSER" => "test.user",
             "PASSWORD" => "test.passw0rd"
         ], true);
-        self::$cl->setCredentials("", "");
+        self::$cl->setCredentials();
         $this->assertEquals(
             "s_entity=54cd&s_login=test.user&s_pw=%2A%2A%2A&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3Dtest.user%0APASSWORD%3D%2A%2A%2A",
             $enc
@@ -56,7 +56,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public function testGetPOSTDataStr(): void
     {
-        $enc = self::$cl->getPOSTData("command=StatusAccount");
+        $enc = self::$cl->getPOSTData("COMMAND=StatusAccount");
         $this->assertEquals("s_entity=54cd&s_command=COMMAND%3DStatusAccount", $enc);
     }
 
@@ -67,18 +67,6 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
             "AUTH" => null
         ]);
         $this->assertEquals($enc, "s_entity=54cd&s_command=COMMAND%3DModifyDomain");
-    }
-
-    public function testEnableDebugMode(): void
-    {
-        self::$cl->enableDebugMode();
-        $this->assertEquals(1, 1);//suppress warning for risky test
-    }
-
-    public function testDisableDebugMode(): void
-    {
-        self::$cl->disableDebugMode();
-        $this->assertEquals(1, 1);//suppress warning for risky test
     }
 
     public function testGetSession(): void
@@ -143,7 +131,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         unset(self::$cl->settings["parameters"]["otp"]);
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("Feature `OTP` not supported");
-        self::$cl->setOTP("12345678");        
+        self::$cl->setOTP("12345678");
     }
 
     public function testSetOTPSet(): void
@@ -250,7 +238,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetCredentialsReset(): void
     {
-        self::$cl->setCredentials("", "");
+        self::$cl->setCredentials();
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
@@ -268,7 +256,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetRoleCredentialsReset(): void
     {
-        self::$cl->setRoleCredentials("", "", "");
+        self::$cl->setRoleCredentials();
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
@@ -352,13 +340,13 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error");
     }
 
-     public function testRequestCurlExecFail2(): void
+    public function testRequestCurlExecFail2(): void
     {
         self::$cl->settings["env"]["ote"]["url"] = "http://gregeragregaegaegag.com/geragaerg/call.cgi";
         self::$cl->setCredentials("test.user", "test.passw0rd")
-                ->useOTESystem();
+               ->useOTESystem();
         $r = self::$cl->request([
-            "COMMAND" => "StatusAccount"
+           "COMMAND" => "StatusAccount"
         ]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), false);
