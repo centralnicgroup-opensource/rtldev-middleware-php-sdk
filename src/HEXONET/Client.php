@@ -22,6 +22,7 @@ class Client
 {
     /**
      * registrar api settings
+     * @var array
      */
     public $settings;
     /**
@@ -64,6 +65,17 @@ class Client
         $this->socketConfig = new SocketConfig($this->settings["parameters"]);
         $this->useLIVESystem();
         $this->setDefaultLogger();
+    }
+
+    /**
+     * Return Domain Object
+     * @param string $domainstr domain name
+     * @return Domain
+     */
+    public function getDomain($domainstr) {
+        $domain = new Domain($this);
+        $domain->setId($domainstr);
+        return $domain;
     }
 
     /**

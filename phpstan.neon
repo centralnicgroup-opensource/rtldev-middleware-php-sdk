@@ -4,6 +4,3 @@ parameters:
         - src
         - tests
     checkMissingIterableValueType: false
-    bootstrapFiles:
-        - src/HexonetClient.php
-        - src/RRPproxyClient.php        

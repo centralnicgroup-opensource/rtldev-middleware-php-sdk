@@ -11,7 +11,7 @@ use CNIC\HEXONET\Response as R;
 final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \CNIC\HEXONET\Client|null $cl
+     * @var \CNIC\HEXONET\SessionClient|null $cl
      */
     public static $cl;
 
@@ -328,6 +328,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestCurlInitFail(): void
     {
         $this->markTestSkipped("Re-Activate with PHP8. PHP 7.4 throws an error.");
+        /*
         self::$cl->settings["env"]["ote"]["url"] = "\0";
         self::$cl->setCredentials("test.user", "test.passw0rd")
                 ->useOTESystem();
@@ -338,6 +339,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), false);
         $this->assertEquals($r->getCode(), 421);
         $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error");
+        */
     }
 
     public function testRequestCurlExecFail2(): void

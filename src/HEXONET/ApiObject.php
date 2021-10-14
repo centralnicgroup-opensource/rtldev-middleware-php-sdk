@@ -15,31 +15,63 @@ namespace CNIC\HEXONET;
 
 class ApiObject
 {
+    /**
+     * @var string object identifier
+     */
     protected $id = null;
+    /**
+     * @var string object class/type
+     */
     protected $class = null;
+    /**
+     * @var Client registrar's client instance
+     */
     protected $cl = null;
+    /**
+     * @var Response registrar's status response
+     */
     protected $status = null;
 
+    /**
+     * Constructor
+     * @param Client $cf registrar's client instance
+     */
     public function __construct($cf)
     {
         $this->cl = $cf;
     }
 
+    /**
+     * Set the related Object ID
+     * @param string $objectid object id
+     * @return $this
+     */
     public function setId($objectid)
     {
         $this->id = $objectid;
+        return $this;
     }
 
+    /**
+     * Set the Object Class
+     * @param string $objectclass object class
+     * @return $this
+     */
     public function setClass($objectclass)
     {
         $this->class = $objectclass;
         return $this->loadStatus();
     }
 
+    /**
+     * Load Status Data
+     * @param bool $refresh trigger fresh data load, by default false
+     * @return $this
+     */
     public function loadStatus($refresh = false)
     {
         if (
-            is_null($this->status)
+            isset($this->status)
             || $refresh
         ) {
             $this->status = $this->cl->request([
@@ -50,9 +82,13 @@ class ApiObject
         return $this;
     }
 
+    /**
+     * IDN Conversion
+     * @return array
+     */
     public function convert()
     {
-        if (preg_match($this->class)) {
+        if (preg_match("/^DOMAIN|DNSZONE|NAMESERVER$/i", $this->class)) {//TODO
             $r = $this->cl->request([
                 "COMMAND" => "ConvertIDN",
                 "DOMAIN" => [$this->id]
@@ -75,6 +111,11 @@ class ApiObject
         ];
     }
 
+    /**
+     * Bulk IDN Conversion
+     * @param array $domains List of Domains
+     * @return array
+     */
     public function convertbulk($domains)
     {
         $r = $this->cl->request([

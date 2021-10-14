@@ -18,19 +18,36 @@ use CNIC\HEXONET\Logger as L;
 
 class Domain extends ApiObject
 {
-
-    protected $status = null;
+    /**
+     * IDN Lanuage
+     * @var array
+     */
     protected $idnLanguage = null;
 
+    /**
+     * Get the Domain Name
+     * @return string
+     */
     public function getDomain()
     {
-        return $this->getId();
+        return $this->id;
     }
+    /**
+     * Set the Domain Name
+     * @param string $domain
+     * @return $this
+     */
     public function setDomain($domain)
     {
         $this->setId($domain);
         return $this->setClass("DOMAIN");
     }
+    /**
+     * Get Availability Check results for a given list of domain names
+     * @param array $grp list of domain names
+     * @param bool $premiumEnabled toggle premium domain check on/off
+     * @return array
+     */
     private function check($grp, $premiumEnabled)
     {
         $r = $this->cl->request([
@@ -50,19 +67,19 @@ class Domain extends ApiObject
             "ISPREMIUM" => false
         ]);
         // add domain, sld, tld
-        array_walk($results, function (&$sr, $idx) {
+        array_walk($results, function (&$sr, $idx, $grp) {
             $sr["DOMAIN"] = $grp[$idx];
             list(
                 $sr["SLD"],
                 $sr["TLD"]
             ) = explode(".", $grp[$idx], 2);
-        });
+        }, $grp);
         // command failed, goodbye
         if (!$r->isSuccess()) {
             return $results;
         }
         // command succeeded
-        array_walk($results, function (&$sr, $idx) {
+        array_walk($results, function (&$sr, $idx, $r) {
             $rec = $r->getRecord($idx);
             if (is_null($rec)) {
                 return;
@@ -133,9 +150,15 @@ class Domain extends ApiObject
                     $sr->setStatus($sr::STATUS_RESERVED);
                 }*/
             }
-        });
+        }, $r);
         return $results;
     }
+    /**
+     * Perform Bulk Availability Check
+     * @param array $domains list of domain names
+     * @param bool $premiumEnabled toggle for premium data/check, by default false
+     * @return array
+     */
     public function checkbulk($domains, $premiumEnabled = false)
     {
         $maxSearchGroupSize = $this->cl->settings["maxSearchGroupSize"];
@@ -146,6 +169,14 @@ class Domain extends ApiObject
         }
         return array_change_key_case($results, CASE_LOWER);
     }
+    /**
+     * Get List of Domain Name Suggestions
+     * @param string $searchTerm keyword of the search
+     * @param array $tlds List of TLDs to include
+     * @param bool $premiumEnabled toggle for premium data/check, by default false
+     * @param array $settings Suggestion Engine settings
+     * @return array
+     */
     public function getSuggestions($searchTerm, $tlds, $premiumEnabled = false, $settings = [])
     {
         // build zone list parameter
@@ -200,19 +231,16 @@ class Domain extends ApiObject
             );
             $first += $limit;
         } while (
-            (count($results) < $limit)
+            (count($dnsuggestions) < $limit)
             && ($r->getRecordsTotalCount() > $first)
         );
 
         // check the availability, as also taken/reserved/blocked domains could be returned
-        return $this->checkbulk($results, $premiumEnabled);
+        return $this->checkbulk($dnsuggestions, $premiumEnabled);
     }
 
     /**
      * Get the domain's assigned auth code.
-     *
-     * @param array $params common module parameters
-     * @param string $domain puny code domain name
      * @return array
      */
     public function getAuthCode()
@@ -242,7 +270,7 @@ class Domain extends ApiObject
         if ($r->isSuccess()) {
             if (
                 preg_match("/\.(fi|nz)$/i", $this->id)
-                && $r->getDataByIndex("TRANSFERLOCK", 0) === "1"
+                && $r->getColumnIndex("TRANSFERLOCK", 0) === "1"
             ) {
                 return [
                     "success" => false,
@@ -275,9 +303,13 @@ class Domain extends ApiObject
         ];
     }
 
+    /**
+     * Get IDN Language
+     * @return array
+     */
     private function getIDNLanguage()
     {
-        if (is_null($this->idnLanguage)) {
+        if (isset($this->idnLanguage)) {
             $r = $this->cl->request([
                 "COMMAND" => "CheckIDNLanguage",
                 "DOMAIN" => $this->id
@@ -285,7 +317,7 @@ class Domain extends ApiObject
             if ($r->isSuccess()) {
                 $this->idnLanguage = [
                     "success" => true,
-                    "language" => strtolower($r->getDataByIndex("LANGUAGE", 0))
+                    "language" => strtolower($r->getColumnIndex("LANGUAGE", 0))
                 ];
             } else {
                 $this->idnLanguage = [
@@ -298,7 +330,11 @@ class Domain extends ApiObject
         return $this->idnLanguage;
     }
 
-    public function getNameservers($params, $domain)
+    /**
+     * Get List of assigned Nameservers
+     * @return array
+     */
+    public function getNameservers()
     {
         if ($this->status->isSuccess()) {
             $col = $this->status->getColumn("NAMESERVER");

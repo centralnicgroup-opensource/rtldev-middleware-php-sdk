@@ -4,6 +4,12 @@ namespace CNIC;
 
 class ClientFactory
 {
+    /**
+     * Returns Client Instance by configuration
+     * @param array $params configuration settings
+     * @param \CNIC\HEXONET\Logger $logger Logger Instance (optional)
+     * @return \CNIC\HEXONET\SessionClient
+     */
     public static function getClient($params, $logger = null)
     {
         if (!preg_match("/^HEXONET|RRPproxy$/", $params["registrar"])) {
@@ -46,5 +52,25 @@ class ClientFactory
         $cl->setCustomLogger($logger);
 
         return $cl;
+    }
+
+    /**
+     * Get the Zone of a TLD
+     * @param string $tld TLD
+     * @return string
+     */
+    public static function getZone($tld)
+    {
+        return strtoupper(str_replace(".", "", $tld));
+    }
+
+    /**
+     * Get Zones for a list of TLDs
+     * @param array $tlds TLDs
+     * @return array
+     */
+    public static function getZones($tlds)
+    {
+        return array_map(["DomainFactory", "getZone"], $tlds);
     }
 }

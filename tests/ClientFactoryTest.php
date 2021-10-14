@@ -10,6 +10,10 @@ use CNIC\HEXONET\Client as CL;
 final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
 {
 
+    /**
+     * Basic test for getClient with Registrar HEXONET
+     * @return void
+     */
     public function testHexonetClient1()
     {
         $cl = CF::getClient([
@@ -18,6 +22,10 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CL::class, $cl);
     }
 
+    /**
+     * Extended Basic test for getClient with Registrar HEXONET
+     * @return void
+     */
     public function testHexonetClient2()
     {
         $cl = CF::getClient([
@@ -39,6 +47,10 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CL::class, $cl);
     }
 
+    /**
+     * Basic test for getClient with Registrar RRPproxy
+     * @return void
+     */
     public function testRRPproxyClient()
     {
         $cl = CF::getClient([
@@ -47,6 +59,10 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CL::class, $cl);
     }
 
+    /**
+     * Basic test for getClient with invalid Registrar ID
+     * @return void
+     */
     public function testInvalidClient()
     {
         $this->expectException(\Exception::class);

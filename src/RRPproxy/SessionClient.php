@@ -24,7 +24,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
     /**
      * Perform API login to start session-based communication
      * @param string $otp optional one time password
-     * @return Response Response
+     * @return \CNIC\HEXONET\Response Response
      */
     public function login($otp = "")
     {
@@ -45,7 +45,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
      * Use given specific command parameters.
      * @param array $params given specific command parameters
      * @param string $otp optional one time password
-     * @return Response Response
+     * @return \CNIC\HEXONET\Response Response
      */
     public function loginExtended($params, $otp = "")
     {
@@ -55,7 +55,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
 
     /**
      * Perform API logout to close API session in use
-     * @return Response Response
+     * @return \CNIC\HEXONET\Response Response
      */
     public function logout()
     {

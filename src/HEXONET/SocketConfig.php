@@ -72,6 +72,7 @@ class SocketConfig
 
     /**
      * Create POST data string out of connection data
+     * @param array $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */
