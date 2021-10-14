@@ -72,7 +72,8 @@ class Client
      * @param string $domainstr domain name
      * @return Domain
      */
-    public function getDomain($domainstr) {
+    public function getDomain($domainstr)
+    {
         $domain = new Domain($this);
         $domain->setId($domainstr);
         return $domain;
