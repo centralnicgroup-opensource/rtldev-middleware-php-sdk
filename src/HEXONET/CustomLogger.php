@@ -9,7 +9,6 @@
 
 namespace MYCUSTOMNAMESPACE;
 
-use CNIC\HEXONET\Logger as L;
 use CNIC\HEXONET\Response as R;
 
 /**
@@ -18,7 +17,7 @@ use CNIC\HEXONET\Response as R;
  * @package MYCUSTOMNAMESPACE
  */
 
-class Logger extends L
+class Logger implements \CNIC\LoggerInterface
 {
     /**
      * output/log given data

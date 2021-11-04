@@ -20,5 +20,5 @@ interface LoggerInterface
     /**
      * output/log given data
      */
-    public function log(string $post, \CNIC\HEXONET\Response $r, string $error = null);
+    public function log(string $post, \CNIC\HEXONET\Response $r, string $error = null): void;
 }

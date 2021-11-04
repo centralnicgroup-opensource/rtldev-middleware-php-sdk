@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1636030882">
-  <project timestamp="1636030882">
+<coverage generated="1636035425">
+  <project timestamp="1636035425">
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ClientFactory.php">
       <class name="CNIC\ClientFactory" namespace="global">
         <metrics complexity="12" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="15" elements="32" coveredelements="15"/>
@@ -38,6 +38,9 @@
       <line num="72" type="method" name="getZones" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="74" type="stmt" count="0"/>
       <metrics loc="76" ncloc="60" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="15" elements="32" coveredelements="15"/>
+    </file>
+    <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ColumnInterface.php">
+      <metrics loc="53" ncloc="18" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/ApiObject.php">
       <class name="CNIC\HEXONET\ApiObject" namespace="global">
@@ -334,9 +337,9 @@
       <class name="MYCUSTOMNAMESPACE\Logger" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
       </class>
-      <line num="26" type="method" name="log" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="29" type="stmt" count="0"/>
-      <metrics loc="30" ncloc="17" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
+      <line num="25" type="method" name="log" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <metrics loc="29" ncloc="16" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/Domain.php">
       <class name="CNIC\HEXONET\Domain" namespace="global">
@@ -939,6 +942,12 @@
       <line num="66" type="stmt" count="1"/>
       <metrics loc="68" ncloc="42" classes="1" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="10" elements="18" coveredelements="11"/>
     </file>
-    <metrics files="15" loc="2680" ncloc="1779" classes="15" methods="132" coveredmethods="57" conditionals="0" coveredconditionals="0" statements="716" coveredstatements="327" elements="848" coveredelements="384"/>
+    <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/RecordInterface.php">
+      <metrics loc="53" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ResponseInterface.php">
+      <metrics loc="288" ncloc="89" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <metrics files="18" loc="3073" ncloc="1901" classes="15" methods="132" coveredmethods="57" conditionals="0" coveredconditionals="0" statements="716" coveredstatements="327" elements="848" coveredelements="384"/>
   </project>
 </coverage>

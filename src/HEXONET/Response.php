@@ -17,7 +17,7 @@ use CNIC\HEXONET\ResponseTranslator as RT;
  *
  * @package CNIC\HEXONET
  */
-class Response
+class Response implements \CNIC\ResponseInterface
 {
 
     /**
@@ -52,7 +52,7 @@ class Response
     private $columns;
     /**
      * Record Index we currently point to in record list
-     * @var integer
+     * @var int
      */
     private $recordIndex;
     /**
@@ -109,9 +109,9 @@ class Response
 
     /**
      * Get API response code
-     * @return integer API response code
+     * @return int API response code
      */
-    public function getCode()
+    public function getCode(): int
     {
         return intval($this->hash["CODE"], 10);
     }
@@ -120,7 +120,7 @@ class Response
      * Get API response description
      * @return string API response description
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->hash["DESCRIPTION"];
     }
@@ -129,7 +129,7 @@ class Response
      * Get Plain API response
      * @return string Plain API response
      */
-    public function getPlain()
+    public function getPlain(): string
     {
         return $this->raw;
     }
@@ -138,7 +138,7 @@ class Response
      * Get Queuetime of API response
      * @return float Queuetime of API response
      */
-    public function getQueuetime()
+    public function getQueuetime(): float
     {
         if (array_key_exists("QUEUETIME", $this->hash)) {
             return floatval($this->hash["QUEUETIME"]);
@@ -150,7 +150,7 @@ class Response
      * Get API response as Hash
      * @return array API response hash
      */
-    public function getHash()
+    public function getHash(): array
     {
         return $this->hash;
     }
@@ -159,7 +159,7 @@ class Response
      * Get Runtime of API response
      * @return float Runtime of API response
      */
-    public function getRuntime()
+    public function getRuntime(): float
     {
         if (array_key_exists("RUNTIME", $this->hash)) {
             return floatval($this->hash["RUNTIME"]);
@@ -170,9 +170,9 @@ class Response
     /**
      * Check if current API response represents an error case
      * API response code is an 5xx code
-     * @return boolean boolean result
+     * @return bool boolean result
      */
-    public function isError()
+    public function isError(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "5";
     }
@@ -180,9 +180,9 @@ class Response
     /**
      * Check if current API response represents a success case
      * API response code is an 2xx code
-     * @return boolean boolean result
+     * @return bool boolean result
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "2";
     }
@@ -190,18 +190,18 @@ class Response
     /**
      * Check if current API response represents a temporary error case
      * API response code is an 4xx code
-     * @return boolean result
+     * @return bool boolean result
      */
-    public function isTmpError()
+    public function isTmpError(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "4";
     }
 
     /**
      * Check if current operation is returned as pending
-     * @return boolean result
+     * @return bool bool result
      */
-    public function isPending()
+    public function isPending(): bool
     {
         return isset($this->hash["PENDING"]) ? $this->hash["PENDING"] === "1" : false;
     }
@@ -212,7 +212,7 @@ class Response
      * @param string[] $data array of column data
      * @return $this
      */
-    public function addColumn($key, $data)
+    public function addColumn($key, $data): self
     {
         $col = new Column($key, $data);
         $this->columns[] = $col;
@@ -225,7 +225,7 @@ class Response
      * @param array $h row hash data
      * @return $this
      */
-    public function addRecord($h)
+    public function addRecord($h): self
     {
         $this->records[] = new Record($h);
         return $this;
@@ -236,7 +236,7 @@ class Response
      * @param string $key column name
      * @return Column|null column instance or null if column does not exist
      */
-    public function getColumn($key)
+    public function getColumn($key): Column
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
     }
@@ -244,10 +244,10 @@ class Response
     /**
      * Get Data by Column Name and Index
      * @param string $colkey column name
-     * @param integer $index column data index
+     * @param int $index column data index
      * @return string|null column data at index or null if not found
      */
-    public function getColumnIndex($colkey, $index)
+    public function getColumnIndex($colkey, $index): string
     {
         $col = $this->getColumn($colkey);
         return $col ? $col->getDataByIndex($index) : null;
@@ -257,7 +257,7 @@ class Response
      * Get Column Names
      * @return string[] Array of Column Names
      */
-    public function getColumnKeys()
+    public function getColumnKeys(): array
     {
         return $this->columnkeys;
     }
@@ -275,7 +275,7 @@ class Response
      * Get Command used in this request
      * @return array command
      */
-    public function getCommand()
+    public function getCommand(): array
     {
         return $this->command;
     }
@@ -284,7 +284,7 @@ class Response
      * Get Command used in this request in plain text format
      * @return string command
      */
-    public function getCommandPlain()
+    public function getCommandPlain(): string
     {
         $tmp = "";
         foreach ($this->command as $key => $val) {
@@ -295,9 +295,9 @@ class Response
 
     /**
      * Get Page Number of current List Query
-     * @return integer|null page number or null in case of a non-list response
+     * @return int|null page number or null in case of a non-list response
      */
-    public function getCurrentPageNumber()
+    public function getCurrentPageNumber(): int
     {
         $first = $this->getFirstRecordIndex();
         $limit = $this->getRecordsLimitation();
@@ -311,16 +311,16 @@ class Response
      * Get Record of current record index
      * @return Record|null Record or null in case of a non-list response
      */
-    public function getCurrentRecord()
+    public function getCurrentRecord(): Record
     {
         return $this->hasCurrentRecord() ? $this->records[$this->recordIndex] : null;
     }
 
     /**
      * Get Index of first row in this response
-     * @return integer|null first row index
+     * @return int|null first row index
      */
-    public function getFirstRecordIndex()
+    public function getFirstRecordIndex(): int
     {
         $col = $this->getColumn("FIRST");
         if ($col) {
@@ -335,9 +335,9 @@ class Response
 
     /**
      * Get last record index of the current list query
-     * @return integer|null record index or null for a non-list response
+     * @return int|null record index or null for a non-list response
      */
-    public function getLastRecordIndex()
+    public function getLastRecordIndex(): int
     {
         $col = $this->getColumn("LAST");
         if ($col) {
@@ -357,7 +357,7 @@ class Response
      * Get Response as List Hash including useful meta data for tables
      * @return array hash including list meta data and array of rows in hash notation
      */
-    public function getListHash()
+    public function getListHash(): array
     {
         $lh = [];
         foreach ($this->records as $rec) {
@@ -386,9 +386,9 @@ class Response
 
     /**
      * Get Page Number of next list query
-     * @return integer|null page number or null if there's no next page
+     * @return int|null page number or null if there's no next page
      */
-    public function getNextPageNumber()
+    public function getNextPageNumber(): int
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -401,9 +401,9 @@ class Response
 
     /**
      * Get the number of pages available for this list query
-     * @return integer number of pages
+     * @return int number of pages
      */
-    public function getNumberOfPages()
+    public function getNumberOfPages(): int
     {
         $t = $this->getRecordsTotalCount();
         $limit = $this->getRecordsLimitation();
@@ -417,7 +417,7 @@ class Response
      * Get object containing all paging data
      * @return array paginator data
      */
-    public function getPagination()
+    public function getPagination(): array
     {
         return [
             "COUNT" => $this->getRecordsCount(),
@@ -434,9 +434,9 @@ class Response
 
     /**
      * Get Page Number of previous list query
-     * @return integer|null page number or null if there's no previous page
+     * @return int|null page number or null if there's no previous page
      */
-    public function getPreviousPageNumber()
+    public function getPreviousPageNumber(): int
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -453,7 +453,7 @@ class Response
      * Get previous record in record list
      * @return Record|null Record or null if there's no previous record
      */
-    public function getPreviousRecord()
+    public function getPreviousRecord(): Record
     {
         if ($this->hasPreviousRecord()) {
             return $this->records[--$this->recordIndex];
@@ -463,10 +463,10 @@ class Response
 
     /**
      * Get Record at given index
-     * @param integer $idx record index
+     * @param int $idx record index
      * @return Record|null Record or null if index does not exist
      */
-    public function getRecord($idx)
+    public function getRecord($idx): Record
     {
         if ($idx >= 0 && $this->getRecordsCount() > $idx) {
             return $this->records[$idx];
@@ -478,25 +478,25 @@ class Response
      * Get all Records
      * @return Record[] array of records
      */
-    public function getRecords()
+    public function getRecords(): array
     {
         return $this->records;
     }
 
     /**
      * Get count of rows in this response
-     * @return integer count of rows
+     * @return int count of rows
      */
-    public function getRecordsCount()
+    public function getRecordsCount(): int
     {
         return count($this->records);
     }
 
     /**
      * Get total count of records available for the list query
-     * @return integer total count of records or count of records for a non-list response
+     * @return int total count of records or count of records for a non-list response
      */
-    public function getRecordsTotalCount()
+    public function getRecordsTotalCount(): int
     {
         $col = $this->getColumn("TOTAL");
         if ($col) {
@@ -511,9 +511,9 @@ class Response
     /**
      * Get limit(ation) setting of the current list query
      * This is the count of requested rows
-     * @return integer limit setting or count requested rows
+     * @return int limit setting or count requested rows
      */
-    public function getRecordsLimitation()
+    public function getRecordsLimitation(): int
     {
         $col = $this->getColumn("LIMIT");
         if ($col) {
@@ -527,9 +527,9 @@ class Response
 
     /**
      * Check if this list query has a next page
-     * @return boolean boolean result
+     * @return bool boolean result
      */
-    public function hasNextPage()
+    public function hasNextPage(): bool
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -540,9 +540,9 @@ class Response
 
     /**
      * Check if this list query has a previous page
-     * @return boolean boolean result
+     * @return bool boolean result
      */
-    public function hasPreviousPage()
+    public function hasPreviousPage(): bool
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -555,7 +555,7 @@ class Response
      * Reset index in record list back to zero
      * @return $this
      */
-    public function rewindRecordList(): Response
+    public function rewindRecordList(): self
     {
         $this->recordIndex = 0;
         return $this;

@@ -93,7 +93,7 @@ final class ResponseTemplateManager
     /**
      * Check if given template exists in template container
      * @param string $id template id
-     * @return boolean boolean result
+     * @return bool boolean result
      */
     public static function hasTemplate($id)
     {
@@ -104,7 +104,7 @@ final class ResponseTemplateManager
      * Check if given API response hash matches a given template by code and description
      * @param array $tpl api response hash
      * @param string $id template id
-     * @return boolean boolean result
+     * @return bool boolean result
      */
     public static function isTemplateMatchHash($tpl, $id)
     {
@@ -119,7 +119,7 @@ final class ResponseTemplateManager
      * Check if given API plain response matches a given template by code and description
      * @param string $plain API plain response
      * @param string $id template id
-     * @return boolean boolean result
+     * @return bool boolean result
      */
     public static function isTemplateMatchPlain($plain, $id)
     {
