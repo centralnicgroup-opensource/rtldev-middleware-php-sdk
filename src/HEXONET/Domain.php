@@ -20,7 +20,7 @@ class Domain extends ApiObject
 {
     /**
      * IDN Lanuage
-     * @var array
+     * @var array|null
      */
     protected $idnLanguage = null;
 
@@ -180,7 +180,7 @@ class Domain extends ApiObject
     public function getSuggestions($searchTerm, $tlds, $premiumEnabled = false, $settings = [])
     {
         // build zone list parameter
-        $zones = array_filter($tlds, function ($tld) {
+        $zones = array_filter($tlds, function ($tld) use ($settings) {
             // IGNORE 3RD LEVEL TLDS - NOT FULLY SUPPORTED BY QueryDomainSuggestionList
             // Suppress .com, .net by configuration
             return (

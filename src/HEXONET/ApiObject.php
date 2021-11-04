@@ -28,7 +28,7 @@ class ApiObject
      */
     protected $cl = null;
     /**
-     * @var Response registrar's status response
+     * @var Response|null registrar's status response
      */
     protected $status = null;
 
