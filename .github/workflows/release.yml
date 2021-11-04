@@ -29,7 +29,7 @@ jobs:
       - name: Install Dependencies::PHP${{ matrix.php-version }}
         run: |
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
-          composer update --dev
+          composer update
       - name: Code Validation
         run: |
           composer run-script phpStan
