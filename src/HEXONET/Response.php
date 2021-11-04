@@ -236,7 +236,7 @@ class Response implements \CNIC\ResponseInterface
      * @param string $key column name
      * @return Column|null column instance or null if column does not exist
      */
-    public function getColumn($key): Column
+    public function getColumn($key): ?Column
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
     }
@@ -247,7 +247,7 @@ class Response implements \CNIC\ResponseInterface
      * @param int $index column data index
      * @return string|null column data at index or null if not found
      */
-    public function getColumnIndex($colkey, $index): string
+    public function getColumnIndex($colkey, $index): ?string
     {
         $col = $this->getColumn($colkey);
         return $col ? $col->getDataByIndex($index) : null;
@@ -297,7 +297,7 @@ class Response implements \CNIC\ResponseInterface
      * Get Page Number of current List Query
      * @return int|null page number or null in case of a non-list response
      */
-    public function getCurrentPageNumber(): int
+    public function getCurrentPageNumber(): ?int
     {
         $first = $this->getFirstRecordIndex();
         $limit = $this->getRecordsLimitation();
@@ -311,7 +311,7 @@ class Response implements \CNIC\ResponseInterface
      * Get Record of current record index
      * @return Record|null Record or null in case of a non-list response
      */
-    public function getCurrentRecord(): Record
+    public function getCurrentRecord(): ?Record
     {
         return $this->hasCurrentRecord() ? $this->records[$this->recordIndex] : null;
     }
@@ -320,7 +320,7 @@ class Response implements \CNIC\ResponseInterface
      * Get Index of first row in this response
      * @return int|null first row index
      */
-    public function getFirstRecordIndex(): int
+    public function getFirstRecordIndex(): ?int
     {
         $col = $this->getColumn("FIRST");
         if ($col) {
@@ -337,7 +337,7 @@ class Response implements \CNIC\ResponseInterface
      * Get last record index of the current list query
      * @return int|null record index or null for a non-list response
      */
-    public function getLastRecordIndex(): int
+    public function getLastRecordIndex(): ?int
     {
         $col = $this->getColumn("LAST");
         if ($col) {
@@ -376,7 +376,7 @@ class Response implements \CNIC\ResponseInterface
      * Get next record in record list
      * @return Record|null Record or null in case there's no further record
      */
-    public function getNextRecord()
+    public function getNextRecord(): ?Record
     {
         if ($this->hasNextRecord()) {
             return $this->records[++$this->recordIndex];
@@ -388,7 +388,7 @@ class Response implements \CNIC\ResponseInterface
      * Get Page Number of next list query
      * @return int|null page number or null if there's no next page
      */
-    public function getNextPageNumber(): int
+    public function getNextPageNumber(): ?int
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -436,7 +436,7 @@ class Response implements \CNIC\ResponseInterface
      * Get Page Number of previous list query
      * @return int|null page number or null if there's no previous page
      */
-    public function getPreviousPageNumber(): int
+    public function getPreviousPageNumber(): ?int
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -453,7 +453,7 @@ class Response implements \CNIC\ResponseInterface
      * Get previous record in record list
      * @return Record|null Record or null if there's no previous record
      */
-    public function getPreviousRecord(): Record
+    public function getPreviousRecord(): ?Record
     {
         if ($this->hasPreviousRecord()) {
             return $this->records[--$this->recordIndex];
@@ -466,7 +466,7 @@ class Response implements \CNIC\ResponseInterface
      * @param int $idx record index
      * @return Record|null Record or null if index does not exist
      */
-    public function getRecord($idx): Record
+    public function getRecord($idx): ?Record
     {
         if ($idx >= 0 && $this->getRecordsCount() > $idx) {
             return $this->records[$idx];

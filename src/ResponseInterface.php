@@ -150,9 +150,9 @@ interface ResponseInterface
 
     /**
      * Get Record of current record index
-     * @return RecordInterface|null Record or null in case of a non-list response
+     * @return RecordInterface|null Record or null in case of a non-list rfunction getCurrentRecordesponse
      */
-    public function getCurrentRecord();
+    public function getCurrentRecord(): ?RecordInterface;
 
     /**
      * Get Index of first row in this response
@@ -176,7 +176,7 @@ interface ResponseInterface
      * Get next record in record list
      * @return RecordInterface|null Record or null in case there's no further record
      */
-    public function getNextRecord();
+    public function getNextRecord(): ?RecordInterface;
 
     /**
      * Get Page Number of next list query
