@@ -51,7 +51,7 @@
     }
   },
   "scripts": {
-    "docs": "rm -rf build && ./phpDocumentor.phar -sourcecode on --defaultpackagename=CNIC --directory src",
+    "docs": "rm -rf build;test ! -e phpdoc.phar && wget https://phpdoc.org/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
     "phpStan": "phpstan analyze -c phpstan.neon",
     "phpCompatibility": "./scripts/phpcompatibility.sh",
     "codeCheck": "phpcs --ignore=\"*/vendor/*\" --standard=PSR12 -s -q -n --colors src tests",

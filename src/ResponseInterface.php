@@ -254,7 +254,7 @@ interface ResponseInterface
 
     /**
      * Reset index in record list back to zero
-     * @return ResponseInterface;
+     * @return ResponseInterface
      */
     public function rewindRecordList(): ResponseInterface;
 

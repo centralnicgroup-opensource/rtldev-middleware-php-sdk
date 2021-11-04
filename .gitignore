@@ -11,3 +11,5 @@ build/api-cache
 .phpunit.result.cache
 php-sdk.phar
 php-sdk.phar.gz
+phpDocumentor.phar
+phpdoc.phar
