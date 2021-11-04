@@ -3,8 +3,6 @@ RRPproxy Client (CNICTEST\RRPproxyClient)
  [x] Get p o s t data obj
  [x] Get p o s t data str
  [x] Get p o s t data null
- [x] Enable debug mode
- [x] Disable debug mode
  [x] Get session
  [x] Get session i d set
  [x] Get u r l

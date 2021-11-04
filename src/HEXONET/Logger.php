@@ -15,7 +15,7 @@ namespace CNIC\HEXONET;
  * @package CNIC\HEXONET
  */
 
-class Logger
+class Logger implements \CNIC\LoggerInterface
 {
     /**
      * output/log given data
