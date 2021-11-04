@@ -29,7 +29,7 @@ interface ResponseInterface
      * Get API response code
      * @return integer API response code
      */
-    public function getCode() : int;
+    public function getCode(): int;
 
     /**
      * Get API response description

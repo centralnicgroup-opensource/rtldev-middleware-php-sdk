@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1636041166">
-  <project timestamp="1636041166">
+<coverage generated="1636042747">
+  <project timestamp="1636042747">
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ClientFactory.php">
       <class name="CNIC\ClientFactory" namespace="global">
         <metrics complexity="12" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="15" elements="32" coveredelements="15"/>
