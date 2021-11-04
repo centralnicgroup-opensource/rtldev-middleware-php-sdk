@@ -12,7 +12,7 @@
             </source>
             <output>api</output>
             <ignore hidden="true" symlinks="true">
-                <path>src/CustomLogger.php</path>
+                <path>src/CustomLoggerClass.php</path>
                 <path>tests/**/*</path>
                 <path>build/**/*</path>
                 <path>vendor/**/*</path>

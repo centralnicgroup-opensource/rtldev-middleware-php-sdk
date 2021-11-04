@@ -351,16 +351,6 @@ Search.appendIndex(
             "summary": "column\u0020data\u0020container",
             "url": "classes/CNIC-HEXONET-Column.html#property_data"
         },                {
-            "fqsen": "\\MYCUSTOMNAMESPACE\\Logger",
-            "name": "Logger",
-            "summary": "MYCUSTOMNAMESPACE\u0020Logger",
-            "url": "classes/MYCUSTOMNAMESPACE-Logger.html"
-        },                {
-            "fqsen": "\\MYCUSTOMNAMESPACE\\Logger\u003A\u003Alog\u0028\u0029",
-            "name": "log",
-            "summary": "output\/log\u0020given\u0020data",
-            "url": "classes/MYCUSTOMNAMESPACE-Logger.html#method_log"
-        },                {
             "fqsen": "\\CNIC\\HEXONET\\Domain",
             "name": "Domain",
             "summary": "HEXONET\u0020API\u0020Client",
@@ -1170,11 +1160,6 @@ Search.appendIndex(
             "name": "HEXONET",
             "summary": "",
             "url": "namespaces/cnic-hexonet.html"
-        },                {
-            "fqsen": "\\MYCUSTOMNAMESPACE",
-            "name": "MYCUSTOMNAMESPACE",
-            "summary": "",
-            "url": "namespaces/mycustomnamespace.html"
         },                {
             "fqsen": "\\CNIC\\RRPproxy",
             "name": "RRPproxy",
