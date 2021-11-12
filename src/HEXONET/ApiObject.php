@@ -13,7 +13,7 @@ namespace CNIC\HEXONET;
  * @package CNIC\HEXONET
  */
 
-class ApiObject
+class ApiObject implements \CNIC\ApiObjectInterface
 {
     /**
      * @var string object identifier
@@ -34,7 +34,7 @@ class ApiObject
 
     /**
      * Constructor
-     * @param Client $cf registrar's client instance
+     * @param \CNIC\HEXONET\Client $cf registrar's client instance
      */
     public function __construct($cf)
     {
@@ -46,7 +46,7 @@ class ApiObject
      * @param string $objectid object id
      * @return $this
      */
-    public function setId($objectid)
+    public function setId(string $objectid): self
     {
         $this->id = $objectid;
         return $this;
@@ -57,7 +57,7 @@ class ApiObject
      * @param string $objectclass object class
      * @return $this
      */
-    public function setClass($objectclass)
+    public function setClass(string $objectclass): self
     {
         $this->class = $objectclass;
         return $this->loadStatus();
@@ -68,7 +68,7 @@ class ApiObject
      * @param bool $refresh trigger fresh data load, by default false
      * @return $this
      */
-    public function loadStatus($refresh = false)
+    public function loadStatus(bool $refresh = false): self
     {
         if (
             isset($this->status)
@@ -86,7 +86,7 @@ class ApiObject
      * IDN Conversion
      * @return array
      */
-    public function convert()
+    public function convert(): array
     {
         if (preg_match("/^DOMAIN|DNSZONE|NAMESERVER$/i", $this->class)) {//TODO
             $r = $this->cl->request([
@@ -116,7 +116,7 @@ class ApiObject
      * @param array $domains List of Domains
      * @return array
      */
-    public function convertbulk($domains)
+    public function convertbulk($domains): array
     {
         $r = $this->cl->request([
             "COMMAND" => "ConvertIDN",
