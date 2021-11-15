@@ -247,9 +247,6 @@ class Domain extends ApiObject
     {
         // Expiring Authorization Codes
         // https://confluence.centralnic.com/display/RSR/Expiring+Authcodes
-        // pending cases:
-        // - RSRBE-3774
-        // - RSRBE-3753
         if (preg_match("/\.de$/i", $this->id)) {
             $r = $this->cl->request([
                 "COMMAND" => "DENIC_CreateAuthInfo1",
