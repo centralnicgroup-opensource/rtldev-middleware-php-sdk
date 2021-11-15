@@ -99,7 +99,8 @@ class ApiObject implements \CNIC\ApiObjectInterface
                     return [
                         "idn" => $d["IDN"],
                         "punycode" => $d["ACE"],
-                        "domain" => $this->id
+                        "objectid" => $this->id,
+                        "converted" => true
                     ];
                 }
             }
@@ -107,7 +108,8 @@ class ApiObject implements \CNIC\ApiObjectInterface
         return [
             "idn" => $this->id,
             "punycode" => $this->id,
-            "domain" => $this->id
+            "objectid" => $this->id,
+            "converted" => false
         ];
     }
 
