@@ -7,11 +7,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/centralnic-reseller/php-sdk/blob/master/CONTRIBUTING.md)
 
-This module is a connector library for the insanely fast CNIC Backend APIs (HEXONET, RRPproxy). For further informations visit our [homepage](http://centralnic.com) and do not hesitate to contact us.
+This module is a connector library for the insanely fast CNIC Backend APIs (HEXONET, RRPproxy). Do not hesitate to contact us in case of questions.
 
 ## Resources
 
-* [Documentation](https://centralnic-reseller.github.io/centralnic-reseller/docs/cnic/sdks/php-sdk/)
+* [Documentation](https://centralnic-reseller.github.io/centralnic-reseller/docs/hexonet/sdks/php-sdk/)
 * [Release Notes](https://github.com/centralnic-reseller/php-sdk/releases)
 
 ## Authors
