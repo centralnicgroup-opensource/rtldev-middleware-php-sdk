@@ -31,6 +31,11 @@ jobs:
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
           composer update
       - name: Code Validation
+        env:
+          TESTS_USER_HEXONET: ${{ secrets.TESTS_USER_HEXONET }}
+          TESTS_USERPASSWORD_HEXONET: ${{ secrets.TESTS_USERPASSWORD_HEXONET }}
+          TESTS_USER_RRPPROXY: ${{ secrets.TESTS_USER_RRPPROXY }}
+          TESTS_USERPASSWORD_RRPPROXY: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
         run: |
           composer run-script phpStan
           composer run-script phpCompatibility
@@ -64,8 +69,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          TESTS_USER_HEXONET: ${{ secrets.TESTS_USER_HEXONET }}
-          TESTS_USERPASSWORD_HEXONET: ${{ secrets.TESTS_USERPASSWORD_HEXONET }}
-          TESTS_USER_RRPPROXY: ${{ secrets.TESTS_USER_RRPPROXY }}
-          TESTS_USERPASSWORD_RRPPROXY: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
         run: npx semantic-release
