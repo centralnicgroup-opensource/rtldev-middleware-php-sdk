@@ -11,16 +11,6 @@ Search.appendIndex(
             "summary": "Returns\u0020Client\u0020Instance\u0020by\u0020configuration",
             "url": "classes/CNIC-ClientFactory.html#method_getClient"
         },                {
-            "fqsen": "\\CNIC\\ClientFactory\u003A\u003AgetZone\u0028\u0029",
-            "name": "getZone",
-            "summary": "Get\u0020the\u0020Zone\u0020of\u0020a\u0020TLD",
-            "url": "classes/CNIC-ClientFactory.html#method_getZone"
-        },                {
-            "fqsen": "\\CNIC\\ClientFactory\u003A\u003AgetZones\u0028\u0029",
-            "name": "getZones",
-            "summary": "Get\u0020Zones\u0020for\u0020a\u0020list\u0020of\u0020TLDs",
-            "url": "classes/CNIC-ClientFactory.html#method_getZones"
-        },                {
             "fqsen": "\\CNIC\\ColumnInterface",
             "name": "ColumnInterface",
             "summary": "Common\u0020Column\u0020Interface",
@@ -46,61 +36,6 @@ Search.appendIndex(
             "summary": "Get\u0020column\u0020data\u0020at\u0020given\u0020index",
             "url": "classes/CNIC-ColumnInterface.html#method_getDataByIndex"
         },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject",
-            "name": "ApiObject",
-            "summary": "HEXONET\u0020API\u0020Object",
-            "url": "classes/CNIC-HEXONET-ApiObject.html"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#method___construct"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003AsetId\u0028\u0029",
-            "name": "setId",
-            "summary": "Set\u0020the\u0020related\u0020Object\u0020ID",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#method_setId"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003AsetClass\u0028\u0029",
-            "name": "setClass",
-            "summary": "Set\u0020the\u0020Object\u0020Class",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#method_setClass"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003AloadStatus\u0028\u0029",
-            "name": "loadStatus",
-            "summary": "Load\u0020Status\u0020Data",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#method_loadStatus"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003Aconvert\u0028\u0029",
-            "name": "convert",
-            "summary": "IDN\u0020Conversion",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#method_convert"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003Aconvertbulk\u0028\u0029",
-            "name": "convertbulk",
-            "summary": "Bulk\u0020IDN\u0020Conversion",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#method_convertbulk"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003A\u0024id",
-            "name": "id",
-            "summary": "",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#property_id"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003A\u0024class",
-            "name": "class",
-            "summary": "",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#property_class"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003A\u0024cl",
-            "name": "cl",
-            "summary": "",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#property_cl"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\ApiObject\u003A\u003A\u0024status",
-            "name": "status",
-            "summary": "",
-            "url": "classes/CNIC-HEXONET-ApiObject.html#property_status"
-        },                {
             "fqsen": "\\CNIC\\HEXONET\\Client",
             "name": "Client",
             "summary": "HEXONET\u0020API\u0020Client",
@@ -110,11 +45,6 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "",
             "url": "classes/CNIC-HEXONET-Client.html#method___construct"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AgetDomain\u0028\u0029",
-            "name": "getDomain",
-            "summary": "Return\u0020Domain\u0020Object",
-            "url": "classes/CNIC-HEXONET-Client.html#method_getDomain"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AsetCustomLogger\u0028\u0029",
             "name": "setCustomLogger",
@@ -306,6 +236,11 @@ Search.appendIndex(
             "summary": "logger\u0020function\u0020name\u0020for\u0020debug\u0020mode",
             "url": "classes/CNIC-HEXONET-Client.html#property_logger"
         },                {
+            "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003A\u0024isOTE",
+            "name": "isOTE",
+            "summary": "is\u0020connected\u0020to\u0020OT\u0026E",
+            "url": "classes/CNIC-HEXONET-Client.html#property_isOTE"
+        },                {
             "fqsen": "\\CNIC\\HEXONET\\Column",
             "name": "Column",
             "summary": "HEXONET\u0020Column",
@@ -350,56 +285,6 @@ Search.appendIndex(
             "name": "data",
             "summary": "column\u0020data\u0020container",
             "url": "classes/CNIC-HEXONET-Column.html#property_data"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain",
-            "name": "Domain",
-            "summary": "HEXONET\u0020API\u0020Client",
-            "url": "classes/CNIC-HEXONET-Domain.html"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003AgetDomain\u0028\u0029",
-            "name": "getDomain",
-            "summary": "Get\u0020the\u0020Domain\u0020Name",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_getDomain"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003AsetDomain\u0028\u0029",
-            "name": "setDomain",
-            "summary": "Set\u0020the\u0020Domain\u0020Name",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_setDomain"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003Acheck\u0028\u0029",
-            "name": "check",
-            "summary": "Get\u0020Availability\u0020Check\u0020results\u0020for\u0020a\u0020given\u0020list\u0020of\u0020domain\u0020names",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_check"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003Acheckbulk\u0028\u0029",
-            "name": "checkbulk",
-            "summary": "Perform\u0020Bulk\u0020Availability\u0020Check",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_checkbulk"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003AgetSuggestions\u0028\u0029",
-            "name": "getSuggestions",
-            "summary": "Get\u0020List\u0020of\u0020Domain\u0020Name\u0020Suggestions",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_getSuggestions"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003AgetAuthCode\u0028\u0029",
-            "name": "getAuthCode",
-            "summary": "Get\u0020the\u0020domain\u0027s\u0020assigned\u0020auth\u0020code.",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_getAuthCode"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003AgetIDNLanguage\u0028\u0029",
-            "name": "getIDNLanguage",
-            "summary": "Get\u0020IDN\u0020Language",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_getIDNLanguage"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003AgetNameservers\u0028\u0029",
-            "name": "getNameservers",
-            "summary": "Get\u0020List\u0020of\u0020assigned\u0020Nameservers",
-            "url": "classes/CNIC-HEXONET-Domain.html#method_getNameservers"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Domain\u003A\u003A\u0024idnLanguage",
-            "name": "idnLanguage",
-            "summary": "IDN\u0020Lanuage",
-            "url": "classes/CNIC-HEXONET-Domain.html#property_idnLanguage"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Logger",
             "name": "Logger",
@@ -1145,6 +1030,11 @@ Search.appendIndex(
             "name": "logout",
             "summary": "Perform\u0020API\u0020logout\u0020to\u0020close\u0020API\u0020session\u0020in\u0020use",
             "url": "classes/CNIC-RRPproxy-SessionClient.html#method_logout"
+        },                {
+            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003AautoIDNConvert\u0028\u0029",
+            "name": "autoIDNConvert",
+            "summary": "Auto\u0020convert\u0020API\u0020command\u0020parameters\u0020to\u0020punycode,\u0020if\u0020necessary.",
+            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_autoIDNConvert"
         },                {
             "fqsen": "\\",
             "name": "\\",

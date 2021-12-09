@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.0...v7.0.1) (2021-12-09)
+
+
+### Bug Fixes
+
+* **semantic-release:** added missing configuration file ([9972e93](https://github.com/centralnic-reseller/php-sdk/commit/9972e93018dfce08ddd95f679be8409fdab53010))
+
 # 7.0.0 (2021-12-09)
 
 ### Features

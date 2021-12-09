@@ -145,6 +145,13 @@
 
 <dl class="phpdocumentor-table-of-contents">
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/CNIC-HEXONET-Client.html#property_isOTE">$isOTE</a>
+    <span>
+                &nbsp;: bool            </span>
+</dt>
+<dd>is connected to OT&amp;E</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/CNIC-HEXONET-Client.html#property_settings">$settings</a>
     <span>
                 &nbsp;: array&lt;string|int, mixed&gt;            </span>
@@ -213,13 +220,6 @@
                         &nbsp;: $this    </span>
 </dt>
 <dd>Enable Debug Output to STDOUT</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Client.html#method_getDomain">getDomain()</a>
-    <span>
-                        &nbsp;: <a href="classes/CNIC-HEXONET-Domain.html"><abbr title="\CNIC\HEXONET\Domain">Domain</abbr></a>    </span>
-</dt>
-<dd>Return Domain Object</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-Client.html#method_getPOSTData">getPOSTData()</a>
@@ -436,7 +436,7 @@ To be used in case you have an active ip filter setting.</dd>
 <dd>Set OT&amp;E System for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/CNIC-HEXONET-Client.html#method_autoIDNConvert">autoIDNConvert()</a>
+    <a href="classes/CNIC-RRPproxy-SessionClient.html#method_autoIDNConvert">autoIDNConvert()</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
@@ -461,6 +461,39 @@ To be used in case you have an active ip filter setting.</dd>
             Properties
             <a href="classes/CNIC-RRPproxy-SessionClient.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_isOTE">
+        $isOTE
+        <a href="classes/CNIC-HEXONET-Client.html#property_isOTE" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">62</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">is connected to OT&amp;E</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__name">$isOTE</span>
+     = <span class="phpdocumentor-signature__default-value">false</span></code>
+
+    
+    
+    
+
+</article>
                     <article
         class="
             phpdocumentor-element
@@ -745,7 +778,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">118</span>
+    <span class="phpdocumentor-element-found-in__line">111</span>
 
     </aside>
 
@@ -778,7 +811,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">108</span>
+    <span class="phpdocumentor-element-found-in__line">101</span>
 
     </aside>
 
@@ -804,51 +837,6 @@ To be used in case you have an active ip filter setting.</dd>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getDomain">
-        getDomain()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getDomain" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">75</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Return Domain Object</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">getDomain</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$domainstr</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Domain.html"><abbr title="\CNIC\HEXONET\Domain">Domain</abbr></a></span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$domainstr</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>domain name</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Domain.html"><abbr title="\CNIC\HEXONET\Domain">Domain</abbr></a></span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_getPOSTData">
         getPOSTData()
         <a href="classes/CNIC-HEXONET-Client.html#method_getPOSTData" class="headerlink"><i class="fas fa-link"></i></a>
@@ -856,7 +844,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">130</span>
+    <span class="phpdocumentor-element-found-in__line">123</span>
 
     </aside>
 
@@ -912,7 +900,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">207</span>
+    <span class="phpdocumentor-element-found-in__line">200</span>
 
     </aside>
 
@@ -945,7 +933,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">234</span>
+    <span class="phpdocumentor-element-found-in__line">227</span>
 
     </aside>
 
@@ -978,7 +966,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">145</span>
+    <span class="phpdocumentor-element-found-in__line">138</span>
 
     </aside>
 
@@ -1013,7 +1001,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">155</span>
+    <span class="phpdocumentor-element-found-in__line">148</span>
 
     </aside>
 
@@ -1048,7 +1036,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">180</span>
+    <span class="phpdocumentor-element-found-in__line">173</span>
 
     </aside>
 
@@ -1083,7 +1071,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">246</span>
+    <span class="phpdocumentor-element-found-in__line">239</span>
 
     </aside>
 
@@ -1258,7 +1246,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">445</span>
+    <span class="phpdocumentor-element-found-in__line">438</span>
 
     </aside>
 
@@ -1305,7 +1293,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">534</span>
+    <span class="phpdocumentor-element-found-in__line">527</span>
 
     </aside>
 
@@ -1352,7 +1340,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">507</span>
+    <span class="phpdocumentor-element-found-in__line">500</span>
 
     </aside>
 
@@ -1416,7 +1404,7 @@ Useful for tables</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">271</span>
+    <span class="phpdocumentor-element-found-in__line">264</span>
 
     </aside>
 
@@ -1462,7 +1450,7 @@ to rebuild and reuse connection settings</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">256</span>
+    <span class="phpdocumentor-element-found-in__line">249</span>
 
     </aside>
 
@@ -1507,7 +1495,7 @@ to rebuild and reuse connection settings</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">337</span>
+    <span class="phpdocumentor-element-found-in__line">330</span>
 
     </aside>
 
@@ -1561,7 +1549,7 @@ to rebuild and reuse connection settings</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">88</span>
+    <span class="phpdocumentor-element-found-in__line">81</span>
 
     </aside>
 
@@ -1605,7 +1593,7 @@ create your own class inheriting from \CNIC\Logger and overriding method log</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">98</span>
+    <span class="phpdocumentor-element-found-in__line">91</span>
 
     </aside>
 
@@ -1638,7 +1626,7 @@ create your own class inheriting from \CNIC\Logger and overriding method log</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">295</span>
+    <span class="phpdocumentor-element-found-in__line">288</span>
 
     </aside>
 
@@ -1699,7 +1687,7 @@ create your own class inheriting from \CNIC\Logger and overriding method log</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">193</span>
+    <span class="phpdocumentor-element-found-in__line">186</span>
 
     </aside>
 
@@ -1744,7 +1732,7 @@ create your own class inheriting from \CNIC\Logger and overriding method log</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">220</span>
+    <span class="phpdocumentor-element-found-in__line">213</span>
 
     </aside>
 
@@ -1789,7 +1777,7 @@ create your own class inheriting from \CNIC\Logger and overriding method log</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">322</span>
+    <span class="phpdocumentor-element-found-in__line">315</span>
 
     </aside>
 
@@ -1851,7 +1839,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">351</span>
+    <span class="phpdocumentor-element-found-in__line">344</span>
 
     </aside>
 
@@ -1914,7 +1902,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">309</span>
+    <span class="phpdocumentor-element-found-in__line">302</span>
 
     </aside>
 
@@ -1959,7 +1947,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">283</span>
+    <span class="phpdocumentor-element-found-in__line">276</span>
 
     </aside>
 
@@ -2004,7 +1992,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">167</span>
+    <span class="phpdocumentor-element-found-in__line">160</span>
 
     </aside>
 
@@ -2067,7 +2055,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">552</span>
+    <span class="phpdocumentor-element-found-in__line">545</span>
 
     </aside>
 
@@ -2112,7 +2100,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">562</span>
+    <span class="phpdocumentor-element-found-in__line">555</span>
 
     </aside>
 
@@ -2145,7 +2133,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">586</span>
+    <span class="phpdocumentor-element-found-in__line">580</span>
 
     </aside>
 
@@ -2178,7 +2166,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">574</span>
+    <span class="phpdocumentor-element-found-in__line">567</span>
 
     </aside>
 
@@ -2206,12 +2194,12 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_autoIDNConvert">
         autoIDNConvert()
-        <a href="classes/CNIC-HEXONET-Client.html#method_autoIDNConvert" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-RRPproxy-SessionClient.html#method_autoIDNConvert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/RRPproxy/SessionClient.php"><a href="files/src-rrpproxy-sessionclient.html"><abbr title="src/RRPproxy/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">389</span>
+    <span class="phpdocumentor-element-found-in__line">74</span>
 
     </aside>
 
@@ -2256,7 +2244,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">365</span>
+    <span class="phpdocumentor-element-found-in__line">358</span>
 
     </aside>
 
