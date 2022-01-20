@@ -48,7 +48,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AsetCustomLogger\u0028\u0029",
             "name": "setCustomLogger",
-            "summary": "set\u0020custom\u0020logger\u0020to\u0020use\u0020instead\u0020of\u0020default\u0020one\ncreate\u0020your\u0020own\u0020class\u0020inheriting\u0020from\u0020\\CNIC\\Logger\u0020and\u0020overriding\u0020method\u0020log",
+            "summary": "set\u0020custom\u0020logger\u0020to\u0020use\u0020instead\u0020of\u0020default\u0020one\ncreate\u0020your\u0020own\u0020class\u0020implementing\u0020\\CNIC\\LoggerInterface",
             "url": "classes/CNIC-HEXONET-Client.html#method_setCustomLogger"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AsetDefaultLogger\u0028\u0029",

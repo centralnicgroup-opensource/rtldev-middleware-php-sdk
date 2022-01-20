@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>PHP SDK by CNIC</title>
+            <title>PHP SDK by CNIC</title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
@@ -54,14 +55,16 @@
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
-                                    <h4 class="phpdocumentor-sidebar__root-namespace"><a href="namespaces/cnic.html">CNIC</a></h4>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/cnic.html" class="">CNIC</a>
+</h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="namespaces/cnic-hexonet.html">HEXONET</a>
+                <a href="namespaces/cnic-hexonet.html" class="">HEXONET</a>
                 
             </li>
                     <li>
-                <a href="namespaces/cnic-rrpproxy.html">RRPproxy</a>
+                <a href="namespaces/cnic-rrpproxy.html" class="">RRPproxy</a>
                 
             </li>
             </ul>
@@ -69,14 +72,16 @@
                         </section>
                 <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
-                                    <h4 class="phpdocumentor-sidebar__root-namespace"><a href="packages/CNIC.html">CNIC</a></h4>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/CNIC.html" class="">CNIC</a>
+</h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="packages/CNIC-HEXONET.html">HEXONET</a>
+                <a href="packages/CNIC-HEXONET.html" class="">HEXONET</a>
                 
             </li>
                     <li>
-                <a href="packages/CNIC-RRPproxy.html">RRPproxy</a>
+                <a href="packages/CNIC-RRPproxy.html" class="">RRPproxy</a>
                 
             </li>
             </ul>
@@ -141,59 +146,59 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                <dt class="phpdocumentor-table-of-contents__entry -property -public">
+                    <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#property_templates">$templates</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>template container</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_addTemplate">addTemplate()</a>
     <span>
-                        &nbsp;: self    </span>
+                                &nbsp;: self    </span>
 </dt>
 <dd>Add response template to template container</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_generateTemplate">generateTemplate()</a>
     <span>
-                        &nbsp;: string    </span>
+                                &nbsp;: string    </span>
 </dt>
 <dd>Generate API response template string for given code and description</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_getTemplate">getTemplate()</a>
     <span>
-                        &nbsp;: <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>    </span>
+                                &nbsp;: <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>    </span>
 </dt>
 <dd>Get response template instance from template container</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_getTemplates">getTemplates()</a>
     <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Return all available response templates</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_hasTemplate">hasTemplate()</a>
     <span>
-                        &nbsp;: bool    </span>
+                                &nbsp;: bool    </span>
 </dt>
 <dd>Check if given template exists in template container</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_isTemplateMatchHash">isTemplateMatchHash()</a>
     <span>
-                        &nbsp;: bool    </span>
+                                &nbsp;: bool    </span>
 </dt>
 <dd>Check if given API response hash matches a given template by code and description</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CNIC-HEXONET-ResponseTemplateManager.html#method_isTemplateMatchPlain">isTemplateMatchPlain()</a>
     <span>
-                        &nbsp;: bool    </span>
+                                &nbsp;: bool    </span>
 </dt>
 <dd>Check if given API plain response matches a given template by code and description</dd>
 
@@ -235,47 +240,7 @@
     <span class="phpdocumentor-signature__visibility">public</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$templates</span>
-     = <span class="phpdocumentor-signature__default-value">[&quot;404&quot; =&gt; &quot;[RESPONSE]
-CODE=421
-DESCRIPTION=Page not found
-EOF
-&quot;, &quot;500&quot; =&gt; &quot;[RESPONSE]
-CODE=500
-DESCRIPTION=Internal server error
-EOF
-&quot;, &quot;empty&quot; =&gt; &quot;[RESPONSE]
-CODE=423
-DESCRIPTION=Empty API response. Probably unreachable API end point {CONNECTION_URL}
-EOF
-&quot;, &quot;error&quot; =&gt; &quot;[RESPONSE]
-CODE=421
-DESCRIPTION=Command failed due to server error. Client should try again
-EOF
-&quot;, &quot;expired&quot; =&gt; &quot;[RESPONSE]
-CODE=530
-DESCRIPTION=SESSION NOT FOUND
-EOF
-&quot;, &quot;httperror&quot; =&gt; &quot;[RESPONSE]
-CODE=421
-DESCRIPTION=Command failed due to HTTP communication error
-EOF
-&quot;, &quot;invalid&quot; =&gt; &quot;[RESPONSE]
-CODE=423
-DESCRIPTION=Invalid API response. Contact Support
-EOF
-&quot;, &quot;nocurl&quot; =&gt; &quot;[RESPONSE]
-CODE=423
-DESCRIPTION=API access error: curl_init failed
-EOF
-&quot;, &quot;notfound&quot; =&gt; &quot;[RESPONSE]
-CODE=500
-DESCRIPTION=Response Template not found
-EOF
-&quot;, &quot;unauthorized&quot; =&gt; &quot;[RESPONSE]
-CODE=530
-DESCRIPTION=Unauthorized
-EOF
-&quot;]</span></code>
+     = <span class="phpdocumentor-signature__default-value">[&quot;404&quot; =&gt; &quot;[RESPONSE]\r\nCODE=421\r\nDESCRIPTION=Page not found\r\nEOF\r\n&quot;, &quot;500&quot; =&gt; &quot;[RESPONSE]\r\nCODE=500\r\nDESCRIPTION=Internal server error\r\nEOF\r\n&quot;, &quot;empty&quot; =&gt; &quot;[RESPONSE]\r\nCODE=423\r\nDESCRIPTION=Empty API response. Probably unreachable API end point {CONNECTION_URL}\r\nEOF\r\n&quot;, &quot;error&quot; =&gt; &quot;[RESPONSE]\r\nCODE=421\r\nDESCRIPTION=Command failed due to server error. Client should try again\r\nEOF\r\n&quot;, &quot;expired&quot; =&gt; &quot;[RESPONSE]\r\nCODE=530\r\nDESCRIPTION=SESSION NOT FOUND\r\nEOF\r\n&quot;, &quot;httperror&quot; =&gt; &quot;[RESPONSE]\r\nCODE=421\r\nDESCRIPTION=Command failed due to HTTP communication error\r\nEOF\r\n&quot;, &quot;invalid&quot; =&gt; &quot;[RESPONSE]\r\nCODE=423\r\nDESCRIPTION=Invalid API response. Contact Support\r\nEOF\r\n&quot;, &quot;nocurl&quot; =&gt; &quot;[RESPONSE]\r\nCODE=423\r\nDESCRIPTION=API access error: curl_init failed\r\nEOF\r\n&quot;, &quot;notfound&quot; =&gt; &quot;[RESPONSE]\r\nCODE=500\r\nDESCRIPTION=Response Template not found\r\nEOF\r\n&quot;, &quot;unauthorized&quot; =&gt; &quot;[RESPONSE]\r\nCODE=530\r\nDESCRIPTION=Unauthorized\r\nEOF\r\n&quot;]</span></code>
 
     
     

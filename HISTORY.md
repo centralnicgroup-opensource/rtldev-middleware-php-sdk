@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.1...v7.0.2) (2022-01-20)
+
+
+### Bug Fixes
+
+* **logger:** require custom logger to implement LoggerInterface ([ab73282](https://github.com/centralnic-reseller/php-sdk/commit/ab732821a4383a7b239eb76ee341b6556f2429c6))
+
 ## [7.0.1](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.0...v7.0.1) (2021-12-09)
 
 
