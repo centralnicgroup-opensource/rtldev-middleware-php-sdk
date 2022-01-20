@@ -16,7 +16,6 @@ namespace CNIC;
  */
 interface ResponseInterface
 {
-
     /**
      * Constructor
      * @param string $raw API plain response

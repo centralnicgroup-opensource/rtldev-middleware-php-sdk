@@ -19,7 +19,6 @@ use CNIC\HEXONET\ResponseTranslator as RT;
  */
 class Response implements \CNIC\ResponseInterface
 {
-
     /**
      * The API Command used within this request
      * @var array

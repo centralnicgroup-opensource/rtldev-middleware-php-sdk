@@ -52,7 +52,7 @@ class Client
     protected $curlopts = [];
     /**
      * logger function name for debug mode
-     * @var Logger
+     * @var \CNIC\LoggerInterface
      */
     protected $logger;
     /**
@@ -74,8 +74,8 @@ class Client
 
     /**
      * set custom logger to use instead of default one
-     * create your own class inheriting from \CNIC\Logger and overriding method log
-     * @param Logger $customLogger
+     * create your own class implementing \CNIC\LoggerInterface
+     * @param \CNIC\LoggerInterface $customLogger
      * @return $this
      */
     public function setCustomLogger($customLogger)

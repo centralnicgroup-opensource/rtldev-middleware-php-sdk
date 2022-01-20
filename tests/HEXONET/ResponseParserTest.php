@@ -9,7 +9,6 @@ use CNIC\HEXONET\ResponseTemplateManager as RTM;
 
 final class ResponseParserTest extends \PHPUnit\Framework\TestCase
 {
-
     public static function setupBeforeClass(): void
     {
         RTM::addTemplate("OK", "200", "Command completed successfully");

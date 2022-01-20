@@ -17,7 +17,6 @@ namespace CNIC\HEXONET;
 
 class Column implements \CNIC\ColumnInterface
 {
-
     /**
      * count of column data entries
      * @var int
