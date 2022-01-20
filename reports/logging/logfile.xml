@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="45" assertions="138" errors="0" warnings="0" failures="0" skipped="6" time="6.167669">
-    <testsuite name="CNIC PHP-SDK" tests="45" assertions="138" errors="0" warnings="0" failures="0" skipped="6" time="6.167669">
-      <testsuite name="CNICTEST\RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" tests="45" assertions="138" errors="0" warnings="0" failures="0" skipped="6" time="6.167669">
-        <testcase name="testGetPOSTDataSecured" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="42" assertions="1" time="0.002323"/>
-        <testcase name="testGetPOSTDataObj" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="59" assertions="1" time="0.000396"/>
-        <testcase name="testGetPOSTDataStr" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="68" assertions="1" time="0.000400"/>
-        <testcase name="testGetPOSTDataNull" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="74" assertions="1" time="0.000430"/>
-        <testcase name="testGetSession" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="83" assertions="1" time="0.000558"/>
-        <testcase name="testGetSessionIDSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="89" assertions="1" time="0.000471"/>
-        <testcase name="testGetURL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="97" assertions="1" time="0.000405"/>
-        <testcase name="testGetUserAgent" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="103" assertions="1" time="0.000441"/>
-        <testcase name="testSetUserAgent" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="109" assertions="2" time="0.000642"/>
-        <testcase name="testSetUserAgentModules" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="119" assertions="2" time="0.000458"/>
-        <testcase name="testSetURL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="130" assertions="1" time="0.000435"/>
-        <testcase name="testSetOTPSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="141" assertions="1" time="0.000714"/>
-        <testcase name="testSetOTPReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="147" assertions="1" time="0.000484"/>
-        <testcase name="testSetSessionSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="156" assertions="1" time="0.000484"/>
-        <testcase name="testSetSessionCredentials" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="165" assertions="1" time="0.000499"/>
-        <testcase name="testSetSessionReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="176" assertions="1" time="0.000427"/>
-        <testcase name="testSaveReuseSession" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="185" assertions="1" time="0.000638"/>
-        <testcase name="testSetRemoteIPAddressSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="200" assertions="1" time="0.000505"/>
-        <testcase name="testSetRemoteIPAddressReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="206" assertions="1" time="0.000625"/>
-        <testcase name="testSetCredentialsSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="215" assertions="1" time="0.001064"/>
-        <testcase name="testSetCredentialsReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="224" assertions="1" time="0.000958"/>
-        <testcase name="testSetRoleCredentialsSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="233" assertions="1" time="0.000739"/>
-        <testcase name="testSetRoleCredentialsReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="242" assertions="1" time="0.000621"/>
-        <testcase name="testLoginCredsOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="251" assertions="0" time="0.000758">
+  <testsuite name="" tests="45" assertions="140" errors="0" warnings="0" failures="0" skipped="6" time="6.562346">
+    <testsuite name="CNIC PHP-SDK" tests="45" assertions="140" errors="0" warnings="0" failures="0" skipped="6" time="6.562346">
+      <testsuite name="CNICTEST\RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" tests="45" assertions="140" errors="0" warnings="0" failures="0" skipped="6" time="6.562346">
+        <testcase name="testGetPOSTDataSecured" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="42" assertions="1" time="0.002152"/>
+        <testcase name="testGetPOSTDataObj" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="59" assertions="1" time="0.000415"/>
+        <testcase name="testGetPOSTDataStr" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="68" assertions="1" time="0.000448"/>
+        <testcase name="testGetPOSTDataNull" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="74" assertions="1" time="0.000446"/>
+        <testcase name="testGetSession" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="83" assertions="1" time="0.000533"/>
+        <testcase name="testGetSessionIDSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="89" assertions="1" time="0.000425"/>
+        <testcase name="testGetURL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="97" assertions="1" time="0.000441"/>
+        <testcase name="testGetUserAgent" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="103" assertions="1" time="0.000477"/>
+        <testcase name="testSetUserAgent" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="109" assertions="2" time="0.000698"/>
+        <testcase name="testSetUserAgentModules" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="119" assertions="2" time="0.000646"/>
+        <testcase name="testSetURL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="130" assertions="1" time="0.000407"/>
+        <testcase name="testSetOTPSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="141" assertions="1" time="0.000806"/>
+        <testcase name="testSetOTPReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="147" assertions="1" time="0.000494"/>
+        <testcase name="testSetSessionSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="156" assertions="1" time="0.000475"/>
+        <testcase name="testSetSessionCredentials" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="165" assertions="1" time="0.000471"/>
+        <testcase name="testSetSessionReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="176" assertions="1" time="0.000467"/>
+        <testcase name="testSaveReuseSession" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="185" assertions="1" time="0.000616"/>
+        <testcase name="testSetRemoteIPAddressSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="200" assertions="1" time="0.000429"/>
+        <testcase name="testSetRemoteIPAddressReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="206" assertions="1" time="0.000421"/>
+        <testcase name="testSetCredentialsSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="215" assertions="1" time="0.000435"/>
+        <testcase name="testSetCredentialsReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="224" assertions="1" time="0.000406"/>
+        <testcase name="testSetRoleCredentialsSet" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="233" assertions="1" time="0.000422"/>
+        <testcase name="testSetRoleCredentialsReset" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="242" assertions="1" time="0.000767"/>
+        <testcase name="testLoginCredsOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="251" assertions="0" time="0.000924">
           <skipped/>
         </testcase>
-        <testcase name="testLoginCredsFAIL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="280" assertions="2" time="1.298333"/>
-        <testcase name="testLoginExtendedCredsOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="291" assertions="0" time="0.000505">
+        <testcase name="testLoginCredsFAIL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="280" assertions="2" time="1.609227"/>
+        <testcase name="testLoginExtendedCredsOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="291" assertions="0" time="0.000486">
           <skipped/>
         </testcase>
-        <testcase name="testLogoutOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="308" assertions="0" time="0.000413">
+        <testcase name="testLogoutOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="308" assertions="0" time="0.000454">
           <skipped/>
         </testcase>
-        <testcase name="testLogoutFAIL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="318" assertions="2" time="1.231260"/>
-        <testcase name="testRequestFlattenCommand" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="325" assertions="9" time="0.662394"/>
-        <testcase name="testIdnaToAscii" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="346" assertions="23" time="0.003527"/>
-        <testcase name="testRequestAUTOIdnConvert" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="452" assertions="12" time="0.153931"/>
-        <testcase name="testRequestAUTOIdnConvert1a" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="479" assertions="4" time="0.162993"/>
-        <testcase name="testRequestAUTOIdnConvert2" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="500" assertions="0" time="0.002122">
+        <testcase name="testLogoutFAIL" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="318" assertions="2" time="1.230226"/>
+        <testcase name="testRequestFlattenCommand" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="325" assertions="9" time="0.257185"/>
+        <testcase name="testIdnaToAscii" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="346" assertions="23" time="0.003507"/>
+        <testcase name="testRequestAUTOIdnConvert" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="452" assertions="12" time="0.220637"/>
+        <testcase name="testRequestAUTOIdnConvert1a" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="479" assertions="4" time="0.171260"/>
+        <testcase name="testRequestAUTOIdnConvert2" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="500" assertions="0" time="0.002282">
           <skipped/>
         </testcase>
-        <testcase name="testRequestAUTOIdnConvert3" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="525" assertions="0" time="0.001895">
+        <testcase name="testRequestAUTOIdnConvert3" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="525" assertions="0" time="0.002748">
           <skipped/>
         </testcase>
-        <testcase name="testRequestCodeTmpErrorDbg" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="549" assertions="4" time="0.156794">
+        <testcase name="testRequestCodeTmpErrorDbg" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="549" assertions="4" time="0.152060">
           <system-out>Array
 (
     [COMMAND] =&gt; StatusAccount
@@ -59,8 +59,8 @@ s_login=qmtest&amp;s_pw=%2A%2A%2A&amp;s_command=COMMAND%3DStatusAccount
 code = 200
 description = Command completed successfully
 queuetime = 0
-runtime = 0.003
-property[amount][0] = 44587.10
+runtime = 0.002
+property[amount][0] = 42919.86
 property[credit][0] = 0.00
 property[credit threshold][0] = 0.00
 property[currency][0] = GBP
@@ -68,18 +68,18 @@ property[registrar][0] = qmtest
 EOF
 </system-out>
         </testcase>
-        <testcase name="testRequestCodeTmpErrorNoDbg" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="562" assertions="4" time="0.152090"/>
-        <testcase name="testRequestNextResponsePageNoLast" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="573" assertions="12" time="0.309329"/>
-        <testcase name="testRequestNextResponsePageLast" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="595" assertions="3" time="0.145532"/>
-        <testcase name="testRequestNextResponsePageNoFirst" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="609" assertions="12" time="0.301259"/>
-        <testcase name="testRequestAllResponsePagesOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="631" assertions="17" time="1.425776"/>
-        <testcase name="testSetUserView" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="645" assertions="0" time="0.001422">
+        <testcase name="testRequestCodeTmpErrorNoDbg" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="562" assertions="4" time="0.143829"/>
+        <testcase name="testRequestNextResponsePageNoLast" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="573" assertions="12" time="0.320389"/>
+        <testcase name="testRequestNextResponsePageLast" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="595" assertions="3" time="0.150205"/>
+        <testcase name="testRequestNextResponsePageNoFirst" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="609" assertions="12" time="0.320773"/>
+        <testcase name="testRequestAllResponsePagesOK" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="631" assertions="19" time="1.787263"/>
+        <testcase name="testSetUserView" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="645" assertions="0" time="0.002388">
           <skipped/>
         </testcase>
-        <testcase name="testResetUserView" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="658" assertions="2" time="0.135834"/>
-        <testcase name="testSetProxy" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="668" assertions="3" time="0.002406"/>
-        <testcase name="testSetReferer" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="677" assertions="3" time="0.002275"/>
-        <testcase name="testUseHighPerformanceConnectionSetup" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="686" assertions="1" time="0.002102"/>
+        <testcase name="testResetUserView" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="658" assertions="2" time="0.165988"/>
+        <testcase name="testSetProxy" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="668" assertions="3" time="0.002467"/>
+        <testcase name="testSetReferer" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="677" assertions="3" time="0.002210"/>
+        <testcase name="testUseHighPerformanceConnectionSetup" class="CNICTEST\RRPproxyClientTest" classname="CNICTEST.RRPproxyClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/tests/RRPproxy/ClientTest.php" line="686" assertions="1" time="0.002542"/>
       </testsuite>
     </testsuite>
   </testsuite>
