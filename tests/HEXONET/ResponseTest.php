@@ -265,6 +265,13 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("Invalid API response. Contact Support", $r->getDescription());
     }
 
+    public function testInvalidAPIResponse2(): void
+    {
+        $r = new R("[RESPONSE]\r\ndescription=\r\ncode=423\r\nqueuetime=0\r\nruntime=0.011\r\nEOF\r\n");
+        $this->assertEquals(423, $r->getCode());
+        $this->assertEquals("Invalid API response. Contact Support", $r->getDescription());
+    }
+
     public function testGetHash(): void
     {
         $h = (new R(""))->getHash();

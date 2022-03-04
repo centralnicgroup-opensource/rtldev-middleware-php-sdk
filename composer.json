@@ -56,5 +56,10 @@
     "codeCheck": "phpcs --ignore=\"*/vendor/*\" --standard=PSR12 -s -q -n --colors src tests",
     "codeFix": "phpcbf --ignore=\"*/vendor/*\" --standard=PSR12 -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
