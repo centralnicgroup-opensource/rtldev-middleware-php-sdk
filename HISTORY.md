@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.2...v7.0.3) (2022-03-21)
+
+
+### Bug Fixes
+
+* **hexonet:** changed OT&E url (infrastructure improvement) ([acea748](https://github.com/centralnic-reseller/php-sdk/commit/acea74846432b00f3b6117c6308eb98de422f7e9))
+
 ## [7.0.2](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.1...v7.0.2) (2022-01-20)
 
 
