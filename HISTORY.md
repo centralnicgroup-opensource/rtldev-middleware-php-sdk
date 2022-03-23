@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.3...v7.0.4) (2022-03-23)
+
+
+### Bug Fixes
+
+* **composer autoload:** to include psr-4 config for HEXONET and RRPproxy as well ([fd5b2fd](https://github.com/centralnic-reseller/php-sdk/commit/fd5b2fd7df7d6e88ad3b9749b6631744b0e866b8))
+
 ## [7.0.3](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.2...v7.0.3) (2022-03-21)
 
 
