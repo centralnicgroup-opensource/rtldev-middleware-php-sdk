@@ -1,3 +1,10 @@
+## [7.0.5](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.4...v7.0.5) (2022-03-23)
+
+
+### Bug Fixes
+
+* **composer autoload:** rollback wrong psr-4 autoload change ([f04cf6e](https://github.com/centralnic-reseller/php-sdk/commit/f04cf6e8cd7fe402631218d26410d35a3168a495))
+
 ## [7.0.4](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.3...v7.0.4) (2022-03-23)
 
 
