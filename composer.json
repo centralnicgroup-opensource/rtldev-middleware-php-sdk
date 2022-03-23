@@ -46,9 +46,7 @@
   },
   "autoload": {
     "psr-4": {
-      "CNIC\\": "src/",
-      "HEXONET\\": "src/HEXONET/",
-      "RRPproxy\\": "src/RRPproxy/"
+      "CNIC\\": "src/"
     }
   },
   "scripts": {
