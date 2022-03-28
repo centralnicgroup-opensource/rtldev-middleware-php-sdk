@@ -1,3 +1,10 @@
+## [7.0.6](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.5...v7.0.6) (2022-03-28)
+
+
+### Bug Fixes
+
+* **curlopt_verbose:** disabled ([bc47cbd](https://github.com/centralnic-reseller/php-sdk/commit/bc47cbddc0417d4e829da62722bcb3e858202ca3))
+
 ## [7.0.5](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.4...v7.0.5) (2022-03-23)
 
 
