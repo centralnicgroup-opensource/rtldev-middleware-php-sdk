@@ -1,3 +1,10 @@
+## [7.0.7](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.6...v7.0.7) (2022-04-07)
+
+
+### Bug Fixes
+
+* **auto idn conversion:** fixed to translate only idns ([d4ee814](https://github.com/centralnic-reseller/php-sdk/commit/d4ee814b7f69002c808a981afc192f13288f3b0a))
+
 ## [7.0.6](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.5...v7.0.6) (2022-03-28)
 
 
