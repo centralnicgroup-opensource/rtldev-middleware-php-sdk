@@ -460,7 +460,6 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($cmd["OBJECTID"], "dömäin.example");
     }
 
-
     public function testRequestCodeTmpErrorDbg(): void
     {
         self::$cl->enableDebugMode()

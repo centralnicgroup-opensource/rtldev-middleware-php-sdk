@@ -402,7 +402,7 @@ class Client
         foreach ($keys as $key) {
             if (
                 isset($cmd[$key])
-                && !preg_match("/^[^a-z0-9\.\-]+$/i", $cmd[$key])
+                && !(bool)preg_match("/^[a-z0-9\.\-]+$/i", $cmd[$key])
                 && (
                     ($key !== "OBJECTID")
                     || preg_match("/^(DOMAIN|DELETEDDOMAIN|DOMAINAPPLICATION|NAMESERVER|DNSZONE)$/", $cmd["OBJECTCLASS"])

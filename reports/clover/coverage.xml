@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1648018892">
-  <project timestamp="1648018892">
+<coverage generated="1649342093">
+  <project timestamp="1649342093">
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ClientFactory.php">
       <class name="CNIC\ClientFactory" namespace="global">
         <metrics complexity="10" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="15" elements="28" coveredelements="15"/>
@@ -33,16 +33,16 @@
       <line num="51" type="stmt" count="1"/>
       <line num="53" type="stmt" count="1"/>
       <line num="55" type="stmt" count="1"/>
-      <metrics loc="57" ncloc="47" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="15" elements="28" coveredelements="15"/>
+      <metrics loc="58" ncloc="48" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="15" elements="28" coveredelements="15"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ColumnInterface.php">
-      <metrics loc="53" ncloc="18" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="54" ncloc="19" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/CustomLoggerClass.php">
       <class name="MYCUSTOMNAMESPACE\Logger" namespace="global">
         <metrics complexity="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </class>
-      <metrics loc="27" ncloc="13" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="28" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/Client.php">
       <class name="CNIC\HEXONET\Client" namespace="global">
@@ -188,9 +188,9 @@
       <line num="448" type="stmt" count="12"/>
       <line num="449" type="stmt" count="12"/>
       <line num="462" type="stmt" count="12"/>
-      <line num="463" type="stmt" count="12"/>
       <line num="465" type="stmt" count="12"/>
       <line num="470" type="stmt" count="12"/>
+      <line num="472" type="stmt" count="12"/>
       <line num="474" type="stmt" count="12"/>
       <line num="476" type="stmt" count="12"/>
       <line num="477" type="stmt" count="12"/>
@@ -246,7 +246,7 @@
       <line num="583" type="stmt" count="0"/>
       <line num="585" type="stmt" count="1"/>
       <line num="586" type="stmt" count="1"/>
-      <metrics loc="588" ncloc="379" classes="1" methods="32" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="166" coveredstatements="135" elements="198" coveredelements="163"/>
+      <metrics loc="589" ncloc="379" classes="1" methods="32" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="166" coveredstatements="135" elements="198" coveredelements="163"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/Column.php">
       <class name="CNIC\HEXONET\Column" namespace="global">
@@ -264,7 +264,7 @@
       <line num="75" type="stmt" count="8"/>
       <line num="83" type="method" name="hasDataIndex" visibility="private" complexity="2" crap="2" count="8"/>
       <line num="85" type="stmt" count="8"/>
-      <metrics loc="87" ncloc="41" classes="1" methods="5" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="5" elements="12" coveredelements="8"/>
+      <metrics loc="88" ncloc="42" classes="1" methods="5" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="5" elements="12" coveredelements="8"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/Logger.php">
       <class name="CNIC\HEXONET\Logger" namespace="global">
@@ -275,7 +275,7 @@
       <line num="26" type="stmt" count="1"/>
       <line num="28" type="stmt" count="1"/>
       <line num="29" type="stmt" count="1"/>
-      <metrics loc="32" ncloc="19" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+      <metrics loc="33" ncloc="20" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/Record.php">
       <class name="CNIC\HEXONET\Record" namespace="global">
@@ -291,11 +291,11 @@
       <line num="70" type="stmt" count="0"/>
       <line num="78" type="method" name="hasData" visibility="private" complexity="1" crap="2" count="0"/>
       <line num="80" type="stmt" count="0"/>
-      <metrics loc="82" ncloc="34" classes="1" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="1" elements="10" coveredelements="2"/>
+      <metrics loc="83" ncloc="35" classes="1" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="1" elements="10" coveredelements="2"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/Response.php">
       <class name="CNIC\HEXONET\Response" namespace="global">
-        <metrics complexity="86" methods="42" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="151" coveredstatements="59" elements="193" coveredelements="70"/>
+        <metrics complexity="86" methods="42" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="152" coveredstatements="59" elements="194" coveredelements="70"/>
       </class>
       <line num="69" type="method" name="__construct" visibility="public" complexity="9" crap="9" count="12"/>
       <line num="71" type="stmt" count="12"/>
@@ -402,6 +402,7 @@
       <line num="361" type="stmt" count="0"/>
       <line num="362" type="stmt" count="0"/>
       <line num="363" type="stmt" count="0"/>
+      <line num="366" type="stmt" count="0"/>
       <line num="368" type="stmt" count="0"/>
       <line num="369" type="stmt" count="0"/>
       <line num="378" type="method" name="getNextRecord" visibility="public" complexity="2" crap="6" count="0"/>
@@ -490,7 +491,7 @@
       <line num="596" type="stmt" count="0"/>
       <line num="604" type="method" name="hasPreviousRecord" visibility="private" complexity="2" crap="6" count="0"/>
       <line num="606" type="stmt" count="0"/>
-      <metrics loc="608" ncloc="382" classes="1" methods="42" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="151" coveredstatements="59" elements="193" coveredelements="70"/>
+      <metrics loc="609" ncloc="383" classes="1" methods="42" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="152" coveredstatements="59" elements="194" coveredelements="70"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/ResponseParser.php">
       <class name="CNIC\HEXONET\ResponseParser" namespace="global">
@@ -530,7 +531,7 @@
       <line num="77" type="stmt" count="0"/>
       <line num="79" type="stmt" count="0"/>
       <line num="80" type="stmt" count="0"/>
-      <metrics loc="82" ncloc="62" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="17" elements="34" coveredelements="18"/>
+      <metrics loc="83" ncloc="63" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="17" elements="34" coveredelements="18"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/ResponseTemplateManager.php">
       <class name="CNIC\HEXONET\ResponseTemplateManager" namespace="global">
@@ -563,7 +564,7 @@
       <line num="127" type="stmt" count="0"/>
       <line num="129" type="stmt" count="0"/>
       <line num="130" type="stmt" count="0"/>
-      <metrics loc="133" ncloc="80" classes="1" methods="7" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="1" elements="27" coveredelements="2"/>
+      <metrics loc="134" ncloc="81" classes="1" methods="7" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="1" elements="27" coveredelements="2"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/ResponseTranslator.php">
       <class name="CNIC\HEXONET\ResponseTranslator" namespace="global">
@@ -591,11 +592,11 @@
       <line num="90" type="stmt" count="0"/>
       <line num="92" type="stmt" count="0"/>
       <line num="94" type="stmt" count="12"/>
-      <metrics loc="96" ncloc="63" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="10" elements="22" coveredelements="10"/>
+      <metrics loc="97" ncloc="64" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="10" elements="22" coveredelements="10"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/SessionClient.php">
       <class name="CNIC\HEXONET\SessionClient" namespace="global">
-        <metrics complexity="10" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="2" elements="23" coveredelements="2"/>
+        <metrics complexity="10" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="2" elements="24" coveredelements="2"/>
       </class>
       <line num="20" type="method" name="__construct" visibility="public" complexity="2" crap="2.15" count="1"/>
       <line num="22" type="stmt" count="1"/>
@@ -611,6 +612,7 @@
       <line num="52" type="method" name="loginExtended" visibility="public" complexity="3" crap="12" count="0"/>
       <line num="54" type="stmt" count="0"/>
       <line num="55" type="stmt" count="0"/>
+      <line num="56" type="stmt" count="0"/>
       <line num="59" type="stmt" count="0"/>
       <line num="60" type="stmt" count="0"/>
       <line num="61" type="stmt" count="0"/>
@@ -620,7 +622,7 @@
       <line num="73" type="stmt" count="0"/>
       <line num="74" type="stmt" count="0"/>
       <line num="76" type="stmt" count="0"/>
-      <metrics loc="78" ncloc="52" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="2" elements="23" coveredelements="2"/>
+      <metrics loc="79" ncloc="53" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="2" elements="24" coveredelements="2"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/HEXONET/SocketConfig.php">
       <class name="CNIC\HEXONET\SocketConfig" namespace="global">
@@ -692,7 +694,7 @@
       <line num="215" type="method" name="setUser" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="217" type="stmt" count="1"/>
       <line num="218" type="stmt" count="1"/>
-      <metrics loc="220" ncloc="127" classes="1" methods="11" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="51" elements="66" coveredelements="61"/>
+      <metrics loc="221" ncloc="128" classes="1" methods="11" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="51" elements="66" coveredelements="61"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/RRPproxy/SessionClient.php">
       <class name="CNIC\RRPproxy\SessionClient" namespace="global">
@@ -735,14 +737,14 @@
       <line num="108" type="stmt" count="1"/>
       <line num="109" type="stmt" count="1"/>
       <line num="113" type="stmt" count="12"/>
-      <metrics loc="115" ncloc="80" classes="1" methods="5" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="26" elements="37" coveredelements="27"/>
+      <metrics loc="116" ncloc="81" classes="1" methods="5" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="26" elements="37" coveredelements="27"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/RecordInterface.php">
-      <metrics loc="53" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="54" ncloc="17" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk-cnic/src/ResponseInterface.php">
-      <metrics loc="287" ncloc="88" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="288" ncloc="89" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="16" loc="2598" ncloc="1501" classes="12" methods="115" coveredmethods="57" conditionals="0" coveredconditionals="0" statements="540" coveredstatements="326" elements="655" coveredelements="383"/>
+    <metrics files="16" loc="2614" ncloc="1516" classes="12" methods="115" coveredmethods="57" conditionals="0" coveredconditionals="0" statements="542" coveredstatements="326" elements="657" coveredelements="383"/>
   </project>
 </coverage>
