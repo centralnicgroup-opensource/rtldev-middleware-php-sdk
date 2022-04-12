@@ -557,6 +557,7 @@ class Client
         $oldurl = $this->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
         $url = str_replace($hostname, "127.0.0.1", $oldurl);
+        $url = str_replace("https://", "http://", $url);
         return $this->setURL($url);
     }
 
