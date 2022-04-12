@@ -1,3 +1,10 @@
+## [7.0.8](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.7...v7.0.8) (2022-04-12)
+
+
+### Bug Fixes
+
+* **high performance setup:** use the right protocol ([c524aa8](https://github.com/centralnic-reseller/php-sdk/commit/c524aa817e86193994d266e388e1a04b105d075d))
+
 ## [7.0.7](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.6...v7.0.7) (2022-04-07)
 
 
