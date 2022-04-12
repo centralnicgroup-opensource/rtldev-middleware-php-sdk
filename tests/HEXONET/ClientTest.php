@@ -599,6 +599,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
         $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
+        $newurl = str_replace("https://", "http://", $oldurl);
         self::$cl->useHighPerformanceConnectionSetup();
         $this->assertEquals(self::$cl->getURL(), $newurl);
     }
