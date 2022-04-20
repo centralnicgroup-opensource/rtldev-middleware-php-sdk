@@ -351,6 +351,44 @@ class Client
     }
 
     /**
+     * Convert domain names to idn + punycode if necessary
+     * @param array $domains list of domain names (or tlds)
+     * @return array
+     */
+    public function IDNConvert($domains)
+    {
+        $results = [];
+        foreach ($domains as $idx => $d) {
+            $results[$idx] = [
+                "PUNYCODE" => $d,
+                "IDN" => $d
+            ];
+        }
+        if ($this->settings["needsIDNConvert"]) {
+            $r = $this->request([
+                "COMMAND" => "ConvertIDN",
+                "DOMAIN" => $domains
+            ]);
+            if ($r->isSuccess()) {
+                $results = [];
+                $col1 = $r->getColumn("ACE");
+                $col2 = $r->getColumn("IDN");
+                if (!is_null($col1) && !is_null($col2)) {
+                    $d1 = $col1->getData();
+                    $d2 = $col2->getData();
+                    foreach ($domains as $idx => $d) {
+                        if (isset($d1[$idx], $d2[$idx])) {
+                            $results[$idx]["PUNYCODE"] = $d1[$idx];
+                            $results[$idx]["IDN"] = $d2[$idx];
+                        }
+                    }
+                }
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Flatten API command's nested arrays for easier handling
      * @param array $cmd API Command
      * @return array
@@ -412,19 +450,10 @@ class Client
                 $idxs[] = $key;
             }
         }
-        if (empty($toconvert)) {
-            return $cmd;
-        }
-        $r = $this->request([
-            "COMMAND" => "ConvertIDN",
-            "DOMAIN" => $toconvert
-        ]);
-        if ($r->isSuccess()) {
-            $col = $r->getColumn("ACE");
-            if ($col) {
-                foreach ($col->getData() as $idx => $pc) {
-                    $cmd[$idxs[$idx]] = $pc;
-                }
+        if (!empty($toconvert)) {
+            $results = $this->IDNConvert($toconvert);
+            foreach ($results as $idx => $row) {
+                $cmd[$idxs[$idx]] = $row["PUNYCODE"];
             }
         }
         return $cmd;

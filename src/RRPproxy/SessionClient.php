@@ -67,6 +67,48 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
     }
 
     /**
+     * Convert domain names to idn + punycode if necessary
+     * @param array $domains list of domain names (or tlds)
+     * @return array
+     */
+    public function IDNConvert($domains)
+    {
+        $results = [];
+        foreach ($domains as $idx => $d) {
+            $results[$idx] = [
+                "PUNYCODE" => $d,
+                "IDN" => $d
+            ];
+        }
+        if ($this->settings["needsIDNConvert"]) {
+            foreach ($domains as $idx => $domain) {
+                $nontransitional = (bool)preg_match("/\.(be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $domain);
+                $tmp = idn_to_ascii(
+                    $domain,
+                    ($nontransitional) ?
+                        IDNA_NONTRANSITIONAL_TO_ASCII :
+                        IDNA_DEFAULT,
+                    INTL_IDNA_VARIANT_UTS46
+                );
+                if (preg_match("/xn--/", $tmp)) {
+                    $results[$idx]["PUNYCODE"] = $tmp;
+                }
+                $tmp = idn_to_utf8(
+                    $results[$idx]["PUNYCODE"],
+                    ($nontransitional) ?
+                        IDNA_NONTRANSITIONAL_TO_ASCII :
+                        IDNA_DEFAULT,
+                    INTL_IDNA_VARIANT_UTS46
+                );
+                if (!empty($tmp)) {
+                    $results[$idx]["IDN"] = $tmp;
+                }
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Auto convert API command parameters to punycode, if necessary.
      * @param array|string $cmd API command
      * @return array
@@ -86,6 +128,8 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
         $asciipattern = "/^[a-zA-Z0-9\.-]+$/";
         $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i";// DOMAIN params get auto-converted by API, RSRBE-7149 for NS coverage
         $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS)$/i";
+        $toconvert = [];
+        $idxs = [];
         foreach ($cmd as $key => $val) {
             if (
                 (
@@ -98,16 +142,14 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
                 )
                 && !(bool)preg_match($asciipattern, $val)
             ) {
-                $tmp = idn_to_ascii(
-                    $val,
-                    ((bool)preg_match("/\.(be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $val)) ?
-                        IDNA_NONTRANSITIONAL_TO_ASCII :
-                        IDNA_DEFAULT,
-                    INTL_IDNA_VARIANT_UTS46
-                );
-                if (preg_match("/xn--/", $tmp)) {
-                    $cmd[$key] = $tmp;
-                }
+                $toconvert[] = $val;
+                $idxs[] = $key;
+            }
+        }
+        if (!empty($toconvert)) {
+            $results = $this->IDNConvert($toconvert);
+            foreach ($results as $idx => $row) {
+                $cmd[$idxs[$idx]] = $row["PUNYCODE"];
             }
         }
         return $cmd;

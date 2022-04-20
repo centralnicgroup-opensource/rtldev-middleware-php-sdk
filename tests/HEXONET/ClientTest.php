@@ -29,8 +29,8 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         self::$cl = CF::getClient([
             "registrar" => "HEXONET"
         ]);
-        self::$user = getenv("TESTS_USER_RRPPROXY");
-        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY");
+        self::$user = getenv("TESTS_USER_HEXONET");
+        self::$pw = getenv("TESTS_USERPASSWORD_HEXONET");
     }
 
     public static function tearDownAfterClass(): void
