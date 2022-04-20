@@ -156,6 +156,11 @@ Search.appendIndex(
             "summary": "Set\u0020Credentials\u0020to\u0020be\u0020used\u0020for\u0020API\u0020communication",
             "url": "classes/CNIC-HEXONET-Client.html#method_setRoleCredentials"
         },                {
+            "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AIDNConvert\u0028\u0029",
+            "name": "IDNConvert",
+            "summary": "Convert\u0020domain\u0020names\u0020to\u0020idn\u0020\u002B\u0020punycode\u0020if\u0020necessary",
+            "url": "classes/CNIC-HEXONET-Client.html#method_IDNConvert"
+        },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AflattenCommand\u0028\u0029",
             "name": "flattenCommand",
             "summary": "Flatten\u0020API\u0020command\u0027s\u0020nested\u0020arrays\u0020for\u0020easier\u0020handling",
@@ -1030,6 +1035,11 @@ Search.appendIndex(
             "name": "logout",
             "summary": "Perform\u0020API\u0020logout\u0020to\u0020close\u0020API\u0020session\u0020in\u0020use",
             "url": "classes/CNIC-RRPproxy-SessionClient.html#method_logout"
+        },                {
+            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003AIDNConvert\u0028\u0029",
+            "name": "IDNConvert",
+            "summary": "Convert\u0020domain\u0020names\u0020to\u0020idn\u0020\u002B\u0020punycode\u0020if\u0020necessary",
+            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_IDNConvert"
         },                {
             "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003AautoIDNConvert\u0028\u0029",
             "name": "autoIDNConvert",

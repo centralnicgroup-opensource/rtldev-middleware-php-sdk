@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.8...v7.1.0) (2022-04-20)
+
+
+### Features
+
+* **idn conversion:** added IDNConvert method to client allowing to explicitely convert domain names ([6774225](https://github.com/centralnic-reseller/php-sdk/commit/677422507b4f1446bf192532004ca55b5aa017a8))
+
 ## [7.0.8](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.7...v7.0.8) (2022-04-12)
 
 
