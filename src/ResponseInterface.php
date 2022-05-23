@@ -22,7 +22,7 @@ interface ResponseInterface
      * @param array $cmd API command used within this request
      * @param array $ph placeholder array to get vars in response description dynamically replaced
      */
-    public function __construct(string $raw, array $cmd = null, array $ph = []);
+    public function __construct(string $raw, array $cmd, array $ph = []);
 
     /**
      * Get API response code

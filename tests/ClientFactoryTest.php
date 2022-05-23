@@ -25,8 +25,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         //session_start();
-        self::$user = getenv("TESTS_USER_RRPPROXY");
-        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY");
+        self::$user = getenv("TESTS_USER_RRPPROXY") ?: "";
+        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY") ?: "";
     }
 
     /**

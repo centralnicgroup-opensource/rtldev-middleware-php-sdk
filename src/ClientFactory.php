@@ -11,13 +11,18 @@ class ClientFactory
      * @return \CNIC\HEXONET\SessionClient
      * @throws \Exception
      */
-    public static function getClient($params, $logger = null)
+    public static function getClient($params, $logger = null): \CNIC\HEXONET\SessionClient
     {
         if (!preg_match("/^HEXONET|RRPproxy$/", $params["registrar"])) {
             throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
         }
-        $clientClass = "\\CNIC\\" . $params["registrar"] . "\\SessionClient";
-        $cl = new $clientClass();
+        // if we dynamically instantiate via string, phpStan start complaining ...
+        if ($params["registrar"] === "HEXONET") {
+            $cl = new \CNIC\HEXONET\SessionClient();
+        } else {
+            $cl = new \CNIC\RRPproxy\SessionClient();
+        }
+
         if (!empty($params["sandbox"])) {
             $cl->useOTESystem();
         }
@@ -47,8 +52,12 @@ class ClientFactory
             $cl->setProxy($params["proxyserver"]);
         }
         if (is_null($logger)) {
-            $loggerClass = "\\CNIC\\" . $params["registrar"] . "\\Logger";
-            $logger = new $loggerClass();
+            // if we dynamically instantiate via string, phpStan start complaining ...
+            if ($params["registrar"] === "HEXONET") {
+                $logger = new \CNIC\HEXONET\Logger();
+            } else {
+                $logger = new \CNIC\RRPproxy\Logger();
+            }
         }
         $cl->setCustomLogger($logger);
 

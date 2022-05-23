@@ -44,9 +44,9 @@ class ResponseTranslator
     public static function translate($raw, $cmd, $ph = [])
     {
         $newraw = empty($raw) ? "empty" : $raw;
-       // Hint: Empty API Response (replace {CONNECTION_URL} later)
+        // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
-       // Explicit call for a static template
+        // Explicit call for a static template
         if (RTM::hasTemplate($newraw)) {
             // don't use getTemplate as it leads to endless loop as of again
             // creating a response instance
@@ -84,7 +84,7 @@ class ResponseTranslator
             }
         }
 
-       // generic replacing of place holder vars
+        // generic replacing of place holder vars
         if (preg_match("/\{[^}]+\}/", $newraw)) {
             foreach ($ph as $key => $val) {
                 $newraw = preg_replace("/\{" . preg_quote($key) . "\}/", $val, $newraw);
