@@ -90,6 +90,9 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
                         IDNA_DEFAULT,
                     INTL_IDNA_VARIANT_UTS46
                 );
+                if ($tmp === false) {
+                    continue;
+                }
                 if (preg_match("/xn--/", $tmp)) {
                     $results[$idx]["PUNYCODE"] = $tmp;
                 }
@@ -110,7 +113,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
-     * @param array|string $cmd API command
+     * @param array $cmd API command
      * @return array
      */
     protected function autoIDNConvert($cmd)
@@ -120,7 +123,6 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
         if (
             !$this->settings["needsIDNConvert"]
             || !function_exists("idn_to_ascii")
-            || is_string($cmd)
         ) {
             return $cmd;
         }

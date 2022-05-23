@@ -61,9 +61,17 @@ class Client
      */
     public $isOTE = false;
 
+    /**
+     * Constructor
+     *
+     * @param string $path Path to the configuration file
+     */
     public function __construct(string $path = "")
     {
-        $this->settings = json_decode(file_get_contents($path), true);
+        $contents = file_get_contents($path) ?: "[]";
+        /** @var array $settings */
+        $settings = json_decode($contents, true);
+        $this->settings = $settings;
         $this->socketURL = "";
         $this->debugMode = false;
         $this->ua = "";
@@ -414,17 +422,15 @@ class Client
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
-     * @param array|string $cmd API command
+     * @param array $cmd API command
      * @return array
      */
     protected function autoIDNConvert($cmd)
     {
         // only convert if configured for the registrar
         // don't convert for convertidn command to avoid endless loop
-        // and ignore commands in string format (even deprecated)
         if (
             !$this->settings["needsIDNConvert"]
-            || is_string($cmd)
             || preg_match("/^CONVERTIDN$/i", $cmd["COMMAND"])
         ) {
             return $cmd;
@@ -503,20 +509,24 @@ class Client
                 "Content-Length: " . strlen($data)
             ]
         ] + $this->curlopts);
+
+        // curl_exec with CURLOPT_USERAGENT returns string|false and not string|bool
+        // which is by default tested for by phpStan
+        /** @var string|false $r */
         $r = curl_exec($curl);
         $error = null;
         if ($r === false) {
             $r = "httperror";
             $error = curl_error($curl);
         }
-        $r = new Response($r, $mycmd, $cfg);
+        $response = new Response($r, $mycmd, $cfg);
 
         curl_close($curl);
         if ($this->debugMode) {
             $secured = $this->getPOSTData($mycmd, true);
-            $this->logger->log($secured, $r, $error);
+            $this->logger->log($secured, $response, $error);
         }
-        return $r;
+        return $response;
     }
 
     /**
@@ -585,9 +595,12 @@ class Client
     {
         $oldurl = $this->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        $url = str_replace($hostname, "127.0.0.1", $oldurl);
-        $url = str_replace("https://", "http://", $url);
-        return $this->setURL($url);
+        if (!empty($hostname)) {
+            $url = str_replace($hostname, "127.0.0.1", $oldurl);
+            $url = str_replace("https://", "http://", $url);
+            $this->setURL($url);
+        }
+        return $this;
     }
 
     /**

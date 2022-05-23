@@ -66,7 +66,7 @@ class Response implements \CNIC\ResponseInterface
      * @param array $cmd API command used within this request
      * @param array $ph placeholder array to get vars in response description dynamically replaced
      */
-    public function __construct($raw, $cmd = null, $ph = [])
+    public function __construct($raw, $cmd = [], $ph = [])
     {
         if (isset($cmd["PASSWORD"])) { // make password no longer accessible
             $cmd["PASSWORD"] = "***";
@@ -81,13 +81,16 @@ class Response implements \CNIC\ResponseInterface
         $this->records = [];
 
         if (array_key_exists("PROPERTY", $this->hash)) {
-            $colKeys = array_keys($this->hash["PROPERTY"]);
+            $colKeys = array_map("strval", array_keys($this->hash["PROPERTY"]));
             $count = 0;
             foreach ($colKeys as $k) {
                 $this->addColumn($k, $this->hash["PROPERTY"][$k]);
-                $count2 = $this->getColumn($k)->length;
-                if ($count2 > $count) {
-                    $count = $count2;
+                $col = $this->getColumn($k);
+                if (!is_null($col)) {
+                    $count2 = $col->length;
+                    if ($count2 > $count) {
+                        $count = $count2;
+                    }
                 }
             }
             for ($i = 0; $i < $count; $i++) {

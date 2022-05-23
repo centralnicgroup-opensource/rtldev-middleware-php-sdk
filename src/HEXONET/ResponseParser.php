@@ -24,7 +24,11 @@ final class ResponseParser
     public static function parse($raw)
     {
         $hash = [];
-        $rlist = explode("\n", preg_replace("/\r\n/", "\n", $raw));
+        $tmp = preg_replace("/\r\n/", "\n", $raw);
+        if (is_null($tmp)) {
+            $tmp = $raw;
+        }
+        $rlist = explode("\n", $tmp);
         foreach ($rlist as $item) {
             if (preg_match("/^([^\=]*[^\t\= ])[\t ]*=[\t ]*(.*)$/", $item, $m)) {
                 $attr = $m[1];
@@ -35,7 +39,10 @@ final class ResponseParser
                         $hash["PROPERTY"] = [];
                     }
                     $prop = strtoupper($m[1]);
-                    $prop = preg_replace("/\s/", "", $prop);
+                    $tmp = preg_replace("/\s/", "", $prop);
+                    if (!is_null($tmp)) {
+                        $prop = $tmp;
+                    }
                     if (array_key_exists($prop, $hash["PROPERTY"])) {
                         $hash["PROPERTY"][$prop][] = $value;
                     } else {

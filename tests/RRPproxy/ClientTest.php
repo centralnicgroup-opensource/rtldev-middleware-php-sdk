@@ -11,7 +11,7 @@ use CNIC\HEXONET\Response as R;
 final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \CNIC\HEXONET\SessionClient|null $cl
+     * @var \CNIC\HEXONET\SessionClient $cl
      */
     public static $cl;
     /**
@@ -29,14 +29,8 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         self::$cl = CF::getClient([
             "registrar" => "RRPproxy"
         ]);
-        self::$user = getenv("TESTS_USER_RRPPROXY");
-        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY");
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        self::$cl = null;
-        //session_destroy();
+        self::$user = getenv("TESTS_USER_RRPPROXY") ?: "";
+        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY") ?: "";
     }
 
     public function testGetPOSTDataSecured(): void
@@ -131,11 +125,12 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
-
-        $url = self::$cl->setURL($newurl)->getURL();
-        $this->assertEquals($url, $newurl);
-        self::$cl->setURL($oldurl);
+        if (!empty($hostname)) {
+            $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
+            $url = self::$cl->setURL($newurl)->getURL();
+            $this->assertEquals($url, $newurl);
+            self::$cl->setURL($oldurl);
+        }
     }
 
     public function testSetOTPSet(): void
@@ -580,16 +575,19 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
         $nr = self::$cl->requestNextResponsePage($r);
+        $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        $this->assertEquals($nr->isSuccess(), true);
+        if (!is_null($nr)) { // phpStan
+            $this->assertEquals($nr->isSuccess(), true);
+            $this->assertEquals($nr->getRecordsLimitation(), 2);
+            $this->assertEquals($nr->getRecordsCount(), 2);
+            $this->assertEquals($nr->getFirstRecordIndex(), 2);
+            $this->assertEquals($nr->getLastRecordIndex(), 3);
+        }
         $this->assertEquals($r->getRecordsLimitation(), 2);
-        $this->assertEquals($nr->getRecordsLimitation(), 2);
         $this->assertEquals($r->getRecordsCount(), 2);
-        $this->assertEquals($nr->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);
         $this->assertEquals($r->getLastRecordIndex(), 1);
-        $this->assertEquals($nr->getFirstRecordIndex(), 2);
-        $this->assertEquals($nr->getLastRecordIndex(), 3);
     }
 
     public function testRequestNextResponsePageLast(): void
@@ -616,16 +614,20 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
         $nr = self::$cl->requestNextResponsePage($r);
+        $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        $this->assertEquals($nr->isSuccess(), true);
+        if (!is_null($nr)) { // phpStan
+            $this->assertEquals($nr->isSuccess(), true);
+            $this->assertEquals($nr->getRecordsLimitation(), 2);
+            $this->assertEquals($nr->getRecordsCount(), 2);
+            $this->assertEquals($nr->getFirstRecordIndex(), 2);
+            $this->assertEquals($nr->getLastRecordIndex(), 3);
+        }
+
         $this->assertEquals($r->getRecordsLimitation(), 2);
-        $this->assertEquals($nr->getRecordsLimitation(), 2);
         $this->assertEquals($r->getRecordsCount(), 2);
-        $this->assertEquals($nr->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);
         $this->assertEquals($r->getLastRecordIndex(), 1);
-        $this->assertEquals($nr->getFirstRecordIndex(), 2);
-        $this->assertEquals($nr->getLastRecordIndex(), 3);
     }
 
     public function testRequestAllResponsePagesOK(): void
@@ -687,9 +689,11 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
-        $newurl = str_replace("https://", "http://", $newurl);
-        self::$cl->useHighPerformanceConnectionSetup();
-        $this->assertEquals(self::$cl->getURL(), $newurl);
+        if (!empty($hostname)) {
+            $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
+            $newurl = str_replace("https://", "http://", $newurl);
+            self::$cl->useHighPerformanceConnectionSetup();
+            $this->assertEquals(self::$cl->getURL(), $newurl);
+        }
     }
 }
