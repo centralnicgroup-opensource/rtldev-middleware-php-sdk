@@ -1,3 +1,10 @@
+## [7.1.1](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.0...v7.1.1) (2022-05-23)
+
+
+### Bug Fixes
+
+* **phpstan:** increase phpStan level to 9 and fix reported issues ([a551b39](https://github.com/centralnic-reseller/php-sdk/commit/a551b39507869bed111f58500e94453ab779c704))
+
 # [7.1.0](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.8...v7.1.0) (2022-04-20)
 
 

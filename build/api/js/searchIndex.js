@@ -43,7 +43,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructor",
             "url": "classes/CNIC-HEXONET-Client.html#method___construct"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AsetCustomLogger\u0028\u0029",
@@ -663,7 +663,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\HEXONET\\SessionClient\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructor",
             "url": "classes/CNIC-HEXONET-SessionClient.html#method___construct"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\SessionClient\u003A\u003Alogin\u0028\u0029",
@@ -1018,7 +1018,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructor",
             "url": "classes/CNIC-RRPproxy-SessionClient.html#method___construct"
         },                {
             "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003Alogin\u0028\u0029",
