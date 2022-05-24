@@ -43,6 +43,7 @@ jobs:
           composer run-script phpStan
           composer run-script phpCompatibility
           composer run-script codeCheck
+          composer run-script phpLint
           composer run-script test
   release:
     name: Release @ NodeJS LTS - x86 - ubuntu-latest
