@@ -1,3 +1,10 @@
+## [7.1.2](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.1...v7.1.2) (2022-05-30)
+
+
+### Bug Fixes
+
+* **phpdoc:** change path to docs to /docs (github pages) ([e54648f](https://github.com/centralnic-reseller/php-sdk/commit/e54648fd5dcf34e5fa5b872f4d7fb2259885c497))
+
 ## [7.1.1](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.0...v7.1.1) (2022-05-23)
 
 
