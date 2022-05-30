@@ -2,7 +2,7 @@
 <phpdocumentor configVersion="3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org">
     <title>PHP SDK by CNIC</title>
     <paths>
-        <output>build/api</output>
+        <output>docs</output>
         <cache>build/api-cache</cache>
     </paths>
     <version number="3.0.0">
@@ -13,6 +13,7 @@
             <output>api</output>
             <ignore hidden="true" symlinks="true">
                 <path>src/CustomLoggerClass.php</path>
+                <path>docs/**/*</path>
                 <path>tests/**/*</path>
                 <path>build/**/*</path>
                 <path>vendor/**/*</path>
