@@ -50,7 +50,7 @@
     }
   },
   "scripts": {
-    "docs": "rm -rf build;test ! -e phpdoc.phar && wget https://phpdoc.org/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
+    "docs": "rm -rf build docs;test ! -e phpdoc.phar && wget https://phpdoc.org/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
     "phpStan": "phpstan analyze -c phpstan.neon",
     "phpCompatibility": "./scripts/phpcompatibility.sh",
     "phpLint": "./scripts/phplint.sh",
