@@ -1,3 +1,10 @@
+## [7.1.3](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.2...v7.1.3) (2022-06-10)
+
+
+### Bug Fixes
+
+* **ci:** upgraded npm engines, dev deps and reviewed release workflow ([1d242de](https://github.com/centralnic-reseller/php-sdk/commit/1d242de4887c869764e49990c5d74a9e3e676267))
+
 ## [7.1.2](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.1...v7.1.2) (2022-05-30)
 
 
