@@ -5,7 +5,6 @@ vendor
 report
 docs
 node_modules
-package-lock.json
 composer.lock
 build/api-cache
 .phpunit.result.cache

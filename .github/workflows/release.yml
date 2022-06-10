@@ -1,17 +1,17 @@
 name: Release
-on: 
+on:
   # will run for every branch, except tags. See RSRMID-206.
   push:
     # Sequence of patterns matched against refs/heads
     branches:
       - "**"
     # Sequence of patterns matched against refs/tags
-    tags-ignore: 
+    tags-ignore:
       - "**"
   pull_request:
     branches:
       - "**"
-    tags-ignore: 
+    tags-ignore:
       - "**"
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Dependencies::PHP${{ matrix.php-version }}
         run: |
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
@@ -53,19 +53,22 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup NodeJS LTS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
       - name: Install dependencies
         run: |
-          npm prune && npm i
+          npm ci
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
           composer update --no-dev
           composer run-script docs
