@@ -19,7 +19,7 @@
             {
                 "assets": [
                     "HISTORY.md",
-                    "@(package|composer).json",
+                    "@(package?(-lock)|composer).json",
                     "docs",
                     "report",
                     "src/APIClient.php"
