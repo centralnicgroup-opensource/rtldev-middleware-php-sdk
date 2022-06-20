@@ -1,3 +1,10 @@
+## [7.1.4](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.3...v7.1.4) (2022-06-20)
+
+
+### Bug Fixes
+
+* **hexonet response:** fn addColumn patched type declaration issue ([06a0ad0](https://github.com/centralnic-reseller/php-sdk/commit/06a0ad08df7d0b083d91eaed85a19b9f5ade43c0))
+
 ## [7.1.3](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.2...v7.1.3) (2022-06-10)
 
 
