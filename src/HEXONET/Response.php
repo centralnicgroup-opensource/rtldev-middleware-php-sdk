@@ -212,9 +212,9 @@ class Response implements \CNIC\ResponseInterface
      * Add a column to the column list
      * @param string $key column name
      * @param string[] $data array of column data
-     * @return $this
+     * @return \CNIC\ResponseInterface
      */
-    public function addColumn($key, $data): self
+    public function addColumn($key, $data): \CNIC\ResponseInterface
     {
         $col = new Column($key, $data);
         $this->columns[] = $col;
@@ -225,9 +225,9 @@ class Response implements \CNIC\ResponseInterface
     /**
      * Add a record to the record list
      * @param array $h row hash data
-     * @return $this
+     * @return \CNIC\ResponseInterface
      */
-    public function addRecord($h): self
+    public function addRecord($h): \CNIC\ResponseInterface
     {
         $this->records[] = new Record($h);
         return $this;
@@ -555,9 +555,9 @@ class Response implements \CNIC\ResponseInterface
 
     /**
      * Reset index in record list back to zero
-     * @return $this
+     * @return \CNIC\ResponseInterface
      */
-    public function rewindRecordList(): self
+    public function rewindRecordList(): \CNIC\ResponseInterface
     {
         $this->recordIndex = 0;
         return $this;
