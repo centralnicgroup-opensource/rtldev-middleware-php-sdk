@@ -1,3 +1,10 @@
+## [7.1.5](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.4...v7.1.5) (2022-06-28)
+
+
+### Bug Fixes
+
+* **typings:** removed strict typings as we noticed issues under different platforms ([3a566d9](https://github.com/centralnic-reseller/php-sdk/commit/3a566d9a498329b12de6c3d08b41bac1d372e051))
+
 ## [7.1.4](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.3...v7.1.4) (2022-06-20)
 
 
