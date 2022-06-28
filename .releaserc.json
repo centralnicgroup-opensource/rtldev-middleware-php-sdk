@@ -22,7 +22,7 @@
                     "@(package?(-lock)|composer).json",
                     "docs",
                     "report",
-                    "src/APIClient.php"
+                    "src/HEXONET/Client.php"
                 ]
             }
         ],
