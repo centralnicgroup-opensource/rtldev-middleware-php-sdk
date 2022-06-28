@@ -33,6 +33,17 @@ jobs:
         run: |
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
           composer update
+      - name: Super Linter Code Base
+        uses: github/super-linter@v4
+        env:
+          FILTER_REGEX_INCLUDE: "/src/*|/tests/*|updateVersion.sh"
+          DEFAULT_BRANCH: master
+          VALIDATE_PHP: true
+          VALIDATE_PHP_PHPCS: true
+          VALIDATE_PHP_PHPSTAN: true
+          VALIDATE_BASH: true
+          VALIDATE_ALL_CODEBASE: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Code Validation
         env:
           TESTS_USER_HEXONET: ${{ secrets.TESTS_USER_HEXONET }}
@@ -40,10 +51,6 @@ jobs:
           TESTS_USER_RRPPROXY: ${{ secrets.TESTS_USER_RRPPROXY }}
           TESTS_USERPASSWORD_RRPPROXY: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
         run: |
-          composer run-script phpStan
-          composer run-script phpCompatibility
-          composer run-script codeCheck
-          composer run-script phpLint
           composer run-script test
   release:
     name: Release @ NodeJS LTS - x86 - ubuntu-latest
@@ -62,6 +69,7 @@ jobs:
         with:
           node-version: lts/*
           check-latest: true
+          cache: 'npm'
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
