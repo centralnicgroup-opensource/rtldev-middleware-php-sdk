@@ -1,3 +1,10 @@
+## [7.1.6](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.5...v7.1.6) (2022-06-28)
+
+
+### Bug Fixes
+
+* **customloggerclass:** patched docblock of CustomLoggerClass::log method ([2ef6f73](https://github.com/centralnic-reseller/php-sdk/commit/2ef6f73da18315e4a2fc3e2dc29f0b19b7a6d2d4))
+
 ## [7.1.5](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.4...v7.1.5) (2022-06-28)
 
 
