@@ -1,3 +1,10 @@
+## [7.1.7](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.6...v7.1.7) (2022-06-28)
+
+
+### Bug Fixes
+
+* **versioning:** patch release process configuration to get the version no. correctly updated ([2c27be7](https://github.com/centralnic-reseller/php-sdk/commit/2c27be7f1b18b8f0fef98d610c6eceeeedcf5cf7))
+
 ## [7.1.6](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.5...v7.1.6) (2022-06-28)
 
 
