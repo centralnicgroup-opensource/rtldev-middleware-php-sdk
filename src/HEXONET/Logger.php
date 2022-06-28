@@ -19,8 +19,11 @@ class Logger implements \CNIC\LoggerInterface
 {
     /**
      * output/log given data
+     * @param string $post post request data in string format
+     * @param Response $r Response to log
+     * @param string|null $error error message
      */
-    public function log(string $post, Response $r, string $error = null): void
+    public function log($post, $r, $error = null): void
     {
          echo implode("\n", [
             print_r($r->getCommand(), true),

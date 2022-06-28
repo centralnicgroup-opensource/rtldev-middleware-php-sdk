@@ -15,7 +15,7 @@ namespace CNIC\HEXONET;
  * @package CNIC\HEXONET
  */
 
-class Column implements \CNIC\ColumnInterface
+class Column // implements \CNIC\ColumnInterface
 {
     /**
      * count of column data entries
@@ -51,7 +51,7 @@ class Column implements \CNIC\ColumnInterface
      * Get column name
      * @return string column name
      */
-    public function getKey(): string
+    public function getKey()
     {
         return $this->key;
     }
@@ -60,7 +60,7 @@ class Column implements \CNIC\ColumnInterface
      * Get column data
      * @return string[] column data
      */
-    public function getData(): array
+    public function getData()
     {
         return $this->data;
     }
@@ -70,7 +70,7 @@ class Column implements \CNIC\ColumnInterface
      * @param integer $idx data index
      * @return string|null data at given index
      */
-    public function getDataByIndex($idx): ?string
+    public function getDataByIndex($idx)
     {
         return $this->hasDataIndex($idx) ? $this->data[$idx] : null;
     }
@@ -80,7 +80,7 @@ class Column implements \CNIC\ColumnInterface
      * @param integer $idx data index
      * @return bool result
      */
-    private function hasDataIndex($idx): bool
+    private function hasDataIndex($idx)
     {
         return ($idx >= 0 && $idx < $this->length);
     }

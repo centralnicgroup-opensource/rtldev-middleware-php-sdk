@@ -11,7 +11,7 @@ class ClientFactory
      * @return \CNIC\HEXONET\SessionClient
      * @throws \Exception
      */
-    public static function getClient($params, $logger = null): \CNIC\HEXONET\SessionClient
+    public static function getClient($params, $logger = null)
     {
         if (!preg_match("/^HEXONET|RRPproxy$/", $params["registrar"])) {
             throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");

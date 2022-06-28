@@ -66,7 +66,7 @@ class Client
      *
      * @param string $path Path to the configuration file
      */
-    public function __construct(string $path = "")
+    public function __construct($path = "")
     {
         $contents = file_get_contents($path) ?: "[]";
         /** @var array $settings */

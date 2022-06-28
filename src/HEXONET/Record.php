@@ -15,7 +15,7 @@ namespace CNIC\HEXONET;
  * @package CNIC\HEXONET
  */
 
-class Record implements \CNIC\RecordInterface
+class Record // implements \CNIC\RecordInterface
 {
      /**
      * row data container
@@ -52,7 +52,7 @@ class Record implements \CNIC\RecordInterface
      * get row data
      * @return array row data
      */
-    public function getData(): array
+    public function getData()
     {
         return $this->data;
     }
@@ -62,7 +62,7 @@ class Record implements \CNIC\RecordInterface
      * @param string $key column name
      * @return string|null row data for given column or null if column does not exist
      */
-    public function getDataByKey($key): ?string
+    public function getDataByKey($key)
     {
         if ($this->hasData($key)) {
             return $this->data[$key];
@@ -75,7 +75,7 @@ class Record implements \CNIC\RecordInterface
      * @param string $key column name
      * @return bool boolean result
      */
-    private function hasData($key): bool
+    private function hasData($key)
     {
         return array_key_exists($key, $this->data);
     }
