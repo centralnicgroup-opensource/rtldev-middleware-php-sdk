@@ -14,7 +14,7 @@ on:
 
 jobs:
   test:
-    name: "Test @ PHP v8.1"
+    name: Linting
     runs-on: ubuntu-latest
 
     steps:
@@ -35,14 +35,6 @@ jobs:
           VALIDATE_BASH: true
           VALIDATE_ALL_CODEBASE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Code Validation
-        env:
-          TESTS_USER_HEXONET: ${{ secrets.TESTS_USER_HEXONET }}
-          TESTS_USERPASSWORD_HEXONET: ${{ secrets.TESTS_USERPASSWORD_HEXONET }}
-          TESTS_USER_RRPPROXY: ${{ secrets.TESTS_USER_RRPPROXY }}
-          TESTS_USERPASSWORD_RRPPROXY: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
-        run: |
-          composer run-script test
 
   test_matrix:
     strategy:
@@ -50,7 +42,7 @@ jobs:
         php-version:
           - 7.3
           - 7.4
-          - 8.0
+          - 8.1
 
     name: Test Matrix @ PHP v${{ matrix.php-version }}
     runs-on: ubuntu-latest
@@ -70,5 +62,4 @@ jobs:
           TESTS_USERPASSWORD_HEXONET: ${{ secrets.TESTS_USERPASSWORD_HEXONET }}
           TESTS_USER_RRPPROXY: ${{ secrets.TESTS_USER_RRPPROXY }}
           TESTS_USERPASSWORD_RRPPROXY: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
-        run: |
-          composer run-script test
+        run: composer run-script test
