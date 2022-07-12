@@ -1,3 +1,10 @@
+## [7.1.9](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.8...v7.1.9) (2022-07-12)
+
+
+### Bug Fixes
+
+* **composer:** change the php version format to semantic one ([a73ec23](https://github.com/centralnic-reseller/php-sdk/commit/a73ec23d0e09718fd1150a1b78802133787eecc4))
+
 ## [7.1.8](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.7...v7.1.8) (2022-07-12)
 
 
