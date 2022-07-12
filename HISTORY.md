@@ -1,3 +1,10 @@
+## [7.1.8](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.7...v7.1.8) (2022-07-12)
+
+
+### Bug Fixes
+
+* **composer:** update requirements to php >= 7.3.0 ([5eef7ed](https://github.com/centralnic-reseller/php-sdk/commit/5eef7ed174d0b2987958c72caacbead8ecf3583a))
+
 ## [7.1.7](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.6...v7.1.7) (2022-06-28)
 
 
