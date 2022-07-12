@@ -1,3 +1,10 @@
+## [7.1.10](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.9...v7.1.10) (2022-07-12)
+
+
+### Bug Fixes
+
+* **composer:** roll-back to previous version format to support PHP8 as well ([5dd535e](https://github.com/centralnic-reseller/php-sdk/commit/5dd535e3cf6380493e8423902609b041cd6e256a))
+
 ## [7.1.9](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.8...v7.1.9) (2022-07-12)
 
 
