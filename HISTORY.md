@@ -1,3 +1,10 @@
+## [7.1.11](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.10...v7.1.11) (2022-07-15)
+
+
+### Bug Fixes
+
+* **automatic idn conversion:** reviewed in direction of case insensitive patterns ([5166b84](https://github.com/centralnic-reseller/php-sdk/commit/5166b84681de69fff963d27d87bd09541669191e))
+
 ## [7.1.10](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.9...v7.1.10) (2022-07-12)
 
 
