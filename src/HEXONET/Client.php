@@ -436,8 +436,10 @@ class Client
             return $cmd;
         }
         $cmdkeys = array_keys($cmd);
-        $prodregex = "/^(DOMAIN|NAMESERVER|DNSZONE|OBJECTID)([0-9]*)$/";
-        $keys = preg_grep($prodregex, $cmdkeys);
+        $asciipattern = "/^[a-z0-9\.\-]+$/i";
+        $keypattern = "/^(DOMAIN|NAMESERVER|DNSZONE|OBJECTID)([0-9]*)$/i";
+        $objclasspattern = "/^(DOMAIN|DELETEDDOMAIN|DOMAINAPPLICATION|NAMESERVER|DNSZONE)$/i";
+        $keys = preg_grep($keypattern, $cmdkeys);
         if (empty($keys)) {
             return $cmd;
         }
@@ -446,10 +448,10 @@ class Client
         foreach ($keys as $key) {
             if (
                 isset($cmd[$key])
-                && !(bool)preg_match("/^[a-z0-9\.\-]+$/i", $cmd[$key])
+                && !(bool)preg_match($asciipattern, $cmd[$key])
                 && (
                     ($key !== "OBJECTID")
-                    || preg_match("/^(DOMAIN|DELETEDDOMAIN|DOMAINAPPLICATION|NAMESERVER|DNSZONE)$/", $cmd["OBJECTCLASS"])
+                    || preg_match($objclasspattern, $cmd["OBJECTCLASS"])
                 )
             ) {
                 $toconvert[] = $cmd[$key];

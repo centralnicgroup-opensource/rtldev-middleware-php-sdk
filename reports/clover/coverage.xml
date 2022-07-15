@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1656414722">
-  <project timestamp="1656414722">
+<coverage generated="1657869416">
+  <project timestamp="1657869416">
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/ClientFactory.php">
       <class name="CNIC\ClientFactory" namespace="global">
         <metrics complexity="12" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="15" elements="30" coveredelements="15"/>
@@ -44,11 +44,11 @@
       <class name="MYCUSTOMNAMESPACE\Logger" namespace="global">
         <metrics complexity="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </class>
-      <metrics loc="28" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="31" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Client.php">
       <class name="CNIC\HEXONET\Client" namespace="global">
-        <metrics complexity="78" methods="33" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="183" coveredstatements="140" elements="216" coveredelements="168"/>
+        <metrics complexity="78" methods="33" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="185" coveredstatements="140" elements="218" coveredelements="168"/>
       </class>
       <line num="69" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="1"/>
       <line num="71" type="stmt" count="1"/>
@@ -184,89 +184,91 @@
       <line num="440" type="stmt" count="0"/>
       <line num="441" type="stmt" count="0"/>
       <line num="442" type="stmt" count="0"/>
+      <line num="443" type="stmt" count="0"/>
       <line num="444" type="stmt" count="0"/>
-      <line num="445" type="stmt" count="0"/>
       <line num="446" type="stmt" count="0"/>
+      <line num="447" type="stmt" count="0"/>
       <line num="448" type="stmt" count="0"/>
-      <line num="449" type="stmt" count="0"/>
+      <line num="450" type="stmt" count="0"/>
       <line num="451" type="stmt" count="0"/>
-      <line num="452" type="stmt" count="0"/>
-      <line num="455" type="stmt" count="0"/>
-      <line num="456" type="stmt" count="0"/>
-      <line num="459" type="stmt" count="0"/>
-      <line num="460" type="stmt" count="0"/>
+      <line num="453" type="stmt" count="0"/>
+      <line num="454" type="stmt" count="0"/>
+      <line num="457" type="stmt" count="0"/>
+      <line num="458" type="stmt" count="0"/>
       <line num="461" type="stmt" count="0"/>
       <line num="462" type="stmt" count="0"/>
-      <line num="465" type="stmt" count="0"/>
-      <line num="473" type="method" name="request" visibility="public" complexity="5" crap="5.02" count="12"/>
-      <line num="476" type="stmt" count="12"/>
+      <line num="463" type="stmt" count="0"/>
+      <line num="464" type="stmt" count="0"/>
+      <line num="467" type="stmt" count="0"/>
+      <line num="475" type="method" name="request" visibility="public" complexity="5" crap="5.02" count="12"/>
       <line num="478" type="stmt" count="12"/>
-      <line num="481" type="stmt" count="12"/>
+      <line num="480" type="stmt" count="12"/>
       <line num="483" type="stmt" count="12"/>
-      <line num="484" type="stmt" count="12"/>
-      <line num="497" type="stmt" count="12"/>
-      <line num="500" type="stmt" count="12"/>
-      <line num="505" type="stmt" count="12"/>
+      <line num="485" type="stmt" count="12"/>
+      <line num="486" type="stmt" count="12"/>
+      <line num="499" type="stmt" count="12"/>
+      <line num="502" type="stmt" count="12"/>
       <line num="507" type="stmt" count="12"/>
       <line num="509" type="stmt" count="12"/>
       <line num="511" type="stmt" count="12"/>
-      <line num="516" type="stmt" count="12"/>
-      <line num="517" type="stmt" count="12"/>
+      <line num="513" type="stmt" count="12"/>
       <line num="518" type="stmt" count="12"/>
-      <line num="519" type="stmt" count="0"/>
-      <line num="520" type="stmt" count="0"/>
-      <line num="522" type="stmt" count="12"/>
+      <line num="519" type="stmt" count="12"/>
+      <line num="520" type="stmt" count="12"/>
+      <line num="521" type="stmt" count="0"/>
+      <line num="522" type="stmt" count="0"/>
       <line num="524" type="stmt" count="12"/>
-      <line num="525" type="stmt" count="12"/>
-      <line num="526" type="stmt" count="1"/>
-      <line num="527" type="stmt" count="1"/>
-      <line num="529" type="stmt" count="12"/>
-      <line num="539" type="method" name="requestNextResponsePage" visibility="public" complexity="4" crap="4" count="4"/>
-      <line num="541" type="stmt" count="4"/>
-      <line num="542" type="stmt" count="4"/>
-      <line num="543" type="stmt" count="1"/>
-      <line num="545" type="stmt" count="3"/>
-      <line num="546" type="stmt" count="3"/>
-      <line num="547" type="stmt" count="2"/>
-      <line num="549" type="stmt" count="3"/>
-      <line num="550" type="stmt" count="3"/>
+      <line num="526" type="stmt" count="12"/>
+      <line num="527" type="stmt" count="12"/>
+      <line num="528" type="stmt" count="1"/>
+      <line num="529" type="stmt" count="1"/>
+      <line num="531" type="stmt" count="12"/>
+      <line num="541" type="method" name="requestNextResponsePage" visibility="public" complexity="4" crap="4" count="4"/>
+      <line num="543" type="stmt" count="4"/>
+      <line num="544" type="stmt" count="4"/>
+      <line num="545" type="stmt" count="1"/>
+      <line num="547" type="stmt" count="3"/>
+      <line num="548" type="stmt" count="3"/>
+      <line num="549" type="stmt" count="2"/>
       <line num="551" type="stmt" count="3"/>
       <line num="552" type="stmt" count="3"/>
       <line num="553" type="stmt" count="3"/>
       <line num="554" type="stmt" count="3"/>
       <line num="555" type="stmt" count="3"/>
-      <line num="558" type="stmt" count="1"/>
-      <line num="566" type="method" name="requestAllResponsePages" visibility="public" complexity="1" crap="1" count="1"/>
-      <line num="568" type="stmt" count="1"/>
-      <line num="569" type="stmt" count="1"/>
+      <line num="556" type="stmt" count="3"/>
+      <line num="557" type="stmt" count="3"/>
+      <line num="560" type="stmt" count="1"/>
+      <line num="568" type="method" name="requestAllResponsePages" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="570" type="stmt" count="1"/>
       <line num="571" type="stmt" count="1"/>
+      <line num="572" type="stmt" count="1"/>
       <line num="573" type="stmt" count="1"/>
-      <line num="574" type="stmt" count="1"/>
       <line num="575" type="stmt" count="1"/>
       <line num="576" type="stmt" count="1"/>
-      <line num="584" type="method" name="setUserView" visibility="public" complexity="1" crap="1" count="1"/>
-      <line num="586" type="stmt" count="1"/>
-      <line num="587" type="stmt" count="1"/>
-      <line num="594" type="method" name="useHighPerformanceConnectionSetup" visibility="public" complexity="2" crap="2" count="1"/>
-      <line num="596" type="stmt" count="1"/>
-      <line num="597" type="stmt" count="1"/>
+      <line num="577" type="stmt" count="1"/>
+      <line num="578" type="stmt" count="1"/>
+      <line num="586" type="method" name="setUserView" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="588" type="stmt" count="1"/>
+      <line num="589" type="stmt" count="1"/>
+      <line num="596" type="method" name="useHighPerformanceConnectionSetup" visibility="public" complexity="2" crap="2" count="1"/>
       <line num="598" type="stmt" count="1"/>
       <line num="599" type="stmt" count="1"/>
       <line num="600" type="stmt" count="1"/>
       <line num="601" type="stmt" count="1"/>
+      <line num="602" type="stmt" count="1"/>
       <line num="603" type="stmt" count="1"/>
-      <line num="610" type="method" name="useOTESystem" visibility="public" complexity="2" crap="2.06" count="4"/>
-      <line num="612" type="stmt" count="4"/>
-      <line num="613" type="stmt" count="0"/>
-      <line num="615" type="stmt" count="4"/>
-      <line num="616" type="stmt" count="4"/>
-      <line num="623" type="method" name="useLIVESystem" visibility="public" complexity="2" crap="2.06" count="1"/>
-      <line num="625" type="stmt" count="1"/>
-      <line num="626" type="stmt" count="0"/>
-      <line num="628" type="stmt" count="1"/>
-      <line num="629" type="stmt" count="1"/>
-      <metrics loc="632" ncloc="409" classes="1" methods="33" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="183" coveredstatements="140" elements="216" coveredelements="168"/>
+      <line num="605" type="stmt" count="1"/>
+      <line num="612" type="method" name="useOTESystem" visibility="public" complexity="2" crap="2.06" count="4"/>
+      <line num="614" type="stmt" count="4"/>
+      <line num="615" type="stmt" count="0"/>
+      <line num="617" type="stmt" count="4"/>
+      <line num="618" type="stmt" count="4"/>
+      <line num="625" type="method" name="useLIVESystem" visibility="public" complexity="2" crap="2.06" count="1"/>
+      <line num="627" type="stmt" count="1"/>
+      <line num="628" type="stmt" count="0"/>
+      <line num="630" type="stmt" count="1"/>
+      <line num="631" type="stmt" count="1"/>
+      <metrics loc="634" ncloc="411" classes="1" methods="33" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="185" coveredstatements="140" elements="218" coveredelements="168"/>
     </file>
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Column.php">
       <class name="CNIC\HEXONET\Column" namespace="global">
@@ -796,6 +798,6 @@
     <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/ResponseInterface.php">
       <metrics loc="288" ncloc="89" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="16" loc="2723" ncloc="1602" classes="12" methods="117" coveredmethods="56" conditionals="0" coveredconditionals="0" statements="591" coveredstatements="358" elements="708" coveredelements="414"/>
+    <metrics files="16" loc="2728" ncloc="1604" classes="12" methods="117" coveredmethods="56" conditionals="0" coveredconditionals="0" statements="593" coveredstatements="358" elements="710" coveredelements="414"/>
   </project>
 </coverage>

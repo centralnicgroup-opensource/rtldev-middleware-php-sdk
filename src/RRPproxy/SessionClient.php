@@ -127,7 +127,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
             return $cmd;
         }
 
-        $asciipattern = "/^[a-zA-Z0-9\.-]+$/";
+        $asciipattern = "/^[a-zA-Z0-9\.-]+$/i";
         $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i";// DOMAIN params get auto-converted by API, RSRBE-7149 for NS coverage
         $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS)$/i";
         $toconvert = [];
