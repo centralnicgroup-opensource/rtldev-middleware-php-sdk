@@ -12,7 +12,9 @@
   </coverage>
   <testsuites>
     <testsuite name="CNIC PHP-SDK">
-      <directory suffix="Test.php">tests/RRPproxy</directory>
+      <directory suffix="Test.php">tests</directory>
+      <directory suffix="Test.php">tests/HEXONET</directory>
+      <directory suffix="Test.php">tests/CNR</directory>
     </testsuite>
   </testsuites>
   <logging>

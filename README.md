@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/centralnic-reseller/php-sdk/blob/master/CONTRIBUTING.md)
 
-This module is a connector library for the insanely fast CNIC Backend APIs (HEXONET, RRPproxy). Do not hesitate to contact us in case of questions.
+This module is a connector library for the insanely fast CNIC Backend APIs (HEXONET, CentralNic Reseller formerly known as RRPproxy). Do not hesitate to contact us in case of questions.
 
 ## Resources
 

@@ -8,7 +8,7 @@ use CNIC\ClientFactory as CF;
 use CNIC\HEXONET\Client as CL;
 use CNIC\HEXONET\Response as R;
 
-final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
+final class CNRClientTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \CNIC\HEXONET\SessionClient $cl
@@ -27,10 +27,10 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         //session_start();
         self::$cl = CF::getClient([
-            "registrar" => "RRPproxy"
+            "registrar" => "CNR"
         ]);
-        self::$user = getenv("TESTS_USER_RRPPROXY") ?: "";
-        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY") ?: "";
+        self::$user = getenv("TESTS_USER_CNR") ?: "";
+        self::$pw = getenv("TESTS_USERPASSWORD_CNR") ?: "";
     }
 
     public function testGetPOSTDataSecured(): void
@@ -45,7 +45,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->setCredentials();
         $this->assertEquals(
             "s_login=" . self::$user . "&s_pw=%2A%2A%2A" .
-            "&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3D" . self::$user . "%0APASSWORD%3D%2A%2A%2A",
+                "&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3D" . self::$user . "%0APASSWORD%3D%2A%2A%2A",
             $enc
         );
     }
@@ -143,7 +143,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setOTP();
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
@@ -152,7 +152,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setSession("12345678");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount");
     }
@@ -161,7 +161,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         // credentials and otp code have to be unset when session id is set
         self::$cl->setRoleCredentials("myaccountid", "myrole", "mypassword")
-                ->setSession("12345678");
+            ->setSession("12345678");
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
@@ -172,7 +172,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setSession();
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
@@ -180,9 +180,9 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testSaveReuseSession(): void
     {
         self::$cl->setSession("12345678")
-                ->saveSession($_SESSION);
+            ->saveSession($_SESSION);
         $cl2 = CF::getClient([
-            "registrar" => "RRPproxy"
+            "registrar" => "CNR"
         ]);
         $cl2->reuseSession($_SESSION);
         $tmp = $cl2->getPOSTData([
@@ -211,7 +211,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setCredentials("myaccountid", "mypassword");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
@@ -229,7 +229,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setRoleCredentials("myaccountid", "myroleid", "mypassword");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_login=myaccountid%3Amyroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
@@ -285,7 +285,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testLoginExtendedCredsOK(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
+        $this->markTestSkipped('RSRTPM-3111'); //TODO
         /*
         self::$cl->useOTESystem()
                 ->setCredentials(self::$user, self::$pw);
@@ -302,7 +302,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testLogoutOK(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
+        $this->markTestSkipped('RSRTPM-3111'); //TODO
         /*
         $r = self::$cl->logout();
         $this->assertInstanceOf(R::class, $r);
@@ -320,7 +320,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestFlattenCommand(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "CheckDomains",
             "DOMAIN" => ["example.com", "example.net"]
@@ -447,7 +447,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestAUTOIdnConvert(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "CheckDomains",
             "DOMAIN" => ["example.com", "dömäin.example", "example.net"]
@@ -474,7 +474,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestAUTOIdnConvert1a(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "StatusNameserver",
             "NAMESERVER" => "dömäin.example"
@@ -494,7 +494,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestAUTOIdnConvert2(): void
     {
-        $this->markTestSkipped('RSRTPM-3167');//TODO
+        $this->markTestSkipped('RSRTPM-3167'); //TODO
         /*
         self::$cl->setCredentials(self::$user, self::$pw)
                 ->useOTESystem();
@@ -519,7 +519,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestAUTOIdnConvert3(): void
     {
-        $this->markTestSkipped('RSRTPM-3167');//TODO
+        $this->markTestSkipped('RSRTPM-3167'); //TODO
         /*
         self::$cl->setCredentials(self::$user, self::$pw)
                 ->useOTESystem();
@@ -544,8 +544,8 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestCodeTmpErrorDbg(): void
     {
         self::$cl->enableDebugMode()
-                ->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->setCredentials(self::$user, self::$pw)
+            ->useOTESystem();
         $r = self::$cl->request(["COMMAND" => "StatusAccount"]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
@@ -557,7 +557,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestCodeTmpErrorNoDbg(): void
     {
         self::$cl->disableDebugMode();
-        $r = self::$cl->request([ "COMMAND" => "StatusAccount" ]);
+        $r = self::$cl->request(["COMMAND" => "StatusAccount"]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
@@ -646,7 +646,7 @@ final class RRPproxyClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetUserView(): void
     {
-        $this->markTestSkipped('RSRTPM-3111');//TODO
+        $this->markTestSkipped('RSRTPM-3111'); //TODO
         /*
         self::$cl->setUserView("docutest01");
         $r = self::$cl->request([

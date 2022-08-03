@@ -25,8 +25,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         //session_start();
-        self::$user = getenv("TESTS_USER_RRPPROXY") ?: "";
-        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY") ?: "";
+        self::$user = getenv("TESTS_USER_CNR") ?: "";
+        self::$pw = getenv("TESTS_USERPASSWORD_CNR") ?: "";
     }
 
     /**
@@ -67,13 +67,13 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Basic test for getClient with Registrar RRPproxy
+     * Basic test for getClient with Registrar CNR
      * @return void
      */
-    public function testRRPproxyClient()
+    public function testCNRClient()
     {
         $cl = CF::getClient([
-            "registrar" => "RRPproxy"
+            "registrar" => "CNR"
         ]);
         $this->assertInstanceOf(CL::class, $cl);
     }

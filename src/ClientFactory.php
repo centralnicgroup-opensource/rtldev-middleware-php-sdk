@@ -13,14 +13,14 @@ class ClientFactory
      */
     public static function getClient($params, $logger = null)
     {
-        if (!preg_match("/^HEXONET|RRPproxy$/", $params["registrar"])) {
+        if (!preg_match("/^HEXONET|RRPproxy|CNR$/", $params["registrar"])) {
             throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
         }
         // if we dynamically instantiate via string, phpStan start complaining ...
         if ($params["registrar"] === "HEXONET") {
             $cl = new \CNIC\HEXONET\SessionClient();
         } else {
-            $cl = new \CNIC\RRPproxy\SessionClient();
+            $cl = new \CNIC\CNR\SessionClient();
         }
 
         if (!empty($params["sandbox"])) {
@@ -36,7 +36,7 @@ class ClientFactory
             );
         }
         if (!empty($params["referer"])) {
-            $cl->setReferer($params["referer"]);// GLOBALS["CONFIG"]["SystemURL"] TODO
+            $cl->setReferer($params["referer"]); // GLOBALS["CONFIG"]["SystemURL"] TODO
         }
         if (!empty($params["ua"])) {
             $cl->setUserAgent(
@@ -56,7 +56,7 @@ class ClientFactory
             if ($params["registrar"] === "HEXONET") {
                 $logger = new \CNIC\HEXONET\Logger();
             } else {
-                $logger = new \CNIC\RRPproxy\Logger();
+                $logger = new \CNIC\CNR\Logger();
             }
         }
         $cl->setCustomLogger($logger);

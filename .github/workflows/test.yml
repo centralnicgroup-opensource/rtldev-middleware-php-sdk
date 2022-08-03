@@ -63,6 +63,6 @@ jobs:
         env:
           TESTS_USER_HEXONET: ${{ secrets.TESTS_USER_HEXONET }}
           TESTS_USERPASSWORD_HEXONET: ${{ secrets.TESTS_USERPASSWORD_HEXONET }}
-          TESTS_USER_RRPPROXY: ${{ secrets.TESTS_USER_RRPPROXY }}
-          TESTS_USERPASSWORD_RRPPROXY: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
+          TESTS_USER_CNR: ${{ secrets.TESTS_USER_RRPPROXY }}
+          TESTS_USERPASSWORD_CNR: ${{ secrets.TESTS_USERPASSWORD_RRPPROXY }}
         run: composer run-script test

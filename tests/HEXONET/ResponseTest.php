@@ -23,14 +23,14 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         RTM::addTemplate("OK", "200", "Command completed successfully")
             ::addTemplate("listP0", "[RESPONSE]\r\nPROPERTY[TOTAL][0]=2701\r\nPROPERTY[FIRST][0]=0\r\nPROPERTY[DOMAIN][0]=0-60motorcycletimes.com\r\nPROPERTY[DOMAIN][1]=0-be-s01-0.com\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[LAST][0]=1\r\nPROPERTY[LIMIT][0]=2\r\nDESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n");
-        self::$user = getenv("TESTS_USER_RRPPROXY") ?: "";
-        self::$pw = getenv("TESTS_USERPASSWORD_RRPPROXY") ?: "";
+        self::$user = getenv("TESTS_USER_CNR") ?: "";
+        self::$pw = getenv("TESTS_USERPASSWORD_CNR") ?: "";
     }
 
     public function testCommandPlain(): void
     {
         // ensure no vars are returned in response, just in case no place holder replacements are provided
-        $r = new R("", ["COMMAND" => "QueryDomainOptions", "DOMAIN0" => "example.com", "DOMAIN1" => "example.net" ]);
+        $r = new R("", ["COMMAND" => "QueryDomainOptions", "DOMAIN0" => "example.com", "DOMAIN1" => "example.net"]);
         $expected = "COMMAND = QueryDomainOptions\nDOMAIN0 = example.com\nDOMAIN1 = example.net\n";
         $this->assertEquals($expected, $r->getCommandPlain());
     }
@@ -38,7 +38,7 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
     public function testCommandPlainSecure(): void
     {
         // ensure no vars are returned in response, just in case no place holder replacements are provided
-        $r = new R("", ["COMMAND" => "CheckAuthentication", "SUBUSER" => self::$user, "PASSWORD" => self::$pw ]);
+        $r = new R("", ["COMMAND" => "CheckAuthentication", "SUBUSER" => self::$user, "PASSWORD" => self::$pw]);
         $expected = "COMMAND = CheckAuthentication\nSUBUSER = " . self::$user . "\nPASSWORD = ***\n";
         $this->assertEquals($expected, $r->getCommandPlain());
     }

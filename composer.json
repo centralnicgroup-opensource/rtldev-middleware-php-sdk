@@ -1,13 +1,15 @@
 {
   "name": "centralnic-reseller/php-sdk",
   "type": "library",
-  "description": "API connector library for the insanely fast CNIC API Backends (HEXONET, RRPproxy)",
+  "description": "API connector library for the insanely fast CNIC API Backends (HEXONET, CNR former RRPproxy)",
   "keywords": [
     "SDK",
     "api",
     "connector",
     "hexonet",
     "rrpproxy",
+    "centralnic",
+    "reseller",
     "cnic",
     "domain",
     "ssl",

@@ -3,16 +3,16 @@
 #declare(strict_types=1);
 
 /**
- * CNIC\RRPproxy
+ * CNIC\CNR
  * Copyright © CentralNic Group PLC
  */
 
-namespace CNIC\RRPproxy;
+namespace CNIC\CNR;
 
 /**
- * RRPproxy Logger
+ * CNR Logger
  *
- * @package CNIC\RRPproxy
+ * @package CNIC\CNR
  */
 
 class Logger extends \CNIC\HEXONET\Logger

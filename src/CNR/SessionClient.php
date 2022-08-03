@@ -3,16 +3,16 @@
 #declare(strict_types=1);
 
 /**
- * CNIC\RRPproxy
+ * CNIC\CNR
  * Copyright © CentralNic Group PLC
  */
 
-namespace CNIC\RRPproxy;
+namespace CNIC\CNR;
 
 /**
- * RRPproxy API Client
+ * CNR API Client
  *
- * @package CNIC\RRPproxy
+ * @package CNIC\CNR
  */
 
 class SessionClient extends \CNIC\HEXONET\SessionClient
@@ -128,16 +128,14 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
         }
 
         $asciipattern = "/^[a-zA-Z0-9\.-]+$/i";
-        $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i";// DOMAIN params get auto-converted by API, RSRBE-7149 for NS coverage
+        $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i"; // DOMAIN params get auto-converted by API, RSRBE-7149 for NS coverage
         $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS)$/i";
         $toconvert = [];
         $idxs = [];
         foreach ($cmd as $key => $val) {
             if (
-                (
-                    (bool)preg_match($keypattern, $key)
-                    || (
-                        $key === "OBJECTID"
+                ((bool)preg_match($keypattern, $key)
+                    || ($key === "OBJECTID"
                         && isset($cmd["OBJECTCLASS"])
                         && (bool)preg_match($objclasspattern, $cmd["OBJECTCLASS"])
                     )
