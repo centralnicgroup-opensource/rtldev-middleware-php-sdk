@@ -23,12 +23,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Install Dependencies::PHP8.1
+      - name: Install Dependencies
         run: |
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
           composer update
       - name: Super Linter Code Base
-        uses: github/super-linter@v4
+        uses: github/super-linter/slim@v4
         env:
           FILTER_REGEX_INCLUDE: "/src/*|/tests/*|updateVersion.sh"
           DEFAULT_BRANCH: master
@@ -55,6 +55,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Install Dependencies::PHP${{ matrix.php-version }}
         run: |
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
