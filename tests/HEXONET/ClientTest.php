@@ -41,11 +41,14 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
             "SUBUSER" => self::$user,
             "PASSWORD" => self::$pw
         ], true);
-        $pwenc = urlencode(self::$pw);
         self::$cl->setCredentials();
         $this->assertEquals(
-            "s_entity=54cd&s_login=" . self::$user . "&s_pw=" . $pwenc .
-            "&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3D" . self::$user . "%0APASSWORD%3D" . $pwenc,
+            http_build_query([
+                "s_entity" => "54cd",
+                "s_login" => self::$user,
+                "s_pw" => "***",
+                "s_command" => "COMMAND=CheckAuthentication\nSUBUSER=" . self::$user . "\nPASSWORD=***"
+            ]),
             $enc
         );
     }
@@ -148,7 +151,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->settings["parameters"]["otp"] = "s_otp";
         self::$cl->setOTP("12345678");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_otp=12345678&s_command=COMMAND%3DStatusAccount");
     }
@@ -157,7 +160,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setOTP();
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
@@ -166,7 +169,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setSession("12345678");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_session=12345678&s_command=COMMAND%3DStatusAccount");
     }
@@ -175,8 +178,8 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         // credentials and otp code have to be unset when session id is set
         self::$cl->setRoleCredentials("myaccountid", "myrole", "mypassword")
-                ->setOTP("12345678")
-                ->setSession("12345678");
+            ->setOTP("12345678")
+            ->setSession("12345678");
         $tmp = self::$cl->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
@@ -187,7 +190,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setSession();
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_command=COMMAND%3DStatusAccount");
     }
@@ -195,7 +198,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testSaveReuseSession(): void
     {
         self::$cl->setSession("12345678")
-                ->saveSession($_SESSION);
+            ->saveSession($_SESSION);
         $cl2 = CF::getClient([
             "registrar" => "HEXONET"
         ]);
@@ -221,7 +224,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->settings["parameters"]["ipfilter"] = "s_remoteaddr";
         self::$cl->setRemoteIPAddress("10.10.10.10");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_remoteaddr=10.10.10.10&s_command=COMMAND%3DStatusAccount");
     }
@@ -239,7 +242,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setCredentials("myaccountid", "mypassword");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
@@ -257,7 +260,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->setRoleCredentials("myaccountid", "myroleid", "mypassword");
         $tmp = self::$cl->getPOSTData([
-          "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_entity=54cd&s_login=myaccountid%21myroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
     }
@@ -274,7 +277,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testLoginCredsOK(): void
     {
         self::$cl->useOTESystem()
-                ->setCredentials(self::$user, self::$pw);
+            ->setCredentials(self::$user, self::$pw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
@@ -310,7 +313,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testLoginExtendedCredsOK(): void
     {
         self::$cl->useOTESystem()
-                ->setCredentials(self::$user, self::$pw);
+            ->setCredentials(self::$user, self::$pw);
         $r = self::$cl->loginExtended([
             "TIMEOUT" => 60
         ]);
@@ -358,9 +361,9 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     {
         self::$cl->settings["env"]["ote"]["url"] = "http://gregeragregaegaegag.com/geragaerg/call.cgi";
         self::$cl->setCredentials(self::$user, self::$pw)
-               ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
-           "COMMAND" => "StatusAccount"
+            "COMMAND" => "StatusAccount"
         ]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), false);
@@ -370,10 +373,12 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestFlattenCommand(): void
     {
+        $cfgpath = implode(DIRECTORY_SEPARATOR, ["src", "HEXONET", "config.json"]);
+        $orgsettings = json_decode(file_get_contents($cfgpath), true);
         // restore
-        self::$cl->settings["env"]["ote"]["url"] = "https://api.ispapi.net/api/call.cgi";
+        self::$cl->settings["env"]["ote"]["url"] = $orgsettings["env"]["ote"]["url"];
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "CheckDomains",
             "DOMAIN" => ["example.com", "example.net"]
@@ -394,7 +399,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestAUTOIdnConvert(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "CheckDomains",
             "DOMAIN" => ["example.com", "dömäin.example", "example.net"]
@@ -417,7 +422,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestAUTOIdnConvert2(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "QueryObjectlogList",
             "OBJECTID" => "dömäin.example",
@@ -440,7 +445,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestAUTOIdnConvert3(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->useOTESystem();
         $r = self::$cl->request([
             "COMMAND" => "QueryObjectlogList",
             "OBJECTID" => "dömäin.example",
@@ -463,8 +468,8 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestCodeTmpErrorDbg(): void
     {
         self::$cl->enableDebugMode()
-                ->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
+            ->setCredentials(self::$user, self::$pw)
+            ->useOTESystem();
         $r = self::$cl->request(["COMMAND" => "GetUserIndex"]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
@@ -476,7 +481,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestCodeTmpErrorNoDbg(): void
     {
         self::$cl->disableDebugMode();
-        $r = self::$cl->request([ "COMMAND" => "GetUserIndex" ]);
+        $r = self::$cl->request(["COMMAND" => "GetUserIndex"]);
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
