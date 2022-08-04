@@ -1,3 +1,22 @@
+# [8.0.0](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.11...v8.0.0) (2022-08-04)
+
+
+### Bug Fixes
+
+* **responsetranslator:** to return empty description case also as `invalid` template; patched tests ([63eb230](https://github.com/centralnic-reseller/php-sdk/commit/63eb230fb72dca618508f1004acf34c1e73e5d1a))
+
+
+### chore
+
+* **centralnic reseller:** introduced as replacement for RRPproxy ([2e66cdc](https://github.com/centralnic-reseller/php-sdk/commit/2e66cdc0fbef52cada52579aaab6b4cc79b085dc))
+
+
+### BREAKING CHANGES
+
+* **centralnic reseller:** RRPproxy marked for deprecation and falling back to new Brand Name "CentralNic
+Reseller" (CNR). Nothing changes mainly, CNR is the new label for RRP and we want to reflect this
+also in our software.
+
 ## [7.1.11](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.10...v7.1.11) (2022-07-15)
 
 

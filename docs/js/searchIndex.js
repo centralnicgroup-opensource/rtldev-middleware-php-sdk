@@ -11,6 +11,46 @@ Search.appendIndex(
             "summary": "Returns\u0020Client\u0020Instance\u0020by\u0020configuration",
             "url": "classes/CNIC-ClientFactory.html#method_getClient"
         },                {
+            "fqsen": "\\CNIC\\CNR\\Logger",
+            "name": "Logger",
+            "summary": "CNR\u0020Logger",
+            "url": "classes/CNIC-CNR-Logger.html"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient",
+            "name": "SessionClient",
+            "summary": "CNR\u0020API\u0020Client",
+            "url": "classes/CNIC-CNR-SessionClient.html"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor",
+            "url": "classes/CNIC-CNR-SessionClient.html#method___construct"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003Alogin\u0028\u0029",
+            "name": "login",
+            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication",
+            "url": "classes/CNIC-CNR-SessionClient.html#method_login"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003AloginExtended\u0028\u0029",
+            "name": "loginExtended",
+            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication.",
+            "url": "classes/CNIC-CNR-SessionClient.html#method_loginExtended"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003Alogout\u0028\u0029",
+            "name": "logout",
+            "summary": "Perform\u0020API\u0020logout\u0020to\u0020close\u0020API\u0020session\u0020in\u0020use",
+            "url": "classes/CNIC-CNR-SessionClient.html#method_logout"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003AIDNConvert\u0028\u0029",
+            "name": "IDNConvert",
+            "summary": "Convert\u0020domain\u0020names\u0020to\u0020idn\u0020\u002B\u0020punycode\u0020if\u0020necessary",
+            "url": "classes/CNIC-CNR-SessionClient.html#method_IDNConvert"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003AautoIDNConvert\u0028\u0029",
+            "name": "autoIDNConvert",
+            "summary": "Auto\u0020convert\u0020API\u0020command\u0020parameters\u0020to\u0020punycode,\u0020if\u0020necessary.",
+            "url": "classes/CNIC-CNR-SessionClient.html#method_autoIDNConvert"
+        },                {
             "fqsen": "\\CNIC\\ColumnInterface",
             "name": "ColumnInterface",
             "summary": "Common\u0020Column\u0020Interface",
@@ -1006,46 +1046,6 @@ Search.appendIndex(
             "summary": "Reset\u0020index\u0020in\u0020record\u0020list\u0020back\u0020to\u0020zero",
             "url": "classes/CNIC-ResponseInterface.html#method_rewindRecordList"
         },                {
-            "fqsen": "\\CNIC\\RRPproxy\\Logger",
-            "name": "Logger",
-            "summary": "RRPproxy\u0020Logger",
-            "url": "classes/CNIC-RRPproxy-Logger.html"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient",
-            "name": "SessionClient",
-            "summary": "RRPproxy\u0020API\u0020Client",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html#method___construct"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003Alogin\u0028\u0029",
-            "name": "login",
-            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_login"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003AloginExtended\u0028\u0029",
-            "name": "loginExtended",
-            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication.",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_loginExtended"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003Alogout\u0028\u0029",
-            "name": "logout",
-            "summary": "Perform\u0020API\u0020logout\u0020to\u0020close\u0020API\u0020session\u0020in\u0020use",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_logout"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003AIDNConvert\u0028\u0029",
-            "name": "IDNConvert",
-            "summary": "Convert\u0020domain\u0020names\u0020to\u0020idn\u0020\u002B\u0020punycode\u0020if\u0020necessary",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_IDNConvert"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy\\SessionClient\u003A\u003AautoIDNConvert\u0028\u0029",
-            "name": "autoIDNConvert",
-            "summary": "Auto\u0020convert\u0020API\u0020command\u0020parameters\u0020to\u0020punycode,\u0020if\u0020necessary.",
-            "url": "classes/CNIC-RRPproxy-SessionClient.html#method_autoIDNConvert"
-        },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
@@ -1056,14 +1056,14 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/cnic.html"
         },                {
+            "fqsen": "\\CNIC\\CNR",
+            "name": "CNR",
+            "summary": "",
+            "url": "namespaces/cnic-cnr.html"
+        },                {
             "fqsen": "\\CNIC\\HEXONET",
             "name": "HEXONET",
             "summary": "",
             "url": "namespaces/cnic-hexonet.html"
-        },                {
-            "fqsen": "\\CNIC\\RRPproxy",
-            "name": "RRPproxy",
-            "summary": "",
-            "url": "namespaces/cnic-rrpproxy.html"
         }            ]
 );
