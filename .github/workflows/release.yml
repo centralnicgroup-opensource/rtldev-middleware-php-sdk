@@ -8,6 +8,7 @@ jobs:
   build:
     name: "Build"
     uses: ./.github/workflows/test.yml
+    secrets: inherit
 
   release:
     name: Release @ PHP 7.4 | NodeJS LTS - x86 - ubuntu-latest
