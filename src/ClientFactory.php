@@ -13,11 +13,11 @@ class ClientFactory
      */
     public static function getClient($params, $logger = null)
     {
-        if (!preg_match("/^HEXONET|RRPproxy|CNR$/", $params["registrar"])) {
+        if (!(bool)preg_match("/^HEXONET|ISPAPI|KeySystems|RRPproxy|CNR|CNIC$/i", $params["registrar"])) {
             throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
         }
         // if we dynamically instantiate via string, phpStan start complaining ...
-        if ($params["registrar"] === "HEXONET") {
+        if ((bool)preg_match("/^HEXONET|ISPAPI$/i", $params["registrar"])) {
             $cl = new \CNIC\HEXONET\SessionClient();
         } else {
             $cl = new \CNIC\CNR\SessionClient();
