@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.0...v8.0.1) (2022-08-16)
+
+
+### Bug Fixes
+
+* **clientfactory:** added support for several other registrar ids for better user experience ([056348e](https://github.com/centralnic-reseller/php-sdk/commit/056348e1af1e8d937a738da6c43f988b3c456d8c))
+
 # [8.0.0](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.11...v8.0.0) (2022-08-04)
 
 
