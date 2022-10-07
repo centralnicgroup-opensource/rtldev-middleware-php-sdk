@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.1...v8.0.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **auto idn convert:** patched to not consider empty command parameters ([00c7787](https://github.com/centralnic-reseller/php-sdk/commit/00c77878a10dffccb80c3fc9e7c38640c80af011))
+
 ## [8.0.1](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.0...v8.0.1) (2022-08-16)
 
 
