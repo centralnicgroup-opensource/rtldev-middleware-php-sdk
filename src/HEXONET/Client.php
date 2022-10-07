@@ -449,6 +449,7 @@ class Client
             if (
                 isset($cmd[$key])
                 && !(bool)preg_match($asciipattern, $cmd[$key])
+                && !empty($cmd[$key])
                 && (
                     ($key !== "OBJECTID")
                     || preg_match($objclasspattern, $cmd["OBJECTCLASS"])
