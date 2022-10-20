@@ -86,7 +86,6 @@ class Response // implements \CNIC\ResponseInterface
 
         if (array_key_exists("PROPERTY", $this->hash)) {
             $colKeys = array_map("strval", array_keys($this->hash["PROPERTY"]));
-            $colKeys = preg_grep($this->paginationkeys, $colKeys, PREG_GREP_INVERT);
             $count = 0;
             foreach ($colKeys as $k) {
                 $this->addColumn($k, $this->hash["PROPERTY"][$k]);
@@ -262,10 +261,14 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Column Names
+     * @param bool $filterPaginationKeys strip pagination columns
      * @return string[] Array of Column Names
      */
-    public function getColumnKeys()
+    public function getColumnKeys($filterPaginationKeys = false)
     {
+        if ($filterPaginationKeys) {
+            return preg_grep($this->paginationkeys, $this->columnkeys, PREG_GREP_INVERT);
+        }
         return $this->columnkeys;
     }
 
@@ -368,12 +371,18 @@ class Response // implements \CNIC\ResponseInterface
     {
         $lh = [];
         foreach ($this->records as $rec) {
-            $lh[] = $rec->getData();
+            $data = $rec->getData();
+            foreach($data as $col => $val) {
+                if ((bool)preg_match($this->paginationkeys, $col)) {
+                    unset($data[$col]);
+                }
+            }
+            $lh[] = $data;
         }
         return [
             "LIST" => $lh,
             "meta" => [
-                "columns" => $this->getColumnKeys(),
+                "columns" => $this->getColumnKeys(true),
                 "pg" => $this->getPagination()
             ]
         ];

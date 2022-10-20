@@ -133,7 +133,7 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $r = new R("listP0");
         $lh = $r->getListHash();
         $this->assertCount(2, $lh["LIST"]);
-        $this->assertEquals($lh["meta"]["columns"], $r->getColumnKeys());
+        $this->assertEquals($lh["meta"]["columns"], $r->getColumnKeys(true));
         $this->assertEquals($lh["meta"]["pg"], $r->getPagination());
     }
 
