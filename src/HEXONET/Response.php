@@ -38,9 +38,13 @@ class Response // implements \CNIC\ResponseInterface
     private $hash;
 
     /**
+     * Regex for pagination related column keys
+     * @var string
+     */
+    private $paginationkeys = "/^TOTAL|COUNT|LIMIT|FIRST|LAST$/";
+
+    /**
      * Column names available in this responsse
-     * NOTE: this includes also FIRST, LAST, LIMIT, COUNT, TOTAL
-     * and maybe further specific columns in case of a list query
      * @var string[]
      */
     private $columnkeys;
@@ -82,6 +86,7 @@ class Response // implements \CNIC\ResponseInterface
 
         if (array_key_exists("PROPERTY", $this->hash)) {
             $colKeys = array_map("strval", array_keys($this->hash["PROPERTY"]));
+            $colKeys = preg_grep($this->paginationkeys, $colKeys, PREG_GREP_INVERT);
             $count = 0;
             foreach ($colKeys as $k) {
                 $this->addColumn($k, $this->hash["PROPERTY"][$k]);
