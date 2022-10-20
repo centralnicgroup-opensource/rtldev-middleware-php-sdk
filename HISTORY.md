@@ -1,3 +1,10 @@
+## [8.0.3](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.2...v8.0.3) (2022-10-20)
+
+
+### Bug Fixes
+
+* **columns:** ignore pagination columns (TOTAL|COUNT|LAST|LIMIT|FIRST) in non-pagination contexts ([37685dd](https://github.com/centralnic-reseller/php-sdk/commit/37685dd1d2d90fa85ce3e668fd4e8f7b1ef4c652))
+
 ## [8.0.2](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.1...v8.0.2) (2022-10-07)
 
 

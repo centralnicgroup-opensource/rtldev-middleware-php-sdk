@@ -601,9 +601,14 @@ Search.appendIndex(
             "summary": "hash\u0020representation\u0020of\u0020plain\u0020API\u0020response",
             "url": "classes/CNIC-HEXONET-Response.html#property_hash"
         },                {
+            "fqsen": "\\CNIC\\HEXONET\\Response\u003A\u003A\u0024paginationkeys",
+            "name": "paginationkeys",
+            "summary": "Regex\u0020for\u0020pagination\u0020related\u0020column\u0020keys",
+            "url": "classes/CNIC-HEXONET-Response.html#property_paginationkeys"
+        },                {
             "fqsen": "\\CNIC\\HEXONET\\Response\u003A\u003A\u0024columnkeys",
             "name": "columnkeys",
-            "summary": "Column\u0020names\u0020available\u0020in\u0020this\u0020responsse\nNOTE\u003A\u0020this\u0020includes\u0020also\u0020FIRST,\u0020LAST,\u0020LIMIT,\u0020COUNT,\u0020TOTAL\nand\u0020maybe\u0020further\u0020specific\u0020columns\u0020in\u0020case\u0020of\u0020a\u0020list\u0020query",
+            "summary": "Column\u0020names\u0020available\u0020in\u0020this\u0020responsse",
             "url": "classes/CNIC-HEXONET-Response.html#property_columnkeys"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Response\u003A\u003A\u0024columns",
