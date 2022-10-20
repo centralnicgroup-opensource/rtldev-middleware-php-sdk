@@ -1,20 +1,236 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="1" skipped="0" time="0.002253">
-    <testsuite name="CNIC PHP-SDK" tests="1" assertions="1" errors="0" warnings="0" failures="1" skipped="0" time="0.002253">
-      <testsuite name="CNICTEST\CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="1" skipped="0" time="0.002253">
-        <testcase name="testGetPOSTDataSecured" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="36" assertions="1" time="0.002253">
-          <failure type="PHPUnit\Framework\ExpectationFailedException">CNICTEST\CNRClientTest::testGetPOSTDataSecured
-Failed asserting that two strings are equal.
---- Expected
-+++ Actual
-@@ @@
--'s_login=&amp;s_pw=%2A%2A%2A&amp;s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3D%0APASSWORD%3D%2A%2A%2A'
-+'s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3D%0APASSWORD%3D%2A%2A%2A'
-
-/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php:47
-phpvfscomposer:///home/ad.ks.de/kschwarz/git/php-sdk/vendor/phpunit/phpunit/phpunit:97</failure>
+  <testsuite name="" tests="157" assertions="419" errors="0" warnings="0" failures="0" skipped="7" time="12.543794">
+    <testsuite name="CNIC PHP-SDK" tests="157" assertions="419" errors="0" warnings="0" failures="0" skipped="7" time="12.543794">
+      <testsuite name="CNICTEST\CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" tests="45" assertions="142" errors="0" warnings="0" failures="0" skipped="6" time="6.539562">
+        <testcase name="testGetPOSTDataSecured" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="36" assertions="1" time="0.001983"/>
+        <testcase name="testGetPOSTDataObj" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="53" assertions="1" time="0.000388"/>
+        <testcase name="testGetPOSTDataStr" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="62" assertions="1" time="0.000396"/>
+        <testcase name="testGetPOSTDataNull" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="68" assertions="1" time="0.000404"/>
+        <testcase name="testGetSession" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="77" assertions="1" time="0.000586"/>
+        <testcase name="testGetSessionIDSet" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="83" assertions="1" time="0.000406"/>
+        <testcase name="testGetURL" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="91" assertions="1" time="0.000438"/>
+        <testcase name="testGetUserAgent" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="97" assertions="1" time="0.000526"/>
+        <testcase name="testSetUserAgent" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="103" assertions="2" time="0.000709"/>
+        <testcase name="testSetUserAgentModules" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="113" assertions="2" time="0.000531"/>
+        <testcase name="testSetURL" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="124" assertions="1" time="0.000507"/>
+        <testcase name="testSetOTPSet" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="136" assertions="1" time="0.000757"/>
+        <testcase name="testSetOTPReset" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="142" assertions="1" time="0.000562"/>
+        <testcase name="testSetSessionSet" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="151" assertions="1" time="0.000570"/>
+        <testcase name="testSetSessionCredentials" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="160" assertions="1" time="0.000537"/>
+        <testcase name="testSetSessionReset" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="171" assertions="1" time="0.000686"/>
+        <testcase name="testSaveReuseSession" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="180" assertions="1" time="0.001223"/>
+        <testcase name="testSetRemoteIPAddressSet" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="195" assertions="1" time="0.000718"/>
+        <testcase name="testSetRemoteIPAddressReset" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="201" assertions="1" time="0.000581"/>
+        <testcase name="testSetCredentialsSet" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="210" assertions="1" time="0.000680"/>
+        <testcase name="testSetCredentialsReset" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="219" assertions="1" time="0.000534"/>
+        <testcase name="testSetRoleCredentialsSet" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="228" assertions="1" time="0.000452"/>
+        <testcase name="testSetRoleCredentialsReset" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="237" assertions="1" time="0.000502"/>
+        <testcase name="testLoginCredsOK" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="246" assertions="0" time="0.000621">
+          <skipped/>
         </testcase>
+        <testcase name="testLoginCredsFAIL" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="275" assertions="2" time="1.206397"/>
+        <testcase name="testLoginExtendedCredsOK" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="286" assertions="0" time="0.000479">
+          <skipped/>
+        </testcase>
+        <testcase name="testLogoutOK" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="303" assertions="0" time="0.000416">
+          <skipped/>
+        </testcase>
+        <testcase name="testLogoutFAIL" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="313" assertions="2" time="1.163890"/>
+        <testcase name="testRequestFlattenCommand" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="320" assertions="9" time="0.194293"/>
+        <testcase name="testIdnaToAscii" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="341" assertions="23" time="0.001592"/>
+        <testcase name="testRequestAUTOIdnConvert" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="447" assertions="12" time="0.219492"/>
+        <testcase name="testRequestAUTOIdnConvert1a" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="474" assertions="4" time="0.187001"/>
+        <testcase name="testRequestAUTOIdnConvert2" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="495" assertions="0" time="0.003223">
+          <skipped/>
+        </testcase>
+        <testcase name="testRequestAUTOIdnConvert3" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="520" assertions="0" time="0.002294">
+          <skipped/>
+        </testcase>
+        <testcase name="testRequestCodeTmpErrorDbg" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="544" assertions="4" time="0.209246">
+          <system-out>Array
+(
+    [COMMAND] =&gt; StatusAccount
+)
+
+s_login=qmtest&amp;s_pw=%2A%2A%2A&amp;s_command=COMMAND%3DStatusAccount
+
+[RESPONSE]
+code = 200
+description = Command completed successfully
+runtime = 0.002
+queuetime = 0
+property[amount][0] = 40090.31
+property[credit][0] = 0.00
+property[credit threshold][0] = 0.00
+property[currency][0] = GBP
+property[registrar][0] = qmtest
+EOF
+</system-out>
+        </testcase>
+        <testcase name="testRequestCodeTmpErrorNoDbg" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="557" assertions="4" time="0.175455"/>
+        <testcase name="testRequestNextResponsePageNoLast" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="568" assertions="13" time="0.387111"/>
+        <testcase name="testRequestNextResponsePageLast" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="593" assertions="3" time="0.191056"/>
+        <testcase name="testRequestNextResponsePageNoFirst" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="607" assertions="13" time="0.390767"/>
+        <testcase name="testRequestAllResponsePagesOK" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="633" assertions="19" time="2.017481"/>
+        <testcase name="testSetUserView" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="647" assertions="0" time="0.002377">
+          <skipped/>
+        </testcase>
+        <testcase name="testResetUserView" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="660" assertions="2" time="0.165754"/>
+        <testcase name="testSetProxy" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="670" assertions="3" time="0.002087"/>
+        <testcase name="testSetReferer" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="679" assertions="3" time="0.002159"/>
+        <testcase name="testUseHighPerformanceConnectionSetup" class="CNICTEST\CNRClientTest" classname="CNICTEST.CNRClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/CNR/ClientTest.php" line="688" assertions="1" time="0.001696"/>
+      </testsuite>
+      <testsuite name="CNICTEST\ClientFactoryTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/ClientFactoryTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.007315">
+        <testcase name="testHexonetClient1" class="CNICTEST\ClientFactoryTest" classname="CNICTEST.ClientFactoryTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/ClientFactoryTest.php" line="36" assertions="1" time="0.002468"/>
+        <testcase name="testHexonetClient2" class="CNICTEST\ClientFactoryTest" classname="CNICTEST.ClientFactoryTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/ClientFactoryTest.php" line="48" assertions="1" time="0.002126"/>
+        <testcase name="testCNRClient" class="CNICTEST\ClientFactoryTest" classname="CNICTEST.ClientFactoryTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/ClientFactoryTest.php" line="73" assertions="1" time="0.001598"/>
+        <testcase name="testInvalidClient" class="CNICTEST\ClientFactoryTest" classname="CNICTEST.ClientFactoryTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/ClientFactoryTest.php" line="85" assertions="1" time="0.001122"/>
+      </testsuite>
+      <testsuite name="CNICTEST\HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" tests="47" assertions="146" errors="0" warnings="0" failures="0" skipped="1" time="5.930616">
+        <testcase name="testGetPOSTDataSecured" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="36" assertions="1" time="0.000915"/>
+        <testcase name="testGetPOSTDataObj" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="56" assertions="1" time="0.000804"/>
+        <testcase name="testGetPOSTDataStr" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="66" assertions="1" time="0.000927"/>
+        <testcase name="testGetPOSTDataNull" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="72" assertions="1" time="0.001138"/>
+        <testcase name="testGetSession" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="81" assertions="1" time="0.000616"/>
+        <testcase name="testGetSessionIDSet" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="87" assertions="1" time="0.000751"/>
+        <testcase name="testGetURL" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="95" assertions="1" time="0.000646"/>
+        <testcase name="testGetUserAgent" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="101" assertions="1" time="0.000644"/>
+        <testcase name="testSetUserAgent" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="107" assertions="2" time="0.000685"/>
+        <testcase name="testSetUserAgentModules" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="117" assertions="2" time="0.000664"/>
+        <testcase name="testSetURL" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="128" assertions="1" time="0.000637"/>
+        <testcase name="testSetOTPSetThrows" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="140" assertions="2" time="0.001010"/>
+        <testcase name="testSetOTPSet" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="148" assertions="1" time="0.000879"/>
+        <testcase name="testSetOTPReset" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="159" assertions="1" time="0.000686"/>
+        <testcase name="testSetSessionSet" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="168" assertions="1" time="0.000743"/>
+        <testcase name="testSetSessionCredentials" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="177" assertions="1" time="0.000698"/>
+        <testcase name="testSetSessionReset" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="189" assertions="1" time="0.000613"/>
+        <testcase name="testSaveReuseSession" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="198" assertions="1" time="0.000785"/>
+        <testcase name="testSetRemoteIPAddressSetThrows" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="213" assertions="2" time="0.000610"/>
+        <testcase name="testSetRemoteIPAddressSet" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="221" assertions="1" time="0.000588"/>
+        <testcase name="testSetRemoteIPAddressReset" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="232" assertions="1" time="0.000706"/>
+        <testcase name="testSetCredentialsSet" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="241" assertions="1" time="0.000835"/>
+        <testcase name="testSetCredentialsReset" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="250" assertions="1" time="0.000774"/>
+        <testcase name="testSetRoleCredentialsSet" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="259" assertions="1" time="0.000646"/>
+        <testcase name="testSetRoleCredentialsReset" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="268" assertions="1" time="0.000836"/>
+        <testcase name="testLoginCredsOK" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="277" assertions="4" time="0.157034"/>
+        <testcase name="testLoginCredsFAIL" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="302" assertions="2" time="0.178824"/>
+        <testcase name="testLoginExtendedCredsOK" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="313" assertions="4" time="0.149723"/>
+        <testcase name="testLogoutOK" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="329" assertions="2" time="0.156523"/>
+        <testcase name="testLogoutFAIL" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="336" assertions="2" time="0.166627"/>
+        <testcase name="testRequestCurlInitFail" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="343" assertions="0" time="0.003240">
+          <skipped/>
+        </testcase>
+        <testcase name="testRequestCurlExecFail2" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="360" assertions="4" time="0.123478"/>
+        <testcase name="testRequestFlattenCommand" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="374" assertions="9" time="0.394258"/>
+        <testcase name="testRequestAUTOIdnConvert" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="399" assertions="11" time="0.718629"/>
+        <testcase name="testRequestAUTOIdnConvert2" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="422" assertions="5" time="0.359907"/>
+        <testcase name="testRequestAUTOIdnConvert3" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="445" assertions="5" time="0.158590"/>
+        <testcase name="testRequestCodeTmpErrorDbg" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="468" assertions="4" time="0.171883">
+          <system-out>Array
+(
+    [COMMAND] =&gt; GetUserIndex
+)
+
+s_entity=1234&amp;s_login=test.user&amp;s_pw=%2A%2A%2A&amp;s_command=COMMAND%3DGetUserIndex
+
+[RESPONSE]
+PROPERTY[USERINDEX][0]=659
+PROPERTY[PARENTUSERINDEX][0]=199
+CODE=200
+DESCRIPTION=Command completed successfully
+
+QUEUETIME=0
+RUNTIME=0.004
+
+EOF
+</system-out>
+        </testcase>
+        <testcase name="testRequestCodeTmpErrorNoDbg" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="481" assertions="4" time="0.156781"/>
+        <testcase name="testRequestNextResponsePageNoLast" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="492" assertions="13" time="0.382461"/>
+        <testcase name="testRequestNextResponsePageLast" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="517" assertions="3" time="0.150699"/>
+        <testcase name="testRequestNextResponsePageNoFirst" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="531" assertions="13" time="0.355309"/>
+        <testcase name="testRequestAllResponsePagesOK" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="556" assertions="21" time="1.804624"/>
+        <testcase name="testSetUserView" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="570" assertions="2" time="0.156191"/>
+        <testcase name="testResetUserView" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="580" assertions="2" time="0.158634"/>
+        <testcase name="testSetProxy" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="590" assertions="3" time="0.003645"/>
+        <testcase name="testSetReferer" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="599" assertions="3" time="0.002436"/>
+        <testcase name="testUseHighPerformanceConnectionSetup" class="CNICTEST\HexonetClientTest" classname="CNICTEST.HexonetClientTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ClientTest.php" line="608" assertions="1" time="0.002285"/>
+      </testsuite>
+      <testsuite name="CNICTEST\ColumnTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ColumnTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.001599">
+        <testcase name="testGetKey" class="CNICTEST\ColumnTest" classname="CNICTEST.ColumnTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ColumnTest.php" line="9" assertions="1" time="0.001599"/>
+      </testsuite>
+      <testsuite name="CNICTEST\RecordTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/RecordTest.php" tests="2" assertions="2" errors="0" warnings="0" failures="0" skipped="0" time="0.002468">
+        <testcase name="testGetData" class="CNICTEST\RecordTest" classname="CNICTEST.RecordTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/RecordTest.php" line="9" assertions="1" time="0.001362"/>
+        <testcase name="testGetDataByKey" class="CNICTEST\RecordTest" classname="CNICTEST.RecordTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/RecordTest.php" line="21" assertions="1" time="0.001107"/>
+      </testsuite>
+      <testsuite name="CNICTEST\ResponseParserTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseParserTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.004138">
+        <testcase name="testSerializeProperty" class="CNICTEST\ResponseParserTest" classname="CNICTEST.ResponseParserTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseParserTest.php" line="17" assertions="1" time="0.001207"/>
+        <testcase name="testSerializeNoProperty" class="CNICTEST\ResponseParserTest" classname="CNICTEST.ResponseParserTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseParserTest.php" line="28" assertions="1" time="0.000995"/>
+        <testcase name="testSerializeNoCodeNoDescription" class="CNICTEST\ResponseParserTest" classname="CNICTEST.ResponseParserTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseParserTest.php" line="34" assertions="1" time="0.000983"/>
+        <testcase name="testSerializeQTandRT" class="CNICTEST\ResponseParserTest" classname="CNICTEST.ResponseParserTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseParserTest.php" line="42" assertions="1" time="0.000953"/>
+      </testsuite>
+      <testsuite name="CNICTEST\ResponseTemplateManagerTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTemplateManagerTest.php" tests="5" assertions="21" errors="0" warnings="0" failures="0" skipped="0" time="0.006016">
+        <testcase name="testGetTemplateNotFound" class="CNICTEST\ResponseTemplateManagerTest" classname="CNICTEST.ResponseTemplateManagerTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTemplateManagerTest.php" line="12" assertions="2" time="0.001059"/>
+        <testcase name="testGetTemplates" class="CNICTEST\ResponseTemplateManagerTest" classname="CNICTEST.ResponseTemplateManagerTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTemplateManagerTest.php" line="19" assertions="11" time="0.001978"/>
+        <testcase name="testIsTemplateMatchHash" class="CNICTEST\ResponseTemplateManagerTest" classname="CNICTEST.ResponseTemplateManagerTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTemplateManagerTest.php" line="28" assertions="1" time="0.001054"/>
+        <testcase name="testIsTemplateMatchPlain" class="CNICTEST\ResponseTemplateManagerTest" classname="CNICTEST.ResponseTemplateManagerTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTemplateManagerTest.php" line="34" assertions="1" time="0.000972"/>
+        <testcase name="testAddTemplate" class="CNICTEST\ResponseTemplateManagerTest" classname="CNICTEST.ResponseTemplateManagerTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTemplateManagerTest.php" line="40" assertions="6" time="0.000953"/>
+      </testsuite>
+      <testsuite name="CNICTEST\ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" tests="39" assertions="67" errors="0" warnings="0" failures="0" skipped="0" time="0.042384">
+        <testcase name="testCommandPlain" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="30" assertions="1" time="0.000784"/>
+        <testcase name="testCommandPlainSecure" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="38" assertions="1" time="0.001391"/>
+        <testcase name="testGetCurrentPageNumberEntries" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="46" assertions="1" time="0.001380"/>
+        <testcase name="testGetCurrentPageNumberNoEntries" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="52" assertions="1" time="0.000993"/>
+        <testcase name="testGetFirstRecordIndexNoFirstNoRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="58" assertions="1" time="0.000818"/>
+        <testcase name="testGetFirstRecordIndexNoFirstRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="64" assertions="1" time="0.001019"/>
+        <testcase name="testGetColumns" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="74" assertions="1" time="0.001118"/>
+        <testcase name="testGetColumnIndexExists" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="81" assertions="1" time="0.000998"/>
+        <testcase name="testGetColumnIndexNotExists" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="88" assertions="1" time="0.001479"/>
+        <testcase name="testGetColumnKeys" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="95" assertions="7" time="0.001786"/>
+        <testcase name="testGetCurrentRecordRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="108" assertions="2" time="0.001518"/>
+        <testcase name="testGetCurrentRecordNoRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="125" assertions="1" time="0.000769"/>
+        <testcase name="testGetListHash" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="131" assertions="3" time="0.001508"/>
+        <testcase name="testGetNextRecord" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="140" assertions="3" time="0.001101"/>
+        <testcase name="testGetPagination" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="151" assertions="9" time="0.001280"/>
+        <testcase name="testGetPreviousRecord" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="166" assertions="3" time="0.002042"/>
+        <testcase name="testHasNextPageNoRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="185" assertions="1" time="0.000992"/>
+        <testcase name="testHasNextPageRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="191" assertions="1" time="0.001327"/>
+        <testcase name="testHasPreviousPageNoRows1" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="197" assertions="1" time="0.000750"/>
+        <testcase name="testHasPreviousPageNoRows2" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="203" assertions="1" time="0.001067"/>
+        <testcase name="testGetLastRecordIndexNoRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="209" assertions="1" time="0.000764"/>
+        <testcase name="testGetLastRecordIndexNoLastRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="215" assertions="1" time="0.000988"/>
+        <testcase name="testGetNextPageNumberNoRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="225" assertions="1" time="0.000762"/>
+        <testcase name="testGetNextPageNumberRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="231" assertions="1" time="0.001870"/>
+        <testcase name="testGetNumberOfPages" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="237" assertions="1" time="0.001029"/>
+        <testcase name="testGetPreviousPageNumberNoRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="243" assertions="1" time="0.000885"/>
+        <testcase name="testGetPreviousPageNumberRows" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="249" assertions="1" time="0.001244"/>
+        <testcase name="testRewindRecordList" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="255" assertions="4" time="0.001113"/>
+        <testcase name="testConstructorEmptyRaw" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="264" assertions="2" time="0.000797"/>
+        <testcase name="testInvalidAPIResponse" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="271" assertions="2" time="0.000821"/>
+        <testcase name="testInvalidAPIResponse2" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="278" assertions="2" time="0.000702"/>
+        <testcase name="testGetHash" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="285" assertions="2" time="0.001153"/>
+        <testcase name="testGetQueuetimeNo" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="292" assertions="1" time="0.001012"/>
+        <testcase name="testGetQueuetime" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="298" assertions="1" time="0.000980"/>
+        <testcase name="testGetRuntimeNo" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="304" assertions="1" time="0.001016"/>
+        <testcase name="testGetRuntime" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="310" assertions="1" time="0.000799"/>
+        <testcase name="testIsPendingNo" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="316" assertions="1" time="0.000762"/>
+        <testcase name="testIsPending" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="322" assertions="1" time="0.000790"/>
+        <testcase name="testIsTmpError" class="CNICTEST\ResponseTest" classname="CNICTEST.ResponseTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTest.php" line="328" assertions="1" time="0.000773"/>
+      </testsuite>
+      <testsuite name="CNICTEST\ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" tests="9" assertions="31" errors="0" warnings="0" failures="0" skipped="0" time="0.008754">
+        <testcase name="testPlaceHolderReplacements" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="16" assertions="2" time="0.001308"/>
+        <testcase name="testIsTemplateMatchHash" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="32" assertions="1" time="0.001202"/>
+        <testcase name="testIsTemplateMatchPlain" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="42" assertions="1" time="0.000984"/>
+        <testcase name="testConstructorVars" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="52" assertions="2" time="0.000907"/>
+        <testcase name="testInvalidResponse" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="63" assertions="2" time="0.000814"/>
+        <testcase name="testGetHash" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="76" assertions="2" time="0.000808"/>
+        <testcase name="testACLTranslation" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="88" assertions="2" time="0.000719"/>
+        <testcase name="testCheckDomainTransferTranslation" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="99" assertions="16" time="0.001210"/>
+        <testcase name="testTranslate" class="CNICTEST\ResponseTranslatorTest" classname="CNICTEST.ResponseTranslatorTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/ResponseTranslatorTest.php" line="151" assertions="3" time="0.000801"/>
+      </testsuite>
+      <testsuite name="CNICTEST\SocketConfigTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/SocketConfigTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.000942">
+        <testcase name="testGetPOSTData" class="CNICTEST\SocketConfigTest" classname="CNICTEST.SocketConfigTest" file="/home/ad.ks.de/kschwarz/git/php-sdk/tests/HEXONET/SocketConfigTest.php" line="14" assertions="1" time="0.000942"/>
       </testsuite>
     </testsuite>
   </testsuite>
