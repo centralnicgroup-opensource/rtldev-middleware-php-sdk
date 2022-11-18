@@ -1,5 +1,5 @@
 {
-  "name": "centralnic-reseller/php-sdk",
+  "name": "centralnicgroup-opensource/rtldev-middleware-php-sdk",
   "type": "library",
   "description": "API connector library for the insanely fast CNIC API Backends (HEXONET, CNR former RRPproxy)",
   "keywords": [
@@ -24,7 +24,7 @@
     "registration",
     "application"
   ],
-  "homepage": "https://github.com/centralnic-reseller/php-sdk",
+  "homepage": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk",
   "readme": "README.md",
   "license": "MIT",
   "authors": [

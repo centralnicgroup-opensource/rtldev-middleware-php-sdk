@@ -1,35 +1,35 @@
-## [8.0.3](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.2...v8.0.3) (2022-10-20)
+## [8.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.2...v8.0.3) (2022-10-20)
 
 
 ### Bug Fixes
 
-* **columns:** ignore pagination columns (TOTAL|COUNT|LAST|LIMIT|FIRST) in non-pagination contexts ([37685dd](https://github.com/centralnic-reseller/php-sdk/commit/37685dd1d2d90fa85ce3e668fd4e8f7b1ef4c652))
+* **columns:** ignore pagination columns (TOTAL|COUNT|LAST|LIMIT|FIRST) in non-pagination contexts ([37685dd](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/37685dd1d2d90fa85ce3e668fd4e8f7b1ef4c652))
 
-## [8.0.2](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.1...v8.0.2) (2022-10-07)
-
-
-### Bug Fixes
-
-* **auto idn convert:** patched to not consider empty command parameters ([00c7787](https://github.com/centralnic-reseller/php-sdk/commit/00c77878a10dffccb80c3fc9e7c38640c80af011))
-
-## [8.0.1](https://github.com/centralnic-reseller/php-sdk/compare/v8.0.0...v8.0.1) (2022-08-16)
+## [8.0.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.1...v8.0.2) (2022-10-07)
 
 
 ### Bug Fixes
 
-* **clientfactory:** added support for several other registrar ids for better user experience ([056348e](https://github.com/centralnic-reseller/php-sdk/commit/056348e1af1e8d937a738da6c43f988b3c456d8c))
+* **auto idn convert:** patched to not consider empty command parameters ([00c7787](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/00c77878a10dffccb80c3fc9e7c38640c80af011))
 
-# [8.0.0](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.11...v8.0.0) (2022-08-04)
+## [8.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.0...v8.0.1) (2022-08-16)
 
 
 ### Bug Fixes
 
-* **responsetranslator:** to return empty description case also as `invalid` template; patched tests ([63eb230](https://github.com/centralnic-reseller/php-sdk/commit/63eb230fb72dca618508f1004acf34c1e73e5d1a))
+* **clientfactory:** added support for several other registrar ids for better user experience ([056348e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/056348e1af1e8d937a738da6c43f988b3c456d8c))
+
+# [8.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.11...v8.0.0) (2022-08-04)
+
+
+### Bug Fixes
+
+* **responsetranslator:** to return empty description case also as `invalid` template; patched tests ([63eb230](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/63eb230fb72dca618508f1004acf34c1e73e5d1a))
 
 
 ### chore
 
-* **centralnic reseller:** introduced as replacement for RRPproxy ([2e66cdc](https://github.com/centralnic-reseller/php-sdk/commit/2e66cdc0fbef52cada52579aaab6b4cc79b085dc))
+* **centralnic reseller:** introduced as replacement for RRPproxy ([2e66cdc](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/2e66cdc0fbef52cada52579aaab6b4cc79b085dc))
 
 
 ### BREAKING CHANGES
@@ -38,151 +38,151 @@
 Reseller" (CNR). Nothing changes mainly, CNR is the new label for RRP and we want to reflect this
 also in our software.
 
-## [7.1.11](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.10...v7.1.11) (2022-07-15)
+## [7.1.11](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.10...v7.1.11) (2022-07-15)
 
 
 ### Bug Fixes
 
-* **automatic idn conversion:** reviewed in direction of case insensitive patterns ([5166b84](https://github.com/centralnic-reseller/php-sdk/commit/5166b84681de69fff963d27d87bd09541669191e))
+* **automatic idn conversion:** reviewed in direction of case insensitive patterns ([5166b84](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5166b84681de69fff963d27d87bd09541669191e))
 
-## [7.1.10](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.9...v7.1.10) (2022-07-12)
-
-
-### Bug Fixes
-
-* **composer:** roll-back to previous version format to support PHP8 as well ([5dd535e](https://github.com/centralnic-reseller/php-sdk/commit/5dd535e3cf6380493e8423902609b041cd6e256a))
-
-## [7.1.9](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.8...v7.1.9) (2022-07-12)
+## [7.1.10](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.9...v7.1.10) (2022-07-12)
 
 
 ### Bug Fixes
 
-* **composer:** change the php version format to semantic one ([a73ec23](https://github.com/centralnic-reseller/php-sdk/commit/a73ec23d0e09718fd1150a1b78802133787eecc4))
+* **composer:** roll-back to previous version format to support PHP8 as well ([5dd535e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5dd535e3cf6380493e8423902609b041cd6e256a))
 
-## [7.1.8](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.7...v7.1.8) (2022-07-12)
-
-
-### Bug Fixes
-
-* **composer:** update requirements to php >= 7.3.0 ([5eef7ed](https://github.com/centralnic-reseller/php-sdk/commit/5eef7ed174d0b2987958c72caacbead8ecf3583a))
-
-## [7.1.7](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.6...v7.1.7) (2022-06-28)
+## [7.1.9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.8...v7.1.9) (2022-07-12)
 
 
 ### Bug Fixes
 
-* **versioning:** patch release process configuration to get the version no. correctly updated ([2c27be7](https://github.com/centralnic-reseller/php-sdk/commit/2c27be7f1b18b8f0fef98d610c6eceeeedcf5cf7))
+* **composer:** change the php version format to semantic one ([a73ec23](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a73ec23d0e09718fd1150a1b78802133787eecc4))
 
-## [7.1.6](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.5...v7.1.6) (2022-06-28)
-
-
-### Bug Fixes
-
-* **customloggerclass:** patched docblock of CustomLoggerClass::log method ([2ef6f73](https://github.com/centralnic-reseller/php-sdk/commit/2ef6f73da18315e4a2fc3e2dc29f0b19b7a6d2d4))
-
-## [7.1.5](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.4...v7.1.5) (2022-06-28)
+## [7.1.8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.7...v7.1.8) (2022-07-12)
 
 
 ### Bug Fixes
 
-* **typings:** removed strict typings as we noticed issues under different platforms ([3a566d9](https://github.com/centralnic-reseller/php-sdk/commit/3a566d9a498329b12de6c3d08b41bac1d372e051))
+* **composer:** update requirements to php >= 7.3.0 ([5eef7ed](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5eef7ed174d0b2987958c72caacbead8ecf3583a))
 
-## [7.1.4](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.3...v7.1.4) (2022-06-20)
-
-
-### Bug Fixes
-
-* **hexonet response:** fn addColumn patched type declaration issue ([06a0ad0](https://github.com/centralnic-reseller/php-sdk/commit/06a0ad08df7d0b083d91eaed85a19b9f5ade43c0))
-
-## [7.1.3](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.2...v7.1.3) (2022-06-10)
+## [7.1.7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.6...v7.1.7) (2022-06-28)
 
 
 ### Bug Fixes
 
-* **ci:** upgraded npm engines, dev deps and reviewed release workflow ([1d242de](https://github.com/centralnic-reseller/php-sdk/commit/1d242de4887c869764e49990c5d74a9e3e676267))
+* **versioning:** patch release process configuration to get the version no. correctly updated ([2c27be7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/2c27be7f1b18b8f0fef98d610c6eceeeedcf5cf7))
 
-## [7.1.2](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.1...v7.1.2) (2022-05-30)
-
-
-### Bug Fixes
-
-* **phpdoc:** change path to docs to /docs (github pages) ([e54648f](https://github.com/centralnic-reseller/php-sdk/commit/e54648fd5dcf34e5fa5b872f4d7fb2259885c497))
-
-## [7.1.1](https://github.com/centralnic-reseller/php-sdk/compare/v7.1.0...v7.1.1) (2022-05-23)
+## [7.1.6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.5...v7.1.6) (2022-06-28)
 
 
 ### Bug Fixes
 
-* **phpstan:** increase phpStan level to 9 and fix reported issues ([a551b39](https://github.com/centralnic-reseller/php-sdk/commit/a551b39507869bed111f58500e94453ab779c704))
+* **customloggerclass:** patched docblock of CustomLoggerClass::log method ([2ef6f73](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/2ef6f73da18315e4a2fc3e2dc29f0b19b7a6d2d4))
 
-# [7.1.0](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.8...v7.1.0) (2022-04-20)
+## [7.1.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.4...v7.1.5) (2022-06-28)
+
+
+### Bug Fixes
+
+* **typings:** removed strict typings as we noticed issues under different platforms ([3a566d9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/3a566d9a498329b12de6c3d08b41bac1d372e051))
+
+## [7.1.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.3...v7.1.4) (2022-06-20)
+
+
+### Bug Fixes
+
+* **hexonet response:** fn addColumn patched type declaration issue ([06a0ad0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/06a0ad08df7d0b083d91eaed85a19b9f5ade43c0))
+
+## [7.1.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.2...v7.1.3) (2022-06-10)
+
+
+### Bug Fixes
+
+* **ci:** upgraded npm engines, dev deps and reviewed release workflow ([1d242de](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/1d242de4887c869764e49990c5d74a9e3e676267))
+
+## [7.1.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.1...v7.1.2) (2022-05-30)
+
+
+### Bug Fixes
+
+* **phpdoc:** change path to docs to /docs (github pages) ([e54648f](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e54648fd5dcf34e5fa5b872f4d7fb2259885c497))
+
+## [7.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.1.0...v7.1.1) (2022-05-23)
+
+
+### Bug Fixes
+
+* **phpstan:** increase phpStan level to 9 and fix reported issues ([a551b39](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a551b39507869bed111f58500e94453ab779c704))
+
+# [7.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.8...v7.1.0) (2022-04-20)
 
 
 ### Features
 
-* **idn conversion:** added IDNConvert method to client allowing to explicitely convert domain names ([6774225](https://github.com/centralnic-reseller/php-sdk/commit/677422507b4f1446bf192532004ca55b5aa017a8))
+* **idn conversion:** added IDNConvert method to client allowing to explicitely convert domain names ([6774225](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/677422507b4f1446bf192532004ca55b5aa017a8))
 
-## [7.0.8](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.7...v7.0.8) (2022-04-12)
-
-
-### Bug Fixes
-
-* **high performance setup:** use the right protocol ([c524aa8](https://github.com/centralnic-reseller/php-sdk/commit/c524aa817e86193994d266e388e1a04b105d075d))
-
-## [7.0.7](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.6...v7.0.7) (2022-04-07)
+## [7.0.8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.7...v7.0.8) (2022-04-12)
 
 
 ### Bug Fixes
 
-* **auto idn conversion:** fixed to translate only idns ([d4ee814](https://github.com/centralnic-reseller/php-sdk/commit/d4ee814b7f69002c808a981afc192f13288f3b0a))
+* **high performance setup:** use the right protocol ([c524aa8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/c524aa817e86193994d266e388e1a04b105d075d))
 
-## [7.0.6](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.5...v7.0.6) (2022-03-28)
-
-
-### Bug Fixes
-
-* **curlopt_verbose:** disabled ([bc47cbd](https://github.com/centralnic-reseller/php-sdk/commit/bc47cbddc0417d4e829da62722bcb3e858202ca3))
-
-## [7.0.5](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.4...v7.0.5) (2022-03-23)
+## [7.0.7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.6...v7.0.7) (2022-04-07)
 
 
 ### Bug Fixes
 
-* **composer autoload:** rollback wrong psr-4 autoload change ([f04cf6e](https://github.com/centralnic-reseller/php-sdk/commit/f04cf6e8cd7fe402631218d26410d35a3168a495))
+* **auto idn conversion:** fixed to translate only idns ([d4ee814](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d4ee814b7f69002c808a981afc192f13288f3b0a))
 
-## [7.0.4](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.3...v7.0.4) (2022-03-23)
-
-
-### Bug Fixes
-
-* **composer autoload:** to include psr-4 config for HEXONET and RRPproxy as well ([fd5b2fd](https://github.com/centralnic-reseller/php-sdk/commit/fd5b2fd7df7d6e88ad3b9749b6631744b0e866b8))
-
-## [7.0.3](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.2...v7.0.3) (2022-03-21)
+## [7.0.6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.5...v7.0.6) (2022-03-28)
 
 
 ### Bug Fixes
 
-* **hexonet:** changed OT&E url (infrastructure improvement) ([acea748](https://github.com/centralnic-reseller/php-sdk/commit/acea74846432b00f3b6117c6308eb98de422f7e9))
+* **curlopt_verbose:** disabled ([bc47cbd](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/bc47cbddc0417d4e829da62722bcb3e858202ca3))
 
-## [7.0.2](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.1...v7.0.2) (2022-01-20)
-
-
-### Bug Fixes
-
-* **logger:** require custom logger to implement LoggerInterface ([ab73282](https://github.com/centralnic-reseller/php-sdk/commit/ab732821a4383a7b239eb76ee341b6556f2429c6))
-
-## [7.0.1](https://github.com/centralnic-reseller/php-sdk/compare/v7.0.0...v7.0.1) (2021-12-09)
+## [7.0.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.4...v7.0.5) (2022-03-23)
 
 
 ### Bug Fixes
 
-* **semantic-release:** added missing configuration file ([9972e93](https://github.com/centralnic-reseller/php-sdk/commit/9972e93018dfce08ddd95f679be8409fdab53010))
+* **composer autoload:** rollback wrong psr-4 autoload change ([f04cf6e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/f04cf6e8cd7fe402631218d26410d35a3168a495))
+
+## [7.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.3...v7.0.4) (2022-03-23)
+
+
+### Bug Fixes
+
+* **composer autoload:** to include psr-4 config for HEXONET and RRPproxy as well ([fd5b2fd](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/fd5b2fd7df7d6e88ad3b9749b6631744b0e866b8))
+
+## [7.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.2...v7.0.3) (2022-03-21)
+
+
+### Bug Fixes
+
+* **hexonet:** changed OT&E url (infrastructure improvement) ([acea748](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/acea74846432b00f3b6117c6308eb98de422f7e9))
+
+## [7.0.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.1...v7.0.2) (2022-01-20)
+
+
+### Bug Fixes
+
+* **logger:** require custom logger to implement LoggerInterface ([ab73282](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ab732821a4383a7b239eb76ee341b6556f2429c6))
+
+## [7.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v7.0.0...v7.0.1) (2021-12-09)
+
+
+### Bug Fixes
+
+* **semantic-release:** added missing configuration file ([9972e93](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/9972e93018dfce08ddd95f679be8409fdab53010))
 
 # 7.0.0 (2021-12-09)
 
 ### Features
 
-- **revamped:** to support RRPproxy and HEXONET ([2c6381a](https://github.com/centralnic-reseller/php-sdk/commit/2c6381ae1886d35467cafdafb80829fbde8bc326))
+- **revamped:** to support RRPproxy and HEXONET ([2c6381a](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/2c6381ae1886d35467cafdafb80829fbde8bc326))
 
 ### BREAKING CHANGES
 

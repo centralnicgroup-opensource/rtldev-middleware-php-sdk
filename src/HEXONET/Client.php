@@ -9,8 +9,9 @@
 
 namespace CNIC\HEXONET;
 
-use CNIC\HEXONET\ResponseTemplateManager as RTM;
 use CNIC\HEXONET\Logger as L;
+use CNIC\HEXONET\SocketConfig;
+use CNIC\HEXONET\Response;
 
 /**
  * HEXONET API Client
@@ -168,8 +169,7 @@ class Client
     public function setUserAgent($str, $rv, $modules = [])
     {
         $mods = empty($modules) ? "" : " " . implode(" ", $modules);
-        $this->ua = (
-            $str . " (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $rv . ")" . $mods . " php-sdk/" . $this->getVersion() . " php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION])
+        $this->ua = ($str . " (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $rv . ")" . $mods . " php-sdk/" . $this->getVersion() . " php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION])
         );
         return $this;
     }
@@ -508,7 +508,7 @@ class Client
             CURLOPT_USERAGENT       => $this->getUserAgent(),
             CURLOPT_HTTPHEADER      => [
                 "Expect:",
-                "Content-Type: application/x-www-form-urlencoded",//UTF-8 implied
+                "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
                 "Content-Length: " . strlen($data)
             ]
         ] + $this->curlopts);
