@@ -1,5 +1,5 @@
 {
-  "name": "php-sdk",
+  "name": "rtldev-middleware-php-sdk",
   "description": "PHP SDK for the insanely fast CNIC Backend APIs (HEXONET, CNR former RRPproxy)",
   "version": "0.0.0-development",
   "private": true,
@@ -12,9 +12,9 @@
     "node": ">=16.15.1",
     "npm": ">=8.11.1"
   },
-  "homepage": "https://github.com/centralnic-reseller/php-sdk",
-  "repository": "github:centralnic-reseller/php-sdk.git",
-  "bugs": "https://github.com/centralnic-reseller/php-sdk/issues",
+  "homepage": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk",
+  "repository": "github:centralnicgroup-opensource/rtldev-middleware-php-sdk.git",
+  "bugs": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/issues",
   "maintainers": [
     {
       "name": "Kai Schwarz",
