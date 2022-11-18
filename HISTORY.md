@@ -1,3 +1,10 @@
+## [8.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.3...v8.0.4) (2022-11-18)
+
+
+### Bug Fixes
+
+* **client:** response class dependency injection and restructure ([4a40c73](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/4a40c73e735a89f6a15f68f57070dfe0755c01f1))
+
 ## [8.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.2...v8.0.3) (2022-10-20)
 
 
