@@ -18,6 +18,11 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 ```composer require centralnic-reseller/php-sdk```
 
+## Dev Container
+* Add an entry in your hosts file: ```127.0.0.1         devsdk.hexonet.net``` 
+
+PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.hexonet.net```
+
 ## Authors
 
 * **Kai Schwarz** - *development* - [PapaKai](https://github.com/papakai)
