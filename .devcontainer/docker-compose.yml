@@ -3,6 +3,8 @@ version: '3.9'
 services:
   phpsdk:
     container_name: dstack-phpsdk
+    stdin_open: true
+    tty: true
     volumes:
       - ..:/usr/share/rtldev-middleware-php-sdk:cached
     build:
