@@ -1,5 +1,5 @@
-FROM composer:latest as composer
-FROM node:latest as nodejs
+FROM composer:lts as composer
+FROM node:lts as nodejs
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 ARG PHP_VERSION=7.3
@@ -24,27 +24,21 @@ RUN apt-get update \
     && apt-get -y install software-properties-common cron
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 4F4EA0AAE5267A6C
-# install apt deps (first row for puppeteer)
-RUN apt-get -y install libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2
-RUN apt-get -y install postfix python3-setuptools wget jq sudo git apache2 php${PHP_VERSION} php${PHP_VERSION}-xdebug libapache2-mod-php${PHP_VERSION} pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl php${PHP_VERSION}-curl
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN apt-get -y install postfix python3-setuptools wget jq sudo git php${PHP_VERSION} php${PHP_VERSION}-xdebug pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl php${PHP_VERSION}-curl
+
 # Cleanup
 RUN apt-get -y autoremove && \
     apt-get -y clean
 
 # Add image configuration and scripts
 ADD ${SCRIPTS_DIR_PATH}/post-create.sh /post-create.sh
-RUN chmod 755 /post-create.sh
 
 # Time Zone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Add config files
 COPY ${CONFIGURATION_DIR_PATH}/php.ini /etc/php/${PHP_VERSION}/cli/php.ini
-COPY ${CONFIGURATION_DIR_PATH}/php.ini /etc/php/${PHP_VERSION}/apache2/php.ini
-COPY ${CONFIGURATION_DIR_PATH}/01-xdebug.ini /etc/php/${PHP_VERSION}/apache2/conf.d/20-xdebug.ini
 COPY ${CONFIGURATION_DIR_PATH}/01-xdebug.ini /etc/php/${PHP_VERSION}/cli/conf.d/20-xdebug.ini
-COPY ${CONFIGURATION_DIR_PATH}/01-error_reporting.ini /etc/php/${PHP_VERSION}/apache2/conf.d/20-error_reporting.ini
 COPY ${CONFIGURATION_DIR_PATH}/01-error_reporting.ini /etc/php/${PHP_VERSION}/cli/conf.d/20-error_reporting.ini
 
 # Composer 2.x Installation
@@ -71,13 +65,8 @@ RUN usermod --shell /usr/bin/zsh ${USERNAME} \
 COPY --from=nodejs /usr/local/include/node /usr/local/include/node
 COPY --from=nodejs /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=nodejs /usr/local/bin /usr/local/bin
-RUN npm install --global npm@latest
 
-# nvm and nodejs install
+# zsh and commitizen configuration
 COPY ${CONFIGURATION_DIR_PATH}/.zshrc ${USERHOME}/.zshrc
 COPY ${CONFIGURATION_DIR_PATH}/.czrc ${USERHOME}/.czrc
-RUN chown ${USERNAME}.${USERNAME} ${USERHOME}/.zshrc ${USERHOME}/.czrc \
-    && chmod +x ${USERHOME}/.zshrc ${USERHOME}/.czrc
-
-# Add volumes for the app
-ENTRYPOINT exec top -b
+RUN chown ${USERNAME}.${USERNAME} ${USERHOME}/.zshrc ${USERHOME}/.czrc
