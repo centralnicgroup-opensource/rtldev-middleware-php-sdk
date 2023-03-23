@@ -1,3 +1,10 @@
+## [8.0.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.4...v8.0.5) (2023-03-23)
+
+
+### Bug Fixes
+
+* **curl options:** cURLOPT_TIMEOUT and CURLOPT_CONNECTTIMEOUT to consider seconds not ms ([d32827f](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d32827f4ed770151e0d8b3690c11d512b9d5f418))
+
 ## [8.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.3...v8.0.4) (2022-11-18)
 
 
