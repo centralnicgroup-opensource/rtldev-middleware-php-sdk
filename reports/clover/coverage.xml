@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1666297151">
-  <project timestamp="1666297151">
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/CNR/SessionClient.php">
+<coverage generated="1679563862">
+  <project timestamp="1679563862">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/CNR/SessionClient.php">
       <class name="CNIC\CNR\SessionClient" namespace="global">
-        <metrics complexity="27" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="47" elements="61" coveredelements="48"/>
+        <metrics complexity="27" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="66" coveredstatements="58" elements="72" coveredelements="59"/>
       </class>
       <line num="20" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
       <line num="22" type="stmt" count="2"/>
-      <line num="29" type="method" name="login" visibility="public" complexity="3" crap="3.33" count="1"/>
+      <line num="29" type="method" name="login" visibility="public" complexity="3" crap="3.10" count="1"/>
       <line num="31" type="stmt" count="1"/>
       <line num="32" type="stmt" count="1"/>
+      <line num="33" type="stmt" count="1"/>
+      <line num="34" type="stmt" count="1"/>
+      <line num="35" type="stmt" count="1"/>
       <line num="36" type="stmt" count="1"/>
       <line num="37" type="stmt" count="0"/>
       <line num="38" type="stmt" count="0"/>
@@ -21,17 +24,23 @@
       <line num="63" type="stmt" count="1"/>
       <line num="64" type="stmt" count="0"/>
       <line num="66" type="stmt" count="1"/>
-      <line num="74" type="method" name="IDNConvert" visibility="public" complexity="9" crap="9.21" count="1"/>
+      <line num="74" type="method" name="IDNConvert" visibility="public" complexity="9" crap="9.08" count="1"/>
       <line num="76" type="stmt" count="1"/>
       <line num="77" type="stmt" count="1"/>
       <line num="78" type="stmt" count="1"/>
+      <line num="79" type="stmt" count="1"/>
+      <line num="80" type="stmt" count="1"/>
+      <line num="81" type="stmt" count="1"/>
       <line num="83" type="stmt" count="1"/>
       <line num="84" type="stmt" count="1"/>
       <line num="85" type="stmt" count="1"/>
       <line num="86" type="stmt" count="1"/>
+      <line num="87" type="stmt" count="1"/>
       <line num="88" type="stmt" count="1"/>
       <line num="89" type="stmt" count="0"/>
       <line num="90" type="stmt" count="1"/>
+      <line num="91" type="stmt" count="1"/>
+      <line num="92" type="stmt" count="1"/>
       <line num="93" type="stmt" count="1"/>
       <line num="94" type="stmt" count="0"/>
       <line num="96" type="stmt" count="1"/>
@@ -41,6 +50,8 @@
       <line num="101" type="stmt" count="1"/>
       <line num="102" type="stmt" count="0"/>
       <line num="103" type="stmt" count="1"/>
+      <line num="104" type="stmt" count="1"/>
+      <line num="105" type="stmt" count="1"/>
       <line num="106" type="stmt" count="1"/>
       <line num="107" type="stmt" count="1"/>
       <line num="111" type="stmt" count="1"/>
@@ -66,11 +77,11 @@
       <line num="151" type="stmt" count="1"/>
       <line num="152" type="stmt" count="1"/>
       <line num="155" type="stmt" count="12"/>
-      <metrics loc="158" ncloc="118" classes="1" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="47" elements="61" coveredelements="48"/>
+      <metrics loc="158" ncloc="118" classes="1" methods="6" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="66" coveredstatements="58" elements="72" coveredelements="59"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/ClientFactory.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/ClientFactory.php">
       <class name="CNIC\ClientFactory" namespace="global">
-        <metrics complexity="12" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="29" elements="30" coveredelements="30"/>
+        <metrics complexity="12" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="31" elements="32" coveredelements="32"/>
       </class>
       <line num="14" type="method" name="getClient" visibility="public" complexity="12" crap="12" count="6"/>
       <line num="16" type="stmt" count="6"/>
@@ -85,6 +96,7 @@
       <line num="33" type="stmt" count="1"/>
       <line num="34" type="stmt" count="1"/>
       <line num="35" type="stmt" count="1"/>
+      <line num="36" type="stmt" count="1"/>
       <line num="38" type="stmt" count="5"/>
       <line num="39" type="stmt" count="1"/>
       <line num="41" type="stmt" count="5"/>
@@ -92,6 +104,7 @@
       <line num="43" type="stmt" count="1"/>
       <line num="44" type="stmt" count="1"/>
       <line num="45" type="stmt" count="1"/>
+      <line num="46" type="stmt" count="1"/>
       <line num="48" type="stmt" count="5"/>
       <line num="49" type="stmt" count="1"/>
       <line num="51" type="stmt" count="5"/>
@@ -102,24 +115,25 @@
       <line num="59" type="stmt" count="2"/>
       <line num="62" type="stmt" count="5"/>
       <line num="64" type="stmt" count="5"/>
-      <metrics loc="67" ncloc="55" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="29" elements="30" coveredelements="30"/>
+      <metrics loc="67" ncloc="55" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="31" elements="32" coveredelements="32"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/ColumnInterface.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/ColumnInterface.php">
       <metrics loc="54" ncloc="19" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/CustomLoggerClass.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/CustomLoggerClass.php">
       <class name="MYCUSTOMNAMESPACE\Logger" namespace="global">
-        <metrics complexity="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
       </class>
-      <metrics loc="31" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <line num="26" type="method" name="log" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="29" type="stmt" count="0"/>
+      <metrics loc="31" ncloc="14" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Client.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/Client.php">
       <class name="CNIC\HEXONET\Client" namespace="global">
-        <metrics complexity="79" methods="33" coveredmethods="33" conditionals="0" coveredconditionals="0" statements="186" coveredstatements="186" elements="219" coveredelements="219"/>
+        <metrics complexity="79" methods="33" coveredmethods="33" conditionals="0" coveredconditionals="0" statements="203" coveredstatements="203" elements="236" coveredelements="236"/>
       </class>
-      <line num="69" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="5"/>
-      <line num="71" type="stmt" count="5"/>
-      <line num="73" type="stmt" count="5"/>
+      <line num="70" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="5"/>
+      <line num="72" type="stmt" count="5"/>
       <line num="74" type="stmt" count="5"/>
       <line num="75" type="stmt" count="5"/>
       <line num="76" type="stmt" count="5"/>
@@ -127,33 +141,34 @@
       <line num="78" type="stmt" count="5"/>
       <line num="79" type="stmt" count="5"/>
       <line num="80" type="stmt" count="5"/>
-      <line num="89" type="method" name="setCustomLogger" visibility="public" complexity="1" crap="1" count="5"/>
-      <line num="91" type="stmt" count="5"/>
+      <line num="81" type="stmt" count="5"/>
+      <line num="90" type="method" name="setCustomLogger" visibility="public" complexity="1" crap="1" count="5"/>
       <line num="92" type="stmt" count="5"/>
-      <line num="99" type="method" name="setDefaultLogger" visibility="public" complexity="1" crap="1" count="5"/>
-      <line num="101" type="stmt" count="5"/>
+      <line num="93" type="stmt" count="5"/>
+      <line num="100" type="method" name="setDefaultLogger" visibility="public" complexity="1" crap="1" count="5"/>
       <line num="102" type="stmt" count="5"/>
-      <line num="109" type="method" name="enableDebugMode" visibility="public" complexity="1" crap="1" count="3"/>
-      <line num="111" type="stmt" count="3"/>
+      <line num="103" type="stmt" count="5"/>
+      <line num="110" type="method" name="enableDebugMode" visibility="public" complexity="1" crap="1" count="3"/>
       <line num="112" type="stmt" count="3"/>
-      <line num="119" type="method" name="disableDebugMode" visibility="public" complexity="1" crap="1" count="4"/>
-      <line num="121" type="stmt" count="4"/>
+      <line num="113" type="stmt" count="3"/>
+      <line num="120" type="method" name="disableDebugMode" visibility="public" complexity="1" crap="1" count="4"/>
       <line num="122" type="stmt" count="4"/>
-      <line num="131" type="method" name="getPOSTData" visibility="public" complexity="2" crap="2" count="60"/>
-      <line num="133" type="stmt" count="60"/>
-      <line num="134" type="stmt" count="2"/>
+      <line num="123" type="stmt" count="4"/>
+      <line num="132" type="method" name="getPOSTData" visibility="public" complexity="2" crap="2" count="60"/>
+      <line num="134" type="stmt" count="60"/>
       <line num="135" type="stmt" count="2"/>
-      <line num="137" type="stmt" count="58"/>
-      <line num="139" type="stmt" count="60"/>
-      <line num="146" type="method" name="getSession" visibility="public" complexity="2" crap="2" count="4"/>
-      <line num="148" type="stmt" count="4"/>
+      <line num="136" type="stmt" count="2"/>
+      <line num="138" type="stmt" count="58"/>
+      <line num="140" type="stmt" count="60"/>
+      <line num="147" type="method" name="getSession" visibility="public" complexity="2" crap="2" count="4"/>
       <line num="149" type="stmt" count="4"/>
-      <line num="156" type="method" name="getURL" visibility="public" complexity="1" crap="1" count="6"/>
-      <line num="158" type="stmt" count="6"/>
-      <line num="168" type="method" name="setUserAgent" visibility="public" complexity="2" crap="2" count="5"/>
-      <line num="170" type="stmt" count="5"/>
+      <line num="150" type="stmt" count="4"/>
+      <line num="157" type="method" name="getURL" visibility="public" complexity="1" crap="1" count="6"/>
+      <line num="159" type="stmt" count="6"/>
+      <line num="169" type="method" name="setUserAgent" visibility="public" complexity="2" crap="2" count="5"/>
       <line num="171" type="stmt" count="5"/>
       <line num="172" type="stmt" count="5"/>
+      <line num="173" type="stmt" count="5"/>
       <line num="174" type="stmt" count="5"/>
       <line num="181" type="method" name="getUserAgent" visibility="public" complexity="2" crap="2" count="36"/>
       <line num="183" type="stmt" count="36"/>
@@ -183,6 +198,7 @@
       <line num="259" type="stmt" count="2"/>
       <line num="260" type="stmt" count="2"/>
       <line num="261" type="stmt" count="2"/>
+      <line num="262" type="stmt" count="2"/>
       <line num="263" type="stmt" count="2"/>
       <line num="272" type="method" name="reuseSession" visibility="public" complexity="1" crap="1" count="2"/>
       <line num="274" type="stmt" count="2"/>
@@ -217,8 +233,14 @@
       <line num="368" type="stmt" count="2"/>
       <line num="369" type="stmt" count="2"/>
       <line num="370" type="stmt" count="2"/>
+      <line num="371" type="stmt" count="2"/>
+      <line num="372" type="stmt" count="2"/>
+      <line num="373" type="stmt" count="2"/>
       <line num="375" type="stmt" count="2"/>
       <line num="376" type="stmt" count="2"/>
+      <line num="377" type="stmt" count="2"/>
+      <line num="378" type="stmt" count="2"/>
+      <line num="379" type="stmt" count="2"/>
       <line num="380" type="stmt" count="2"/>
       <line num="381" type="stmt" count="2"/>
       <line num="382" type="stmt" count="2"/>
@@ -259,7 +281,7 @@
       <line num="450" type="stmt" count="4"/>
       <line num="451" type="stmt" count="4"/>
       <line num="452" type="stmt" count="4"/>
-      <line num="454" type="stmt" count="3"/>
+      <line num="454" type="stmt" count="4"/>
       <line num="455" type="stmt" count="4"/>
       <line num="458" type="stmt" count="2"/>
       <line num="459" type="stmt" count="2"/>
@@ -271,14 +293,24 @@
       <line num="476" type="method" name="request" visibility="public" complexity="5" crap="5" count="30"/>
       <line num="479" type="stmt" count="30"/>
       <line num="481" type="stmt" count="30"/>
+      <line num="483" type="stmt" count="30"/>
       <line num="484" type="stmt" count="30"/>
+      <line num="485" type="stmt" count="30"/>
       <line num="486" type="stmt" count="30"/>
       <line num="487" type="stmt" count="30"/>
       <line num="500" type="stmt" count="30"/>
+      <line num="502" type="stmt" count="30"/>
       <line num="503" type="stmt" count="30"/>
+      <line num="504" type="stmt" count="30"/>
+      <line num="505" type="stmt" count="30"/>
+      <line num="506" type="stmt" count="30"/>
+      <line num="507" type="stmt" count="30"/>
       <line num="508" type="stmt" count="30"/>
+      <line num="509" type="stmt" count="30"/>
       <line num="510" type="stmt" count="30"/>
+      <line num="511" type="stmt" count="30"/>
       <line num="512" type="stmt" count="30"/>
+      <line num="513" type="stmt" count="30"/>
       <line num="514" type="stmt" count="30"/>
       <line num="519" type="stmt" count="30"/>
       <line num="520" type="stmt" count="30"/>
@@ -336,9 +368,9 @@
       <line num="629" type="stmt" count="3"/>
       <line num="631" type="stmt" count="5"/>
       <line num="632" type="stmt" count="5"/>
-      <metrics loc="635" ncloc="412" classes="1" methods="33" coveredmethods="33" conditionals="0" coveredconditionals="0" statements="186" coveredstatements="186" elements="219" coveredelements="219"/>
+      <metrics loc="635" ncloc="411" classes="1" methods="33" coveredmethods="33" conditionals="0" coveredconditionals="0" statements="203" coveredstatements="203" elements="236" coveredelements="236"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Column.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/Column.php">
       <class name="CNIC\HEXONET\Column" namespace="global">
         <metrics complexity="7" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="12" coveredelements="12"/>
       </class>
@@ -356,18 +388,20 @@
       <line num="85" type="stmt" count="37"/>
       <metrics loc="88" ncloc="42" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="12" coveredelements="12"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Logger.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/Logger.php">
       <class name="CNIC\HEXONET\Logger" namespace="global">
-        <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+        <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="7" coveredelements="7"/>
       </class>
       <line num="26" type="method" name="log" visibility="public" complexity="2" crap="2" count="2"/>
       <line num="28" type="stmt" count="2"/>
       <line num="29" type="stmt" count="2"/>
+      <line num="30" type="stmt" count="2"/>
       <line num="31" type="stmt" count="2"/>
       <line num="32" type="stmt" count="2"/>
-      <metrics loc="36" ncloc="20" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+      <line num="33" type="stmt" count="2"/>
+      <metrics loc="36" ncloc="20" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="7" coveredelements="7"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Record.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/Record.php">
       <class name="CNIC\HEXONET\Record" namespace="global">
         <metrics complexity="5" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="10" coveredelements="10"/>
       </class>
@@ -383,9 +417,9 @@
       <line num="80" type="stmt" count="3"/>
       <metrics loc="83" ncloc="35" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="10" coveredelements="10"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/Response.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/Response.php">
       <class name="CNIC\HEXONET\Response" namespace="global">
-        <metrics complexity="90" methods="42" coveredmethods="39" conditionals="0" coveredconditionals="0" statements="160" coveredstatements="157" elements="202" coveredelements="196"/>
+        <metrics complexity="90" methods="42" coveredmethods="39" conditionals="0" coveredconditionals="0" statements="168" coveredstatements="165" elements="210" coveredelements="204"/>
       </class>
       <line num="73" type="method" name="__construct" visibility="public" complexity="10" crap="10" count="86"/>
       <line num="75" type="stmt" count="86"/>
@@ -500,9 +534,13 @@
       <line num="376" type="stmt" count="1"/>
       <line num="377" type="stmt" count="1"/>
       <line num="380" type="stmt" count="1"/>
+      <line num="382" type="stmt" count="1"/>
       <line num="383" type="stmt" count="1"/>
+      <line num="384" type="stmt" count="1"/>
       <line num="385" type="stmt" count="1"/>
       <line num="386" type="stmt" count="1"/>
+      <line num="387" type="stmt" count="1"/>
+      <line num="388" type="stmt" count="1"/>
       <line num="395" type="method" name="getNextRecord" visibility="public" complexity="2" crap="2" count="3"/>
       <line num="397" type="stmt" count="3"/>
       <line num="398" type="stmt" count="3"/>
@@ -521,6 +559,7 @@
       <line num="427" type="stmt" count="4"/>
       <line num="429" type="stmt" count="1"/>
       <line num="436" type="method" name="getPagination" visibility="public" complexity="1" crap="1" count="2"/>
+      <line num="438" type="stmt" count="2"/>
       <line num="439" type="stmt" count="2"/>
       <line num="440" type="stmt" count="2"/>
       <line num="441" type="stmt" count="2"/>
@@ -530,6 +569,7 @@
       <line num="445" type="stmt" count="2"/>
       <line num="446" type="stmt" count="2"/>
       <line num="447" type="stmt" count="2"/>
+      <line num="448" type="stmt" count="2"/>
       <line num="455" type="method" name="getPreviousPageNumber" visibility="public" complexity="3" crap="3.03" count="4"/>
       <line num="457" type="stmt" count="4"/>
       <line num="458" type="stmt" count="4"/>
@@ -581,17 +621,19 @@
       <line num="587" type="stmt" count="45"/>
       <line num="595" type="method" name="hasCurrentRecord" visibility="private" complexity="3" crap="3" count="5"/>
       <line num="597" type="stmt" count="5"/>
+      <line num="598" type="stmt" count="5"/>
       <line num="599" type="stmt" count="5"/>
       <line num="600" type="stmt" count="5"/>
       <line num="601" type="stmt" count="5"/>
+      <line num="602" type="stmt" count="5"/>
       <line num="610" type="method" name="hasNextRecord" visibility="private" complexity="2" crap="2" count="3"/>
       <line num="612" type="stmt" count="3"/>
       <line num="613" type="stmt" count="3"/>
       <line num="621" type="method" name="hasPreviousRecord" visibility="private" complexity="2" crap="2" count="2"/>
       <line num="623" type="stmt" count="2"/>
-      <metrics loc="626" ncloc="397" classes="1" methods="42" coveredmethods="39" conditionals="0" coveredconditionals="0" statements="160" coveredstatements="157" elements="202" coveredelements="196"/>
+      <metrics loc="626" ncloc="397" classes="1" methods="42" coveredmethods="39" conditionals="0" coveredconditionals="0" statements="168" coveredstatements="165" elements="210" coveredelements="204"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/ResponseParser.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/ResponseParser.php">
       <class name="CNIC\HEXONET\ResponseParser" namespace="global">
         <metrics complexity="16" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="36" elements="39" coveredelements="37"/>
       </class>
@@ -636,9 +678,9 @@
       <line num="87" type="stmt" count="6"/>
       <metrics loc="90" ncloc="70" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="36" elements="39" coveredelements="37"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/ResponseTemplateManager.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/ResponseTemplateManager.php">
       <class name="CNIC\HEXONET\ResponseTemplateManager" namespace="global">
-        <metrics complexity="12" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="27" coveredelements="27"/>
+        <metrics complexity="12" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="24" elements="31" coveredelements="31"/>
       </class>
       <line num="45" type="method" name="generateTemplate" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="47" type="stmt" count="1"/>
@@ -660,16 +702,20 @@
       <line num="100" type="stmt" count="87"/>
       <line num="109" type="method" name="isTemplateMatchHash" visibility="public" complexity="2" crap="2" count="2"/>
       <line num="111" type="stmt" count="2"/>
+      <line num="112" type="stmt" count="2"/>
       <line num="113" type="stmt" count="2"/>
       <line num="114" type="stmt" count="2"/>
+      <line num="115" type="stmt" count="2"/>
       <line num="124" type="method" name="isTemplateMatchPlain" visibility="public" complexity="2" crap="2" count="2"/>
       <line num="126" type="stmt" count="2"/>
       <line num="127" type="stmt" count="2"/>
+      <line num="128" type="stmt" count="2"/>
       <line num="129" type="stmt" count="2"/>
       <line num="130" type="stmt" count="2"/>
-      <metrics loc="134" ncloc="81" classes="1" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="27" coveredelements="27"/>
+      <line num="131" type="stmt" count="2"/>
+      <metrics loc="134" ncloc="81" classes="1" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="24" elements="31" coveredelements="31"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/ResponseTranslator.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/ResponseTranslator.php">
       <class name="CNIC\HEXONET\ResponseTranslator" namespace="global">
         <metrics complexity="13" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="22" elements="23" coveredelements="23"/>
       </class>
@@ -698,9 +744,9 @@
       <line num="94" type="stmt" count="87"/>
       <metrics loc="97" ncloc="64" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="22" elements="23" coveredelements="23"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/SessionClient.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/SessionClient.php">
       <class name="CNIC\HEXONET\SessionClient" namespace="global">
-        <metrics complexity="10" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="24" coveredelements="24"/>
+        <metrics complexity="10" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="22" elements="26" coveredelements="26"/>
       </class>
       <line num="20" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="5"/>
       <line num="22" type="stmt" count="5"/>
@@ -717,6 +763,8 @@
       <line num="54" type="stmt" count="1"/>
       <line num="55" type="stmt" count="1"/>
       <line num="56" type="stmt" count="1"/>
+      <line num="57" type="stmt" count="1"/>
+      <line num="58" type="stmt" count="1"/>
       <line num="59" type="stmt" count="1"/>
       <line num="60" type="stmt" count="1"/>
       <line num="61" type="stmt" count="1"/>
@@ -726,9 +774,9 @@
       <line num="73" type="stmt" count="2"/>
       <line num="74" type="stmt" count="1"/>
       <line num="76" type="stmt" count="2"/>
-      <metrics loc="79" ncloc="53" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="24" coveredelements="24"/>
+      <metrics loc="79" ncloc="53" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="22" elements="26" coveredelements="26"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/HEXONET/SocketConfig.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/HEXONET/SocketConfig.php">
       <class name="CNIC\HEXONET\SocketConfig" namespace="global">
         <metrics complexity="29" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="55" elements="66" coveredelements="66"/>
       </class>
@@ -800,12 +848,12 @@
       <line num="218" type="stmt" count="3"/>
       <metrics loc="221" ncloc="128" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="55" elements="66" coveredelements="66"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/RecordInterface.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/RecordInterface.php">
       <metrics loc="54" ncloc="17" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <file name="/home/ad.ks.de/kschwarz/git/php-sdk/src/ResponseInterface.php">
+    <file name="/home/ad.ks.de/kschwarz/git/rtldev-middleware-php-sdk/src/ResponseInterface.php">
       <metrics loc="288" ncloc="89" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="16" loc="2741" ncloc="1614" classes="12" methods="117" coveredmethods="108" conditionals="0" coveredconditionals="0" statements="601" coveredstatements="589" elements="718" coveredelements="697"/>
+    <metrics files="16" loc="2741" ncloc="1613" classes="13" methods="118" coveredmethods="108" conditionals="0" coveredconditionals="0" statements="648" coveredstatements="635" elements="766" coveredelements="743"/>
   </project>
 </coverage>

@@ -499,7 +499,7 @@ class Client
         // @codeCoverageIgnoreEnd
         curl_setopt_array($curl, [
             // CURLOPT_VERBOSE         => $this->debugMode,
-            CURLOPT_CONNECTTIMEOUT  => 5000,
+            CURLOPT_CONNECTTIMEOUT  => 5, // 5s
             CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
             CURLOPT_POST            => 1,
             CURLOPT_POSTFIELDS      => $data,

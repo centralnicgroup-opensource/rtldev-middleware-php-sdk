@@ -17,7 +17,7 @@
   "maxGroupSize": 32,
   "maxSearchGroupSize": 25,
   "roleSeparator": ":",
-  "socketTimeout": 300000,
+  "socketTimeout": 300,
   "needsIDNConvert": true,
   "supportsPremiumDomains": true,
   "maxDNSuggestions": 100
