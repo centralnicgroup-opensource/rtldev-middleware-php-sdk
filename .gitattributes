@@ -1,0 +1,4 @@
+# Exclude all files except those in the src and docs folders, and package.json
+* !src/**
+* !docs/**
+!package.json
