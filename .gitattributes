@@ -1,7 +1,8 @@
-# Allow src directory
-/src/** export-ignore
-/docs/** export-ignore
+# Ignore all files and directories
+* export-ignore
 
-# Allow package.json and LICENSE files
-/package.json export-ignore
-/LICENSE export-ignore
+# Except for the src directory
+\!/src/**
+\!/docs/**
+\!/package.json
+\!/LICENSE
