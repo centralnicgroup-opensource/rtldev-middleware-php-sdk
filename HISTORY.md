@@ -1,3 +1,10 @@
+## [8.0.8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.7...v8.0.8) (2023-04-18)
+
+
+### Bug Fixes
+
+* **gitattributes:** ignore non essential ([b61dab2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b61dab2c5f547aa78981c3576ffc1340586bec24))
+
 ## [8.0.7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.6...v8.0.7) (2023-04-18)
 
 
