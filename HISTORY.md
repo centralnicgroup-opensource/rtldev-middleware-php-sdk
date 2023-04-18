@@ -1,3 +1,10 @@
+## [8.0.9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.8...v8.0.9) (2023-04-18)
+
+
+### Bug Fixes
+
+* **gitattributes:** ignore non essential files from composer archive ([534e4b8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/534e4b8e7bacf32cdae5a552e38f5210f44f2dd4))
+
 ## [8.0.8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.7...v8.0.8) (2023-04-18)
 
 
