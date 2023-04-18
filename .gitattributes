@@ -1,8 +1,18 @@
 # Ignore all files and directories
 * export-ignore
 
-# Except for the src directory
-\!/src/**
-\!/docs/**
-\!/package.json
-\!/LICENSE
+# Except for the src directory and its files
+!/src
+/src/*
+!/src/**/*
+
+# Except for the docs directory and its files
+!/docs
+/docs/*
+!/docs/**/*
+
+# Except for the package.json file
+!/package.json
+
+# Except for the LICENSE file
+!/LICENSE
