@@ -1,18 +1,17 @@
-# Ignore all files and directories
-* export-ignore
+# The ! character is not supported in .gitattributes so we have to include all the files or directories here to exclude from composer archive
+# If a file or directory is not excluded using the export-ignore attribute, it will be included in the archive by default.
 
-# Except for the src directory and its files
-!/src
-/src/*
-!/src/**/*
+# directories to exclude
+.devcontainer export-ignore
+.github export-ignore
+reports export-ignore
+tests export-ignore
 
-# Except for the docs directory and its files
-!/docs
-/docs/*
-!/docs/**/*
-
-# Except for the package.json file
-!/package.json
-
-# Except for the LICENSE file
-!/LICENSE
+# files to exclude
+.releaserc.json export-ignore
+composer.json export-ignore
+phpdoc.dist.xml export-ignore
+phpunit.xml.dist export-ignore
+*.sh export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
