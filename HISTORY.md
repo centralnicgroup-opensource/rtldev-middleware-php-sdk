@@ -1,3 +1,13 @@
+## [8.0.10](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.9...v8.0.10) (2023-06-19)
+
+
+### Bug Fixes
+
+* **docker-compose:** upgrade to PHP 7.4 (required for phpDocumentor 3.3.1) ([d6e06e8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d6e06e8ef6b9a98104ada35520760e7eeb032a8e))
+* **dockerfile:** upgrade to PHP 7.4 (requirement for phpDocumentor 3.3.1) ([517754a](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/517754a5f7c0ec3d783b11cfed55bf3f66f4b20d))
+* **gh actions:** use PHP 7.4 (requirement for phpDocumentor 3.3.1) ([081ac88](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/081ac88ff8571dda3f3f28ed0691a9243eb2354f))
+* **phpdocumentor:** upgrade to 3.3.1 case (sentivity bug of produced file names) ([4803f86](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/4803f864fea58c5c8f205930ba7dfccbb79284eb)), closes [#40](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/issues/40)
+
 ## [8.0.9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.8...v8.0.9) (2023-04-18)
 
 
