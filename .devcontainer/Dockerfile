@@ -2,7 +2,7 @@ FROM composer:lts as composer
 FROM node:lts as nodejs
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
-ARG PHP_VERSION=7.3
+ARG PHP_VERSION=7.4
 ENV PHP_VERSION=$PHP_VERSION
 
 #Environment variables to configure php
