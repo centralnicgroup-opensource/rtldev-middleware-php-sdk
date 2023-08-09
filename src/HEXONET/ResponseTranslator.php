@@ -31,7 +31,10 @@ class ResponseTranslator
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requesteddelete)" => "Deletion of this Domain Name has been requested. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)" => "Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH" => "The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.",
-        "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN" => "This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible."
+        "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN" => "This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.",
+        "SkipPregQuote" => [
+            "Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1"
+        ]
     ];
 
     /**
@@ -64,33 +67,83 @@ class ResponseTranslator
             $newraw = RTM::$templates["invalid"];
         }
 
+        // Iterate through the description-to-regex mapping
         // generic API response description rewrite
+        $data = false;
         foreach (self::$descriptionRegexMap as $regex => $val) {
-            // match the response for given description
-            // NOTE: we match if the description starts with the given description
-            // it would also match if it is followed by additional text
-            $qregex = "/description=" . preg_quote($regex, "/") . "([^\r\n]+)?/i";
-            if (preg_match($qregex, $newraw)) {
-                // replace command place holder with API command name used
-                if (isset($cmd["COMMAND"])) {
-                    $val = str_replace("{COMMAND}", $cmd["COMMAND"], $val);
+            // Check if $regex should be treated as multiple patterns
+            if ($regex === "SkipPregQuote") {
+                // Iterate through each temporary pattern in $val
+                foreach ($val as $tmpRegex => $tmpVal) {
+                    // Attempt to find a match using the temporary pattern
+                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal, $cmd, $ph);
+
+                    // If a match is found, exit the inner loop
+                    if ($data) {
+                        break;
+                    }
                 }
-                // switch to better readable response if matching
-                $tmp = preg_replace($qregex, "description=" . $val, $newraw);
-                if (strcmp($tmp, $newraw) !== 0) {
-                    $newraw = $tmp;
-                    break;
-                }
+            } else {
+                // Escape the pattern and attempt to find a match
+                // for the given pattern ($regex)
+                $escapedRegex = preg_quote($regex, "/");
+                $data = self::findMatch($escapedRegex, $newraw, $val, $cmd, $ph);
+            }
+
+            // If a match is found, exit the outer loop
+            if ($data) {
+                break;
             }
         }
 
-        // generic replacing of place holder vars
+        return $newraw;
+    }
+
+    /**
+     * Finds a match in the given text and performs replacements based on patterns and placeholders.
+     *
+     * This function searches for a specified regular expression pattern in the provided text and
+     * performs replacements based on the matched pattern, command data, and placeholder values.
+     *
+     * @param string $regex The regular expression pattern to search for.
+     * @param string $newraw The input text where the match will be searched for and replacements applied.
+     * @param string $val The value to be used in replacement if a match is found.
+     * @param array $cmd The command data containing replacements, if applicable.
+     * @param array $ph An array of placeholder values for further replacements.
+     *
+     * @return bool Returns true if replacements were performed, false otherwise.
+     */
+    protected static function findMatch($regex, &$newraw, $val, $cmd, $ph)
+    {
+        // match the response for given description
+        // NOTE: we match if the description starts with the given description
+        // it would also match if it is followed by additional text
+        $qregex = "/description=" . $regex . "([^\\r\\n]+)?/i";
+        $return = false;
+
+        if (preg_match($qregex, $newraw)) {
+            // If "COMMAND" exists in $cmd, replace "{COMMAND}" in $val
+            if (isset($cmd["COMMAND"])) {
+                $val = str_replace("{COMMAND}", $cmd["COMMAND"], $val);
+            }
+
+            // If $newraw matches $qregex, replace with "description=" . $val
+            $tmp = preg_replace($qregex, "description=" . $val, $newraw);
+            if (strcmp($tmp, $newraw) !== 0) {
+                $newraw = $tmp;
+                $return = true;
+            }
+        }
+
+        // Generic replacing of placeholder vars
         if (preg_match("/\{[^}]+\}/", $newraw)) {
             foreach ($ph as $key => $val) {
                 $newraw = preg_replace("/\{" . preg_quote($key) . "\}/", $val, $newraw);
             }
             $newraw = preg_replace("/\{[^}]+\}/", "", $newraw);
+            $return = true;
         }
-        return $newraw;
+
+        return $return;
     }
 }
