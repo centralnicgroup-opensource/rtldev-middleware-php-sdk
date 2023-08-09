@@ -164,5 +164,8 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
         // template match
         $r = RT::translate("[RESPONSE]\r\ncode=219\r\nEOF\r\n", $cmd);
         $this->assertEquals("[RESPONSE]\r\nCODE=423\r\nDESCRIPTION=Invalid API response. Contact Support\r\nEOF\r\n", $r);
+        // DNS match
+        $r = RT::translate("[RESPONSE]\r\ncode=505\r\ndescription=Invalid attribute value syntax; resource record [213123 A 1.2.4.5asdfa]\r\nEOF\r\n", []);
+        $this->assertEquals("[RESPONSE]\r\ncode=505\r\ndescription=Invalid Syntax for DNSZone Resource Record: 213123 A 1.2.4.5asdfa\r\nEOF\r\n", $r);
     }
 }

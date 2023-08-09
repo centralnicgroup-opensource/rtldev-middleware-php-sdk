@@ -39,6 +39,7 @@
     "php": ">=7.3.0"
   },
   "require-dev": {
+    "squizlabs/php_codesniffer": "^3.7",
     "phpunit/phpunit": "^9.5"
   },
   "autoload": {
@@ -48,7 +49,7 @@
   },
   "scripts": {
     "docs": "rm -rf build docs;test ! -e phpdoc.phar && wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.1/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
-    "codeFix": "phpcbf --ignore=\"*/vendor/*\" --standard=PSR12 -q src tests",
+    "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=PSR12 -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html"
   }
 }

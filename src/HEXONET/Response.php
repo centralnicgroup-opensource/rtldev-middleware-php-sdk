@@ -372,7 +372,7 @@ class Response // implements \CNIC\ResponseInterface
         $lh = [];
         foreach ($this->records as $rec) {
             $data = $rec->getData();
-            foreach($data as $col => $val) {
+            foreach ($data as $col => $val) {
                 if ((bool)preg_match($this->paginationkeys, $col)) {
                     unset($data[$col]);
                 }
