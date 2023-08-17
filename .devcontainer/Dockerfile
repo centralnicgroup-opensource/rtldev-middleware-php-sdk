@@ -2,6 +2,7 @@ FROM composer:lts as composer
 FROM node:lts as nodejs
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
+FROM php:7.4-cli as phpcli
 ARG PHP_VERSION=7.4
 ENV PHP_VERSION=$PHP_VERSION
 
@@ -20,12 +21,25 @@ ENV SCRIPTS_DIR_PATH supporting_files/scripts
 # Install packages
 # Suppress an apt-key warning about standard out not being a terminal. Use in this script is safe.
 RUN apt-get update \
-    && apt-get -y upgrade \
-    && apt-get -y install software-properties-common cron
-RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv 4F4EA0AAE5267A6C
+    && apt-get upgrade -y \
+    && apt-get install -y -f software-properties-common ca-certificates lsb-release apt-transport-https cron gnupg wget curl jq sudo git postfix python3-setuptools pwgen zip unzip
+
+# # WORKAROUND: research how to use official php image 
+# RUN apt-get update && apt install --no-install-recommends
+
+#INSTALL XDEBUG
+RUN pecl install xdebug-3.1.6 && docker-php-ext-enable xdebug
+
+RUN apt-get update && apt-get install -y -f libonig-dev libzip-dev libcurl4-openssl-dev libxml2-dev zlib1g-dev libpng-dev libxml2-dev git \
+    && docker-php-ext-install curl gd xml mbstring zip
+
+# Install APCu and APC backward compatibility
+RUN pecl install apcu \
+    && pecl install apcu_bc-1.0.3 \
+    && docker-php-ext-enable apcu --ini-name 10-docker-php-ext-apcu.ini \
+    && docker-php-ext-enable apc --ini-name 20-docker-php-ext-apc.ini
     
-RUN apt-get -y install postfix python3-setuptools wget jq sudo git php${PHP_VERSION} php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl php${PHP_VERSION}-curl
+#RUN apt-get -y install php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring  php${PHP_VERSION}-zip php${PHP_VERSION}-curl
 
 # Cleanup
 RUN apt-get -y autoremove && \
@@ -47,13 +61,6 @@ COPY ${CONFIGURATION_DIR_PATH}/01-error_reporting.ini /etc/php/${PHP_VERSION}/cl
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 ######################### DEVELOPMENT ENVIRONMENT ADDITIONS ###############################
-# install latest git & zsh
-RUN add-apt-repository ppa:git-core/ppa \
-    && apt-get update \
-    && apt-get -y install --no-install-recommends git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && update-locale
 
 # specifics to user vscode
 ARG USERNAME="vscode"
