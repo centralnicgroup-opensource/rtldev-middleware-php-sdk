@@ -1,3 +1,10 @@
+## [8.0.11](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.10...v8.0.11) (2023-08-24)
+
+
+### Bug Fixes
+
+* **hexonet/responsetranslator.php:** auto-reword DNS update error ([f5bdc51](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/f5bdc51b8f26ce40704756441e89c735c18ba47c))
+
 ## [8.0.10](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.9...v8.0.10) (2023-06-19)
 
 

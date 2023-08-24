@@ -160,6 +160,13 @@
 </dt>
 <dd>translate a raw api response</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/CNIC-HEXONET-ResponseTranslator.html#method_findMatch">findMatch()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+<dd>Finds a match in the given text and performs replacements based on patterns and placeholders.</dd>
+
         </dl>
 
 
@@ -198,7 +205,7 @@
     <span class="phpdocumentor-signature__visibility">private</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$descriptionRegexMap</span>
-     = <span class="phpdocumentor-signature__default-value">[&quot;Authorization failed; Operation forbidden by ACL&quot; =&gt; &quot;Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)/WRONG AUTH&quot; =&gt; &quot;This Domain is locked and the given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)&quot; =&gt; &quot;This Domain is locked. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requested)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requestedcreate)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requesteddelete)&quot; =&gt; &quot;Deletion of this Domain Name has been requested. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)&quot; =&gt; &quot;Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH&quot; =&gt; &quot;The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN&quot; =&gt; &quot;This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.&quot;]</span></code>
+     = <span class="phpdocumentor-signature__default-value">[&quot;Authorization failed; Operation forbidden by ACL&quot; =&gt; &quot;Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)/WRONG AUTH&quot; =&gt; &quot;This Domain is locked and the given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)&quot; =&gt; &quot;This Domain is locked. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requested)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requestedcreate)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requesteddelete)&quot; =&gt; &quot;Deletion of this Domain Name has been requested. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)&quot; =&gt; &quot;Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH&quot; =&gt; &quot;The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN&quot; =&gt; &quot;This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.&quot;, &quot;SkipPregQuote&quot; =&gt; [&quot;Invalid attribute value syntax; resource record \\[(.+)\\]&quot; =&gt; &quot;Invalid Syntax for DNSZone Resource Record: \$1&quot;]]</span></code>
 
     
     
@@ -225,7 +232,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/ResponseTranslator.php"><a href="files/src-hexonet-responsetranslator.html"><abbr title="src/HEXONET/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">47</span>
 
     </aside>
 
@@ -273,6 +280,92 @@
     <span class="phpdocumentor-signature__response_type">string</span>
             &mdash;
         
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_findMatch">
+        findMatch()
+        <a href="classes/CNIC-HEXONET-ResponseTranslator.html#method_findMatch" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/ResponseTranslator.php"><a href="files/src-hexonet-responsetranslator.html"><abbr title="src/HEXONET/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">116</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Finds a match in the given text and performs replacements based on patterns and placeholders.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">findMatch</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$regex</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$newraw</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$val</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ph</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+        <section class="phpdocumentor-description"><p>This function searches for a specified regular expression pattern in the provided text and
+performs replacements based on the matched pattern, command data, and placeholder values.</p>
+</section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$regex</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The regular expression pattern to search for.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$newraw</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The input text where the match will be searched for and replacements applied.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$val</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The value to be used in replacement if a match is found.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$cmd</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The command data containing replacements, if applicable.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$ph</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>An array of placeholder values for further replacements.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>Returns true if replacements were performed, false otherwise.</p>
+</section>
+
     
 </article>
             </section>

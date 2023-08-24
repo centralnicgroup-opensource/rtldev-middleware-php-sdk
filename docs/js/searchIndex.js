@@ -696,6 +696,11 @@ Search.appendIndex(
             "summary": "translate\u0020a\u0020raw\u0020api\u0020response",
             "url": "classes/CNIC-HEXONET-ResponseTranslator.html#method_translate"
         },                {
+            "fqsen": "\\CNIC\\HEXONET\\ResponseTranslator\u003A\u003AfindMatch\u0028\u0029",
+            "name": "findMatch",
+            "summary": "Finds\u0020a\u0020match\u0020in\u0020the\u0020given\u0020text\u0020and\u0020performs\u0020replacements\u0020based\u0020on\u0020patterns\u0020and\u0020placeholders.",
+            "url": "classes/CNIC-HEXONET-ResponseTranslator.html#method_findMatch"
+        },                {
             "fqsen": "\\CNIC\\HEXONET\\ResponseTranslator\u003A\u003A\u0024descriptionRegexMap",
             "name": "descriptionRegexMap",
             "summary": "hidden\u0020class\u0020var\u0020of\u0020API\u0020description\u0020regex\u0020mappings\u0020for\u0020translation",
