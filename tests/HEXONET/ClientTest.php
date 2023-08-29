@@ -283,7 +283,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), true);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
-        if (!is_null($rec)) { // phpStan
+        if ($rec !== null) {
             $this->assertNotNull($rec->getDataByKey("SESSION"));
         }
     }
@@ -321,7 +321,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), true);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
-        if (!is_null($rec)) { // phpStan
+        if ($rec !== null) {
             $this->assertNotNull($rec->getDataByKey("SESSION"));
         }
     }
@@ -501,7 +501,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if (!is_null($nr)) { // phpStan
+        if ($nr !== null) {
             $this->assertEquals($nr->isSuccess(), true);
             $this->assertEquals($nr->getRecordsLimitation(), 2);
             $this->assertEquals($nr->getRecordsCount(), 2);
@@ -540,7 +540,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if (!is_null($nr)) { // phpStan
+        if ($nr !== null) {
             $this->assertEquals($nr->isSuccess(), true);
             $this->assertEquals($nr->getRecordsLimitation(), 2);
             $this->assertEquals($nr->getRecordsCount(), 2);
