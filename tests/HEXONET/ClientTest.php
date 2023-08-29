@@ -368,7 +368,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), false);
         $this->assertEquals($r->getCode(), 421);
-        $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error");
+        $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error (Could not resolve host: gregeragregaegaegag.com).");
     }
 
     public function testRequestFlattenCommand(): void
