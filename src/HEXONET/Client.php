@@ -519,8 +519,8 @@ class Client
         $r = curl_exec($curl);
         $error = null;
         if ($r === false) {
-            $r = "httperror";
             $error = curl_error($curl);
+            $r = "httperror|" . $error;
         }
         $response = new Response($r, $mycmd, $cfg);
 

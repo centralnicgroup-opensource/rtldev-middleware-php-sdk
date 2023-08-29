@@ -49,11 +49,20 @@ class ResponseTranslator
         $newraw = empty($raw) ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
+        // curl error handling
+        $isHTTPError = substr($newraw, 0, 10) === "httperror|";
+        if ($isHTTPError) {
+            list($newraw, $httperror) = explode("|", $newraw);
+        }
+
         // Explicit call for a static template
         if (RTM::hasTemplate($newraw)) {
             // don't use getTemplate as it leads to endless loop as of again
             // creating a response instance
             $newraw = RTM::$templates[$newraw];
+            if ($isHTTPError && strlen($httperror)) {
+                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $httperror . ")", $newraw);
+            }
         }
 
         // Missing CODE or DESCRIPTION in API Response
