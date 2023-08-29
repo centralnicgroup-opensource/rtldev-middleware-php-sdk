@@ -1,3 +1,10 @@
+## [8.0.12](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.11...v8.0.12) (2023-08-29)
+
+
+### Bug Fixes
+
+* **http error:** details are now added to the response ([316194e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/316194e293d0804581bfb5823c034771b9d90dd6))
+
 ## [8.0.11](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.10...v8.0.11) (2023-08-24)
 
 
