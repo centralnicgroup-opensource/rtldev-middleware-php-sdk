@@ -25,7 +25,7 @@ RUN apt-get update \
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv 4F4EA0AAE5267A6C
     
-RUN apt-get -y install postfix python3-setuptools wget jq sudo git php${PHP_VERSION} php${PHP_VERSION}-xdebug pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl php${PHP_VERSION}-curl
+RUN apt-get -y install postfix python3-setuptools wget jq sudo git php${PHP_VERSION} php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl php${PHP_VERSION}-curl
 
 # Cleanup
 RUN apt-get -y autoremove && \
