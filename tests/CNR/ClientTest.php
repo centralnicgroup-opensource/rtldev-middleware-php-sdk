@@ -494,7 +494,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
     }
 
     public function testRequestAUTOIdnConvert2(): void
-    {       
+    {
         self::$cl->setCredentials(self::$user, self::$pw)
                 ->useOTESystem();
         $r = self::$cl->request([
