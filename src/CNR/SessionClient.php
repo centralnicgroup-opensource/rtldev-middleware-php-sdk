@@ -128,13 +128,16 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
         }
 
         $asciipattern = "/^[a-zA-Z0-9\.-]+$/i";
-        $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i"; // DOMAIN params get auto-converted by API, RSRBE-7149 for NS coverage
-        $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS)$/i";
+        // DOMAIN params get auto-converted by API
+        // RSRBE-7149 for NS coverage
+        $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i";
+        $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS|DNSZONE)$/i";
         $toconvert = [];
         $idxs = [];
         foreach ($cmd as $key => $val) {
             if (
                 ((bool)preg_match($keypattern, $key)
+                    // RSRTPM-3167: OBJECTID is a PATTERN in CNR API and not supporting IDNs
                     || ($key === "OBJECTID"
                         && isset($cmd["OBJECTCLASS"])
                         && (bool)preg_match($objclasspattern, $cmd["OBJECTCLASS"])

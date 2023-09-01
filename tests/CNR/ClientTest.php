@@ -493,9 +493,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
     }
 
     public function testRequestAUTOIdnConvert2(): void
-    {
-        $this->markTestSkipped('RSRTPM-3167'); //TODO
-        /*
+    {       
         self::$cl->setCredentials(self::$user, self::$pw)
                 ->useOTESystem();
         $r = self::$cl->request([
@@ -506,15 +504,12 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
             "LIMIT" => 1
         ]);
         $this->assertInstanceOf(R::class, $r);
-        print_r($r->getPlain());
-        die();
         $this->assertEquals($r->isSuccess(), true);
         $cmd = $r->getCommand();
         $this->assertEquals($r->getCode(), 200);
         $keys = array_keys($cmd);
         $this->assertEquals(in_array("OBJECTID", $keys), true);
-        $this->assertEquals($cmd["OBJECTID"], "dömäin.com");
-        */
+        $this->assertEquals($cmd["OBJECTID"], "xn--dmin-moa0i.com");
     }
 
     public function testRequestAUTOIdnConvert3(): void
