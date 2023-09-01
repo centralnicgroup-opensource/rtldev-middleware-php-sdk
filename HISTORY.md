@@ -1,3 +1,10 @@
+## [8.0.13](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.12...v8.0.13) (2023-09-01)
+
+
+### Bug Fixes
+
+* **auto idn converting:** of OBJECTID parameter if OBJECTCLASS matches expectations (Registrar CNR) ([a105535](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a105535e99335b95148f77cccd3ddd4e36c01e9c))
+
 ## [8.0.12](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.11...v8.0.12) (2023-08-29)
 
 
