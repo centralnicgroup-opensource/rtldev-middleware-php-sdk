@@ -550,7 +550,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if (!is_null($nr)) { // phpStan
+        if ($nr !== null) {
             $this->assertEquals($nr->isSuccess(), true);
             $this->assertEquals($nr->getRecordsLimitation(), 2);
             $this->assertEquals($nr->getRecordsCount(), 2);
@@ -589,7 +589,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if (!is_null($nr)) { // phpStan
+        if ($nr !== null) {
             $this->assertEquals($nr->isSuccess(), true);
             $this->assertEquals($nr->getRecordsLimitation(), 2);
             $this->assertEquals($nr->getRecordsCount(), 2);
