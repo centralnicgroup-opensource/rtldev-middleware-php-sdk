@@ -488,7 +488,8 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         // JIRA ISSUE ID - RSRBE-7149
         // If covered, the api command shouldn't get changed any longer.
         $cmd = $r->getCommand();
-        $this->assertEquals($cmd["NAMESERVER"], "xn--dmin-moa0i.example");
+        $val = function_exists("idn_to_ascii") ? "xn--dmin-moa0i.example" : "dömäin.example";
+        $this->assertEquals($cmd["NAMESERVER"], $val);
         //--------------- EXCEPTION [END] -----------
     }
 
@@ -509,32 +510,9 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->getCode(), 200);
         $keys = array_keys($cmd);
         $this->assertEquals(in_array("OBJECTID", $keys), true);
-        $this->assertEquals($cmd["OBJECTID"], "xn--dmin-moa0i.com");
+        $val = function_exists("idn_to_ascii") ? "xn--dmin-moa0i.com" : "dömäin.com";
+        $this->assertEquals($cmd["OBJECTID"], $val);
     }
-
-    public function testRequestAUTOIdnConvert3(): void
-    {
-        $this->markTestSkipped('RSRTPM-3167'); //TODO
-        /*
-        self::$cl->setCredentials(self::$user, self::$pw)
-                ->useOTESystem();
-        $r = self::$cl->request([
-            "COMMAND" => "QueryObjectlogList",
-            "OBJECTID" => "dömäin.com",
-            "OBJECTCLASS" => "SSLCERT",
-            "MINDATE" => date("Y-m-d H:i:s"),
-            "LIMIT" => 1
-        ]);
-        $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), false);
-        $cmd = $r->getCommand();
-        $this->assertEquals($r->getCode(), 541);
-        $keys = array_keys($cmd);
-        $this->assertEquals(in_array("OBJECTID", $keys), true);
-        $this->assertEquals($cmd["OBJECTID"], "dömäin.com");
-        */
-    }
-
 
     public function testRequestCodeTmpErrorDbg(): void
     {
