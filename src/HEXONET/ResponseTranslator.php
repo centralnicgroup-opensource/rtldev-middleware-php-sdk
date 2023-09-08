@@ -23,6 +23,7 @@ class ResponseTranslator
      * @var array
      */
     private static $descriptionRegexMap = [
+        // HX
         "Authorization failed; Operation forbidden by ACL" => "Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)/WRONG AUTH" => "This Domain is locked and the given Authorization Code is wrong. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)" => "This Domain is locked. Initiating a Transfer is therefore impossible.",
@@ -32,8 +33,12 @@ class ResponseTranslator
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)" => "Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH" => "The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN" => "This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.",
+        // CNR
+        "Missing required attribute; premium domain name. please provide required parameters" => "Confirm the Premium pricing by providing the necessary premium domain price data.",
         "SkipPregQuote" => [
-            "Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1"
+            // HX
+            "Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1",
+            "Missing required attribute; CLASS(?:=| \[MUST BE )PREMIUM_([\w\+]+)[\s\]]" => "Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_$1.",
         ]
     ];
 
@@ -127,7 +132,7 @@ class ResponseTranslator
         // match the response for given description
         // NOTE: we match if the description starts with the given description
         // it would also match if it is followed by additional text
-        $qregex = "/description=" . $regex . "([^\\r\\n]+)?/i";
+        $qregex = "/description\s*=\s*" . $regex . "([^\\r\\n]+)?/i";
         $return = false;
 
         if (preg_match($qregex, $newraw)) {
