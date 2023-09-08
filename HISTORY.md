@@ -1,3 +1,10 @@
+## [8.0.14](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.13...v8.0.14) (2023-09-08)
+
+
+### Bug Fixes
+
+* **responsetranslator.php:** updated response messages when premium price is not available ([e6939ce](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e6939cebda513db7ed029a5e2800018f50ab3ff5))
+
 ## [8.0.13](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.12...v8.0.13) (2023-09-01)
 
 

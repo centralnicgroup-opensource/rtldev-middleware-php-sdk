@@ -205,7 +205,25 @@
     <span class="phpdocumentor-signature__visibility">private</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$descriptionRegexMap</span>
-     = <span class="phpdocumentor-signature__default-value">[&quot;Authorization failed; Operation forbidden by ACL&quot; =&gt; &quot;Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)/WRONG AUTH&quot; =&gt; &quot;This Domain is locked and the given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)&quot; =&gt; &quot;This Domain is locked. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requested)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requestedcreate)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requesteddelete)&quot; =&gt; &quot;Deletion of this Domain Name has been requested. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)&quot; =&gt; &quot;Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH&quot; =&gt; &quot;The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;, &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN&quot; =&gt; &quot;This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.&quot;, &quot;SkipPregQuote&quot; =&gt; [&quot;Invalid attribute value syntax; resource record \\[(.+)\\]&quot; =&gt; &quot;Invalid Syntax for DNSZone Resource Record: \$1&quot;]]</span></code>
+     = <span class="phpdocumentor-signature__default-value">[
+    // HX
+    &quot;Authorization failed; Operation forbidden by ACL&quot; =&gt; &quot;Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)/WRONG AUTH&quot; =&gt; &quot;This Domain is locked and the given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (clientTransferProhibited)&quot; =&gt; &quot;This Domain is locked. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requested)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requestedcreate)&quot; =&gt; &quot;Registration of this Domain Name has not yet completed. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (requesteddelete)&quot; =&gt; &quot;Deletion of this Domain Name has been requested. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)&quot; =&gt; &quot;Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH&quot; =&gt; &quot;The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.&quot;,
+    &quot;Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN&quot; =&gt; &quot;This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.&quot;,
+    // CNR
+    &quot;Missing required attribute; premium domain name. please provide required parameters&quot; =&gt; &quot;Confirm the Premium pricing by providing the necessary premium domain price data.&quot;,
+    &quot;SkipPregQuote&quot; =&gt; [
+        // HX
+        &quot;Invalid attribute value syntax; resource record \\[(.+)\\]&quot; =&gt; &quot;Invalid Syntax for DNSZone Resource Record: \$1&quot;,
+        &quot;Missing required attribute; CLASS(?:=| \\[MUST BE )PREMIUM_([\\w\\+]+)[\\s\\]]&quot; =&gt; &quot;Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_\$1.&quot;,
+    ],
+]</span></code>
 
     
     
@@ -232,7 +250,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/ResponseTranslator.php"><a href="files/src-hexonet-responsetranslator.html"><abbr title="src/HEXONET/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">47</span>
+    <span class="phpdocumentor-element-found-in__line">52</span>
 
     </aside>
 
@@ -295,7 +313,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/ResponseTranslator.php"><a href="files/src-hexonet-responsetranslator.html"><abbr title="src/HEXONET/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">125</span>
+    <span class="phpdocumentor-element-found-in__line">130</span>
 
     </aside>
 
