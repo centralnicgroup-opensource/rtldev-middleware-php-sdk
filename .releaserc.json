@@ -11,19 +11,14 @@
         [
             "@semantic-release/exec",
             {
-                "prepareCmd": "./updateVersion.sh ${nextRelease.version}"
+                "prepareCmd": "./updateVersion.sh ${nextRelease.version}",
+                "successCmd": "gulp publish --notes \"${encodeURIComponent(nextRelease.notes)}\""
             }
         ],
         [
             "@semantic-release/git",
             {
-                "assets": [
-                    "HISTORY.md",
-                    "@(package?(-lock)|composer).json",
-                    "docs",
-                    "report",
-                    "src/HEXONET/Client.php"
-                ]
+                "assets": ["HISTORY.md", "@(package?(-lock)|composer).json", "docs", "report", "src/HEXONET/Client.php"]
             }
         ],
         "@semantic-release/github"

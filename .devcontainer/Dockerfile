@@ -1,5 +1,5 @@
 FROM composer:lts as composer
-FROM node:lts as nodejs
+FROM node:latest as nodejs
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 ARG PHP_VERSION=7.4
