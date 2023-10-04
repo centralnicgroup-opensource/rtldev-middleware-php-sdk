@@ -11,7 +11,7 @@ jobs:
     secrets: inherit
 
   release:
-    name: Release @ PHP 7.4 | NodeJS LTS - x86 - ubuntu-latest
+    name: Release @ PHP 7.4 | ubuntu-latest
     runs-on: ubuntu-latest
     needs: build
 
@@ -21,10 +21,10 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Setup NodeJS LTS
+      - name: Setup NodeJS ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: lts/*
+          node-version: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
           check-latest: true
           cache: "npm"
       - name: Install PHP
@@ -40,4 +40,5 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RTLDEV_MW_NOTIFICATION_URI: ${{ secrets.RTLDEV_MW_NOTIFICATION_URI }}
         run: npx semantic-release
