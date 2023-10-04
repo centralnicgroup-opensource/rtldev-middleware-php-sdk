@@ -1,3 +1,10 @@
+## [8.0.15](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.14...v8.0.15) (2023-10-04)
+
+
+### Bug Fixes
+
+* **hexonet:** add response translator mapping for invalid domain name; RSRMID-271 ([5c40a9d](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5c40a9d28d58b42eb1f1154e550c602b47652652))
+
 ## [8.0.14](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.13...v8.0.14) (2023-09-08)
 
 
