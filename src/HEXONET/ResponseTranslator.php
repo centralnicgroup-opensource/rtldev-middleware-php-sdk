@@ -39,6 +39,7 @@ class ResponseTranslator
             // HX
             "Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1",
             "Missing required attribute; CLASS(?:=| \[MUST BE )PREMIUM_([\w\+]+)[\s\]]" => "Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_$1.",
+            "Syntax error in Parameter DOMAIN \((.+)\)" => "The Domain Name $1 is invalid."
         ]
     ];
 
