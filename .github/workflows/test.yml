@@ -46,7 +46,7 @@ jobs:
           - 7.2
           - 7.3
           - 7.4
-          - 8.1
+          - ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
 
     name: Test Matrix @ PHP v${{ matrix.php-version }}
     runs-on: ubuntu-latest
