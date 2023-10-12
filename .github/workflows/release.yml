@@ -11,13 +11,13 @@ jobs:
     secrets: inherit
 
   release:
-    name: Release @ PHP 7.4 | ubuntu-latest
+    name: Release @ ubuntu-latest
     runs-on: ubuntu-latest
     needs: build
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
           check-latest: true
           cache: "npm"
-      - name: Install PHP
+      - name: Install PHP ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
