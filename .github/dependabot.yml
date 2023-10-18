@@ -30,6 +30,6 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-    prefix: "fix(composer dep)"
+      prefix: "fix(composer dep)"
       prefix-development: "chore(composer dev dep)"
       include: "scope"
