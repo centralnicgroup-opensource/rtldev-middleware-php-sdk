@@ -1,16 +1,35 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  commit-message:
-    prefix: chore
-- package-ecosystem: composer
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  commit-message:
-    prefix: chore
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "fix(npm dep)"
+      prefix-development: "chore(npm dev dep)"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore(ci dep)"
+      include: "scope"
+
+  - package-ecosystem: "docker"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore(docker dep)"
+      include: "scope"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+    prefix: "fix(composer dep)"
+      prefix-development: "chore(composer dev dep)"
+      include: "scope"
