@@ -13,8 +13,8 @@ on:
   workflow_call:
 
 jobs:
-  test:
-    name: Linting
+  linting:
+    name: 🧪 Linting
     runs-on: ubuntu-latest
 
     steps:
@@ -44,10 +44,10 @@ jobs:
       matrix:
         php-version: ${{ fromJson(vars.RTLDEV_MW_CI_PHP_MATRIX) }}
 
-    name: Test Matrix @ PHP v${{ matrix.php-version }}
+    name: 🧪 Testing
     runs-on: ubuntu-latest
 
-    needs: test
+    needs: linting
 
     steps:
       - name: Checkout
