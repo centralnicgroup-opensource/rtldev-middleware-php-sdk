@@ -8,6 +8,7 @@ permissions:
 jobs:
   tests:
     uses: ./.github/workflows/test.yml
+    secrets: inherit
   dependabot:
     name: "Auto-merge Dependabot PR"
     runs-on: ubuntu-latest
