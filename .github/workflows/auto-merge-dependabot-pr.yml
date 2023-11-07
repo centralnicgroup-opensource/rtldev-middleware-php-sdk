@@ -11,6 +11,7 @@ jobs:
     secrets: inherit
     permissions:
       contents: read
+      packages: read
 
   dependabot:
     name: Auto-merge Dependabot PR
