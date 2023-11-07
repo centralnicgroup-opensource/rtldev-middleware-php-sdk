@@ -43,7 +43,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         ], true);
         #$pwenc = rawurlencode(self::$pw);
         self::$cl->setCredentials();
-        
+
         $expected = implode("&", [
             "s_login=" . self::$user,
             "s_pw=%2A%2A%2A",
