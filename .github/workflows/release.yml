@@ -2,18 +2,22 @@ name: Release
 on:
   push:
     branches:
-      - "master"
+      - master
 
 jobs:
   build:
-    name: "Build"
+    name: Build
     uses: ./.github/workflows/test.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   release:
-    name: Release @ ubuntu-latest
-    runs-on: ubuntu-latest
+    name: Release
+    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
     needs: build
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -39,6 +43,6 @@ jobs:
           composer run-script docs
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.${{ secrets.GITHUB_TOKEN }} }}
           RTLDEV_MW_NOTIFICATION_URI: ${{ secrets.RTLDEV_MW_NOTIFICATION_URI }}
         run: npx semantic-release

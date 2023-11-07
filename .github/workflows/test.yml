@@ -3,10 +3,13 @@ name: Test
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   linting:
     name: 🧪 Linting
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
 
     steps:
       - name: Checkout
@@ -36,8 +39,7 @@ jobs:
         php-version: ${{ fromJson(vars.RTLDEV_MW_CI_PHP_MATRIX) }}
 
     name: 🧪 Testing
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
     needs: linting
 
     steps:
