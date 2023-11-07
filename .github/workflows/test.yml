@@ -9,7 +9,7 @@ permissions:
 jobs:
   linting:
     name: 🧪 Linting
-    runs-on: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
+    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
 
     steps:
       - name: Checkout
@@ -39,7 +39,7 @@ jobs:
         php-version: ${{ fromJson(vars.RTLDEV_MW_CI_PHP_MATRIX) }}
 
     name: 🧪 Testing
-    runs-on: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
+    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
     needs: linting
 
     steps:

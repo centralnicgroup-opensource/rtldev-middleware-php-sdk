@@ -14,7 +14,7 @@ jobs:
 
   dependabot:
     name: Auto-merge Dependabot PR
-    runs-on: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
+    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
     needs: tests
     permissions:
       pull-requests: write
