@@ -41,11 +41,21 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
             "SUBUSER" => self::$user,
             "PASSWORD" => self::$pw
         ], true);
-        $pwenc = rawurlencode(self::$pw);
+        #$pwenc = rawurlencode(self::$pw);
         self::$cl->setCredentials();
+        
+        $expected = implode("&", [
+            "s_login=" . self::$user,
+            "s_pw=%2A%2A%2A",
+            implode("%0A", [
+                "s_command=COMMAND%3DCheckAuthentication",
+                "SUBUSER%3D" . self::$user,
+                "PASSWORD%3D%2A%2A%2A"
+            ])
+        ]);
+
         $this->assertEquals(
-            "s_login=" . self::$user . "&s_pw=%2A%2A%2A" .
-                "&s_command=COMMAND%3DCheckAuthentication%0ASUBUSER%3D" . self::$user . "%0APASSWORD%3D%2A%2A%2A",
+            $expected,
             $enc
         );
     }
