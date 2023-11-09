@@ -19,6 +19,7 @@ jobs:
     needs: build
     permissions:
       contents: write
+      issues: write
 
     steps:
       - name: Checkout
@@ -44,6 +45,6 @@ jobs:
           composer run-script docs
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RTLDEV_MW_NOTIFICATION_URI: ${{ secrets.RTLDEV_MW_NOTIFICATION_URI }}
+          GITHUB_TOKEN: ${{ secrets.RTLDEV_MW_CI_TOKEN }}
+          RTLDEV_MW_NOTIFICATION_URI: ${{ secrets.RTLDEV_MW_CI_NOTIFICATION_URI }}
         run: npx semantic-release
