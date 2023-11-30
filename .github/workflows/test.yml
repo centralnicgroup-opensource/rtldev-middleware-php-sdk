@@ -1,62 +1,13 @@
-name: Test
-
+name: Dependabot auto-merge & tests
 on:
-  workflow_call:
-
-permissions:
-  contents: read
-  packages: read
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
-  linting:
-    name: 🧪 Linting
-    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Install Dependencies
-        run: |
-          echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
-          composer update
-      - name: Super Linter Code Base
-        uses: github/super-linter/slim@v5
-        env:
-          FILTER_REGEX_INCLUDE: "/src/*|/tests/*|updateVersion.sh"
-          DEFAULT_BRANCH: master
-          VALIDATE_PHP: true
-          VALIDATE_PHP_PHPCS: true
-          VALIDATE_PHP_PHPSTAN: true
-          VALIDATE_BASH: true
-          VALIDATE_ALL_CODEBASE: false
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  test_matrix:
-    strategy:
-      matrix:
-        php-version: ${{ fromJson(vars.RTLDEV_MW_CI_PHP_MATRIX) }}
-
-    name: 🧪 Testing
-    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
-    needs: linting
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Install Dependencies::PHP${{ matrix.php-version }}
-        run: |
-          echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
-          composer update
-      - name: Code Validation
-        env:
-          TESTS_USER_HEXONET: ${{ secrets.TESTS_USER_HEXONET }}
-          TESTS_USERPASSWORD_HEXONET: ${{ secrets.TESTS_USERPASSWORD_HEXONET }}
-          TESTS_USER_CNR: ${{ secrets.TESTS_USER_CNR }}
-          TESTS_USERPASSWORD_CNR: ${{ secrets.TESTS_USERPASSWORD_CNR }}
-        run: composer run-script test
+  tests:
+    uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/auto-merge-dependabot-pr.yml
+    secrets: inherit
+    with:
+      repository: ${{ github.repository }}

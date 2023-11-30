@@ -5,47 +5,8 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/test.yml
-    secrets: inherit
-    permissions:
-      contents: read
-      packages: read
-
   release:
-    name: Release
-    runs-on: ${{ vars.RTLDEV_MW_CI_OS }}
-    needs: build
-    permissions:
-      contents: write
-      issues: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Setup NodeJS ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ vars.RTLDEV_MW_CI_NODE_VERSION }}
-          check-latest: true
-          cache: "npm"
-      - name: Install PHP ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
-      - name: Install dependencies
-        run: |
-          npm ci
-          echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
-          composer update --no-dev
-          composer run-script docs
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.RTLDEV_MW_CI_TOKEN }}
-          TEAMS_NOTIFICATION_URI: ${{ secrets.RTLDEV_MW_CI_NOTIFICATION_URI }}
-          COMMIT_SHA: ${{ github.sha }}
-        run: npx semantic-release
+    uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/release.yml
+    secrets: inherit
+    with:
+      repository: ${{ github.repository }}
