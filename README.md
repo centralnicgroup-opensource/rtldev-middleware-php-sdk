@@ -25,7 +25,7 @@ PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.hex
 
 ## Authors
 
-* **Kai Schwarz** - *development* - [PapaKai](https://github.com/papakai)
+* **Kai Schwarz** - *development* - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
 
 ## License
 
