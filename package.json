@@ -48,6 +48,6 @@
     "@semantic-release/git": "^10.0.1",
     "gulp": "^4.0.2",
     "rtldev-middleware-gulp-release-notification-plugin": "github:centralnicgroup-opensource/rtldev-middleware-gulp-release-notification-plugin#semver:^1.0.3",
-    "semantic-release": "^22.0.8"
+    "semantic-release": "^22.0.9"
   }
 }
