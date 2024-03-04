@@ -1,3 +1,10 @@
+## [8.0.16](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.15...v8.0.16) (2024-3-4)
+
+
+### Bug Fixes
+
+* **responsetranslator.php:** reviewed error messaging for domain transfers pre-checks ([c003b9b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/c003b9bd27d874ffa410333ad5e70e603742a7d3))
+
 ## [8.0.15](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.14...v8.0.15) (2023-10-04)
 
 
