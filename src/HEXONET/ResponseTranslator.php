@@ -33,6 +33,7 @@ class ResponseTranslator
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY STATUS (pendingdelete)" => "Deletion of this Domain Name is pending. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY WRONG AUTH" => "The given Authorization Code is wrong. Initiating a Transfer is therefore impossible.",
         "Request is not available; DOMAIN TRANSFER IS PROHIBITED BY AGE OF THE DOMAIN" => "This Domain Name is within 60 days of initial registration. Initiating a Transfer is therefore impossible.",
+        "Attribute value is not unique; DOMAIN is already assigned to your account" => "You cannot transfer a domain that is already on your account at the registrar's system.",
         // CNR
         "Missing required attribute; premium domain name. please provide required parameters" => "Confirm the Premium pricing by providing the necessary premium domain price data.",
         "SkipPregQuote" => [
