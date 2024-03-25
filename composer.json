@@ -36,7 +36,8 @@
     }
   ],
   "require": {
-    "php": ">=7.3.0"
+    "php": ">=7.3.0",
+    "centralnic-reseller/idn-converter": "^1.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7",
