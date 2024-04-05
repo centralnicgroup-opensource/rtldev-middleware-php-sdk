@@ -1,3 +1,10 @@
+## [8.0.17](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.16...v8.0.17) (2024-04-05)
+
+
+### Performance Improvements
+
+* **client.php & sessionclient.php:** reviewed IDN Conversion with php-idna-translator plugin ([b0001ad](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b0001ad1df59ac259e4248256435503681c78f91))
+
 ## [8.0.16](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.15...v8.0.16) (2024-3-4)
 
 
