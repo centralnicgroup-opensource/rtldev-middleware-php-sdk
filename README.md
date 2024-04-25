@@ -11,7 +11,9 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 ## Resources
 
-* [Documentation](https://centralnicgroup-public.github.io/rtldev-middleware-documentation/docs/hexonet/sdks/php-sdk/)
+* Documentation:
+    * [HEXONET](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
+    * [CentralNic Reseller](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
 * [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
 
 ## Usage
