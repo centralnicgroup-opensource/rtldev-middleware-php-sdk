@@ -1,4 +1,5 @@
 {
+    "ci": false,
     "plugins": [
         "@semantic-release/commit-analyzer",
         "@semantic-release/release-notes-generator",
@@ -9,9 +10,18 @@
             }
         ],
         [
-            "@semantic-release/exec",
+            "semantic-release-replace-plugin",
             {
-                "prepareCmd": "./updateVersion.sh ${nextRelease.version}"
+                "replacements": [
+                    {
+                        "files": [
+                            "src/HEXONET/Client.php"
+                        ],
+                        "from": "\"\\d+\\.\\d+\\.\\d+\"",
+                        "to": "\"${nextRelease.version}\"",
+                        "countMatches": true
+                    }
+                ]
             }
         ],
         [
