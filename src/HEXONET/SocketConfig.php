@@ -54,10 +54,13 @@ class SocketConfig
     private $user;
     /**
      * list of http request parameters
-     * @var array
+     * @var array<string>
      */
     private $parameters;
 
+    /**
+     * @param array<mixed> $parameters
+     */
     public function __construct(array $parameters)
     {
         $this->parameters = $parameters;
@@ -72,7 +75,7 @@ class SocketConfig
 
     /**
      * Create POST data string out of connection data
-     * @param array $command API Command to request
+     * @param array<mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */

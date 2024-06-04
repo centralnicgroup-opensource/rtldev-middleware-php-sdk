@@ -45,7 +45,7 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
     /**
      * Perform API login to start session-based communication.
      * Use given specific command parameters.
-     * @param array $params given specific command parameters
+     * @param array<string> $params given specific command parameters
      * @param string $otp optional one time password
      * @return \CNIC\HEXONET\Response Response
      */
@@ -70,8 +70,8 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
 
     /**
      * Convert domain names to idn + punycode if necessary
-     * @param array $domains list of domain names (or tlds)
-     * @return array
+     * @param array<string> $domains given specific command parameters
+     * @return array<mixed>
      */
     public function IDNConvert($domains)
     {
@@ -80,8 +80,8 @@ class SessionClient extends \CNIC\HEXONET\SessionClient
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
-     * @param array $cmd API command
-     * @return array
+     * @param array<string> $cmd API command
+     * @return array<string>
      */
     protected function autoIDNConvert($cmd)
     {

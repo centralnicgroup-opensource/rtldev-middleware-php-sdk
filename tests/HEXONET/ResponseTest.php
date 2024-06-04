@@ -105,12 +105,13 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertContains("TOTAL", $colKeys);
     }
 
+
     public function testGetCurrentRecordRows(): void
     {
         $r = new R("listP0");
         $rec = $r->getCurrentRecord();
         $this->assertNotNull($rec);
-        if (!is_null($rec)) { // phpStan
+        if ($rec !== null) { // phpStan
             $this->assertEquals([
                 "COUNT" => "2",
                 "DOMAIN" => "0-60motorcycletimes.com",
@@ -142,7 +143,7 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $r = new R("listP0");
         $rec = $r->getNextRecord();
         $this->assertNotNull($rec);
-        if (!is_null($rec)) { // phpStan
+        if ($rec !== null) { // phpStan
             $this->assertEquals(["DOMAIN" => "0-be-s01-0.com"], $rec->getData());
         }
         $this->assertNull($r->getNextRecord());
@@ -169,7 +170,7 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $r->getNextRecord();
         $pr = $r->getPreviousRecord();
         $this->assertNotNull($pr);
-        if (!is_null($pr)) { // phpStan
+        if ($pr !== null) { // phpStan
             $this->assertEquals([
                 "COUNT" => "2",
                 "DOMAIN" => "0-60motorcycletimes.com",

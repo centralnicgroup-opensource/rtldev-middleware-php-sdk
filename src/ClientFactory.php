@@ -6,7 +6,7 @@ class ClientFactory
 {
     /**
      * Returns Client Instance by configuration
-     * @param array $params configuration settings
+     * @param array<mixed> $params configuration settings
      * @param \CNIC\HEXONET\Logger $logger Logger Instance (optional)
      * @return \CNIC\HEXONET\SessionClient
      * @throws \Exception

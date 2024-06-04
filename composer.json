@@ -41,7 +41,8 @@
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "phpstan/phpstan": "^1.11"
   },
   "autoload": {
     "psr-4": {
@@ -50,7 +51,8 @@
   },
   "scripts": {
     "docs": "rm -rf build docs;test ! -e phpdoc.phar && wget https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.3.1/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
-    "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=PSR12 -q src tests",
+    "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
+    "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html"
   }
 }

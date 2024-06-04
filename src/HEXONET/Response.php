@@ -21,7 +21,7 @@ class Response // implements \CNIC\ResponseInterface
 {
     /**
      * The API Command used within this request
-     * @var array
+     * @var array<string>
      */
     private $command;
 
@@ -33,7 +33,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * hash representation of plain API response
-     * @var array
+     * @var array<string, mixed>
      */
     private $hash;
 
@@ -67,8 +67,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Constructor
      * @param string $raw API plain response
-     * @param array $cmd API command used within this request
-     * @param array $ph placeholder array to get vars in response description dynamically replaced
+     * @param array<string> $cmd API command used within this request
+     * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
      */
     public function __construct($raw, $cmd = [], $ph = [])
     {
@@ -154,7 +154,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get API response as Hash
-     * @return array API response hash
+     * @return array<mixed> API response hash
      */
     public function getHash()
     {
@@ -228,7 +228,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Add a record to the record list
-     * @param array $h row hash data
+     * @param array<string> $h row hash data
      * @return $this
      */
     public function addRecord($h)
@@ -267,7 +267,9 @@ class Response // implements \CNIC\ResponseInterface
     public function getColumnKeys($filterPaginationKeys = false)
     {
         if ($filterPaginationKeys) {
-            return preg_grep($this->paginationkeys, $this->columnkeys, PREG_GREP_INVERT);
+            // Ensure that preg_grep always returns an array
+            $paginationKeys = preg_grep($this->paginationkeys, $this->columnkeys, PREG_GREP_INVERT) ?: [];
+            return array_values($paginationKeys);
         }
         return $this->columnkeys;
     }
@@ -283,7 +285,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Command used in this request
-     * @return array command
+     * @return array<string> command
      */
     public function getCommand()
     {
@@ -365,7 +367,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Response as List Hash including useful meta data for tables
-     * @return array hash including list meta data and array of rows in hash notation
+     * @return array<mixed> hash including list meta data and array of rows in hash notation
      */
     public function getListHash()
     {
@@ -431,7 +433,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get object containing all paging data
-     * @return array paginator data
+     * @return array<string, int|null> paginator data
      */
     public function getPagination()
     {

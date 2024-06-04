@@ -11,12 +11,13 @@
 	"customizations": {
 	  "vscode": {
 		"extensions": [
-		  "GitHub.vscode-pull-request-github",
-		  "ms-vscode-remote.remote-containers",
-		  "felixfbecker.php-debug",
-		  "bmewburn.vscode-intelephense-client",
-		  "mrmlnc.vscode-apache",
-		  "xdebug.php-debug"
+			"GitHub.vscode-pull-request-github",
+			"ms-vscode-remote.remote-containers",
+			"felixfbecker.php-debug",
+			"bmewburn.vscode-intelephense-client",
+			"mrmlnc.vscode-apache",
+			"xdebug.php-debug",
+			"neilbrayfield.php-docblocker"
 		],
 		"settings": {
 		  "terminal.integrated.defaultProfile.linux": "zsh",
@@ -29,6 +30,14 @@
 		}
 	  }
 	},
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+		  "version": "latest"
+		}
+	  },
+	  "mounts": [
+		"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/WSL_USER,type=bind,consistency=cached"
+	  ],
 	"remoteUser": "vscode",
 	"postCreateCommand": "zsh /post-create.sh"
   }

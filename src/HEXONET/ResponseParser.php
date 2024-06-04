@@ -19,10 +19,11 @@ final class ResponseParser
     /**
      * Method to parse plain API response into js object
      * @param string $raw API plain response
-     * @return array API response as hash
+     * @return array<string, mixed> API response as hash
      */
     public static function parse($raw)
     {
+        /** @var array<string, mixed> $hash */
         $hash = [];
         $tmp = preg_replace("/\r\n/", "\n", $raw);
         if (is_null($tmp)) {
@@ -58,7 +59,7 @@ final class ResponseParser
 
     /**
      * Serialize given parsed response hash back to plain text
-     * @param array $r API response as hash
+     * @param array<mixed> $r API response as hash
      * @return string plain API response
      */
     public static function serialize($r)
