@@ -1,28 +1,26 @@
-########### DOCS ###########
-  # zi snippet <URL>        # Raw syntax with URL
-  # zi snippet OMZ::<PATH>  # Shorthand OMZ::         (http://github.com/ohmyzsh/ohmyzsh/raw/master/)
-  # zi snippet OMZL::<PATH> # Shorthand OMZ::lib      (http://github.com/ohmyzsh/ohmyzsh/raw/master/lib)
-  # zi snippet OMZT::<PATH> # Shorthand OMZ::themes   (http://github.com/ohmyzsh/ohmyzsh/raw/master/themes)
-  # zi snippet OMZP::<PATH> # Shorthand OMZ::plugins  (http://github.com/ohmyzsh/ohmyzsh/raw/master/plugins)
-  source <(curl -sL git.io/zi-loader); zzinit
-  zi snippet OMZP::git
-  zi snippet OMZP::vi-mode
-  zi snippet OMZP::pip
-  zi snippet OMZP::golang
-  zi snippet OMZP::command-not-found
-  zi snippet OMZP::colored-man-pages
-  zi snippet OMZP::ubuntu
-  zi light zsh-users/zsh-syntax-highlighting
-  zi light zsh-users/zsh-autosuggestions
-  zi light zsh-users/zsh-completions
-  zi light agnoster/agnoster-zsh-theme
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-export AGNOSTER_DISABLE_CONTEXT=1
-prompt_context() {
-  if [[ ! -z "$DEFAULT_USER" && "$USER" -ne "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
-  fi
-}
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
 
-# fix $(prompt_agnoster_main)
-setopt promptsubst
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+plugins=(git zsh-autosuggestions)
+
+source $ZSH/oh-my-zsh.sh
+
+DISABLE_AUTO_UPDATE=true
+DISABLE_UPDATE_PROMPT=true
+
+# enable terminal commands history
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

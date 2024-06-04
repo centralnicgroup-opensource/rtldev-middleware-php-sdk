@@ -12,3 +12,4 @@ php-sdk.phar
 php-sdk.phar.gz
 phpDocumentor.phar
 phpdoc.phar
+reports/**/*

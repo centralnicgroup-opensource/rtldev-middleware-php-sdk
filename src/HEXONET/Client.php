@@ -24,7 +24,7 @@ class Client
 {
     /**
      * registrar api settings
-     * @var array
+     * @var array<mixed>
      */
     public $settings;
     /**
@@ -49,7 +49,7 @@ class Client
     protected $ua;
     /**
      * additional curl options to use
-     * @var array
+     * @var array<string>
      */
     protected $curlopts = [];
     /**
@@ -70,8 +70,8 @@ class Client
      */
     public function __construct($path = "")
     {
-        $contents = file_get_contents($path) ?: "[]";
-        /** @var array $settings */
+        $contents = file_get_contents($path) ?: "";
+        /** @var array<mixed> $settings */
         $settings = json_decode($contents, true);
         $this->settings = $settings;
         $this->socketURL = "";
@@ -126,7 +126,7 @@ class Client
 
     /**
      * Serialize given command for POST request including connection configuration data
-     * @param string|array $cmd API command to encode
+     * @param string|array<string> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
      * @return string encoded POST data string
      */
@@ -164,7 +164,7 @@ class Client
      * Set a custom user agent (for platforms that use this SDK)
      * @param string $str user agent label
      * @param string $rv user agent revision
-     * @param array $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
+     * @param array<string, string> $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
      * @return $this
      */
     public function setUserAgent($str, $rv, $modules = [])
@@ -252,7 +252,7 @@ class Client
 
     /**
      * Apply session data (session id and system entity) to given php session object
-     * @param array $session php session instance ($_SESSION)
+     * @param array<mixed,mixed> $session php session instance ($_SESSION)
      * @return $this
      */
     public function saveSession(&$session)
@@ -267,7 +267,7 @@ class Client
     /**
      * Use existing configuration out of php session object
      * to rebuild and reuse connection settings
-     * @param array $session php session object ($_SESSION)
+     * @param array<mixed> $session php session object ($_SESSION)
      * @return $this
      */
     public function reuseSession(&$session)
@@ -361,8 +361,8 @@ class Client
 
     /**
      * Convert domain names to idn + punycode if necessary
-     * @param array $domains list of domain names (or tlds)
-     * @return array
+     * @param array<string> $domains list of domain names (or tlds)
+     * @return array<mixed>
      */
     public function IDNConvert($domains)
     {
@@ -371,8 +371,8 @@ class Client
 
     /**
      * Flatten API command's nested arrays for easier handling
-     * @param array $cmd API Command
-     * @return array
+     * @param array<mixed> $cmd API Command
+     * @return array<mixed>
      */
     protected function flattenCommand($cmd)
     {
@@ -395,8 +395,8 @@ class Client
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
-     * @param array $cmd API command
-     * @return array
+     * @param array<string> $cmd API command
+     * @return array<string>
      */
     protected function autoIDNConvert($cmd)
     {
@@ -443,7 +443,7 @@ class Client
 
     /**
      * Perform API request using the given command
-     * @param array $cmd API command to request
+     * @param array<mixed> $cmd API command to request
      * @return Response Response
      */
     public function request($cmd)
@@ -486,9 +486,8 @@ class Client
             ]
         ] + $this->curlopts);
 
-        // curl_exec with CURLOPT_USERAGENT returns string|false and not string|bool
         // which is by default tested for by phpStan
-        /** @var string|false $r */
+        /** @var string $r */
         $r = curl_exec($curl);
         $error = null;
         if ($r === false) {
@@ -520,7 +519,7 @@ class Client
         }
         $first = 0;
         if (array_key_exists("FIRST", $mycmd)) {
-            $first = $mycmd["FIRST"];
+            $first = (int) $mycmd["FIRST"];
         }
         $total = $rr->getRecordsTotalCount();
         $limit = $rr->getRecordsLimitation();
@@ -536,7 +535,7 @@ class Client
 
     /**
      * Request all pages/entries for the given query command
-     * @param array $cmd API list command to use
+     * @param array<string> $cmd API list command to use
      * @return Response[] Responses
      */
     public function requestAllResponsePages($cmd)

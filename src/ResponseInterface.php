@@ -19,10 +19,10 @@ interface ResponseInterface
     /**
      * Constructor
      * @param string $raw API plain response
-     * @param array $cmd API command used within this request
-     * @param array $ph placeholder array to get vars in response description dynamically replaced
+     * @param array<string> $cmd API command used within this request
+     * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
      */
-    public function __construct(string $raw, array $cmd, array $ph = []);
+    public function __construct($raw, $cmd, $ph = []);
 
     /**
      * Get API response code
@@ -50,7 +50,7 @@ interface ResponseInterface
 
     /**
      * Get API response as Hash
-     * @return array API response hash
+     * @return array<string> API response hash
      */
     public function getHash(): array;
 
@@ -97,7 +97,7 @@ interface ResponseInterface
 
     /**
      * Add a record to the record list
-     * @param array $h row hash data
+     * @param array<string> $h row hash data
      * @return ResponseInterface
      */
     public function addRecord($h): ResponseInterface;
@@ -131,7 +131,7 @@ interface ResponseInterface
 
     /**
      * Get Command used in this request
-     * @return array command
+     * @return array<string> command
      */
     public function getCommand(): array;
 
@@ -167,7 +167,7 @@ interface ResponseInterface
 
     /**
      * Get Response as List Hash including useful meta data for tables
-     * @return array hash including list meta data and array of rows in hash notation
+     * @return array<string> hash including list meta data and array of rows in hash notation
      */
     public function getListHash(): array;
 
@@ -191,7 +191,7 @@ interface ResponseInterface
 
     /**
      * Get object containing all paging data
-     * @return array paginator data
+     * @return array<string> paginator data
      */
     public function getPagination(): array;
 

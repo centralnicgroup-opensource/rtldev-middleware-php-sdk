@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <title>Code Coverage for /usr/share/rtldev-middleware-php-sdk/src/ResponseInterface.php</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="_css/bootstrap.min.css?v=9.2.27" rel="stylesheet" type="text/css">
-  <link href="_css/octicons.css?v=9.2.27" rel="stylesheet" type="text/css">
-  <link href="_css/style.css?v=9.2.27" rel="stylesheet" type="text/css">
+  <link href="_css/bootstrap.min.css?v=9.2.31" rel="stylesheet" type="text/css">
+  <link href="_css/octicons.css?v=9.2.31" rel="stylesheet" type="text/css">
+  <link href="_css/style.css?v=9.2.31" rel="stylesheet" type="text/css">
   <link href="_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
@@ -82,10 +82,10 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="19" href="#19">19</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="20" href="#20">20</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Constructor</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="21" href="#21">21</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$raw&nbsp;API&nbsp;plain&nbsp;response</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="22" href="#22">22</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&nbsp;$cmd&nbsp;API&nbsp;command&nbsp;used&nbsp;within&nbsp;this&nbsp;request</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="23" href="#23">23</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&nbsp;$ph&nbsp;placeholder&nbsp;array&nbsp;to&nbsp;get&nbsp;vars&nbsp;in&nbsp;response&nbsp;description&nbsp;dynamically&nbsp;replaced</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="22" href="#22">22</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&lt;string&gt;&nbsp;$cmd&nbsp;API&nbsp;command&nbsp;used&nbsp;within&nbsp;this&nbsp;request</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="23" href="#23">23</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&lt;string&gt;&nbsp;$ph&nbsp;placeholder&nbsp;array&nbsp;to&nbsp;get&nbsp;vars&nbsp;in&nbsp;response&nbsp;description&nbsp;dynamically&nbsp;replaced</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="24" href="#24">24</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="25" href="#25">25</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">string</span><span class="default">&nbsp;</span><span class="default">$raw</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="default">&nbsp;</span><span class="default">$cmd</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="default">&nbsp;</span><span class="default">$ph</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">[</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="25" href="#25">25</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$raw</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$cmd</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$ph</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">[</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="26" href="#26">26</a></td><td class="col-11 codeLine"></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="27" href="#27">27</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="28" href="#28">28</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;API&nbsp;response&nbsp;code</span></td></tr>
@@ -113,7 +113,7 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="50" href="#50">50</a></td><td class="col-11 codeLine"></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="51" href="#51">51</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="52" href="#52">52</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;API&nbsp;response&nbsp;as&nbsp;Hash</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="53" href="#53">53</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&nbsp;API&nbsp;response&nbsp;hash</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="53" href="#53">53</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&lt;string&gt;&nbsp;API&nbsp;response&nbsp;hash</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="54" href="#54">54</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="55" href="#55">55</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getHash</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="56" href="#56">56</a></td><td class="col-11 codeLine"></td></tr>
@@ -160,7 +160,7 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="97" href="#97">97</a></td><td class="col-11 codeLine"></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="98" href="#98">98</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="99" href="#99">99</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Add&nbsp;a&nbsp;record&nbsp;to&nbsp;the&nbsp;record&nbsp;list</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="100" href="#100">100</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&nbsp;$h&nbsp;row&nbsp;hash&nbsp;data</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="100" href="#100">100</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;array&lt;string&gt;&nbsp;$h&nbsp;row&nbsp;hash&nbsp;data</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="101" href="#101">101</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;ResponseInterface</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="102" href="#102">102</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="103" href="#103">103</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">addRecord</span><span class="keyword">(</span><span class="default">$h</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="default">ResponseInterface</span><span class="keyword">;</span></td></tr>
@@ -194,7 +194,7 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="131" href="#131">131</a></td><td class="col-11 codeLine"></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="132" href="#132">132</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="133" href="#133">133</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;Command&nbsp;used&nbsp;in&nbsp;this&nbsp;request</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="134" href="#134">134</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&nbsp;command</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="134" href="#134">134</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&lt;string&gt;&nbsp;command</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="135" href="#135">135</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="136" href="#136">136</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getCommand</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="137" href="#137">137</a></td><td class="col-11 codeLine"></td></tr>
@@ -230,7 +230,7 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="167" href="#167">167</a></td><td class="col-11 codeLine"></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="168" href="#168">168</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="169" href="#169">169</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;Response&nbsp;as&nbsp;List&nbsp;Hash&nbsp;including&nbsp;useful&nbsp;meta&nbsp;data&nbsp;for&nbsp;tables</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="170" href="#170">170</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&nbsp;hash&nbsp;including&nbsp;list&nbsp;meta&nbsp;data&nbsp;and&nbsp;array&nbsp;of&nbsp;rows&nbsp;in&nbsp;hash&nbsp;notation</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="170" href="#170">170</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&lt;string&gt;&nbsp;hash&nbsp;including&nbsp;list&nbsp;meta&nbsp;data&nbsp;and&nbsp;array&nbsp;of&nbsp;rows&nbsp;in&nbsp;hash&nbsp;notation</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="171" href="#171">171</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="172" href="#172">172</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getListHash</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="173" href="#173">173</a></td><td class="col-11 codeLine"></td></tr>
@@ -254,7 +254,7 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="191" href="#191">191</a></td><td class="col-11 codeLine"></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="192" href="#192">192</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="193" href="#193">193</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;object&nbsp;containing&nbsp;all&nbsp;paging&nbsp;data</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="194" href="#194">194</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&nbsp;paginator&nbsp;data</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="194" href="#194">194</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;array&lt;string&gt;&nbsp;paginator&nbsp;data</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="195" href="#195">195</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="196" href="#196">196</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">getPagination</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="197" href="#197">197</a></td><td class="col-11 codeLine"></td></tr>
@@ -358,16 +358,16 @@
     <h4>Legend</h4>
     <p><span class="legend covered-by-small-tests">Covered by small (and larger) tests</span><span class="legend covered-by-medium-tests">Covered by medium (and large) tests</span><span class="legend covered-by-large-tests">Covered by large tests (and tests of unknown size)</span><span class="legend not-covered">Not covered</span><span class="legend not-coverable">Not coverable</span></p>
     <p>
-     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.27</a> using <a href="https://secure.php.net/" target="_top">PHP 7.4.33</a> and <a href="https://phpunit.de/">PHPUnit 9.6.10</a> at Tue Aug 29 16:18:02 CEST 2023.</small>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.31</a> using <a href="https://secure.php.net/" target="_top">PHP 8.1.29</a> and <a href="https://phpunit.de/">PHPUnit 9.6.19</a> at Tue Jun 11 10:13:21 CEST 2024.</small>
     </p>
     <a title="Back to the top" id="toplink" href="#">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16"><path fill-rule="evenodd" d="M12 11L6 5l-6 6h12z"/></svg>
     </a>
    </footer>
   </div>
-  <script src="_js/jquery.min.js?v=9.2.27" type="text/javascript"></script>
-  <script src="_js/popper.min.js?v=9.2.27" type="text/javascript"></script>
-  <script src="_js/bootstrap.min.js?v=9.2.27" type="text/javascript"></script>
-  <script src="_js/file.js?v=9.2.27" type="text/javascript"></script>
+  <script src="_js/jquery.min.js?v=9.2.31" type="text/javascript"></script>
+  <script src="_js/popper.min.js?v=9.2.31" type="text/javascript"></script>
+  <script src="_js/bootstrap.min.js?v=9.2.31" type="text/javascript"></script>
+  <script src="_js/file.js?v=9.2.31" type="text/javascript"></script>
  </body>
 </html>

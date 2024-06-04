@@ -21,7 +21,7 @@ final class ResponseTemplateManager
 {
     /**
      * template container
-     * @var array
+     * @var array<string>
      */
     public static $templates = [
         "404" => "[RESPONSE]\r\nCODE=421\r\nDESCRIPTION=Page not found\r\nEOF\r\n",
@@ -79,7 +79,7 @@ final class ResponseTemplateManager
 
     /**
      * Return all available response templates
-     * @return array all available response instances
+     * @return array<mixed> all available response instances
      */
     public static function getTemplates()
     {
@@ -102,7 +102,7 @@ final class ResponseTemplateManager
 
     /**
      * Check if given API response hash matches a given template by code and description
-     * @param array $tpl api response hash
+     * @param array<string> $tpl api response hash
      * @param string $id template id
      * @return bool boolean result
      */

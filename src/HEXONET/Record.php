@@ -27,7 +27,7 @@ class Record // implements \CNIC\RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @var array
+     * @var array<string>
      */
     private $data;
 
@@ -41,7 +41,7 @@ class Record // implements \CNIC\RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @param array $data data object
+     * @param array<string> $data data object
      */
     public function __construct($data)
     {
@@ -50,7 +50,7 @@ class Record // implements \CNIC\RecordInterface
 
     /**
      * get row data
-     * @return array row data
+     * @return array<string> row data
      */
     public function getData()
     {

@@ -27,13 +27,13 @@ interface RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @param array $data data object
+     * @param array<string> $data data object
      */
     public function __construct(array $data);
 
     /**
      * get row data
-     * @return array row data
+     * @return array<string> row data
      */
     public function getData(): array;
 

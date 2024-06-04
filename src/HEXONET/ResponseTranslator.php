@@ -20,7 +20,7 @@ class ResponseTranslator
 {
     /**
      * hidden class var of API description regex mappings for translation
-     * @var array
+     * @var array<mixed>
      */
     private static $descriptionRegexMap = [
         // HX
@@ -47,8 +47,8 @@ class ResponseTranslator
     /**
      * translate a raw api response
      * @param String $raw API raw response
-     * @param Array $cmd requested API command
-     * @param Array $ph list of place holder vars
+     * @param array<string> $cmd requested API command
+     * @param array<string> $ph list of place holder vars
      * @return String
      */
     public static function translate($raw, $cmd, $ph = [])
@@ -74,7 +74,9 @@ class ResponseTranslator
 
         // Missing CODE or DESCRIPTION in API Response
         if (
-            (!preg_match("/description[\s]*=/i", $newraw) // missing description
+            (
+                $newraw === null
+                || !preg_match("/description[\s]*=/i", $newraw) // missing description
                 || preg_match("/description[\s]*=\r\n/i", $newraw) // empty description
                 || !preg_match("/code[\s]*=/i", $newraw) // missing code
             )
@@ -124,8 +126,8 @@ class ResponseTranslator
      * @param string $regex The regular expression pattern to search for.
      * @param string $newraw The input text where the match will be searched for and replacements applied.
      * @param string $val The value to be used in replacement if a match is found.
-     * @param array $cmd The command data containing replacements, if applicable.
-     * @param array $ph An array of placeholder values for further replacements.
+     * @param array<string> $cmd The command data containing replacements, if applicable.
+     * @param array<string> $ph An array of placeholder values for further replacements.
      *
      * @return bool Returns true if replacements were performed, false otherwise.
      */
@@ -145,7 +147,7 @@ class ResponseTranslator
 
             // If $newraw matches $qregex, replace with "description=" . $val
             $tmp = preg_replace($qregex, "description=" . $val, $newraw);
-            if (strcmp($tmp, $newraw) !== 0) {
+            if ($tmp !== null && strcmp($tmp, $newraw) !== 0) {
                 $newraw = $tmp;
                 $return = true;
             }
@@ -154,8 +156,15 @@ class ResponseTranslator
         // Generic replacing of placeholder vars
         if (preg_match("/\{[^}]+\}/", $newraw)) {
             foreach ($ph as $key => $val) {
+                if ($newraw === null) {
+                    continue;
+                }
                 $newraw = preg_replace("/\{" . preg_quote($key) . "\}/", $val, $newraw);
             }
+            if ($newraw === null) {
+                return $return;
+            }
+
             $newraw = preg_replace("/\{[^}]+\}/", "", $newraw);
             $return = true;
         }
