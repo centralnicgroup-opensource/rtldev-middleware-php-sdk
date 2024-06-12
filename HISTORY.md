@@ -1,3 +1,15 @@
+# [9.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.17...v9.0.0) (2024-06-12)
+
+
+### Bug Fixes
+
+* **php-stan-compatibility:** ensure compatibility with PHP 8.1 standards ([d5994a8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d5994a8cf5d212d690139e609f42558488ec0601))
+
+
+### BREAKING CHANGES
+
+* **php-stan-compatibility:** This update requires PHP 8.1 or higher and may break on systems using PHP versions lower than 8.1.
+
 ## [8.0.17](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.16...v8.0.17) (2024-04-05)
 
 
