@@ -388,7 +388,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         foreach ($idns as $idn => $ace) {
             $tmp = idn_to_ascii(
                 $idn,
-                ((bool)preg_match("/\.(be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $idn)) ?
+                ((bool)preg_match("/\.(art|be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $idn)) ?
                     IDNA_NONTRANSITIONAL_TO_ASCII :
                     IDNA_DEFAULT,
                 INTL_IDNA_VARIANT_UTS46
