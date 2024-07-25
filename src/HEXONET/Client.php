@@ -126,7 +126,7 @@ class Client
 
     /**
      * Serialize given command for POST request including connection configuration data
-     * @param string|array<string> $cmd API command to encode
+     * @param string|array<string, mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
      * @return string encoded POST data string
      */
@@ -164,7 +164,7 @@ class Client
      * Set a custom user agent (for platforms that use this SDK)
      * @param string $str user agent label
      * @param string $rv user agent revision
-     * @param array<string, string> $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
+     * @param array<mixed, string> $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
      * @return $this
      */
     public function setUserAgent($str, $rv, $modules = [])
@@ -535,7 +535,7 @@ class Client
 
     /**
      * Request all pages/entries for the given query command
-     * @param array<string> $cmd API list command to use
+     * @param array<string, mixed> $cmd API list command to use
      * @return Response[] Responses
      */
     public function requestAllResponsePages($cmd)
