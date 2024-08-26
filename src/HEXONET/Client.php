@@ -497,6 +497,7 @@ class Client
         $response = new Response($r, $mycmd, $cfg);
 
         curl_close($curl);
+        unset($curl); // https://php.watch/versions/8.0/resource-CurlHandle
         if ($this->debugMode) {
             $secured = $this->getPOSTData($mycmd, true);
             $this->logger->log($secured, $response, $error);
