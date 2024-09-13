@@ -26,9 +26,11 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         //session_start();
-        self::$cl = CF::getClient([
+        /** @var \CNIC\HEXONET\SessionClient $cl */
+        $cl = CF::getClient([
             "registrar" => "HEXONET"
         ]);
+        self::$cl = $cl;
         self::$user = getenv("TESTS_USER_HEXONET") ?: "";
         self::$pw = getenv("TESTS_USERPASSWORD_HEXONET") ?: "";
     }
@@ -342,7 +344,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRequestCurlInitFail(): void
     {
-        $this->markTestSkipped("Re-Activate with PHP8. PHP 7.4 throws an error.");
+        $this->markTestSkipped("Re-Activate with PHP8? PHP 7.4 throws an error, PHP8 as well.");
         /*
         self::$cl->settings["env"]["ote"]["url"] = "\0";
         self::$cl->setCredentials(self::$user, self::$pw)
@@ -374,7 +376,10 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
     public function testRequestFlattenCommand(): void
     {
         $cfgpath = implode(DIRECTORY_SEPARATOR, ["src", "HEXONET", "config.json"]);
-        $orgsettings = json_decode(file_get_contents($cfgpath), true);
+        $file = file_get_contents($cfgpath);
+        $this->assertNotEquals(false, $file);
+        // @phpstan-ignore-next-line
+        $orgsettings = json_decode($file, true);
         // restore
         self::$cl->settings["env"]["ote"]["url"] = $orgsettings["env"]["ote"]["url"];
         self::$cl->setCredentials(self::$user, self::$pw)

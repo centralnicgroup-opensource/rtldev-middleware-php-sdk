@@ -1,3 +1,0 @@
-CNRClient (CNICTEST\CNRClient)
- [ ] Get p o s t data secured
-

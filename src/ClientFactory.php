@@ -7,8 +7,8 @@ class ClientFactory
     /**
      * Returns Client Instance by configuration
      * @param array<mixed> $params configuration settings
-     * @param \CNIC\HEXONET\Logger $logger Logger Instance (optional)
-     * @return \CNIC\HEXONET\SessionClient
+     * @param \CNIC\HEXONET\Logger|\CNIC\CNR\Logger $logger Logger Instance (optional)
+     * @return \CNIC\HEXONET\SessionClient|\CNIC\CNR\SessionClient
      * @throws \Exception
      */
     public static function getClient($params, $logger = null)
@@ -53,7 +53,7 @@ class ClientFactory
         }
         if (is_null($logger)) {
             // if we dynamically instantiate via string, phpStan start complaining ...
-            if ($params["registrar"] === "HEXONET") {
+            if ((bool)preg_match("/^HEXONET|ISPAPI$/i", $params["registrar"])) {
                 $logger = new \CNIC\HEXONET\Logger();
             } else {
                 $logger = new \CNIC\CNR\Logger();

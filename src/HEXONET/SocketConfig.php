@@ -21,12 +21,12 @@ class SocketConfig
      * API system entity. "54cd" for LIVE system; "1234" for OT&E system
      * @var string
      */
-    private $entity;
+    protected $entity;
     /**
      * account name
      * @var string
      */
-    private $login;
+    protected $login;
     /**
      * one time password (2FA)
      * @var string
@@ -36,27 +36,27 @@ class SocketConfig
      * account password
      * @var string
      */
-    private $pw;
+    protected $pw;
     /**
      * remote ip address (ip filter)
      * @var string
      */
-    private $remoteaddr;
+    protected $remoteaddr;
     /**
      * API session id
      * @var string
      */
-    private $session;
+    protected $session;
     /**
      * subuser account name (subuser specific data view)
      * @var string
      */
-    private $user;
+    protected $user;
     /**
      * list of http request parameters
      * @var array<string>
      */
-    private $parameters;
+    protected $parameters;
 
     /**
      * @param array<mixed> $parameters
@@ -74,12 +74,12 @@ class SocketConfig
     }
 
     /**
-     * Create POST data string out of connection data
+     * Get POST data container of connection data
      * @param array<mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
-     * @return string POST data string
+     * @return array<string,string>
      */
-    public function getPOSTData($command = [], $secured = false)
+    protected function getPOSTDataParams($command, $secured)
     {
         $params = [];
         if (strlen($this->entity) && isset($this->parameters["entity"])) {
@@ -116,6 +116,18 @@ class SocketConfig
             }
             $params[$this->parameters["command"]] = substr($newcommand, 0, -1);
         }
+        return $params;
+    }
+
+    /**
+     * Create POST data string out of connection data
+     * @param array<mixed> $command API Command to request
+     * @param bool $secured if password has to be returned "hidden"
+     * @return string POST data string
+     */
+    public function getPOSTData($command = [], $secured = false)
+    {
+        $params = $this->getPOSTDataParams($command, $secured);
         return http_build_query($params);//RFC1738 x-www-form-urlencoded as default
     }
 

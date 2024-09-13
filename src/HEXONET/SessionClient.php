@@ -45,7 +45,7 @@ class SessionClient extends Client
     /**
      * Perform API login to start session-based communication.
      * Use given specific command parameters.
-     * @param array<string> $params given specific command parameters
+     * @param array<string,mixed> $params given specific command parameters
      * @param string $otp optional one time password
      * @return Response Response
      */

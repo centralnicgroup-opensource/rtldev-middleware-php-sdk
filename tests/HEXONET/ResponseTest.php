@@ -63,11 +63,15 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
 
     public function testGetFirstRecordIndexNoFirstRows(): void
     {
-        $h = RTM::getTemplate("OK")->getHash();
-        $h["PROPERTY"] = [
-            "DOMAIN" => ["mydomain1.com", "mydomain2.com"]
-        ];
-        $r = new R(RP::serialize($h));
+        $r = implode("\r\n", [
+            "[RESPONSE]",
+            "CODE=200",
+            "DESCRIPTION=Command completed successfully",
+            "PROPERTY[DOMAIN][0]=mydomain1.com",
+            "PROPERTY[DOMAIN][1]=mydomain2.com",
+            "EOF"
+        ]);
+        $r = new R($r);
         $this->assertEquals(0, $r->getFirstRecordIndex());
     }
 
@@ -215,11 +219,15 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
 
     public function testGetLastRecordIndexNoLastRows(): void
     {
-        $h = RTM::getTemplate("OK")->getHash();
-        $h["PROPERTY"] = [
-            "DOMAIN" => ["mydomain1.com", "mydomain2.com"]
-        ];
-        $r = new R(RP::serialize($h));
+        $r = implode("\r\n", [
+            "[RESPONSE]",
+            "CODE=200",
+            "DESCRIPTION=Command completed successfully",
+            "PROPERTY[DOMAIN][0]=mydomain1.com",
+            "PROPERTY[DOMAIN][1]=mydomain2.com",
+            "EOF"
+        ]);
+        $r = new R($r);
         $this->assertEquals(1, $r->getLastRecordIndex());
     }
 

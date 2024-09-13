@@ -2,7 +2,7 @@
 /tests/logs/*.log
 basic-test.php
 vendor
-report
+reports
 docs
 node_modules
 composer.lock
