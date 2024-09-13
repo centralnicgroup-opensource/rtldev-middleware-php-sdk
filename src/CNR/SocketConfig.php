@@ -30,7 +30,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
      * @return string POST data string
      */
     public function getPOSTData($command = [], $secured = false)
-    {        
+    {
         $params = $this->getPOSTDataParams($command, $secured);
         if ($this->getPersistent()) {
             $params["persistent"] = 1;
@@ -47,7 +47,8 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
      * @param boolean $value
      * @return $this
      */
-    public function setPersistent($value = false) {
+    public function setPersistent($value = false)
+    {
         $this->persistent = ($value !== false);
         return $this;
     }
@@ -56,7 +57,8 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
      * get persistent parameter returned
      * @return bool
      */
-    public function getPersistent() {
+    public function getPersistent()
+    {
         return $this->persistent;
     }
 

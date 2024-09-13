@@ -16,5 +16,4 @@ namespace CNIC\CNR;
  */
 class Response extends \CNIC\HEXONET\Response // implements \CNIC\ResponseInterface
 {
-
 }

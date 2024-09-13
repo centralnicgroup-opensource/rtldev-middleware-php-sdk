@@ -73,6 +73,8 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         
         self::$cl->setCredentials();
 
+        self::$cl->setCredentials();
+
         $this->assertEquals(
             $expected,
             $enc

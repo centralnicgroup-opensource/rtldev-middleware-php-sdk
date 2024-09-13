@@ -6,9 +6,25 @@ echo -e "\n"
 echo -e "\033[1mAnalysing files using PHPStan...\033[0m"
 echo ""
 
-vendor/bin/phpstan analyse -c .github/linters/phpstan.neon
+composer run-script phpstan
 if [[ $? -ne 0 ]]; then
     echo "PHPStan analysis failed. Commit aborted."
+    echo -e "\n"
+
+    # show current file path
+    echo -e "\033[1mPre-commit checks were executed by ${current_full_path}.\033[0m"
+    echo -e "\n"
+
+    exit 1
+fi
+
+echo -e "\n"
+echo -e "\033[1mAnalysing files using CodeSniffer...\033[0m"
+echo ""
+
+composer run-script lint
+if [[ $? -ne 0 ]]; then
+    echo "CodeSniffer analysis failed. Commit aborted."
     echo -e "\n"
 
     # show current file path
