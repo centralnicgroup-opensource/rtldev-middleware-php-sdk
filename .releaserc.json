@@ -31,7 +31,6 @@
                     "HISTORY.md",
                     "@(package?(-lock)|composer).json",
                     "docs",
-                    "report",
                     "src/HEXONET/Client.php"
                 ]
             }
