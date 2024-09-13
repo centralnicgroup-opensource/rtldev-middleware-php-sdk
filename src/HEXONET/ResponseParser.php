@@ -56,35 +56,4 @@ final class ResponseParser
         }
         return $hash;
     }
-
-    /**
-     * Serialize given parsed response hash back to plain text
-     * @param array<mixed> $r API response as hash
-     * @return string plain API response
-     */
-    public static function serialize($r)
-    {
-        $plain = "[RESPONSE]";
-        if (array_key_exists("PROPERTY", $r)) {
-            foreach ($r["PROPERTY"] as $key => $vals) {
-                foreach ($vals as $idx => $val) {
-                    $plain .= "\r\nPROPERTY[" . $key . "][" . $idx . "]=" . $val;
-                }
-            }
-        }
-        if (array_key_exists("CODE", $r)) {
-            $plain .= "\r\nCODE=" . $r["CODE"];
-        }
-        if (array_key_exists("DESCRIPTION", $r)) {
-            $plain .= "\r\nDESCRIPTION=" . $r["DESCRIPTION"];
-        }
-        if (array_key_exists("QUEUETIME", $r)) {
-            $plain .= "\r\nQUEUETIME=" . $r["QUEUETIME"];
-        }
-        if (array_key_exists("RUNTIME", $r)) {
-            $plain .= "\r\nRUNTIME=" . $r["RUNTIME"];
-        }
-        $plain .= "\r\nEOF\r\n";
-        return $plain;
-    }
 }

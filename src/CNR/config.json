@@ -11,8 +11,7 @@
     "command": "s_command",
     "login": "s_login",
     "password": "s_pw",
-    "session": "s_sessionid",
-    "subuser": "subuser"
+    "session": "s_sessionid"
   },
   "maxGroupSize": 32,
   "maxSearchGroupSize": 25,

@@ -1,29 +1,22 @@
 #!/bin/bash
 
-# Get the list of modified files
-modified_files=$(git diff --cached --name-only)
 current_full_path="$(cd "$(dirname "$0")"; pwd -P)/$(basename "$0")"
 
 echo -e "\n"
 echo -e "\033[1mAnalysing files using PHPStan...\033[0m"
 echo ""
 
-# Run PHPStan on each modified PHP file
-for file in $modified_files; do
-    if [[ $file == *.php ]]; then       
-        vendor/bin/phpstan analyse "${file}" -c .github/linters/phpstan.neon
-        if [[ $? -ne 0 ]]; then
-            echo "PHPStan analysis failed for ${file}. Commit aborted."
-            echo -e "\n"
+vendor/bin/phpstan analyse -c .github/linters/phpstan.neon
+if [[ $? -ne 0 ]]; then
+    echo "PHPStan analysis failed. Commit aborted."
+    echo -e "\n"
 
-            # show current file path
-            echo -e "\033[1mPre-commit checks were executed by ${current_full_path}.\033[0m"
-            echo -e "\n"
+    # show current file path
+    echo -e "\033[1mPre-commit checks were executed by ${current_full_path}.\033[0m"
+    echo -e "\n"
 
-            exit 1
-        fi
-    fi
-done
+    exit 1
+fi
 
 # show current file path
 echo -e "\033[1mPre-commit checks were executed by ${current_full_path}.\033[0m"
@@ -31,4 +24,3 @@ echo -e "\n"
 
 # If all checks pass, allow the commit
 exit 0
-
