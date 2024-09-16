@@ -220,7 +220,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
     public function testSaveReuseSession(): void
     {
         self::$cl->setSession("12345678")
-            ->saveSession($_SESSION);
+                ->saveSession($_SESSION);
         $cl2 = CF::getClient([
             "registrar" => "CNR"
         ]);
@@ -229,7 +229,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
             "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals(
-            "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount",
+            "s_login=myaccountid%3Amyrole&s_sessionid=12345678&s_command=COMMAND%3DStatusAccount",
             $tmp
         );
         self::$cl->setSession();
@@ -306,11 +306,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->setRoleCredentials(self::$user, self::$role, self::$rolepw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true, implode("\n\n", [
-            self::$cl->getPOSTData($r->getCommand()),
-            $r->getCommandPlain(),
-            $r->getPlain()
-        ]));
+        $this->assertEquals($r->isSuccess(), true);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
         $this->assertNotNull($rec->getDataByKey("SESSIONID"));

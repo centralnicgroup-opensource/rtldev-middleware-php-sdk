@@ -251,33 +251,6 @@ class Client
     }
 
     /**
-     * Apply session data (session id and system entity) to given php session object
-     * @param array<mixed,mixed> $session php session instance ($_SESSION)
-     * @return $this
-     */
-    public function saveSession(&$session)
-    {
-        $session["socketcfg"] = [
-            "entity" => $this->socketConfig->getSystemEntity(),
-            "session" => $this->socketConfig->getSession()
-        ];
-        return $this;
-    }
-
-    /**
-     * Use existing configuration out of php session object
-     * to rebuild and reuse connection settings
-     * @param array<mixed> $session php session object ($_SESSION)
-     * @return $this
-     */
-    public function reuseSession(&$session)
-    {
-        $this->socketConfig->setSystemEntity($session["socketcfg"]["entity"]);
-        $this->setSession($session["socketcfg"]["session"]);
-        return $this;
-    }
-
-    /**
      * Set another connection url to be used for API communication
      * @param string $value API connection url to set
      * @return $this

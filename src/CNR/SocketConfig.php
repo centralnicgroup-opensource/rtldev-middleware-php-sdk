@@ -73,4 +73,14 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
         $this->pw = "";
         return $this;
     }
+
+    /**
+     * Get current login (including role)
+     *
+     * @return string
+     */
+    public function getLogin(): string
+    {
+        return $this->login;
+    }
 }
