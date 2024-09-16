@@ -70,7 +70,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
                 "PASSWORD%3D%2A%2A%2A"
             ])
         ]);
-        
+
         self::$cl->setCredentials();
 
         self::$cl->setCredentials();
