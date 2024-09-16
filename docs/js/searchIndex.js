@@ -11,45 +11,80 @@ Search.appendIndex(
             "summary": "Returns\u0020Client\u0020Instance\u0020by\u0020configuration",
             "url": "classes/CNIC-ClientFactory.html#method_getClient"
         },                {
+            "fqsen": "\\CNIC\\CNR\\Client",
+            "name": "Client",
+            "summary": "CNR\u0020API\u0020Client",
+            "url": "classes/CNIC-CNR-Client.html"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor",
+            "url": "classes/CNIC-CNR-Client.html#method___construct"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003Arequest\u0028\u0029",
+            "name": "request",
+            "summary": "Perform\u0020API\u0020request\u0020using\u0020the\u0020given\u0020command",
+            "url": "classes/CNIC-CNR-Client.html#method_request"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003AsetDefaultLogger\u0028\u0029",
+            "name": "setDefaultLogger",
+            "summary": "set\u0020default\u0020logger\u0020to\u0020use",
+            "url": "classes/CNIC-CNR-Client.html#method_setDefaultLogger"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003AautoIDNConvert\u0028\u0029",
+            "name": "autoIDNConvert",
+            "summary": "Auto\u0020convert\u0020API\u0020command\u0020parameters\u0020to\u0020punycode,\u0020if\u0020necessary.",
+            "url": "classes/CNIC-CNR-Client.html#method_autoIDNConvert"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003A\u0024socketConfig",
+            "name": "socketConfig",
+            "summary": "Object\u0020covering\u0020API\u0020connection\u0020data",
+            "url": "classes/CNIC-CNR-Client.html#property_socketConfig"
+        },                {
             "fqsen": "\\CNIC\\CNR\\Logger",
             "name": "Logger",
             "summary": "CNR\u0020Logger",
             "url": "classes/CNIC-CNR-Logger.html"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient",
-            "name": "SessionClient",
-            "summary": "CNR\u0020API\u0020Client",
-            "url": "classes/CNIC-CNR-SessionClient.html"
+            "fqsen": "\\CNIC\\CNR\\Response",
+            "name": "Response",
+            "summary": "CNR\u0020Response",
+            "url": "classes/CNIC-CNR-Response.html"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/CNIC-CNR-SessionClient.html#method___construct"
+            "fqsen": "\\CNIC\\CNR\\SocketConfig",
+            "name": "SocketConfig",
+            "summary": "CNR\u0020SocketConfig",
+            "url": "classes/CNIC-CNR-SocketConfig.html"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003Alogin\u0028\u0029",
-            "name": "login",
-            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication",
-            "url": "classes/CNIC-CNR-SessionClient.html#method_login"
+            "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AgetPOSTData\u0028\u0029",
+            "name": "getPOSTData",
+            "summary": "Create\u0020POST\u0020data\u0020string\u0020out\u0020of\u0020connection\u0020data",
+            "url": "classes/CNIC-CNR-SocketConfig.html#method_getPOSTData"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003AloginExtended\u0028\u0029",
-            "name": "loginExtended",
-            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication.",
-            "url": "classes/CNIC-CNR-SessionClient.html#method_loginExtended"
+            "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AsetPersistent\u0028\u0029",
+            "name": "setPersistent",
+            "summary": "add\u0020persistent\u0020parameter\u0020to\u0020request\u0020\u0028request\u0020api\u0020session\u0029",
+            "url": "classes/CNIC-CNR-SocketConfig.html#method_setPersistent"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003Alogout\u0028\u0029",
-            "name": "logout",
-            "summary": "Perform\u0020API\u0020logout\u0020to\u0020close\u0020API\u0020session\u0020in\u0020use",
-            "url": "classes/CNIC-CNR-SessionClient.html#method_logout"
+            "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AgetPersistent\u0028\u0029",
+            "name": "getPersistent",
+            "summary": "get\u0020persistent\u0020parameter\u0020returned",
+            "url": "classes/CNIC-CNR-SocketConfig.html#method_getPersistent"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003AIDNConvert\u0028\u0029",
-            "name": "IDNConvert",
-            "summary": "Convert\u0020domain\u0020names\u0020to\u0020idn\u0020\u002B\u0020punycode\u0020if\u0020necessary",
-            "url": "classes/CNIC-CNR-SessionClient.html#method_IDNConvert"
+            "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AsetSession\u0028\u0029",
+            "name": "setSession",
+            "summary": "Set\u0020API\u0020Session\u0020ID\u0020to\u0020use",
+            "url": "classes/CNIC-CNR-SocketConfig.html#method_setSession"
         },                {
-            "fqsen": "\\CNIC\\CNR\\SessionClient\u003A\u003AautoIDNConvert\u0028\u0029",
-            "name": "autoIDNConvert",
-            "summary": "Auto\u0020convert\u0020API\u0020command\u0020parameters\u0020to\u0020punycode,\u0020if\u0020necessary.",
-            "url": "classes/CNIC-CNR-SessionClient.html#method_autoIDNConvert"
+            "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AgetLogin\u0028\u0029",
+            "name": "getLogin",
+            "summary": "Get\u0020current\u0020login\u0020\u0028including\u0020role\u0029",
+            "url": "classes/CNIC-CNR-SocketConfig.html#method_getLogin"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003A\u0024persistent",
+            "name": "persistent",
+            "summary": "parameter\u0020to\u0020trigger\u0020creation\u0020of\u0020a\u0020backend\u0020session",
+            "url": "classes/CNIC-CNR-SocketConfig.html#property_persistent"
         },                {
             "fqsen": "\\CNIC\\ColumnInterface",
             "name": "ColumnInterface",
@@ -426,11 +461,6 @@ Search.appendIndex(
             "summary": "Method\u0020to\u0020parse\u0020plain\u0020API\u0020response\u0020into\u0020js\u0020object",
             "url": "classes/CNIC-HEXONET-ResponseParser.html#method_parse"
         },                {
-            "fqsen": "\\CNIC\\HEXONET\\ResponseParser\u003A\u003Aserialize\u0028\u0029",
-            "name": "serialize",
-            "summary": "Serialize\u0020given\u0020parsed\u0020response\u0020hash\u0020back\u0020to\u0020plain\u0020text",
-            "url": "classes/CNIC-HEXONET-ResponseParser.html#method_serialize"
-        },                {
             "fqsen": "\\CNIC\\HEXONET\\ResponseTemplateManager",
             "name": "ResponseTemplateManager",
             "summary": "HEXONET\u0020ResponseTemplateManager",
@@ -496,31 +526,6 @@ Search.appendIndex(
             "summary": "hidden\u0020class\u0020var\u0020of\u0020API\u0020description\u0020regex\u0020mappings\u0020for\u0020translation",
             "url": "classes/CNIC-HEXONET-ResponseTranslator.html#property_descriptionRegexMap"
         },                {
-            "fqsen": "\\CNIC\\HEXONET\\SessionClient",
-            "name": "SessionClient",
-            "summary": "HEXONET\u0020Session\u0020API\u0020Client",
-            "url": "classes/CNIC-HEXONET-SessionClient.html"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\SessionClient\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/CNIC-HEXONET-SessionClient.html#method___construct"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\SessionClient\u003A\u003Alogin\u0028\u0029",
-            "name": "login",
-            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication",
-            "url": "classes/CNIC-HEXONET-SessionClient.html#method_login"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\SessionClient\u003A\u003AloginExtended\u0028\u0029",
-            "name": "loginExtended",
-            "summary": "Perform\u0020API\u0020login\u0020to\u0020start\u0020session\u002Dbased\u0020communication.",
-            "url": "classes/CNIC-HEXONET-SessionClient.html#method_loginExtended"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\SessionClient\u003A\u003Alogout\u0028\u0029",
-            "name": "logout",
-            "summary": "Perform\u0020API\u0020logout\u0020to\u0020close\u0020API\u0020session\u0020in\u0020use",
-            "url": "classes/CNIC-HEXONET-SessionClient.html#method_logout"
-        },                {
             "fqsen": "\\CNIC\\HEXONET\\SocketConfig",
             "name": "SocketConfig",
             "summary": "HEXONET\u0020SocketConfig",
@@ -530,6 +535,11 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "",
             "url": "classes/CNIC-HEXONET-SocketConfig.html#method___construct"
+        },                {
+            "fqsen": "\\CNIC\\HEXONET\\SocketConfig\u003A\u003AgetPOSTDataParams\u0028\u0029",
+            "name": "getPOSTDataParams",
+            "summary": "Get\u0020POST\u0020data\u0020container\u0020of\u0020connection\u0020data",
+            "url": "classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTDataParams"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\SocketConfig\u003A\u003AgetPOSTData\u0028\u0029",
             "name": "getPOSTData",

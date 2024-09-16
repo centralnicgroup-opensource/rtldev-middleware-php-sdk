@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.0.0...v9.0.1) (2024-09-16)
+
+
+### Bug Fixes
+
+* **cnr / hx:** moved functions saveSession & reuseSession to SessionClient Class; reviewed for CNR ([311fc70](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/311fc70d5f55b9fe8794227904970c9c28bd0c56))
+
 # [9.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v8.0.17...v9.0.0) (2024-06-12)
 
 

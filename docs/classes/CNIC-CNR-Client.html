@@ -104,12 +104,12 @@
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic.html">CNIC</a></li>
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic-hexonet.html">HEXONET</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic-cnr.html">CNR</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    SessionClient
+    Client
 
         <span class="phpdocumentor-element__extends">
         extends <abbr title="\CNIC\HEXONET\Client">Client</abbr>
@@ -119,7 +119,7 @@
             in package
             <ul class="phpdocumentor-breadcrumbs">
                                     <li class="phpdocumentor-breadcrumb"><a href="packages/CNIC.html">CNIC</a></li>
-                                    <li class="phpdocumentor-breadcrumb"><a href="packages/CNIC-HEXONET.html">HEXONET</a></li>
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/CNIC-CNR.html">CNR</a></li>
                             </ul>
         </div>
     
@@ -127,13 +127,13 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SessionClient.php"><a href="files/src-hexonet-sessionclient.html"><abbr title="src/HEXONET/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">HEXONET Session API Client</p>
+            <p class="phpdocumentor-summary">CNR API Client</p>
 
 
 
@@ -149,33 +149,40 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                        <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SessionClient.html#method___construct">__construct()</a>
+                    <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/CNIC-CNR-Client.html#property_socketConfig">$socketConfig</a>
+    <span>
+                        &nbsp;: <a href="classes/CNIC-CNR-SocketConfig.html"><abbr title="\CNIC\CNR\SocketConfig">SocketConfig</abbr></a>            </span>
+</dt>
+<dd>Object covering API connection data</dd>
+
+                <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/CNIC-CNR-Client.html#method___construct">__construct()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd></dd>
+<dd>Constructor</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SessionClient.html#method_login">login()</a>
+    <a href="classes/CNIC-CNR-Client.html#method_request">request()</a>
     <span>
-                                &nbsp;: <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>    </span>
+                                &nbsp;: <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>    </span>
 </dt>
-<dd>Perform API login to start session-based communication</dd>
+<dd>Perform API request using the given command</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SessionClient.html#method_loginExtended">loginExtended()</a>
+    <a href="classes/CNIC-CNR-Client.html#method_setDefaultLogger">setDefaultLogger()</a>
     <span>
-                                &nbsp;: <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>    </span>
+                                &nbsp;: $this    </span>
 </dt>
-<dd>Perform API login to start session-based communication.</dd>
+<dd>set default logger to use</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SessionClient.html#method_logout">logout()</a>
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/CNIC-CNR-Client.html#method_autoIDNConvert">autoIDNConvert()</a>
     <span>
-                                &nbsp;: <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>    </span>
+                                &nbsp;: array&lt;string|int, string&gt;    </span>
 </dt>
-<dd>Perform API logout to close API session in use</dd>
+<dd>Auto convert API command parameters to punycode, if necessary.</dd>
 
         </dl>
 
@@ -184,11 +191,50 @@
         
 
         
+    <section class="phpdocumentor-properties">
+        <h3 class="phpdocumentor-elements__header" id="properties">
+            Properties
+            <a href="classes/CNIC-CNR-Client.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_socketConfig">
+        $socketConfig
+        <a href="classes/CNIC-CNR-Client.html#property_socketConfig" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Object covering API connection data</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/CNIC-CNR-SocketConfig.html"><abbr title="\CNIC\CNR\SocketConfig">SocketConfig</abbr></a></span>
+    <span class="phpdocumentor-signature__name">$socketConfig</span>
+    </code>
+
+    
+    
+    
+
+</article>
+            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/CNIC-HEXONET-SessionClient.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/CNIC-CNR-Client.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -198,30 +244,31 @@
 >
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
-        <a href="classes/CNIC-HEXONET-SessionClient.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SessionClient.php"><a href="files/src-hexonet-sessionclient.html"><abbr title="src/HEXONET/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Constructor</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cfgfile</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$path</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$cfgfile</span>
+                <span class="phpdocumentor-signature__argument__name">$path</span>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>Path to the configuration file</p>
+</section>
 
             </dd>
             </dl>
@@ -240,32 +287,32 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_login">
-        login()
-        <a href="classes/CNIC-HEXONET-SessionClient.html#method_login" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_request">
+        request()
+        <a href="classes/CNIC-CNR-Client.html#method_request" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SessionClient.php"><a href="files/src-hexonet-sessionclient.html"><abbr title="src/HEXONET/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">34</span>
+    <span class="phpdocumentor-element-found-in__line">54</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Perform API login to start session-based communication</p>
+        <p class="phpdocumentor-summary">Perform API request using the given command</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">login</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$otp</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">request</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$otp</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span>            </dt>
+                <span class="phpdocumentor-signature__argument__name">$cmd</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>optional one time password</p>
+                    <section class="phpdocumentor-description"><p>API command to request</p>
 </section>
 
             </dd>
@@ -274,7 +321,7 @@
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span>
+    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span>
             &mdash;
             <section class="phpdocumentor-description"><p>Response</p>
 </section>
@@ -287,43 +334,65 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_loginExtended">
-        loginExtended()
-        <a href="classes/CNIC-HEXONET-SessionClient.html#method_loginExtended" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_setDefaultLogger">
+        setDefaultLogger()
+        <a href="classes/CNIC-CNR-Client.html#method_setDefaultLogger" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SessionClient.php"><a href="files/src-hexonet-sessionclient.html"><abbr title="src/HEXONET/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">52</span>
+    <span class="phpdocumentor-element-found-in__line">120</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Perform API login to start session-based communication.</p>
+        <p class="phpdocumentor-summary">set default logger to use</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">loginExtended</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$params</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$otp</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">setDefaultLogger</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
-        <section class="phpdocumentor-description"><p>Use given specific command parameters.</p>
-</section>
+    
+    
+    
 
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">$this</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_autoIDNConvert">
+        autoIDNConvert()
+        <a href="classes/CNIC-CNR-Client.html#method_autoIDNConvert" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">131</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Auto convert API command parameters to punycode, if necessary.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">autoIDNConvert</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span></code>
+
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$params</span>
+                <span class="phpdocumentor-signature__argument__name">$cmd</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>given specific command parameters</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$otp</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>optional one time password</p>
+                    <section class="phpdocumentor-description"><p>API command</p>
 </section>
 
             </dd>
@@ -332,46 +401,9 @@
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>Response</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_logout">
-        logout()
-        <a href="classes/CNIC-HEXONET-SessionClient.html#method_logout" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SessionClient.php"><a href="files/src-hexonet-sessionclient.html"><abbr title="src/HEXONET/SessionClient.php">SessionClient.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">70</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Perform API logout to close API session in use</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">logout</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Response</p>
-</section>
-
+        
     
 </article>
             </section>
@@ -452,7 +484,7 @@
 </section>
             </div>
         </div>
-        <a href="classes/CNIC-HEXONET-SessionClient.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
