@@ -20,6 +20,10 @@
       "email": "kai.schwarz@centralnic.com"
     }
   ],
+  "scripts": {
+    "test-demo-cnr": "php -f tests/CNR/app.php",
+    "test-demo-hexonet": "php -f tests/HEXONET/app.php"
+  },
   "keywords": [
     "hexonet",
     "rrpproxy",

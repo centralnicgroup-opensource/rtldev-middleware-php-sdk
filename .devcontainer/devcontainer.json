@@ -17,7 +17,8 @@
 			"bmewburn.vscode-intelephense-client",
 			"mrmlnc.vscode-apache",
 			"xdebug.php-debug",
-			"neilbrayfield.php-docblocker"
+			"neilbrayfield.php-docblocker",
+			"GitHub.copilot"
 		],
 		"settings": {
 		  "terminal.integrated.defaultProfile.linux": "zsh",
