@@ -25,6 +25,41 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.hexonet.net```
 
+## Running the Demo Application
+
+To run the demo application, follow these steps:
+
+1. **Set Your Credentials**:
+   You need to ensure your credentials are available. You can do this in two ways:
+   - Directly replace the credentials within the application file.
+   - Alternatively, set the environment variables required for the CNR test app:
+     ```sh
+     export CNR_TEST_USER=<your-username>
+     export CNR_TEST_PASSWORD=<your-password>
+     ```
+
+2. **Execute the Demo**: Once the credentials are configured, run the appropriate demo command:
+   - For CNR:
+     ```sh
+     npm run test-demo-cnr
+     ```
+   - For Hexonet:
+     ```sh
+     npm run test-demo-hexonet
+     ```
+
+3. **Update Demo Contents**:
+   If you need to modify the demo contents, the relevant file is located at:
+   - For CNR:
+   ```plaintext
+   tests/CNR/app.php
+   ```
+
+   - For Hexonet:
+   ```plaintext
+   tests/HEXONET/app.php
+   ```
+
 ## Authors
 
 * **Kai Schwarz** - *development* - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
