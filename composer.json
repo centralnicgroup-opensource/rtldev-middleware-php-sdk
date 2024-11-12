@@ -42,7 +42,9 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7",
     "phpunit/phpunit": "^9.5",
-    "phpstan/phpstan": "^1.11"
+    "phpstan/phpstan": "^1.11",
+    "phpstan/phpstan-deprecation-rules": "1.2",
+    "phpstan/extension-installer": "^1.4"
   },
   "autoload": {
     "psr-4": {
@@ -55,5 +57,10 @@
     "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
   }
 }

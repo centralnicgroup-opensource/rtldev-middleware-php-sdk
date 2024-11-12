@@ -68,7 +68,7 @@ class ResponseTranslator
             // creating a response instance
             $newraw = RTM::$templates[$newraw];
             if ($isHTTPError && strlen($httperror)) {
-                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $httperror . ")", $newraw);
+                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $httperror . ")", $newraw) ?? $newraw;
             }
         }
 
@@ -159,13 +159,13 @@ class ResponseTranslator
                 if ($newraw === null) {
                     continue;
                 }
-                $newraw = preg_replace("/\{" . preg_quote($key) . "\}/", $val, $newraw);
+                $newraw = preg_replace("/\{" . preg_quote($key, "/") . "\}/", $val, $newraw) ?? $newraw;
             }
             if ($newraw === null) {
                 return $return;
             }
 
-            $newraw = preg_replace("/\{[^}]+\}/", "", $newraw);
+            $newraw = preg_replace("/\{[^}]+\}/", "", $newraw) ?? $newraw;
             $return = true;
         }
 

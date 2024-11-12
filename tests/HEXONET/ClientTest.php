@@ -285,9 +285,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), true);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
-        if ($rec !== null) {
-            $this->assertNotNull($rec->getDataByKey("SESSION"));
-        }
+        $this->assertNotNull($rec->getDataByKey("SESSION"));
     }
 
     /*public function testLoginRoleCredsOK(): void
@@ -323,9 +321,7 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), true);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
-        if ($rec !== null) {
-            $this->assertNotNull($rec->getDataByKey("SESSION"));
-        }
+        $this->assertNotNull($rec->getDataByKey("SESSION"));
     }
 
     public function testLogoutOK(): void
@@ -506,13 +502,11 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if ($nr !== null) {
-            $this->assertEquals($nr->isSuccess(), true);
-            $this->assertEquals($nr->getRecordsLimitation(), 2);
-            $this->assertEquals($nr->getRecordsCount(), 2);
-            $this->assertEquals($nr->getFirstRecordIndex(), 2);
-            $this->assertEquals($nr->getLastRecordIndex(), 3);
-        }
+        $this->assertEquals($nr->isSuccess(), true);
+        $this->assertEquals($nr->getRecordsLimitation(), 2);
+        $this->assertEquals($nr->getRecordsCount(), 2);
+        $this->assertEquals($nr->getFirstRecordIndex(), 2);
+        $this->assertEquals($nr->getLastRecordIndex(), 3);
         $this->assertEquals($r->getRecordsLimitation(), 2);
         $this->assertEquals($r->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);
@@ -545,13 +539,11 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if ($nr !== null) {
-            $this->assertEquals($nr->isSuccess(), true);
-            $this->assertEquals($nr->getRecordsLimitation(), 2);
-            $this->assertEquals($nr->getRecordsCount(), 2);
-            $this->assertEquals($nr->getFirstRecordIndex(), 2);
-            $this->assertEquals($nr->getLastRecordIndex(), 3);
-        }
+        $this->assertEquals($nr->isSuccess(), true);
+        $this->assertEquals($nr->getRecordsLimitation(), 2);
+        $this->assertEquals($nr->getRecordsCount(), 2);
+        $this->assertEquals($nr->getFirstRecordIndex(), 2);
+        $this->assertEquals($nr->getLastRecordIndex(), 3);
         $this->assertEquals($r->getRecordsLimitation(), 2);
         $this->assertEquals($r->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);

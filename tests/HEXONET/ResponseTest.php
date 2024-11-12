@@ -115,16 +115,14 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $r = new R("listP0");
         $rec = $r->getCurrentRecord();
         $this->assertNotNull($rec);
-        if ($rec !== null) { // phpStan
-            $this->assertEquals([
-                "COUNT" => "2",
-                "DOMAIN" => "0-60motorcycletimes.com",
-                "FIRST" => "0",
-                "LAST" => "1",
-                "LIMIT" => "2",
-                "TOTAL" => "2701"
-            ], $rec->getData());
-        }
+        $this->assertEquals([
+            "COUNT" => "2",
+            "DOMAIN" => "0-60motorcycletimes.com",
+            "FIRST" => "0",
+            "LAST" => "1",
+            "LIMIT" => "2",
+            "TOTAL" => "2701"
+        ], $rec->getData());
     }
 
     public function testGetCurrentRecordNoRows(): void
@@ -147,9 +145,7 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $r = new R("listP0");
         $rec = $r->getNextRecord();
         $this->assertNotNull($rec);
-        if ($rec !== null) { // phpStan
-            $this->assertEquals(["DOMAIN" => "0-be-s01-0.com"], $rec->getData());
-        }
+        $this->assertEquals(["DOMAIN" => "0-be-s01-0.com"], $rec->getData());
         $this->assertNull($r->getNextRecord());
     }
 
@@ -174,16 +170,14 @@ final class ResponseTest extends \PHPUnit\Framework\TestCase
         $r->getNextRecord();
         $pr = $r->getPreviousRecord();
         $this->assertNotNull($pr);
-        if ($pr !== null) { // phpStan
-            $this->assertEquals([
-                "COUNT" => "2",
-                "DOMAIN" => "0-60motorcycletimes.com",
-                "FIRST" => "0",
-                "LAST" => "1",
-                "LIMIT" => "2",
-                "TOTAL" => "2701"
-            ], $pr->getData());
-        }
+        $this->assertEquals([
+            "COUNT" => "2",
+            "DOMAIN" => "0-60motorcycletimes.com",
+            "FIRST" => "0",
+            "LAST" => "1",
+            "LIMIT" => "2",
+            "TOTAL" => "2701"
+        ], $pr->getData());
         $this->assertNull($r->getPreviousRecord());
     }
 

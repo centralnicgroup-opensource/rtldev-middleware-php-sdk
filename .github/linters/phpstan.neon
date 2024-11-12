@@ -10,3 +10,5 @@ parameters:
     paths:
         - ../../src
         - ../../tests
+includes:
+   	- phar://phpstan.phar/conf/bleedingEdge.neon

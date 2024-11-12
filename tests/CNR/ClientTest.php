@@ -576,13 +576,11 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if ($nr !== null) {
-            $this->assertEquals($nr->isSuccess(), true);
-            $this->assertEquals($nr->getRecordsLimitation(), 2);
-            $this->assertEquals($nr->getRecordsCount(), 2);
-            $this->assertEquals($nr->getFirstRecordIndex(), 2);
-            $this->assertEquals($nr->getLastRecordIndex(), 3);
-        }
+        $this->assertEquals($nr->isSuccess(), true);
+        $this->assertEquals($nr->getRecordsLimitation(), 2);
+        $this->assertEquals($nr->getRecordsCount(), 2);
+        $this->assertEquals($nr->getFirstRecordIndex(), 2);
+        $this->assertEquals($nr->getLastRecordIndex(), 3);
         $this->assertEquals($r->getRecordsLimitation(), 2);
         $this->assertEquals($r->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);
@@ -615,14 +613,11 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         $nr = self::$cl->requestNextResponsePage($r);
         $this->assertNotNull($nr);
         $this->assertInstanceOf(R::class, $nr);
-        if ($nr !== null) {
-            $this->assertEquals($nr->isSuccess(), true);
-            $this->assertEquals($nr->getRecordsLimitation(), 2);
-            $this->assertEquals($nr->getRecordsCount(), 2);
-            $this->assertEquals($nr->getFirstRecordIndex(), 2);
-            $this->assertEquals($nr->getLastRecordIndex(), 3);
-        }
-
+        $this->assertEquals($nr->isSuccess(), true);
+        $this->assertEquals($nr->getRecordsLimitation(), 2);
+        $this->assertEquals($nr->getRecordsCount(), 2);
+        $this->assertEquals($nr->getFirstRecordIndex(), 2);
+        $this->assertEquals($nr->getLastRecordIndex(), 3);
         $this->assertEquals($r->getRecordsLimitation(), 2);
         $this->assertEquals($r->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);
