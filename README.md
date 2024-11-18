@@ -34,8 +34,8 @@ To run the demo application, follow these steps:
    - Directly replace the credentials within the application file.
    - Alternatively, set the environment variables required for the CNR test app:
      ```sh
-     export CNR_TEST_USER=<your-username>
-     export CNR_TEST_PASSWORD=<your-password>
+     export RTLDEV_MW_CI_USER_CNR=<your-username>
+     export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
      ```
 
 2. **Execute the Demo**: Once the credentials are configured, run the appropriate demo command:

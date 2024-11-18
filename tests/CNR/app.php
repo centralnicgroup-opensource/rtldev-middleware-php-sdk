@@ -2,11 +2,11 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$user = getenv('CNR_TEST_USER');
-$password = getenv('CNR_TEST_PASSWORD');
+$user = getenv('RTLDEV_MW_CI_USER_CNR');
+$password = getenv('RTLDEV_MW_CI_USERPASSWORD_CNR');
 
 if ($user === false || $password === false) {
-    echo "Please provide environment variables CNR_TEST_USER and CNR_TEST_PASSWORD.\n";
+    echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR and RTLDEV_MW_CI_USERPASSWORD_CNR.\n";
     exit(1);
 }
 // --- SESSIONLESS API COMMUNICATION ---

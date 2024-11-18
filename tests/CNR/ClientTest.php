@@ -39,10 +39,10 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
             "registrar" => "CNR"
         ]);
         self::$cl = $cl;
-        self::$user = getenv("TESTS_USER_CNR") ?: "";
-        self::$pw = getenv("TESTS_USERPASSWORD_CNR") ?: "";
-        self::$role = getenv("TESTS_ROLE_CNR") ?: "";
-        self::$rolepw = getenv("TESTS_ROLEPASSWORD_CNR") ?: "";
+        self::$user = getenv("RTLDEV_MW_CI_USER_CNR") ?: "";
+        self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_CNR") ?: "";
+        self::$role = getenv("RTLDEV_MW_CI_ROLE_CNR") ?: "";
+        self::$rolepw = getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR") ?: "";
     }
 
     protected function tearDown(): void

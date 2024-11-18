@@ -31,8 +31,8 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
             "registrar" => "HEXONET"
         ]);
         self::$cl = $cl;
-        self::$user = getenv("TESTS_USER_HEXONET") ?: "";
-        self::$pw = getenv("TESTS_USERPASSWORD_HEXONET") ?: "";
+        self::$user = getenv("RTLDEV_MW_CI_USER_HEXONET") ?: "";
+        self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_HEXONET") ?: "";
     }
 
     public function testGetPOSTDataSecured(): void

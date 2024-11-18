@@ -25,8 +25,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         //session_start();
-        self::$user = getenv("TESTS_USER_CNR") ?: "";
-        self::$pw = getenv("TESTS_USERPASSWORD_CNR") ?: "";
+        self::$user = getenv("RTLDEV_MW_CI_USER_CNR") ?: "";
+        self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_CNR") ?: "";
     }
 
     /**
