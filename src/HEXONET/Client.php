@@ -460,7 +460,7 @@ class Client
         ] + $this->curlopts);
 
         // which is by default tested for by phpStan
-        /** @var string $r */
+        /** @var string|false $r */
         $r = curl_exec($curl);
         $error = null;
         if ($r === false) {

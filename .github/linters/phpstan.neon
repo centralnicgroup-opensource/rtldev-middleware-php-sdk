@@ -1,8 +1,5 @@
 parameters:
     level: 8
-    treatPhpDocTypesAsCertain: false
-    #phpVersion: 80100
-    #treatPhpDocTypesAsCertain: false
     fileExtensions:
         - php
         - module

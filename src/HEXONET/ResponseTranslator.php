@@ -75,8 +75,7 @@ class ResponseTranslator
         // Missing CODE or DESCRIPTION in API Response
         if (
             (
-                $newraw === null
-                || !preg_match("/description[\s]*=/i", $newraw) // missing description
+                !preg_match("/description[\s]*=/i", $newraw) // missing description
                 || preg_match("/description[\s]*=\r\n/i", $newraw) // empty description
                 || !preg_match("/code[\s]*=/i", $newraw) // missing code
             )
@@ -156,15 +155,8 @@ class ResponseTranslator
         // Generic replacing of placeholder vars
         if (preg_match("/\{[^}]+\}/", $newraw)) {
             foreach ($ph as $key => $val) {
-                if ($newraw === null) {
-                    continue;
-                }
                 $newraw = preg_replace("/\{" . preg_quote($key, "/") . "\}/", $val, $newraw) ?? $newraw;
             }
-            if ($newraw === null) {
-                return $return;
-            }
-
             $newraw = preg_replace("/\{[^}]+\}/", "", $newraw) ?? $newraw;
             $return = true;
         }
