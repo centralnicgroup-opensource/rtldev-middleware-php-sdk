@@ -55,7 +55,7 @@
     "docs": "rm -rf build docs;test ! -e phpdoc.phar && wget https://phpdoc.org/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
     "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
-    "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html",
+    "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html --debug",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon"
   },
   "config": {
