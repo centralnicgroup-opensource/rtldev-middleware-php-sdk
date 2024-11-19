@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -52,8 +53,8 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
+                    <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/cnic.html" class="">CNIC</a>
@@ -70,7 +71,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/CNIC.html" class="">CNIC</a>
@@ -88,21 +89,22 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic.html">CNIC</a></li>
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic-cnr.html">CNR</a></li>
     </ul>
@@ -126,6 +128,11 @@
     
     </h2>
 
+<div class="phpdocumentor-label-line">
+
+
+</div>
+
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Response.php"><a href="files/src-cnr-response.html"><abbr title="src/CNR/Response.php">Response.php</abbr></a></abbr>
     :
@@ -145,264 +152,286 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-Response.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
 </h3>
 
+
+
+
+
+
+
+
+
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/CNIC-CNR-Response.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
 <dl class="phpdocumentor-table-of-contents">
-                    <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_columnkeys">$columnkeys</a>
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_columnkeys">$columnkeys</a>
     <span>
                         &nbsp;: array&lt;string|int, string&gt;            </span>
 </dt>
 <dd>Column names available in this responsse</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_columns">$columns</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_columns">$columns</a>
     <span>
                         &nbsp;: array&lt;string|int, <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>&gt;            </span>
 </dt>
 <dd>Container of Column Instances</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_command">$command</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_command">$command</a>
     <span>
                         &nbsp;: array&lt;string|int, string&gt;            </span>
 </dt>
 <dd>The API Command used within this request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_hash">$hash</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_hash">$hash</a>
     <span>
                         &nbsp;: array&lt;string, mixed&gt;            </span>
 </dt>
 <dd>hash representation of plain API response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_paginationkeys">$paginationkeys</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_paginationkeys">$paginationkeys</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>Regex for pagination related column keys</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_raw">$raw</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_raw">$raw</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>plain API response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_recordIndex">$recordIndex</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_recordIndex">$recordIndex</a>
     <span>
                         &nbsp;: int            </span>
 </dt>
 <dd>Record Index we currently point to in record list</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-Response.html#property_records">$records</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#property_records">$records</a>
     <span>
                         &nbsp;: array&lt;string|int, <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>&gt;            </span>
 </dt>
 <dd>Record List (List of rows)</dd>
 
-                <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method___construct">__construct()</a>
+    </dl>
+
+<h4 id="toc-methods">
+    Methods
+    <a href="classes/CNIC-CNR-Response.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method___construct">__construct()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
 <dd>Constructor</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_addColumn">addColumn()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_addColumn">addColumn()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Add a column to the column list</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_addRecord">addRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_addRecord">addRecord()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Add a record to the record list</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getCode">getCode()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getCode">getCode()</a>
     <span>
                                 &nbsp;: int    </span>
 </dt>
 <dd>Get API response code</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getColumn">getColumn()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getColumn">getColumn()</a>
     <span>
                                 &nbsp;: <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>|null    </span>
 </dt>
 <dd>Get column by column name</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getColumnIndex">getColumnIndex()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getColumnIndex">getColumnIndex()</a>
     <span>
                                 &nbsp;: string|null    </span>
 </dt>
 <dd>Get Data by Column Name and Index</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getColumnKeys">getColumnKeys()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getColumnKeys">getColumnKeys()</a>
     <span>
                                 &nbsp;: array&lt;string|int, string&gt;    </span>
 </dt>
 <dd>Get Column Names</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getColumns">getColumns()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getColumns">getColumns()</a>
     <span>
                                 &nbsp;: array&lt;string|int, <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>&gt;    </span>
 </dt>
 <dd>Get List of Columns</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getCommand">getCommand()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getCommand">getCommand()</a>
     <span>
                                 &nbsp;: array&lt;string|int, string&gt;    </span>
 </dt>
 <dd>Get Command used in this request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getCommandPlain">getCommandPlain()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getCommandPlain">getCommandPlain()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get Command used in this request in plain text format</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getCurrentPageNumber">getCurrentPageNumber()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getCurrentPageNumber">getCurrentPageNumber()</a>
     <span>
                                 &nbsp;: int|null    </span>
 </dt>
 <dd>Get Page Number of current List Query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getCurrentRecord">getCurrentRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getCurrentRecord">getCurrentRecord()</a>
     <span>
                                 &nbsp;: <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null    </span>
 </dt>
 <dd>Get Record of current record index</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getDescription">getDescription()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getDescription">getDescription()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get API response description</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getFirstRecordIndex">getFirstRecordIndex()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getFirstRecordIndex">getFirstRecordIndex()</a>
     <span>
                                 &nbsp;: int|null    </span>
 </dt>
 <dd>Get Index of first row in this response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getHash">getHash()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getHash">getHash()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Get API response as Hash</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getLastRecordIndex">getLastRecordIndex()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getLastRecordIndex">getLastRecordIndex()</a>
     <span>
                                 &nbsp;: int|null    </span>
 </dt>
 <dd>Get last record index of the current list query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getListHash">getListHash()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getListHash">getListHash()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Get Response as List Hash including useful meta data for tables</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getNextPageNumber">getNextPageNumber()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getNextPageNumber">getNextPageNumber()</a>
     <span>
                                 &nbsp;: int|null    </span>
 </dt>
 <dd>Get Page Number of next list query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getNextRecord">getNextRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getNextRecord">getNextRecord()</a>
     <span>
                                 &nbsp;: <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null    </span>
 </dt>
 <dd>Get next record in record list</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getNumberOfPages">getNumberOfPages()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getNumberOfPages">getNumberOfPages()</a>
     <span>
                                 &nbsp;: int    </span>
 </dt>
 <dd>Get the number of pages available for this list query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getPagination">getPagination()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getPagination">getPagination()</a>
     <span>
                                 &nbsp;: array&lt;string, int|null&gt;    </span>
 </dt>
 <dd>Get object containing all paging data</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getPlain">getPlain()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getPlain">getPlain()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get Plain API response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getPreviousPageNumber">getPreviousPageNumber()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getPreviousPageNumber">getPreviousPageNumber()</a>
     <span>
                                 &nbsp;: int|null    </span>
 </dt>
 <dd>Get Page Number of previous list query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getPreviousRecord">getPreviousRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getPreviousRecord">getPreviousRecord()</a>
     <span>
                                 &nbsp;: <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null    </span>
 </dt>
 <dd>Get previous record in record list</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getQueuetime">getQueuetime()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getQueuetime">getQueuetime()</a>
     <span>
                                 &nbsp;: float    </span>
 </dt>
 <dd>Get Queuetime of API response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getRecord">getRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getRecord">getRecord()</a>
     <span>
                                 &nbsp;: <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null    </span>
 </dt>
 <dd>Get Record at given index</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getRecords">getRecords()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getRecords">getRecords()</a>
     <span>
                                 &nbsp;: array&lt;string|int, <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>&gt;    </span>
 </dt>
 <dd>Get all Records</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getRecordsCount">getRecordsCount()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getRecordsCount">getRecordsCount()</a>
     <span>
                                 &nbsp;: int    </span>
 </dt>
 <dd>Get count of rows in this response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getRecordsLimitation">getRecordsLimitation()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getRecordsLimitation">getRecordsLimitation()</a>
     <span>
                                 &nbsp;: int    </span>
 </dt>
@@ -410,35 +439,35 @@
 This is the count of requested rows</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getRecordsTotalCount">getRecordsTotalCount()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getRecordsTotalCount">getRecordsTotalCount()</a>
     <span>
                                 &nbsp;: int    </span>
 </dt>
 <dd>Get total count of records available for the list query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_getRuntime">getRuntime()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_getRuntime">getRuntime()</a>
     <span>
                                 &nbsp;: float    </span>
 </dt>
 <dd>Get Runtime of API response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_hasNextPage">hasNextPage()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_hasNextPage">hasNextPage()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
 <dd>Check if this list query has a next page</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_hasPreviousPage">hasPreviousPage()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_hasPreviousPage">hasPreviousPage()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
 <dd>Check if this list query has a previous page</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_isError">isError()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_isError">isError()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
@@ -446,14 +475,14 @@ This is the count of requested rows</dd>
 API response code is an 5xx code</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_isPending">isPending()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_isPending">isPending()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
 <dd>Check if current operation is returned as pending</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_isSuccess">isSuccess()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_isSuccess">isSuccess()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
@@ -461,7 +490,7 @@ API response code is an 5xx code</dd>
 API response code is an 2xx code</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_isTmpError">isTmpError()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_isTmpError">isTmpError()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
@@ -469,21 +498,21 @@ API response code is an 2xx code</dd>
 API response code is an 4xx code</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-Response.html#method_rewindRecordList">rewindRecordList()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_rewindRecordList">rewindRecordList()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Reset index in record list back to zero</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/CNIC-HEXONET-Response.html#method_hasColumn">hasColumn()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_hasColumn">hasColumn()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
 <dd>Check if column exists in response</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/CNIC-HEXONET-Response.html#method_hasCurrentRecord">hasCurrentRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_hasCurrentRecord">hasCurrentRecord()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
@@ -491,7 +520,7 @@ API response code is an 4xx code</dd>
 current record index in use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/CNIC-HEXONET-Response.html#method_hasNextRecord">hasNextRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_hasNextRecord">hasNextRecord()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
@@ -499,14 +528,14 @@ current record index in use</dd>
 current record index in use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/CNIC-HEXONET-Response.html#method_hasPreviousRecord">hasPreviousRecord()</a>
+    <a class="" href="classes/CNIC-HEXONET-Response.html#method_hasPreviousRecord">hasPreviousRecord()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
 <dd>Check if the record list contains a previous record for the
 current record index in use</dd>
 
-        </dl>
+    </dl>
 
 
 
@@ -517,6 +546,7 @@ current record index in use</dd>
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
             <a href="classes/CNIC-CNR-Response.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="
@@ -528,6 +558,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_columnkeys">
         $columnkeys
         <a href="classes/CNIC-HEXONET-Response.html#property_columnkeys" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -540,6 +571,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">Column names available in this responsse</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
@@ -548,6 +580,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -561,6 +595,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_columns">
         $columns
         <a href="classes/CNIC-HEXONET-Response.html#property_columns" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -573,6 +608,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">Container of Column Instances</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>&gt;</span>
@@ -581,6 +617,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -594,6 +632,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_command">
         $command
         <a href="classes/CNIC-HEXONET-Response.html#property_command" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -606,6 +645,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">The API Command used within this request</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
@@ -614,6 +654,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -627,6 +669,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_hash">
         $hash
         <a href="classes/CNIC-HEXONET-Response.html#property_hash" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -639,6 +682,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">hash representation of plain API response</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">array&lt;string, mixed&gt;</span>
@@ -647,6 +691,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -660,6 +706,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_paginationkeys">
         $paginationkeys
         <a href="classes/CNIC-HEXONET-Response.html#property_paginationkeys" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -672,6 +719,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">Regex for pagination related column keys</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -680,6 +728,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -693,6 +743,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_raw">
         $raw
         <a href="classes/CNIC-HEXONET-Response.html#property_raw" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -705,6 +756,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">plain API response</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -713,6 +765,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -726,6 +780,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_recordIndex">
         $recordIndex
         <a href="classes/CNIC-HEXONET-Response.html#property_recordIndex" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -738,6 +793,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">Record Index we currently point to in record list</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">int</span>
@@ -746,6 +802,8 @@ current record index in use</dd>
 
     
     
+    
+
     
 
 </article>
@@ -759,6 +817,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="property_records">
         $records
         <a href="classes/CNIC-HEXONET-Response.html#property_records" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -771,6 +830,7 @@ current record index in use</dd>
 
         <p class="phpdocumentor-summary">Record List (List of rows)</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>&gt;</span>
@@ -781,6 +841,8 @@ current record index in use</dd>
     
     
 
+    
+
 </article>
             </section>
 
@@ -788,6 +850,7 @@ current record index in use</dd>
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
             <a href="classes/CNIC-CNR-Response.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="phpdocumentor-element
@@ -798,6 +861,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
         <a href="classes/CNIC-HEXONET-Response.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -812,6 +876,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$raw</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ph</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -846,10 +913,8 @@ current record index in use</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
+    
+
     
 </article>
                     <article
@@ -861,6 +926,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_addColumn">
         addColumn()
         <a href="classes/CNIC-HEXONET-Response.html#method_addColumn" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -875,6 +941,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">addColumn</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -900,11 +969,13 @@ current record index in use</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -915,6 +986,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_addRecord">
         addRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_addRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -929,6 +1001,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">addRecord</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$h</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -945,11 +1020,13 @@ current record index in use</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -960,6 +1037,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getCode">
         getCode()
         <a href="classes/CNIC-HEXONET-Response.html#method_getCode" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -974,17 +1052,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getCode</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>API response code</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>API response code</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -995,6 +1080,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getColumn">
         getColumn()
         <a href="classes/CNIC-HEXONET-Response.html#method_getColumn" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1009,6 +1095,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getColumn</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1025,13 +1114,17 @@ current record index in use</dd>
 
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>column instance or null if column does not exist</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>column instance or null if column does not exist</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1042,6 +1135,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getColumnIndex">
         getColumnIndex()
         <a href="classes/CNIC-HEXONET-Response.html#method_getColumnIndex" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1056,6 +1150,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getColumnIndex</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$colkey</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$index</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1081,13 +1178,17 @@ current record index in use</dd>
 
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>column data at index or null if not found</p>
+        <span class="phpdocumentor-signature__response_type">string|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>column data at index or null if not found</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1098,6 +1199,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getColumnKeys">
         getColumnKeys()
         <a href="classes/CNIC-HEXONET-Response.html#method_getColumnKeys" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1112,6 +1214,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getColumnKeys</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filterPaginationKeys</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1128,13 +1233,17 @@ current record index in use</dd>
 
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Array of Column Names</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Array of Column Names</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1145,6 +1254,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getColumns">
         getColumns()
         <a href="classes/CNIC-HEXONET-Response.html#method_getColumns" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1159,17 +1269,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getColumns</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Array of Columns</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Column.html"><abbr title="\CNIC\HEXONET\Column">Column</abbr></a>&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Array of Columns</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1180,6 +1297,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getCommand">
         getCommand()
         <a href="classes/CNIC-HEXONET-Response.html#method_getCommand" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1194,17 +1312,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getCommand</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>command</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>command</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1215,6 +1340,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getCommandPlain">
         getCommandPlain()
         <a href="classes/CNIC-HEXONET-Response.html#method_getCommandPlain" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1229,17 +1355,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getCommandPlain</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>command</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>command</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1250,6 +1383,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getCurrentPageNumber">
         getCurrentPageNumber()
         <a href="classes/CNIC-HEXONET-Response.html#method_getCurrentPageNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1264,17 +1398,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getCurrentPageNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>page number or null in case of a non-list response</p>
+        <span class="phpdocumentor-signature__response_type">int|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>page number or null in case of a non-list response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1285,6 +1426,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getCurrentRecord">
         getCurrentRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_getCurrentRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1299,17 +1441,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getCurrentRecord</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Record or null in case of a non-list response</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Record or null in case of a non-list response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1320,6 +1469,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getDescription">
         getDescription()
         <a href="classes/CNIC-HEXONET-Response.html#method_getDescription" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1334,17 +1484,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getDescription</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>API response description</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>API response description</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1355,6 +1512,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getFirstRecordIndex">
         getFirstRecordIndex()
         <a href="classes/CNIC-HEXONET-Response.html#method_getFirstRecordIndex" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1369,17 +1527,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getFirstRecordIndex</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>first row index</p>
+        <span class="phpdocumentor-signature__response_type">int|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>first row index</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1390,6 +1555,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getHash">
         getHash()
         <a href="classes/CNIC-HEXONET-Response.html#method_getHash" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1404,17 +1570,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getHash</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>API response hash</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>API response hash</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1425,6 +1598,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getLastRecordIndex">
         getLastRecordIndex()
         <a href="classes/CNIC-HEXONET-Response.html#method_getLastRecordIndex" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1439,17 +1613,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getLastRecordIndex</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>record index or null for a non-list response</p>
+        <span class="phpdocumentor-signature__response_type">int|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>record index or null for a non-list response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1460,6 +1641,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getListHash">
         getListHash()
         <a href="classes/CNIC-HEXONET-Response.html#method_getListHash" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1474,17 +1656,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getListHash</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>hash including list meta data and array of rows in hash notation</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>hash including list meta data and array of rows in hash notation</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1495,6 +1684,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getNextPageNumber">
         getNextPageNumber()
         <a href="classes/CNIC-HEXONET-Response.html#method_getNextPageNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1509,17 +1699,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getNextPageNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>page number or null if there's no next page</p>
+        <span class="phpdocumentor-signature__response_type">int|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>page number or null if there's no next page</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1530,6 +1727,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getNextRecord">
         getNextRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_getNextRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1544,17 +1742,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getNextRecord</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Record or null in case there's no further record</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Record or null in case there's no further record</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1565,6 +1770,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getNumberOfPages">
         getNumberOfPages()
         <a href="classes/CNIC-HEXONET-Response.html#method_getNumberOfPages" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1579,17 +1785,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getNumberOfPages</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>number of pages</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>number of pages</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1600,6 +1813,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getPagination">
         getPagination()
         <a href="classes/CNIC-HEXONET-Response.html#method_getPagination" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1614,17 +1828,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getPagination</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, int|null&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string, int|null&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>paginator data</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string, int|null&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>paginator data</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1635,6 +1856,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getPlain">
         getPlain()
         <a href="classes/CNIC-HEXONET-Response.html#method_getPlain" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1649,17 +1871,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getPlain</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Plain API response</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Plain API response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1670,6 +1899,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getPreviousPageNumber">
         getPreviousPageNumber()
         <a href="classes/CNIC-HEXONET-Response.html#method_getPreviousPageNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1684,17 +1914,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getPreviousPageNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>page number or null if there's no previous page</p>
+        <span class="phpdocumentor-signature__response_type">int|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>page number or null if there's no previous page</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1705,6 +1942,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getPreviousRecord">
         getPreviousRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_getPreviousRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1719,17 +1957,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getPreviousRecord</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Record or null if there's no previous record</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Record or null if there's no previous record</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1740,6 +1985,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getQueuetime">
         getQueuetime()
         <a href="classes/CNIC-HEXONET-Response.html#method_getQueuetime" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1754,17 +2000,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getQueuetime</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">float</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">float</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Queuetime of API response</p>
+        <span class="phpdocumentor-signature__response_type">float</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Queuetime of API response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1775,6 +2028,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getRecord">
         getRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_getRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1789,6 +2043,9 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getRecord</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$idx</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1805,13 +2062,17 @@ current record index in use</dd>
 
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Record or null if index does not exist</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Record or null if index does not exist</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1822,6 +2083,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getRecords">
         getRecords()
         <a href="classes/CNIC-HEXONET-Response.html#method_getRecords" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1836,17 +2098,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getRecords</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>array of records</p>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Record.html"><abbr title="\CNIC\HEXONET\Record">Record</abbr></a>&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>array of records</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1857,6 +2126,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getRecordsCount">
         getRecordsCount()
         <a href="classes/CNIC-HEXONET-Response.html#method_getRecordsCount" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1871,17 +2141,24 @@ current record index in use</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getRecordsCount</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>count of rows</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>count of rows</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1892,6 +2169,7 @@ current record index in use</dd>
     <h4 class="phpdocumentor-element__name" id="method_getRecordsLimitation">
         getRecordsLimitation()
         <a href="classes/CNIC-HEXONET-Response.html#method_getRecordsLimitation" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1907,17 +2185,24 @@ This is the count of requested rows</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getRecordsLimitation</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>limit setting or count requested rows</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>limit setting or count requested rows</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1928,6 +2213,7 @@ This is the count of requested rows</p>
     <h4 class="phpdocumentor-element__name" id="method_getRecordsTotalCount">
         getRecordsTotalCount()
         <a href="classes/CNIC-HEXONET-Response.html#method_getRecordsTotalCount" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1942,17 +2228,24 @@ This is the count of requested rows</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getRecordsTotalCount</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>total count of records or count of records for a non-list response</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>total count of records or count of records for a non-list response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1963,6 +2256,7 @@ This is the count of requested rows</p>
     <h4 class="phpdocumentor-element__name" id="method_getRuntime">
         getRuntime()
         <a href="classes/CNIC-HEXONET-Response.html#method_getRuntime" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -1977,17 +2271,24 @@ This is the count of requested rows</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getRuntime</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">float</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">float</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Runtime of API response</p>
+        <span class="phpdocumentor-signature__response_type">float</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Runtime of API response</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1998,6 +2299,7 @@ This is the count of requested rows</p>
     <h4 class="phpdocumentor-element__name" id="method_hasNextPage">
         hasNextPage()
         <a href="classes/CNIC-HEXONET-Response.html#method_hasNextPage" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2012,17 +2314,24 @@ This is the count of requested rows</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">hasNextPage</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2033,6 +2342,7 @@ This is the count of requested rows</p>
     <h4 class="phpdocumentor-element__name" id="method_hasPreviousPage">
         hasPreviousPage()
         <a href="classes/CNIC-HEXONET-Response.html#method_hasPreviousPage" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2047,17 +2357,24 @@ This is the count of requested rows</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">hasPreviousPage</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2068,6 +2385,7 @@ This is the count of requested rows</p>
     <h4 class="phpdocumentor-element__name" id="method_isError">
         isError()
         <a href="classes/CNIC-HEXONET-Response.html#method_isError" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2083,17 +2401,24 @@ API response code is an 5xx code</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">isError</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2104,6 +2429,7 @@ API response code is an 5xx code</p>
     <h4 class="phpdocumentor-element__name" id="method_isPending">
         isPending()
         <a href="classes/CNIC-HEXONET-Response.html#method_isPending" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2118,17 +2444,24 @@ API response code is an 5xx code</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">isPending</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>bool result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>bool result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2139,6 +2472,7 @@ API response code is an 5xx code</p>
     <h4 class="phpdocumentor-element__name" id="method_isSuccess">
         isSuccess()
         <a href="classes/CNIC-HEXONET-Response.html#method_isSuccess" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2154,17 +2488,24 @@ API response code is an 2xx code</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">isSuccess</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2175,6 +2516,7 @@ API response code is an 2xx code</p>
     <h4 class="phpdocumentor-element__name" id="method_isTmpError">
         isTmpError()
         <a href="classes/CNIC-HEXONET-Response.html#method_isTmpError" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2190,17 +2532,24 @@ API response code is an 4xx code</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">isTmpError</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2211,6 +2560,7 @@ API response code is an 4xx code</p>
     <h4 class="phpdocumentor-element__name" id="method_rewindRecordList">
         rewindRecordList()
         <a href="classes/CNIC-HEXONET-Response.html#method_rewindRecordList" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2225,15 +2575,20 @@ API response code is an 4xx code</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">rewindRecordList</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2244,6 +2599,7 @@ API response code is an 4xx code</p>
     <h4 class="phpdocumentor-element__name" id="method_hasColumn">
         hasColumn()
         <a href="classes/CNIC-HEXONET-Response.html#method_hasColumn" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2258,6 +2614,9 @@ API response code is an 4xx code</p>
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">hasColumn</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2274,13 +2633,17 @@ API response code is an 4xx code</p>
 
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2291,6 +2654,7 @@ API response code is an 4xx code</p>
     <h4 class="phpdocumentor-element__name" id="method_hasCurrentRecord">
         hasCurrentRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_hasCurrentRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2306,17 +2670,24 @@ current record index in use</p>
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">hasCurrentRecord</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2327,6 +2698,7 @@ current record index in use</p>
     <h4 class="phpdocumentor-element__name" id="method_hasNextRecord">
         hasNextRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_hasNextRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2342,17 +2714,24 @@ current record index in use</p>
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">hasNextRecord</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2363,6 +2742,7 @@ current record index in use</p>
     <h4 class="phpdocumentor-element__name" id="method_hasPreviousRecord">
         hasPreviousRecord()
         <a href="classes/CNIC-HEXONET-Response.html#method_hasPreviousRecord" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Response.php"><a href="files/src-hexonet-response.html"><abbr title="src/HEXONET/Response.php">Response.php</abbr></a></abbr>
@@ -2378,84 +2758,202 @@ current record index in use</p>
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">hasPreviousRecord</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>boolean result</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>boolean result</p>
 </section>
 
-    
+            </section>
+
 </article>
             </section>
 
-        
+        <div class="phpdocumentor-modal" id="source-view">
+    <div class="phpdocumentor-modal-bg" data-exit-button></div>
+    <div class="phpdocumentor-modal-container">
+        <div class="phpdocumentor-modal-content">
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/CNR/Response.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+        </div>
+        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
+    </div>
+</div>
+
     <script type="text/javascript">
-        function loadExternalCodeSnippets(line) {
-            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach((pre) => {
-                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
-                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-                var language = 'php';
+        (function () {
+            function loadExternalCodeSnippet(el, url, line) {
+                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+                    const language = 'php';
 
-                var code = document.createElement('code');
-                code.className = 'language-' + language;
+                    const code = document.createElement('code');
+                    code.className = 'language-' + language;
+                    pre.textContent = '';
+                    pre.setAttribute('data-line', line)
+                    code.textContent = 'Loading…';
+                    pre.appendChild(code);
 
-                pre.textContent = '';
+                    var xhr = new XMLHttpRequest();
 
-                pre.setAttribute('data-line', line)
-                code.textContent = 'Loading…';
+                    xhr.open('GET', src, true);
 
-                pre.appendChild(code);
-
-                var xhr = new XMLHttpRequest();
-
-                xhr.open('GET', src, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState !== 4) {
+                            return;
+                        }
 
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
-
                             Prism.highlightElement(code);
+                            return;
                         }
-                        else if (xhr.status >= 400) {
+
+                        if (xhr.status === 404) {
+                            code.textContent = '✖ Error: File could not be found';
+                            return;
+                        }
+
+                        if (xhr.status >= 400) {
                             code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                            return;
                         }
-                        else {
-                            code.textContent = '✖ Error: File does not exist, is empty or trying to view from localhost';
-                        }
+
+                        code.textContent = '✖ Error: An unknown error occurred';
+                    };
+
+                    xhr.send(null);
+                });
+            }
+
+            const modalButtons = document.querySelectorAll("[data-modal]");
+            const openedAsLocalFile = window.location.protocol === 'file:';
+            if (modalButtons.length > 0 && openedAsLocalFile) {
+                console.warn(
+                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
+                    'browsers block XHR requests when a page is opened this way'
+                );
+            }
+
+            modalButtons.forEach(function (trigger) {
+                if (openedAsLocalFile) {
+                    trigger.setAttribute("hidden", "hidden");
+                }
+
+                trigger.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const modal = document.getElementById(trigger.dataset.modal);
+                    if (!modal) {
+                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
+                        return;
                     }
-                };
+                    modal.classList.add("phpdocumentor-modal__open");
 
-                xhr.send(null);
-            });
-        }
-
-        var modals = document.querySelectorAll("[data-modal]");
-
-        modals.forEach(function (trigger) {
-            trigger.addEventListener("click", function (event) {
-                //event.preventDefault();
-                const modal = document.getElementById(trigger.dataset.modal);
-                modal.classList.add("phpdocumentor-modal__open");
-                loadExternalCodeSnippets(trigger.dataset.line)
-                const exits = modal.querySelectorAll("[data-exit-button]");
-                exits.forEach(function (exit) {
-                    exit.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        modal.classList.remove("phpdocumentor-modal__open");
+                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
+                    const exits = modal.querySelectorAll("[data-exit-button]");
+                    exits.forEach(function (exit) {
+                        exit.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            modal.classList.remove("phpdocumentor-modal__open");
+                        });
                     });
                 });
             });
-        });
+        })();
     </script>
 
     </article>
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                                
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                            <li><a href="classes/CNIC-CNR-Response.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/CNIC-CNR-Response.html#toc-methods">Methods</a></li>
+                                    </ul>
+            </li>
+            
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_columnkeys">$columnkeys</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_columns">$columns</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_command">$command</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_hash">$hash</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_paginationkeys">$paginationkeys</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_raw">$raw</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_recordIndex">$recordIndex</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-Response.html#property_records">$records</a></li>
+                                            </ul>
+                </li>
+            
+                        <li class="phpdocumentor-on-this-page-section__title">Methods</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method___construct">__construct()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_addColumn">addColumn()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_addRecord">addRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getCode">getCode()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getColumn">getColumn()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getColumnIndex">getColumnIndex()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getColumnKeys">getColumnKeys()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getColumns">getColumns()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getCommand">getCommand()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getCommandPlain">getCommandPlain()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getCurrentPageNumber">getCurrentPageNumber()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getCurrentRecord">getCurrentRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getDescription">getDescription()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getFirstRecordIndex">getFirstRecordIndex()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getHash">getHash()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getLastRecordIndex">getLastRecordIndex()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getListHash">getListHash()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getNextPageNumber">getNextPageNumber()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getNextRecord">getNextRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getNumberOfPages">getNumberOfPages()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getPagination">getPagination()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getPlain">getPlain()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getPreviousPageNumber">getPreviousPageNumber()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getPreviousRecord">getPreviousRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getQueuetime">getQueuetime()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getRecord">getRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getRecords">getRecords()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getRecordsCount">getRecordsCount()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getRecordsLimitation">getRecordsLimitation()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getRecordsTotalCount">getRecordsTotalCount()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_getRuntime">getRuntime()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_hasNextPage">hasNextPage()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_hasPreviousPage">hasPreviousPage()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_isError">isError()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_isPending">isPending()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_isSuccess">isSuccess()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_isTmpError">isTmpError()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_rewindRecordList">rewindRecordList()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_hasColumn">hasColumn()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_hasCurrentRecord">hasCurrentRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_hasNextRecord">hasNextRecord()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-Response.html#method_hasPreviousRecord">hasPreviousRecord()</a></li>
+                                    </ul>
+            </li>
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -2466,7 +2964,6 @@ current record index in use</p>
         </section>
     </section>
 </section>
-            </div>
         </div>
         <a href="classes/CNIC-CNR-Response.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 

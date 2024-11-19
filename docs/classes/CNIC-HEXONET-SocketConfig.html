@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -52,8 +53,8 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
+                    <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/cnic.html" class="">CNIC</a>
@@ -70,7 +71,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/CNIC.html" class="">CNIC</a>
@@ -88,21 +89,22 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic.html">CNIC</a></li>
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic-hexonet.html">HEXONET</a></li>
     </ul>
@@ -123,6 +125,11 @@
     
     </h2>
 
+<div class="phpdocumentor-label-line">
+
+
+</div>
+
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
     :
@@ -142,131 +149,152 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-HEXONET-SocketConfig.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
 </h3>
 
+
+
+
+
+
+
+
+
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/CNIC-HEXONET-SocketConfig.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
 <dl class="phpdocumentor-table-of-contents">
-                    <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_entity">$entity</a>
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_entity">$entity</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>API system entity. &quot;54cd&quot; for LIVE system; &quot;1234&quot; for OT&amp;E system</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_login">$login</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_login">$login</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>account name</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_parameters">$parameters</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_parameters">$parameters</a>
     <span>
                         &nbsp;: array&lt;string|int, string&gt;            </span>
 </dt>
 <dd>list of http request parameters</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_pw">$pw</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_pw">$pw</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>account password</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_remoteaddr">$remoteaddr</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_remoteaddr">$remoteaddr</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>remote ip address (ip filter)</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_session">$session</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_session">$session</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>API session id</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_user">$user</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_user">$user</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>subuser account name (subuser specific data view)</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#property_otp">$otp</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#property_otp">$otp</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>one time password (2FA)</dd>
 
-                <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method___construct">__construct()</a>
+    </dl>
+
+<h4 id="toc-methods">
+    Methods
+    <a href="classes/CNIC-HEXONET-SocketConfig.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method___construct">__construct()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTData">getPOSTData()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTData">getPOSTData()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Create POST data string out of connection data</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getSession">getSession()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_getSession">getSession()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get API Session ID in use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getSystemEntity">getSystemEntity()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_getSystemEntity">getSystemEntity()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get API System Entity in use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setLogin">setLogin()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setLogin">setLogin()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set account name to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setOTP">setOTP()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setOTP">setOTP()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set one time password to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setPassword">setPassword()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setPassword">setPassword()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set account password to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setRemoteAddress">setRemoteAddress()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setRemoteAddress">setRemoteAddress()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set Remote IP Address to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setSession">setSession()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setSession">setSession()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set API Session ID to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setSystemEntity">setSystemEntity()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setSystemEntity">setSystemEntity()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
@@ -274,20 +302,20 @@
 This is set to 54cd / LIVE System by default</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setUser">setUser()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_setUser">setUser()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set subuser account name (for subuser data view)</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTDataParams">getPOSTDataParams()</a>
+    <a class="" href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTDataParams">getPOSTDataParams()</a>
     <span>
                                 &nbsp;: array&lt;string, string&gt;    </span>
 </dt>
 <dd>Get POST data container of connection data</dd>
 
-        </dl>
+    </dl>
 
 
 
@@ -298,6 +326,7 @@ This is set to 54cd / LIVE System by default</dd>
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
             <a href="classes/CNIC-HEXONET-SocketConfig.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="
@@ -309,6 +338,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_entity">
         $entity
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_entity" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -321,6 +351,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">API system entity. &quot;54cd&quot; for LIVE system; &quot;1234&quot; for OT&amp;E system</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -329,6 +360,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -342,6 +375,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_login">
         $login
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_login" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -354,6 +388,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">account name</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -362,6 +397,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -375,6 +412,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_parameters">
         $parameters
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_parameters" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -387,6 +425,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">list of http request parameters</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
@@ -395,6 +434,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -408,6 +449,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_pw">
         $pw
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_pw" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -420,6 +462,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">account password</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -428,6 +471,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -441,6 +486,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_remoteaddr">
         $remoteaddr
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_remoteaddr" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -453,6 +499,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">remote ip address (ip filter)</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -461,6 +508,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -474,6 +523,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_session">
         $session
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_session" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -486,6 +536,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">API session id</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -494,6 +545,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -507,6 +560,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_user">
         $user
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_user" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -519,6 +573,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">subuser account name (subuser specific data view)</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -527,6 +582,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
     
+    
+
     
 
 </article>
@@ -540,6 +597,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="property_otp">
         $otp
         <a href="classes/CNIC-HEXONET-SocketConfig.html#property_otp" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -552,6 +610,7 @@ This is set to 54cd / LIVE System by default</dd>
 
         <p class="phpdocumentor-summary">one time password (2FA)</p>
 
+    
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -562,6 +621,8 @@ This is set to 54cd / LIVE System by default</dd>
     
     
 
+    
+
 </article>
             </section>
 
@@ -569,6 +630,7 @@ This is set to 54cd / LIVE System by default</dd>
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
             <a href="classes/CNIC-HEXONET-SocketConfig.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="phpdocumentor-element
@@ -579,6 +641,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -592,6 +655,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$parameters</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -606,10 +672,8 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
+    
+
     
 </article>
                     <article
@@ -621,6 +685,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_getPOSTData">
         getPOSTData()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTData" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -635,6 +700,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getPOSTData</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$command</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$secured</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -660,13 +728,17 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>POST data string</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>POST data string</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -677,6 +749,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_getSession">
         getSession()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getSession" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -691,17 +764,24 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getSession</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>API Session ID</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>API Session ID</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -712,6 +792,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_getSystemEntity">
         getSystemEntity()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getSystemEntity" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -726,17 +807,24 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getSystemEntity</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
     
     
 
+    
+
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>API System Entity</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>API System Entity</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -747,6 +835,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_setLogin">
         setLogin()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setLogin" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -761,6 +850,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setLogin</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -777,11 +869,13 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -792,6 +886,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_setOTP">
         setOTP()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setOTP" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -806,6 +901,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setOTP</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -822,11 +920,13 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -837,6 +937,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_setPassword">
         setPassword()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setPassword" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -851,6 +952,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setPassword</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -867,11 +971,13 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -882,6 +988,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_setRemoteAddress">
         setRemoteAddress()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setRemoteAddress" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -896,6 +1003,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setRemoteAddress</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -912,11 +1022,13 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -927,6 +1039,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_setSession">
         setSession()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setSession" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -941,6 +1054,9 @@ This is set to 54cd / LIVE System by default</dd>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setSession</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -957,11 +1073,13 @@ This is set to 54cd / LIVE System by default</dd>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -972,6 +1090,7 @@ This is set to 54cd / LIVE System by default</dd>
     <h4 class="phpdocumentor-element__name" id="method_setSystemEntity">
         setSystemEntity()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setSystemEntity" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -987,6 +1106,9 @@ This is set to 54cd / LIVE System by default</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setSystemEntity</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1003,11 +1125,13 @@ This is set to 54cd / LIVE System by default</p>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1018,6 +1142,7 @@ This is set to 54cd / LIVE System by default</p>
     <h4 class="phpdocumentor-element__name" id="method_setUser">
         setUser()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_setUser" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -1032,6 +1157,9 @@ This is set to 54cd / LIVE System by default</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setUser</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1048,11 +1176,13 @@ This is set to 54cd / LIVE System by default</p>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">$this</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1063,6 +1193,7 @@ This is set to 54cd / LIVE System by default</p>
     <h4 class="phpdocumentor-element__name" id="method_getPOSTDataParams">
         getPOSTDataParams()
         <a href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTDataParams" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/SocketConfig.php"><a href="files/src-hexonet-socketconfig.html"><abbr title="src/HEXONET/SocketConfig.php">SocketConfig.php</abbr></a></abbr>
@@ -1077,6 +1208,9 @@ This is set to 54cd / LIVE System by default</p>
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">getPOSTDataParams</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$command</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$secured</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, string&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
+    
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1102,78 +1236,161 @@ This is set to 54cd / LIVE System by default</p>
 
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string, string&gt;</span>
-            &mdash;
-        
     
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string, string&gt;</span>
+            </section>
+
 </article>
             </section>
 
-        
+        <div class="phpdocumentor-modal" id="source-view">
+    <div class="phpdocumentor-modal-bg" data-exit-button></div>
+    <div class="phpdocumentor-modal-container">
+        <div class="phpdocumentor-modal-content">
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/HEXONET/SocketConfig.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+        </div>
+        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
+    </div>
+</div>
+
     <script type="text/javascript">
-        function loadExternalCodeSnippets(line) {
-            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach((pre) => {
-                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
-                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-                var language = 'php';
+        (function () {
+            function loadExternalCodeSnippet(el, url, line) {
+                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+                    const language = 'php';
 
-                var code = document.createElement('code');
-                code.className = 'language-' + language;
+                    const code = document.createElement('code');
+                    code.className = 'language-' + language;
+                    pre.textContent = '';
+                    pre.setAttribute('data-line', line)
+                    code.textContent = 'Loading…';
+                    pre.appendChild(code);
 
-                pre.textContent = '';
+                    var xhr = new XMLHttpRequest();
 
-                pre.setAttribute('data-line', line)
-                code.textContent = 'Loading…';
+                    xhr.open('GET', src, true);
 
-                pre.appendChild(code);
-
-                var xhr = new XMLHttpRequest();
-
-                xhr.open('GET', src, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState !== 4) {
+                            return;
+                        }
 
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
-
                             Prism.highlightElement(code);
+                            return;
                         }
-                        else if (xhr.status >= 400) {
+
+                        if (xhr.status === 404) {
+                            code.textContent = '✖ Error: File could not be found';
+                            return;
+                        }
+
+                        if (xhr.status >= 400) {
                             code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                            return;
                         }
-                        else {
-                            code.textContent = '✖ Error: File does not exist, is empty or trying to view from localhost';
-                        }
+
+                        code.textContent = '✖ Error: An unknown error occurred';
+                    };
+
+                    xhr.send(null);
+                });
+            }
+
+            const modalButtons = document.querySelectorAll("[data-modal]");
+            const openedAsLocalFile = window.location.protocol === 'file:';
+            if (modalButtons.length > 0 && openedAsLocalFile) {
+                console.warn(
+                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
+                    'browsers block XHR requests when a page is opened this way'
+                );
+            }
+
+            modalButtons.forEach(function (trigger) {
+                if (openedAsLocalFile) {
+                    trigger.setAttribute("hidden", "hidden");
+                }
+
+                trigger.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const modal = document.getElementById(trigger.dataset.modal);
+                    if (!modal) {
+                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
+                        return;
                     }
-                };
+                    modal.classList.add("phpdocumentor-modal__open");
 
-                xhr.send(null);
-            });
-        }
-
-        var modals = document.querySelectorAll("[data-modal]");
-
-        modals.forEach(function (trigger) {
-            trigger.addEventListener("click", function (event) {
-                //event.preventDefault();
-                const modal = document.getElementById(trigger.dataset.modal);
-                modal.classList.add("phpdocumentor-modal__open");
-                loadExternalCodeSnippets(trigger.dataset.line)
-                const exits = modal.querySelectorAll("[data-exit-button]");
-                exits.forEach(function (exit) {
-                    exit.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        modal.classList.remove("phpdocumentor-modal__open");
+                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
+                    const exits = modal.querySelectorAll("[data-exit-button]");
+                    exits.forEach(function (exit) {
+                        exit.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            modal.classList.remove("phpdocumentor-modal__open");
+                        });
                     });
                 });
             });
-        });
+        })();
     </script>
 
     </article>
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                                
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                            <li><a href="classes/CNIC-HEXONET-SocketConfig.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/CNIC-HEXONET-SocketConfig.html#toc-methods">Methods</a></li>
+                                    </ul>
+            </li>
+            
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_entity">$entity</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_login">$login</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_parameters">$parameters</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_pw">$pw</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_remoteaddr">$remoteaddr</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_session">$session</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_user">$user</a></li>
+                                                    <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#property_otp">$otp</a></li>
+                                            </ul>
+                </li>
+            
+                        <li class="phpdocumentor-on-this-page-section__title">Methods</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method___construct">__construct()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTData">getPOSTData()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_getSession">getSession()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_getSystemEntity">getSystemEntity()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setLogin">setLogin()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setOTP">setOTP()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setPassword">setPassword()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setRemoteAddress">setRemoteAddress()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setSession">setSession()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setSystemEntity">setSystemEntity()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_setUser">setUser()</a></li>
+                                            <li class=""><a href="classes/CNIC-HEXONET-SocketConfig.html#method_getPOSTDataParams">getPOSTDataParams()</a></li>
+                                    </ul>
+            </li>
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -1184,7 +1401,6 @@ This is set to 54cd / LIVE System by default</p>
         </section>
     </section>
 </section>
-            </div>
         </div>
         <a href="classes/CNIC-HEXONET-SocketConfig.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 

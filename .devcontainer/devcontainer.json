@@ -18,7 +18,8 @@
 			"mrmlnc.vscode-apache",
 			"xdebug.php-debug",
 			"neilbrayfield.php-docblocker",
-			"GitHub.copilot"
+			"GitHub.copilot",
+			"ms-vscode.live-server"
 		],
 		"settings": {
 		  "terminal.integrated.defaultProfile.linux": "zsh",
