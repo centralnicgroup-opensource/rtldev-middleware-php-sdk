@@ -71,13 +71,13 @@ class Client
     public function __construct($path = "")
     {
         $contents = file_get_contents($path) ?: "";
-        /** @var array<mixed> $settings */
-        $settings = json_decode($contents, true);
-        $this->settings = $settings;
+        /** @var array<string,mixed>|false|null $json */
+        $json = json_decode($contents, true);
+        $this->settings = ($json) ? $json : [];
         $this->socketURL = "";
         $this->debugMode = false;
         $this->ua = "";
-        $this->socketConfig = new SocketConfig($this->settings["parameters"]);
+        $this->socketConfig = new SocketConfig($this->settings["parameters"] ?? []);
         $this->useLIVESystem();
         $this->setDefaultLogger();
     }
@@ -164,7 +164,7 @@ class Client
      * Set a custom user agent (for platforms that use this SDK)
      * @param string $str user agent label
      * @param string $rv user agent revision
-     * @param array<mixed, string> $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
+     * @param array<string> $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
      * @return $this
      */
     public function setUserAgent($str, $rv, $modules = [])

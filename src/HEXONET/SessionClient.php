@@ -78,7 +78,7 @@ class SessionClient extends Client
 
     /**
      * Apply session data (session id and system entity) to given php session object
-     * @param array<mixed,mixed> $session php session instance ($_SESSION)
+     * @param array<string,mixed> $session php session instance ($_SESSION)
      * @return $this
      */
     public function saveSession(&$session)
@@ -93,7 +93,7 @@ class SessionClient extends Client
     /**
      * Use existing configuration out of php session object
      * to rebuild and reuse connection settings
-     * @param array<mixed> $session php session object ($_SESSION)
+     * @param array<string,mixed> $session php session object ($_SESSION)
      * @return $this
      */
     public function reuseSession(&$session)
