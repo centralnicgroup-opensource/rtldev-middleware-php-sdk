@@ -62,5 +62,9 @@
     "allow-plugins": {
       "phpstan/extension-installer": true
     }
+  },
+  "stability-flags": {
+  },
+  "platform-dev": {
   }
 }
