@@ -306,7 +306,7 @@ final class CNRClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->setRoleCredentials(self::$user, self::$role, self::$rolepw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true);
+        $this->assertEquals($r->isSuccess(), true, $r->getPlain());
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
         $this->assertNotNull($rec->getDataByKey("SESSIONID"));
