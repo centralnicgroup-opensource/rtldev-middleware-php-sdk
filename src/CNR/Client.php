@@ -12,6 +12,7 @@ namespace CNIC\CNR;
 use CNIC\CNR\Logger as L;
 use CNIC\CNR\SocketConfig;
 use CNIC\CNR\Response;
+use CNIC\CommandFormatter;
 
 /**
  * CNR API Client
@@ -55,8 +56,8 @@ class Client extends \CNIC\HEXONET\Client
     {
         $mycmd = [];
         if (!empty($cmd)) {
-            // flatten nested api command bulk parameters
-            $mycmd = $this->flattenCommand($cmd);
+            // flatten nested api command bulk parameters and sort them
+            $mycmd = CommandFormatter::flattenCommand($cmd);
             // auto convert umlaut names to punycode
             $mycmd = $this->autoIDNConvert($mycmd);
         }

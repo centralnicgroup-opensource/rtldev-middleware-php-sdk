@@ -33,6 +33,16 @@ final class HexonetClientTest extends \PHPUnit\Framework\TestCase
         self::$cl = $cl;
         self::$user = getenv("RTLDEV_MW_CI_USER_HEXONET") ?: "";
         self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_HEXONET") ?: "";
+
+        if (self::$user === "") {
+            echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR.\n";
+            exit(1);
+        }
+
+        if (self::$pw === "") {
+            echo "Please provide environment variables RTLDEV_MW_CI_USERPASSWORD_CNR.\n";
+            exit(1);
+        }
     }
 
     public function testGetPOSTDataSecured(): void
