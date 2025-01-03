@@ -14,8 +14,8 @@ echo "--- SESSION-LESS API COMMUNICATION ----\n";
 $cl = \CNIC\ClientFactory::getClient([
     "registrar" => "CNR" // fka RRPproxy
 ]);
-$cl->useOTESystem()//LIVE System would be used otherwise by default
-   ->setCredentials($user, $password);
+$cl->useOTESystem() //LIVE System would be used otherwise by default
+    ->setCredentials($user, $password);
 $r = $cl->request([
     "COMMAND" => "StatusAccount"
 ]);
@@ -26,8 +26,8 @@ echo "--- SESSION-BASED API COMMUNICATION ----\n";
 $cl = \CNIC\ClientFactory::getClient([
     "registrar" => "CNR" // fka RRPproxy
 ]);
-$cl->useOTESystem()//LIVE System would be used otherwise by default
-   ->setCredentials($user, $password);
+$cl->useOTESystem() //LIVE System would be used otherwise by default
+    ->setCredentials($user, $password);
 $r = $cl->login();
 // or this line for using 2FA
 // $r = $cl->login('.. here your otp code ...');

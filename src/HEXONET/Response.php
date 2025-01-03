@@ -11,6 +11,7 @@ namespace CNIC\HEXONET;
 
 use CNIC\HEXONET\ResponseParser as RP;
 use CNIC\HEXONET\ResponseTranslator as RT;
+use CNIC\CommandFormatter;
 
 /**
  * HEXONET Response
@@ -25,7 +26,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     private $command;
 
-     /**
+    /**
      * plain API response
      * @var string
      */
@@ -33,7 +34,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * hash representation of plain API response
-     * @var array<string, mixed>
+     * @var array<string,mixed>
      */
     private $hash;
 
@@ -289,7 +290,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getCommand()
     {
-        return $this->command;
+        return CommandFormatter::getSortedCommand($this->command);
     }
 
     /**
@@ -298,11 +299,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getCommandPlain()
     {
-        $tmp = "";
-        foreach ($this->command as $key => $val) {
-            $tmp .= "$key = $val\n";
-        }
-        return $tmp;
+        return CommandFormatter::formatCommand($this->getCommand());
     }
 
     /**
@@ -433,7 +430,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get object containing all paging data
-     * @return array<string, int|null> paginator data
+     * @return array<string,int|null> paginator data
      */
     public function getPagination()
     {

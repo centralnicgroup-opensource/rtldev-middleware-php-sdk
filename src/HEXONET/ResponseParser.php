@@ -19,11 +19,11 @@ final class ResponseParser
     /**
      * Method to parse plain API response into js object
      * @param string $raw API plain response
-     * @return array<string, mixed> API response as hash
+     * @return array<string,mixed> API response as hash
      */
     public static function parse($raw)
     {
-        /** @var array<string, mixed> $hash */
+        /** @var array<string,mixed> $hash */
         $hash = [];
         $tmp = preg_replace("/\r\n/", "\n", $raw);
         if (is_null($tmp)) {

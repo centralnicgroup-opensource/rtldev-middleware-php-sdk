@@ -9,6 +9,7 @@
 
 namespace CNIC\HEXONET;
 
+use CNIC\CommandFormatter;
 use CNIC\HEXONET\Logger as L;
 use CNIC\HEXONET\SocketConfig;
 use CNIC\HEXONET\Response;
@@ -126,7 +127,7 @@ class Client
 
     /**
      * Serialize given command for POST request including connection configuration data
-     * @param string|array<string, mixed> $cmd API command to encode
+     * @param string|array<string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
      * @return string encoded POST data string
      */
@@ -343,30 +344,6 @@ class Client
     }
 
     /**
-     * Flatten API command's nested arrays for easier handling
-     * @param array<mixed> $cmd API Command
-     * @return array<mixed>
-     */
-    protected function flattenCommand($cmd)
-    {
-        $newcmd = [];
-        foreach ($cmd as $key => $val) {
-            if (isset($val)) {
-                $val = preg_replace("/\r|\n/", "", $val);
-                $newKey = \strtoupper($key);
-                if (is_array($val)) {
-                    foreach ($cmd[$key] as $idx => $v) {
-                        $newcmd[$newKey . $idx] = $v;
-                    }
-                } else {
-                    $newcmd[$newKey] = $val;
-                }
-            }
-        }
-        return $newcmd;
-    }
-
-    /**
      * Auto convert API command parameters to punycode, if necessary.
      * @param array<string> $cmd API command
      * @return array<string>
@@ -421,8 +398,8 @@ class Client
      */
     public function request($cmd)
     {
-        // flatten nested api command bulk parameters
-        $mycmd = $this->flattenCommand($cmd);
+        // flatten nested api command bulk parameters and sort them
+        $mycmd = CommandFormatter::flattenCommand($cmd);
         // auto convert umlaut names to punycode
         $mycmd = $this->autoIDNConvert($mycmd);
         // request command to API
@@ -509,7 +486,7 @@ class Client
 
     /**
      * Request all pages/entries for the given query command
-     * @param array<string, mixed> $cmd API list command to use
+     * @param array<string,mixed> $cmd API list command to use
      * @return Response[] Responses
      */
     public function requestAllResponsePages($cmd)
