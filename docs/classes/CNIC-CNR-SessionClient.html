@@ -111,10 +111,10 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    Client
+    SessionClient
 
         <span class="phpdocumentor-element__extends">
-        extends <a href="classes/CNIC-HEXONET-Client.html"><abbr title="\CNIC\HEXONET\Client">Client</abbr></a>
+        extends <a href="classes/CNIC-CNR-Client.html"><abbr title="\CNIC\CNR\Client">Client</abbr></a>
     </span>
     
             <div class="phpdocumentor-element__package">
@@ -134,9 +134,9 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">23</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
@@ -152,7 +152,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/CNIC-CNR-Client.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-SessionClient.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -166,7 +166,7 @@
 
 <h4 id="toc-properties">
     Properties
-    <a href="classes/CNIC-CNR-Client.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-SessionClient.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
@@ -230,12 +230,12 @@
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/CNIC-CNR-Client.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-SessionClient.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-CNR-Client.html#method___construct">__construct()</a>
+    <a class="" href="classes/CNIC-CNR-SessionClient.html#method___construct">__construct()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
@@ -312,6 +312,20 @@
 <dd>Convert domain names to idn + punycode if necessary</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/CNIC-CNR-SessionClient.html#method_login">login()</a>
+    <span>
+                                &nbsp;: <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>    </span>
+</dt>
+<dd>Perform API login to start session-based communication</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/CNIC-CNR-SessionClient.html#method_logout">logout()</a>
+    <span>
+                                &nbsp;: <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>    </span>
+</dt>
+<dd>Perform API logout to close API session in use</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/CNIC-CNR-Client.html#method_request">request()</a>
     <span>
                                 &nbsp;: <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>    </span>
@@ -332,6 +346,21 @@
 </dt>
 <dd>Request the next page of list entries for the current list query
 Useful for tables</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/CNIC-CNR-SessionClient.html#method_reuseSession">reuseSession()</a>
+    <span>
+                                &nbsp;: $this    </span>
+</dt>
+<dd>Use existing configuration out of php session object
+to rebuild and reuse connection settings</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/CNIC-CNR-SessionClient.html#method_saveSession">saveSession()</a>
+    <span>
+                                &nbsp;: $this    </span>
+</dt>
+<dd>Apply session data (session id and system entity) to given php session object</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/CNIC-HEXONET-Client.html#method_setCredentials">setCredentials()</a>
@@ -457,7 +486,7 @@ To be used in case you have an active ip filter setting.</dd>
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/CNIC-CNR-Client.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/CNIC-CNR-SessionClient.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -761,7 +790,7 @@ To be used in case you have an active ip filter setting.</dd>
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/CNIC-CNR-Client.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/CNIC-CNR-SessionClient.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -772,13 +801,13 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
-        <a href="classes/CNIC-CNR-Client.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-SessionClient.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">36</span>
+    <span class="phpdocumentor-element-found-in__line">20</span>
 
     </aside>
 
@@ -786,25 +815,13 @@ To be used in case you have an active ip filter setting.</dd>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$path</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$path</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Path to the configuration file</p>
-</section>
-
-            </dd>
-            </dl>
-
+    
     
 
     
@@ -1260,6 +1277,92 @@ To be used in case you have an active ip filter setting.</dd>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_login">
+        login()
+        <a href="classes/CNIC-CNR-SessionClient.html#method_login" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Perform API login to start session-based communication</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">login</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Response</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_logout">
+        logout()
+        <a href="classes/CNIC-CNR-SessionClient.html#method_logout" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">44</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Perform API logout to close API session in use</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">logout</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Response</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_request">
         request()
         <a href="classes/CNIC-CNR-Client.html#method_request" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1434,6 +1537,109 @@ Useful for tables</p>
                 <section class="phpdocumentor-description"><p>Response or null in case there are no further list entries</p>
 </section>
 
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_reuseSession">
+        reuseSession()
+        <a href="classes/CNIC-CNR-SessionClient.html#method_reuseSession" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">73</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Use existing configuration out of php session object
+to rebuild and reuse connection settings</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">reuseSession</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$session</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$session</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>php session object ($_SESSION)</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_saveSession">
+        saveSession()
+        <a href="classes/CNIC-CNR-SessionClient.html#method_saveSession" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">58</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Apply session data (session id and system entity) to given php session object</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">saveSession</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$session</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$session</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>php session instance ($_SESSION)</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">$this</span>
             </section>
 
 </article>
@@ -2290,7 +2496,7 @@ To be used in case you have an active ip filter setting.</p>
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/CNR/Client.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/CNR/SessionClient.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -2389,8 +2595,8 @@ To be used in case you have an active ip filter setting.</p>
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/CNIC-CNR-Client.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/CNIC-CNR-Client.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/CNIC-CNR-SessionClient.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/CNIC-CNR-SessionClient.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
@@ -2411,7 +2617,7 @@ To be used in case you have an active ip filter setting.</p>
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method___construct">__construct()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method___construct">__construct()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_disableDebugMode">disableDebugMode()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_enableDebugMode">enableDebugMode()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getPOSTData">getPOSTData()</a></li>
@@ -2422,9 +2628,13 @@ To be used in case you have an active ip filter setting.</p>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getUserAgent">getUserAgent()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getVersion">getVersion()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_IDNConvert">IDNConvert()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_login">login()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_logout">logout()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-Client.html#method_request">request()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_requestAllResponsePages">requestAllResponsePages()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_requestNextResponsePage">requestNextResponsePage()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_reuseSession">reuseSession()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_saveSession">saveSession()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setCredentials">setCredentials()</a></li>
                                             <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setCustomLogger">setCustomLogger()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-Client.html#method_setDefaultLogger">setDefaultLogger()</a></li>
@@ -2460,7 +2670,7 @@ To be used in case you have an active ip filter setting.</p>
     </section>
 </section>
         </div>
-        <a href="classes/CNIC-CNR-Client.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/CNIC-CNR-SessionClient.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

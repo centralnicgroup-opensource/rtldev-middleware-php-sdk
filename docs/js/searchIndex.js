@@ -141,6 +141,36 @@ Search.appendIndex(
             "summary": "Get\u0020column\u0020data\u0020at\u0020given\u0020index",
             "url": "classes/CNIC-ColumnInterface.html#method_getDataByIndex"
         },                {
+            "fqsen": "\\CNIC\\CommandFormatter",
+            "name": "CommandFormatter",
+            "summary": "",
+            "url": "classes/CNIC-CommandFormatter.html"
+        },                {
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AgetSortedCommand\u0028\u0029",
+            "name": "getSortedCommand",
+            "summary": "Get\u0020the\u0020sorted\u0020command\u0020array\u0020based\u0020on\u0020priority",
+            "url": "classes/CNIC-CommandFormatter.html#method_getSortedCommand"
+        },                {
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AflattenCommand\u0028\u0029",
+            "name": "flattenCommand",
+            "summary": "Flatten\u0020API\u0020command\u0027s\u0020nested\u0020arrays\u0020for\u0020easier\u0020handling",
+            "url": "classes/CNIC-CommandFormatter.html#method_flattenCommand"
+        },                {
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AformatCommand\u0028\u0029",
+            "name": "formatCommand",
+            "summary": "Format\u0020the\u0020command\u0020array\u0020into\u0020a\u0020plain\u0020text\u0020string",
+            "url": "classes/CNIC-CommandFormatter.html#method_formatCommand"
+        },                {
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AgetPriorityArray\u0028\u0029",
+            "name": "getPriorityArray",
+            "summary": "Get\u0020the\u0020priority\u0020array\u0020with\u0020regex\u0020patterns",
+            "url": "classes/CNIC-CommandFormatter.html#method_getPriorityArray"
+        },                {
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AfindPriority\u0028\u0029",
+            "name": "findPriority",
+            "summary": "Find\u0020the\u0020priority\u0020of\u0020a\u0020given\u0020key",
+            "url": "classes/CNIC-CommandFormatter.html#method_findPriority"
+        },                {
             "fqsen": "\\CNIC\\HEXONET\\Client",
             "name": "Client",
             "summary": "HEXONET\u0020API\u0020Client",
@@ -255,11 +285,6 @@ Search.appendIndex(
             "name": "IDNConvert",
             "summary": "Convert\u0020domain\u0020names\u0020to\u0020idn\u0020\u002B\u0020punycode\u0020if\u0020necessary",
             "url": "classes/CNIC-HEXONET-Client.html#method_IDNConvert"
-        },                {
-            "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AflattenCommand\u0028\u0029",
-            "name": "flattenCommand",
-            "summary": "Flatten\u0020API\u0020command\u0027s\u0020nested\u0020arrays\u0020for\u0020easier\u0020handling",
-            "url": "classes/CNIC-HEXONET-Client.html#method_flattenCommand"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AautoIDNConvert\u0028\u0029",
             "name": "autoIDNConvert",

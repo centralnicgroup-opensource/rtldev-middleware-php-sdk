@@ -1,3 +1,16 @@
+# [9.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.0.1...v9.1.0) (2025-01-13)
+
+
+### Bug Fixes
+
+* **cnr, hx:** reviewed array typing ([0bfe71b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/0bfe71b483751b8cbfcdabaa5a555c0c34e662cb))
+* **phpstan:** reviewed codebase and dropped `treatPhpDocTypesAsCertain: false` setting ([a1dd4e1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a1dd4e17bdee1257167d4dfcb07b0a8c7bebf747))
+
+
+### Features
+
+* **CommandFormatter.php:** enhance command sorting and formatting logic ([affd488](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/affd488e750208a6fbff1310bb46c09b854c0225))
+
 ## [9.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.0.0...v9.0.1) (2024-09-16)
 
 
