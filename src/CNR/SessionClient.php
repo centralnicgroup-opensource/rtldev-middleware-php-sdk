@@ -47,6 +47,7 @@ class SessionClient extends \CNIC\CNR\Client
         if ($rr->isSuccess()) {
             $this->setSession();
         }
+        $this->close();
         return $rr;
     }
 

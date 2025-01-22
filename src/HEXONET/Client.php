@@ -63,6 +63,11 @@ class Client
      * @var bool
      */
     public $isOTE = false;
+    /**
+     * curl handle cache
+     * @var array<string,\CurlHandle>
+     */
+    protected $curlcache = [];
 
     /**
      * Constructor
@@ -407,18 +412,47 @@ class Client
             "CONNECTION_URL" => $this->socketURL
         ];
         $data = $this->getPOSTData($mycmd);
-        $curl = curl_init($cfg["CONNECTION_URL"]);
-        // PHP 7.3 return false vs. 7.4 throws an Exception
-        // when setting the URL to "\0"
-        // @codeCoverageIgnoreStart
-        if ($curl === false) {
-            $r = new Response("nocurl", $mycmd, $cfg);
-            if ($this->debugMode) {
-                $secured = $this->getPOSTData($mycmd, true);
-                $this->logger->log($secured, $r, "CURL for PHP missing.");
+        if (isset($this->curlcache[$cfg["CONNECTION_URL"]])) {
+            $curl = $this->curlcache[$cfg["CONNECTION_URL"]];
+        } else {
+            $curl = curl_init($cfg["CONNECTION_URL"]);
+            // PHP 7.3 return false vs. 7.4 throws an Exception
+            // when setting the URL to "\0"
+            // @codeCoverageIgnoreStart
+            if ($curl === false) {
+                $r = new Response("nocurl", $mycmd, $cfg);
+                if ($this->debugMode) {
+                    $secured = $this->getPOSTData($mycmd, true);
+                    $this->logger->log($secured, $r, "CURL for PHP missing.");
+                }
+                return $r;
             }
-            return $r;
+
+            // @codeCoverageIgnoreEnd
+            curl_setopt_array($curl, [
+                // CURLOPT_VERBOSE         => $this->debugMode,
+                CURLOPT_CONNECTTIMEOUT  => 5, // 5s
+                CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
+                CURLOPT_POST            => 1,
+                CURLOPT_HEADER          => 0,
+                CURLOPT_RETURNTRANSFER  => 1,
+            ]);
+
+            $this->curlcache[$cfg["CONNECTION_URL"]] = $curl;
         }
+
+        curl_setopt_array($curl, [
+            CURLOPT_POSTFIELDS      => $data,
+            CURLOPT_USERAGENT       => $this->getUserAgent(),
+            CURLOPT_HTTPHEADER      => [
+                "Expect:",
+                "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
+                "Content-Length: " . strlen($data),
+                "Connection: keep-alive"
+            ]
+        ] + $this->curlopts);
+
+
         // @codeCoverageIgnoreEnd
         curl_setopt_array($curl, [
             // CURLOPT_VERBOSE         => $this->debugMode,
@@ -446,8 +480,6 @@ class Client
         }
         $response = new Response($r, $mycmd, $cfg);
 
-        curl_close($curl);
-        unset($curl); // https://php.watch/versions/8.0/resource-CurlHandle
         if ($this->debugMode) {
             $secured = $this->getPOSTData($mycmd, true);
             $this->logger->log($secured, $response, $error);
@@ -500,6 +532,17 @@ class Client
             $tmp = $this->requestNextResponsePage($tmp);
         } while ($tmp !== null);
         return $responses;
+    }
+
+    /**
+     * Close all curl handles
+     * @return void
+     */
+    public function close()
+    {
+        foreach ($this->curlcache as $curl) {
+            curl_close($curl);
+        }
     }
 
     /**

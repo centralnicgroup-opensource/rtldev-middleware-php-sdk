@@ -73,6 +73,7 @@ class SessionClient extends Client
         if ($rr->isSuccess()) {
             $this->setSession("");
         }
+        $this->close();
         return $rr;
     }
 
