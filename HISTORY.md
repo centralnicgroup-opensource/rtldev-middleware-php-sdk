@@ -8,7 +8,7 @@
 
 ### BREAKING CHANGES
 
-* **cnr / hx apiclient:** the curl handle is now cached for later reuse. consider calling close() of the
+* **cnr / hx apiclient:** the curl handle is now cached for later reuse. consider calling close() of the apiclient in context of a sessionless approach. this automatically covered by the logout function in context of session-based communication
 
 # [9.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.0.1...v9.1.0) (2025-01-13)
 
