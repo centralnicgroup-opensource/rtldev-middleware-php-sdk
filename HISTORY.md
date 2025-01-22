@@ -1,3 +1,15 @@
+# [10.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.1.0...v10.0.0) (2025-01-22)
+
+
+### Performance Improvements
+
+* **cnr / hx apiclient:** request function: better inherited; cache the curl handle for reuse ([755bec4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/755bec42a9eaf9a1512b201f66ef628c66a464af))
+
+
+### BREAKING CHANGES
+
+* **cnr / hx apiclient:** the curl handle is now cached for later reuse. consider calling close() of the
+
 # [9.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.0.1...v9.1.0) (2025-01-13)
 
 

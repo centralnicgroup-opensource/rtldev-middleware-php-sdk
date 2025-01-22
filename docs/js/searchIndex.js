@@ -306,6 +306,11 @@ Search.appendIndex(
             "summary": "Request\u0020all\u0020pages\/entries\u0020for\u0020the\u0020given\u0020query\u0020command",
             "url": "classes/CNIC-HEXONET-Client.html#method_requestAllResponsePages"
         },                {
+            "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003Aclose\u0028\u0029",
+            "name": "close",
+            "summary": "Close\u0020all\u0020curl\u0020handles",
+            "url": "classes/CNIC-HEXONET-Client.html#method_close"
+        },                {
             "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003AsetUserView\u0028\u0029",
             "name": "setUserView",
             "summary": "Set\u0020a\u0020data\u0020view\u0020to\u0020a\u0020given\u0020subuser",
@@ -365,6 +370,11 @@ Search.appendIndex(
             "name": "isOTE",
             "summary": "is\u0020connected\u0020to\u0020OT\u0026E",
             "url": "classes/CNIC-HEXONET-Client.html#property_isOTE"
+        },                {
+            "fqsen": "\\CNIC\\HEXONET\\Client\u003A\u003A\u0024curlcache",
+            "name": "curlcache",
+            "summary": "curl\u0020handle\u0020cache",
+            "url": "classes/CNIC-HEXONET-Client.html#property_curlcache"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Column",
             "name": "Column",
