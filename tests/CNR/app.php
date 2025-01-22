@@ -19,6 +19,7 @@ $cl->useOTESystem() //LIVE System would be used otherwise by default
 $r = $cl->request([
     "COMMAND" => "StatusAccount"
 ]);
+$cl->close(); // close connection(s) to the API
 print_r($r->getHash());
 
 // --- SESSION BASED API COMMUNICATION ---
@@ -42,7 +43,7 @@ if ($r->isSuccess()) {
     print_r($r->getHash());
 
     // Perform session close and logout
-    $r = $cl->logout();
+    $r = $cl->logout(); // it covers $cl->close() as well
     if ($r->isSuccess()) {
         echo "LOGOUT SUCCEEDED.\n";
     } else {
