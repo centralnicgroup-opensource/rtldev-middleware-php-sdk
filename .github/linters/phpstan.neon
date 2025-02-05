@@ -1,4 +1,5 @@
 parameters:
+    reportUnmatchedIgnoredErrors: false
     level: 8
     fileExtensions:
         - php
@@ -7,3 +8,5 @@ parameters:
     paths:
         - ../../src
         - ../../tests
+    ignoreErrors:
+        - "#^Strict comparison using === between CurlHandle and false will always evaluate to false.$#"
