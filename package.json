@@ -22,7 +22,9 @@
   ],
   "scripts": {
     "test-demo-cnr": "php -f tests/CNR/app.php",
-    "test-demo-hexonet": "php -f tests/HEXONET/app.php"
+    "test-demo-hexonet": "php -f tests/HEXONET/app.php",
+    "test-demo-ibs": "php -f tests/IBS/app.php",
+    "test-demo-moniker": "php -f tests/MONIKER/app.php"
   },
   "keywords": [
     "hexonet",

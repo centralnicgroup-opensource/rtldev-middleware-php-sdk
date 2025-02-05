@@ -8,17 +8,21 @@ class ClientFactory
      * Returns Client Instance by configuration
      * @param array<mixed> $params configuration settings
      * @param \CNIC\HEXONET\Logger|\CNIC\CNR\Logger $logger Logger Instance (optional)
-     * @return \CNIC\HEXONET\SessionClient|\CNIC\CNR\SessionClient
+     * @return \CNIC\HEXONET\SessionClient|\CNIC\CNR\SessionClient|\CNIC\IBS\SessionClient
      * @throws \Exception
      */
     public static function getClient($params, $logger = null)
     {
-        if (!(bool)preg_match("/^HEXONET|ISPAPI|KeySystems|RRPproxy|CNR|CNIC$/i", $params["registrar"])) {
+        if (!(bool)preg_match("/^HEXONET|ISPAPI|CNR|CNIC|IBS|MONIKER$/i", $params["registrar"])) {
             throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
         }
         // if we dynamically instantiate via string, phpStan start complaining ...
         if ((bool)preg_match("/^HEXONET|ISPAPI$/i", $params["registrar"])) {
             $cl = new \CNIC\HEXONET\SessionClient();
+        } elseif ((bool)preg_match("/^IBS$/i", $params["registrar"])) {
+            $cl = new \CNIC\IBS\SessionClient();
+        } elseif ((bool)preg_match("/^MONIKER$/i", $params["registrar"])) {
+            $cl = new \CNIC\MONIKER\SessionClient();
         } else {
             $cl = new \CNIC\CNR\SessionClient();
         }
@@ -55,6 +59,8 @@ class ClientFactory
             // if we dynamically instantiate via string, phpStan start complaining ...
             if ((bool)preg_match("/^HEXONET|ISPAPI$/i", $params["registrar"])) {
                 $logger = new \CNIC\HEXONET\Logger();
+            } else if ((bool)preg_match("/^IBS|MONIKER$/i", $params["registrar"])) {
+                $logger = new \CNIC\IBS\Logger();
             } else {
                 $logger = new \CNIC\CNR\Logger();
             }

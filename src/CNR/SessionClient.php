@@ -19,7 +19,13 @@ class SessionClient extends \CNIC\CNR\Client
 {
     public function __construct()
     {
-        parent::__construct(implode(DIRECTORY_SEPARATOR, [__DIR__, "config.json"]));
+        $reflection = new \ReflectionClass(get_called_class());
+        $fname = $reflection->getFileName();
+        if ($fname === false) {
+            throw new \Exception("Reflection failed");
+        }
+        $cfgpath = implode(DIRECTORY_SEPARATOR, [dirname($fname), "config.json"]);
+        parent::__construct($cfgpath);
     }
     /**
      * Perform API login to start session-based communication

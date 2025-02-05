@@ -35,8 +35,10 @@ class Client extends \CNIC\HEXONET\Client
     public function __construct($path = "")
     {
         $contents = file_get_contents($path) ?: "";
-        /** @var array<mixed> $settings */
         $settings = json_decode($contents, true);
+        if (is_null($settings) || $settings === false || $settings === true) {
+            $settings = [];
+        }
         $this->settings = $settings;
         $this->socketURL = "";
         $this->debugMode = false;

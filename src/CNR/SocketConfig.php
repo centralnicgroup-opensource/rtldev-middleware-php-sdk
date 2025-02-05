@@ -25,7 +25,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
 
     /**
      * Create POST data string out of connection data
-     * @param array<mixed> $command API Command to request
+     * @param array<int|string,mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */

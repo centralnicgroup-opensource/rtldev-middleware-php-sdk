@@ -65,9 +65,9 @@ class Client
     public $isOTE = false;
     /**
      * curl handle cache
-     * @var array<string,\CurlHandle>
+     * @var \CurlHandle|null
      */
-    protected $curlcache = [];
+    protected $chandle = null;
 
     /**
      * Constructor
@@ -77,9 +77,11 @@ class Client
     public function __construct($path = "")
     {
         $contents = file_get_contents($path) ?: "";
-        /** @var array<string,mixed>|false|null $json */
-        $json = json_decode($contents, true);
-        $this->settings = ($json) ? $json : [];
+        $settings = json_decode($contents, true);
+        if (is_null($settings) || $settings === false || $settings === true) {
+            $settings = [];
+        }
+        $this->settings = $settings;
         $this->socketURL = "";
         $this->debugMode = false;
         $this->ua = "";
@@ -412,14 +414,10 @@ class Client
             "CONNECTION_URL" => $this->socketURL
         ];
         $data = $this->getPOSTData($mycmd);
-        if (isset($this->curlcache[$cfg["CONNECTION_URL"]])) {
-            $curl = $this->curlcache[$cfg["CONNECTION_URL"]];
-        } else {
-            $curl = curl_init($cfg["CONNECTION_URL"]);
-            // PHP 7.3 return false vs. 7.4 throws an Exception
-            // when setting the URL to "\0"
-            // @codeCoverageIgnoreStart
-            if ($curl === false) {
+
+        if (!$this->chandle) {
+            $tmp = curl_init();
+            if ($tmp === false) {
                 $r = new Response("nocurl", $mycmd, $cfg);
                 if ($this->debugMode) {
                     $secured = $this->getPOSTData($mycmd, true);
@@ -427,21 +425,18 @@ class Client
                 }
                 return $r;
             }
-
-            // @codeCoverageIgnoreEnd
-            curl_setopt_array($curl, [
-                // CURLOPT_VERBOSE         => $this->debugMode,
-                CURLOPT_CONNECTTIMEOUT  => 5, // 5s
-                CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
-                CURLOPT_POST            => 1,
-                CURLOPT_HEADER          => 0,
-                CURLOPT_RETURNTRANSFER  => 1,
-            ]);
-
-            $this->curlcache[$cfg["CONNECTION_URL"]] = $curl;
+            $this->chandle = $tmp;
         }
 
-        curl_setopt_array($curl, [
+
+        curl_setopt_array($this->chandle, [
+            // CURLOPT_VERBOSE         => $this->debugMode,
+            CURLOPT_URL             => $cfg["CONNECTION_URL"],
+            CURLOPT_CONNECTTIMEOUT  => 5, // 5s
+            CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
+            CURLOPT_POST            => 1,
+            CURLOPT_HEADER          => 0,
+            CURLOPT_RETURNTRANSFER  => 1,
             CURLOPT_POSTFIELDS      => $data,
             CURLOPT_USERAGENT       => $this->getUserAgent(),
             CURLOPT_HTTPHEADER      => [
@@ -452,30 +447,12 @@ class Client
             ]
         ] + $this->curlopts);
 
-
-        // @codeCoverageIgnoreEnd
-        curl_setopt_array($curl, [
-            // CURLOPT_VERBOSE         => $this->debugMode,
-            CURLOPT_CONNECTTIMEOUT  => 5, // 5s
-            CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
-            CURLOPT_POST            => 1,
-            CURLOPT_POSTFIELDS      => $data,
-            CURLOPT_HEADER          => 0,
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_USERAGENT       => $this->getUserAgent(),
-            CURLOPT_HTTPHEADER      => [
-                "Expect:",
-                "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
-                "Content-Length: " . strlen($data)
-            ]
-        ] + $this->curlopts);
-
         // which is by default tested for by phpStan
         /** @var string|false $r */
-        $r = curl_exec($curl);
+        $r = curl_exec($this->chandle);
         $error = null;
         if ($r === false) {
-            $error = curl_error($curl);
+            $error = curl_error($this->chandle);
             $r = "httperror|" . $error;
         }
         $response = new Response($r, $mycmd, $cfg);
@@ -540,8 +517,8 @@ class Client
      */
     public function close()
     {
-        foreach ($this->curlcache as $curl) {
-            curl_close($curl);
+        if (!is_null($this->chandle)) {
+            curl_close($this->chandle);
         }
     }
 

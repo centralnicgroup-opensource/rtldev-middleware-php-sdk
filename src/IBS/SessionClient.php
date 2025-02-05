@@ -3,19 +3,19 @@
 #declare(strict_types=1);
 
 /**
- * CNIC\HEXONET
+ * CNIC\IBS
  * Copyright © CentralNic Group PLC
  */
 
-namespace CNIC\HEXONET;
+namespace CNIC\IBS;
 
 /**
- * HEXONET Session API Client
+ * IBS API Client
  *
- * @package CNIC\HEXONET
+ * @package CNIC\IBS
  */
 
-class SessionClient extends Client
+class SessionClient extends \CNIC\IBS\Client
 {
     public function __construct()
     {
@@ -31,17 +31,12 @@ class SessionClient extends Client
     /**
      * Perform API login to start session-based communication
      * @param string $otp optional one time password
+     * @throws \Exception
      * @return Response Response
      */
     public function login($otp = "")
     {
-        $this->setOTP($otp);
-        $rr = $this->request(["COMMAND" => "StartSession"]);
-        if ($rr->isSuccess()) {
-            $col = $rr->getColumn("SESSION");
-            $this->setSession($col ? $col->getData()[0] : "");
-        }
-        return $rr;
+        throw new \Exception("Method not supported");
     }
 
     /**
@@ -49,60 +44,44 @@ class SessionClient extends Client
      * Use given specific command parameters.
      * @param array<string,mixed> $params given specific command parameters
      * @param string $otp optional one time password
+     * @throws \Exception
      * @return Response Response
      */
     public function loginExtended($params, $otp = "")
     {
-        $this->setOTP($otp);
-        $rr = $this->request(array_merge(
-            ["COMMAND" => "StartSession"],
-            $params
-        ));
-        if ($rr->isSuccess()) {
-            $col = $rr->getColumn("SESSION");
-            $this->setSession($col ? $col->getData()[0] : "");
-        }
-        return $rr;
+        throw new \Exception("Method not supported");
     }
 
     /**
      * Perform API logout to close API session in use
+     * @throws \Exception
      * @return Response Response
      */
     public function logout()
     {
-        $rr = $this->request(["COMMAND" => "EndSession"]);
-        if ($rr->isSuccess()) {
-            $this->setSession("");
-        }
-        $this->close();
-        return $rr;
+        throw new \Exception("Method not supported");
     }
 
     /**
      * Apply session data (session id and system entity) to given php session object
      * @param array<string,mixed> $session php session instance ($_SESSION)
+     * @throws \Exception
      * @return $this
      */
     public function saveSession(&$session)
     {
-        $session["socketcfg"] = [
-            "entity" => $this->socketConfig->getSystemEntity(),
-            "session" => $this->socketConfig->getSession()
-        ];
-        return $this;
+        throw new \Exception("Method not supported");
     }
 
     /**
      * Use existing configuration out of php session object
      * to rebuild and reuse connection settings
      * @param array<string,mixed> $session php session object ($_SESSION)
+     * @throws \Exception
      * @return $this
      */
     public function reuseSession(&$session)
     {
-        $this->socketConfig->setSystemEntity($session["socketcfg"]["entity"]);
-        $this->setSession($session["socketcfg"]["session"]);
-        return $this;
+        throw new \Exception("Method not supported");
     }
 }

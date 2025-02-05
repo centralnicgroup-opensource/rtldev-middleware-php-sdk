@@ -3,67 +3,36 @@
 #declare(strict_types=1);
 
 /**
- * CNIC\HEXONET
+ * CNIC\IBS
  * Copyright © CentralNic Group PLC
  */
 
-namespace CNIC\HEXONET;
+namespace CNIC\IBS;
 
-use CNIC\HEXONET\ResponseParser as RP;
-use CNIC\HEXONET\ResponseTranslator as RT;
+use CNIC\IBS\ResponseParser as RP;
+use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\CommandFormatter;
+use CNIC\HEXONET\Column;
+use CNIC\HEXONET\Record;
 
 /**
- * HEXONET Response
+ * IBS Response
  *
- * @package CNIC\HEXONET
+ * @package CNIC\IBS
  */
-class Response // implements \CNIC\ResponseInterface
+class Response extends \CNIC\HEXONET\Response // implements \CNIC\ResponseInterface
 {
-    /**
-     * The API Command used within this request
-     * @var array<string>
-     */
-    protected $command;
-
-    /**
-     * plain API response
-     * @var string
-     */
-    protected $raw;
-
-    /**
-     * hash representation of plain API response
-     * @var array<string,mixed>
-     */
-    protected $hash;
-
     /**
      * Regex for pagination related column keys
      * @var string
      */
-    protected $paginationkeys = "/^TOTAL|COUNT|LIMIT|FIRST|LAST$/";
+    protected $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
 
     /**
-     * Column names available in this responsse
-     * @var string[]
+     * API request url
+     * @var string
      */
-    protected $columnkeys;
-    /**
-     * Container of Column Instances
-     * @var Column[]
-     */
-    protected $columns;
-    /**
-     * Record Index we currently point to in record list
-     * @var int
-     */
-    protected $recordIndex;
-    /**
-     * Record List (List of rows)
-     * @var Record[]
-     */
-    protected $records;
+    protected $requestUrl = "";
 
     /**
      * Constructor
@@ -73,45 +42,53 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function __construct($raw, $cmd = [], $ph = [])
     {
-        if (isset($cmd["PASSWORD"])) { // make password no longer accessible
-            $cmd["PASSWORD"] = "***";
+        if (isset($cmd["password"])) { // make password no longer accessible
+            $cmd["password"] = "***";
         }
 
         $this->raw = RT::translate($raw, $cmd, $ph);
         $this->hash = RP::parse($this->raw);
+        $this->requestUrl = $ph["CONNECTION_URL"];
         $this->command = $cmd;
         $this->columnkeys = [];
         $this->columns = [];
         $this->recordIndex = 0;
         $this->records = [];
 
-        if (array_key_exists("PROPERTY", $this->hash)) {
-            $colKeys = array_map("strval", array_keys($this->hash["PROPERTY"]));
-            $count = 0;
-            foreach ($colKeys as $k) {
-                $this->addColumn($k, $this->hash["PROPERTY"][$k]);
-                $col = $this->getColumn($k);
-                if (!is_null($col)) {
-                    $count2 = $col->length;
-                    if ($count2 > $count) {
-                        $count = $count2;
-                    }
+        $colKeys = array_map("strval", array_keys($this->hash));
+        $count = 0;
+        foreach ($colKeys as $k) {
+            $this->addColumn($k, [ $this->hash[$k] ]);
+            $col = $this->getColumn($k);
+            if (!is_null($col)) {
+                $count2 = $col->length;
+                if ($count2 > $count) {
+                    $count = $count2;
                 }
-            }
-            for ($i = 0; $i < $count; $i++) {
-                $d = [];
-                foreach ($colKeys as $k) {
-                    $col = $this->getColumn($k);
-                    if ($col) {
-                        $v = $col->getDataByIndex($i);
-                        if ($v !== null) {
-                            $d[$k] = $v;
-                        }
-                    }
-                }
-                $this->addRecord($d);
             }
         }
+        for ($i = 0; $i < $count; $i++) {
+            $d = [];
+            foreach ($colKeys as $k) {
+                $col = $this->getColumn($k);
+                if ($col) {
+                    $v = $col->getDataByIndex($i);
+                    if ($v !== null) {
+                        $d[$k] = $v;
+                    }
+                }
+            }
+            $this->addRecord($d);
+        }
+    }
+
+    /**
+     * Get Request URL
+     * @return string Request URL
+     */
+    public function getRequestURL()
+    {
+        return $this->requestUrl;
     }
 
     /**
@@ -120,7 +97,16 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getCode()
     {
-        return intval($this->hash["CODE"], 10);
+        return ($this->hash["code"]) ? intval($this->hash["code"]) : 200;
+    }
+
+    /**
+     * Get API response code
+     * @return string API response status
+     */
+    public function getStatus()
+    {
+        return $this->hash["status"];
     }
 
     /**
@@ -129,7 +115,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getDescription()
     {
-        return $this->hash["DESCRIPTION"];
+        return $this->hash["message"] ?? "Command completed successfully";
     }
 
     /**
@@ -143,19 +129,16 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Queuetime of API response
-     * @return float Queuetime of API response
+     * @throws \Exception
      */
     public function getQueuetime()
     {
-        if (array_key_exists("QUEUETIME", $this->hash)) {
-            return floatval($this->hash["QUEUETIME"]);
-        }
-        return 0.00;
+        throw new \Exception("Not supported");
     }
 
     /**
      * Get API response as Hash
-     * @return array<mixed> API response hash
+     * @return array<string,mixed> API response hash
      */
     public function getHash()
     {
@@ -164,14 +147,11 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Runtime of API response
-     * @return float Runtime of API response
+     * @throws \Exception
      */
     public function getRuntime()
     {
-        if (array_key_exists("RUNTIME", $this->hash)) {
-            return floatval($this->hash["RUNTIME"]);
-        }
-        return 0.00;
+        throw new \Exception("Not supported");
     }
 
     /**
@@ -181,7 +161,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function isError()
     {
-        return substr($this->hash["CODE"], 0, 1) === "5";
+        return ($this->hash["status"] === "FAILURE");
     }
 
     /**
@@ -191,26 +171,25 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function isSuccess()
     {
-        return substr($this->hash["CODE"], 0, 1) === "2";
+        return $this->hash["status"] === "SUCCESS";
     }
 
     /**
      * Check if current API response represents a temporary error case
-     * API response code is an 4xx code
-     * @return bool boolean result
+     * @throws \Exception
      */
     public function isTmpError()
     {
-        return substr($this->hash["CODE"], 0, 1) === "4";
+        throw new \Exception("Not supported");
     }
 
     /**
      * Check if current operation is returned as pending
-     * @return bool bool result
+     * @throws \Exception
      */
     public function isPending()
     {
-        return isset($this->hash["PENDING"]) ? $this->hash["PENDING"] === "1" : false;
+        throw new \Exception("Not supported");
     }
 
     /**
@@ -308,12 +287,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getCurrentPageNumber()
     {
-        $first = $this->getFirstRecordIndex();
-        $limit = $this->getRecordsLimitation();
-        if ($first !== null && $limit) {
-            return (int)(floor($first / $limit) + 1);
-        }
-        return null;
+        return 1;
     }
 
     /**
@@ -331,15 +305,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getFirstRecordIndex()
     {
-        $col = $this->getColumn("FIRST");
-        if ($col) {
-            $f = $col->getDataByIndex(0);
-            return $f === null ? 0 : intval($f, 10);
-        }
-        if ($this->getRecordsCount()) {
-            return 0;
-        }
-        return null;
+        return 0;
     }
 
     /**
@@ -348,43 +314,27 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getLastRecordIndex()
     {
-        $col = $this->getColumn("LAST");
-        if ($col) {
-            $l = $col->getDataByIndex(0);
-            if ($l !== null) {
-                return intval($l, 10);
+        static $last = null;
+
+        if (is_null($last)) {
+            foreach ($this->columnkeys as $k) {
+                if ((bool)preg_match("/^(.+)?count|total(_.+)?$/", $k)) {
+                    $last = intval($this->hash[$k], 10) - 1;
+                    return $last;
+                }
             }
         }
-        $c = $this->getRecordsCount();
-        if ($c) {
-            return $c - 1;
-        }
+
         return null;
     }
 
     /**
      * Get Response as List Hash including useful meta data for tables
-     * @return array<mixed> hash including list meta data and array of rows in hash notation
+     * @throws \Exception
      */
     public function getListHash()
     {
-        $lh = [];
-        foreach ($this->records as $rec) {
-            $data = $rec->getData();
-            foreach ($data as $col => $val) {
-                if ((bool)preg_match($this->paginationkeys, $col)) {
-                    unset($data[$col]);
-                }
-            }
-            $lh[] = $data;
-        }
-        return [
-            "LIST" => $lh,
-            "meta" => [
-                "columns" => $this->getColumnKeys(true),
-                "pg" => $this->getPagination()
-            ]
-        ];
+        throw new \Exception("Not implemented.");
     }
 
     /**
@@ -513,13 +463,6 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getRecordsTotalCount()
     {
-        $col = $this->getColumn("TOTAL");
-        if ($col) {
-            $t = $col->getDataByIndex(0);
-            if ($t !== null) {
-                return intval($t, 10);
-            }
-        }
         return $this->getRecordsCount();
     }
 
@@ -530,13 +473,6 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function getRecordsLimitation()
     {
-        $col = $this->getColumn("LIMIT");
-        if ($col) {
-            $l = $col->getDataByIndex(0);
-            if ($l !== null) {
-                return intval($l, 10);
-            }
-        }
         return $this->getRecordsCount();
     }
 
@@ -546,11 +482,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function hasNextPage()
     {
-        $cp = $this->getCurrentPageNumber();
-        if ($cp === null) {
-            return false;
-        }
-        return ($cp + 1 <= $this->getNumberOfPages());
+        return false;
     }
 
     /**
@@ -559,11 +491,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function hasPreviousPage()
     {
-        $cp = $this->getCurrentPageNumber();
-        if ($cp === null) {
-            return false;
-        }
-        return (($cp - 1) > 0);
+        return false;
     }
 
     /**

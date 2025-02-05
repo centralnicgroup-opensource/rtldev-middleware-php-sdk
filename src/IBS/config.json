@@ -1,0 +1,20 @@
+{
+  "env": {
+    "ote": {
+      "url": "https://testapi.internet.bs/"
+    },
+    "live": {
+      "url": "https://api.internet.bs/"
+    }
+  },
+  "parameters": {
+    "login": "apikey",
+    "password": "password"
+  },
+  "maxGroupSize": 32,
+  "maxSearchGroupSize": 25,
+  "socketTimeout": 300,
+  "needsIDNConvert": false,
+  "supportsPremiumDomains": true,
+  "maxDNSuggestions": 100
+}

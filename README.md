@@ -11,9 +11,11 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 ## Resources
 
-* Documentation:
-    * [HEXONET](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
-    * [CentralNic Reseller](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
+* Documentation Links (PHP-SKD internal registrar id available in round brackets):
+    * [HEXONET (HEXONET)](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
+    * [CentralNic Reseller (CNR)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
+    * [Internet.bs (IBS)](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
+    * [Moniker (MONIKER)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
 * [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
 
 ## Usage
@@ -21,7 +23,7 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 ```composer require centralnic-reseller/php-sdk```
 
 ## Dev Container
-* Add an entry in your hosts file: ```127.0.0.1         devsdk.hexonet.net``` 
+* Add an entry in your hosts file: ```127.0.0.1         devsdk.hexonet.net```
 
 PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.hexonet.net```
 
@@ -34,30 +36,47 @@ To run the demo application, follow these steps:
    - Directly replace the credentials within the application file.
    - Alternatively, set the environment variables required for the CNR test app:
      ```sh
+     # CentralNic Reseller
      export RTLDEV_MW_CI_USER_CNR=<your-username>
      export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
+     # HEXONET
+     export RTLDEV_MW_CI_USER_HEXONET=<your-username>
+     export RTLDEV_MW_CI_USERPASSWORD_HEXONET=<your-password>
+     # internet.bs
+     export RTLDEV_MW_CI_USER_IBS=<your-username>
+     export RTLDEV_MW_CI_USERPASSWORD_IBS=<your-password>
+     # moniker
+     export RTLDEV_MW_CI_USER_MONIKER=<your-username>
+     export RTLDEV_MW_CI_USERPASSWORD_MONIKER=<your-password>
      ```
 
 2. **Execute the Demo**: Once the credentials are configured, run the appropriate demo command:
-   - For CNR:
-     ```sh
-     npm run test-demo-cnr
-     ```
-   - For Hexonet:
-     ```sh
-     npm run test-demo-hexonet
-     ```
+
+    Run the below npm scripts (or execute the related commands covered in package.json):
+
+    ```sh
+    # CentralNic Reseller
+    npm run test-demo-cnr
+    # HEXONET
+    npm run test-demo-hexonet
+    # internet.bs
+    npm run test-demo-ibs
+    # Moniker
+    npm run test-demo-moniker
+    ```
 
 3. **Update Demo Contents**:
-   If you need to modify the demo contents, the relevant file is located at:
-   - For CNR:
-   ```plaintext
-   tests/CNR/app.php
-   ```
+   If you need to modify the demo contents, the relevant files are located at:
 
-   - For Hexonet:
    ```plaintext
+   # CentralNic Reseller
+   tests/CNR/app.php
+   # HEXONET
    tests/HEXONET/app.php
+   # internet.bs
+   tests/IBS/app.php
+   # Moniker
+   tests/MONIKER/app.php
    ```
 
 ## Authors

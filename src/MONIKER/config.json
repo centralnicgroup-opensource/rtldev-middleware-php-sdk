@@ -1,0 +1,20 @@
+{
+  "env": {
+    "ote": {
+      "url": "https://testapi.moniker.com/"
+    },
+    "live": {
+      "url": "https://api.moniker.com/"
+    }
+  },
+  "parameters": {
+    "login": "apikey",
+    "password": "password"
+  },
+  "maxGroupSize": 32,
+  "maxSearchGroupSize": 25,
+  "socketTimeout": 300,
+  "needsIDNConvert": false,
+  "supportsPremiumDomains": true,
+  "maxDNSuggestions": 100
+}
