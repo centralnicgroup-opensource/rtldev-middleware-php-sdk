@@ -1,3 +1,15 @@
+# [11.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v10.0.0...v11.0.0) (2025-02-05)
+
+
+### Features
+
+* **registrar support:** added Internet.bs (IBS) and Moniker (MONIKER) as supported registrars ([5eaa09d](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5eaa09d37c5847d06a1873bde499f677ae8b309a))
+
+
+### BREAKING CHANGES
+
+* **registrar support:** We added support for two new Domain Registrar Systems: Internet.bs (IBS) and Moniker (MONIKER)
+
 # [10.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v9.1.0...v10.0.0) (2025-01-22)
 
 
