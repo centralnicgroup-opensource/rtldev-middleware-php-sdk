@@ -11,7 +11,7 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 ## Resources
 
-* Documentation Links (PHP-SKD internal registrar id available in round brackets):
+* Documentation Links (PHP-SDK internal registrar id available in round brackets):
     * [HEXONET (HEXONET)](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
     * [CentralNic Reseller (CNR)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
     * [Internet.bs (IBS)](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
