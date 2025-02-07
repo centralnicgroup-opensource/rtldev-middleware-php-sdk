@@ -1,3 +1,10 @@
+## [11.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.0...v11.0.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* **ibs, request settings:** curl opts, connecttimeout increased to 15, verifypeer/host deactivated ([a984cf1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a984cf1fcd397a53ab6488f7910e6002d875004c))
+
 # [11.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v10.0.0...v11.0.0) (2025-02-05)
 
 
