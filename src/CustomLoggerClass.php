@@ -13,8 +13,8 @@ namespace MYCUSTOMNAMESPACE;
  * MYCUSTOMNAMESPACE Logger
  *
  * @package MYCUSTOMNAMESPACE
+ * @see \CNIC\LoggerInterface
  */
-
 class Logger implements \CNIC\LoggerInterface
 {
     /**

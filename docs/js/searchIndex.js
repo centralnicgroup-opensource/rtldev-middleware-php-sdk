@@ -3,7 +3,7 @@ Search.appendIndex(
                 {
             "fqsen": "\\CNIC\\ClientFactory",
             "name": "ClientFactory",
-            "summary": "",
+            "summary": "Client\u0020Factory",
             "url": "classes/CNIC-ClientFactory.html"
         },                {
             "fqsen": "\\CNIC\\ClientFactory\u003A\u003AgetClient\u0028\u0029",

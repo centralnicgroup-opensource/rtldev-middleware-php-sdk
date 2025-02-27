@@ -3,7 +3,6 @@
 basic-test.php
 vendor
 reports
-docs
 node_modules
 build/api-cache
 .phpunit.result.cache
@@ -17,3 +16,5 @@ reports/**/*
 # which contains sensitive data 
 # (used for setting secrets for local testing)
 env.sh
+plantuml.jar
+docs

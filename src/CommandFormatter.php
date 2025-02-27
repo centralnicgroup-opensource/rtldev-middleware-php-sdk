@@ -2,6 +2,11 @@
 
 namespace CNIC;
 
+/**
+ * Command Formatter
+ *
+ * @package CNIC
+ */
 class CommandFormatter
 {
     /**

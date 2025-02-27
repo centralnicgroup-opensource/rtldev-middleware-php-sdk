@@ -17,6 +17,7 @@ use CNIC\CommandFormatter;
  * HEXONET Response
  *
  * @package CNIC\HEXONET
+ * @see \CNIC\ResponseInterface
  */
 class Response // implements \CNIC\ResponseInterface
 {

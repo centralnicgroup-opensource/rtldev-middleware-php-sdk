@@ -2,6 +2,11 @@
 
 namespace CNIC;
 
+/**
+ * Client Factory
+ *
+ * @package CNIC
+ */
 class ClientFactory
 {
     /**

@@ -13,6 +13,7 @@ namespace CNIC\HEXONET;
  * HEXONET Session API Client
  *
  * @package CNIC\HEXONET
+ * @see Client
  */
 
 class SessionClient extends Client
