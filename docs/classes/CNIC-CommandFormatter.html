@@ -210,11 +210,18 @@
 <dd>Find the priority of a given key</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a class="" href="classes/CNIC-CommandFormatter.html#method_getPriorityArray">getPriorityArray()</a>
+    <a class="" href="classes/CNIC-CommandFormatter.html#method_getPropertiesContactFieldsWithPriority">getPropertiesContactFieldsWithPriority()</a>
+    <span>
+                                &nbsp;: array&lt;string, mixed&gt;    </span>
+</dt>
+<dd>Assign the priority of each key in the command array based on the key pattern</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a class="" href="classes/CNIC-CommandFormatter.html#method_getPropertiesPriority">getPropertiesPriority()</a>
     <span>
                                 &nbsp;: array&lt;string, int&gt;    </span>
 </dt>
-<dd>Get the priority array with regex patterns</dd>
+<dd>Generate the priority array with properties dynamically including contact fields and their priority</dd>
 
     </dl>
 
@@ -414,7 +421,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CommandFormatter.php"><a href="files/src-commandformatter.html"><abbr title="src/CommandFormatter.php">CommandFormatter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">121</span>
+    <span class="phpdocumentor-element-found-in__line">143</span>
 
     </aside>
 
@@ -470,9 +477,9 @@
             -private
                                     -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getPriorityArray">
-        getPriorityArray()
-        <a href="classes/CNIC-CommandFormatter.html#method_getPriorityArray" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getPropertiesContactFieldsWithPriority">
+        getPropertiesContactFieldsWithPriority()
+        <a href="classes/CNIC-CommandFormatter.html#method_getPropertiesContactFieldsWithPriority" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
@@ -482,11 +489,50 @@
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get the priority array with regex patterns</p>
+        <p class="phpdocumentor-summary">Assign the priority of each key in the command array based on the key pattern</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getPriorityArray</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, int&gt;</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getPropertiesContactFieldsWithPriority</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, mixed&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string, mixed&gt;</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getPropertiesPriority">
+        getPropertiesPriority()
+        <a href="classes/CNIC-CommandFormatter.html#method_getPropertiesPriority" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CommandFormatter.php"><a href="files/src-commandformatter.html"><abbr title="src/CommandFormatter.php">CommandFormatter.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">123</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Generate the priority array with properties dynamically including contact fields and their priority</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getPropertiesPriority</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, int&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -624,7 +670,8 @@
                                             <li class=""><a href="classes/CNIC-CommandFormatter.html#method_formatCommand">formatCommand()</a></li>
                                             <li class=""><a href="classes/CNIC-CommandFormatter.html#method_getSortedCommand">getSortedCommand()</a></li>
                                             <li class=""><a href="classes/CNIC-CommandFormatter.html#method_findPriority">findPriority()</a></li>
-                                            <li class=""><a href="classes/CNIC-CommandFormatter.html#method_getPriorityArray">getPriorityArray()</a></li>
+                                            <li class=""><a href="classes/CNIC-CommandFormatter.html#method_getPropertiesContactFieldsWithPriority">getPropertiesContactFieldsWithPriority()</a></li>
+                                            <li class=""><a href="classes/CNIC-CommandFormatter.html#method_getPropertiesPriority">getPropertiesPriority()</a></li>
                                     </ul>
             </li>
                     </ul>

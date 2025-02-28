@@ -161,10 +161,15 @@ Search.appendIndex(
             "summary": "Format\u0020the\u0020command\u0020array\u0020into\u0020a\u0020plain\u0020text\u0020string",
             "url": "classes/CNIC-CommandFormatter.html#method_formatCommand"
         },                {
-            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AgetPriorityArray\u0028\u0029",
-            "name": "getPriorityArray",
-            "summary": "Get\u0020the\u0020priority\u0020array\u0020with\u0020regex\u0020patterns",
-            "url": "classes/CNIC-CommandFormatter.html#method_getPriorityArray"
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AgetPropertiesContactFieldsWithPriority\u0028\u0029",
+            "name": "getPropertiesContactFieldsWithPriority",
+            "summary": "Assign\u0020the\u0020priority\u0020of\u0020each\u0020key\u0020in\u0020the\u0020command\u0020array\u0020based\u0020on\u0020the\u0020key\u0020pattern",
+            "url": "classes/CNIC-CommandFormatter.html#method_getPropertiesContactFieldsWithPriority"
+        },                {
+            "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AgetPropertiesPriority\u0028\u0029",
+            "name": "getPropertiesPriority",
+            "summary": "Generate\u0020the\u0020priority\u0020array\u0020with\u0020properties\u0020dynamically\u0020including\u0020contact\u0020fields\u0020and\u0020their\u0020priority",
+            "url": "classes/CNIC-CommandFormatter.html#method_getPropertiesPriority"
         },                {
             "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AfindPriority\u0028\u0029",
             "name": "findPriority",

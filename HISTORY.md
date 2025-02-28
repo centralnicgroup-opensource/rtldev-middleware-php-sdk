@@ -1,3 +1,10 @@
+## [11.0.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.1...v11.0.2) (2025-02-28)
+
+
+### Bug Fixes
+
+* **CommandFormatter.php:** enhance priority handling for command properties and contact fields ([56c5e9b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/56c5e9bb33dce37ebdf0fc455eb691403543cac4))
+
 ## [11.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.0...v11.0.1) (2025-02-07)
 
 
