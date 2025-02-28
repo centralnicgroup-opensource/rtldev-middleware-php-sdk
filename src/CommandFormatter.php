@@ -12,7 +12,7 @@ class CommandFormatter
      */
     public static function getSortedCommand(array $command): array
     {
-        $priority = self::getPriorityArray();
+        $priority = self::getPropertiesPriority();
 
         // Sort the command array based on priority
         uksort($command, function ($a, $b) use ($priority) {
@@ -69,46 +69,68 @@ class CommandFormatter
     }
 
     /**
-     * Get the priority array with regex patterns
+     * Assign the priority of each key in the command array based on the key pattern
      *
-     * @return array<string,int> The priority array
+     * @return array<string,mixed>
      */
-    private static function getPriorityArray(): array
+    private static function getPropertiesContactFieldsWithPriority(): array
     {
-        $priority = [
+        $keyProperties = [
             "COMMAND" => 1,
-            "/^(DOMAIN|DNSZONE|NAMESERVER|ZONE|SUBUSER)[0-9]*$/" => 2,
-            "/^(PERIOD|ACTION|AUTH|TARGET|X-FEE-COMMAND|RENEWALMODE|LIMIT|WIDE)$/" => 3,
-            "/^(TRANSFERLOCK|DNSSEC0|X-FEE-AMOUNT|LOG|TYPE|OBJECT|INACTIVE|OBJECTID|OBJECTCLASS|ORDER|ORDERBY|CURRENCYFROM|CURRENCYTO)$/" => 4,
+            "/^(DOMAIN|DNSZONE|NAMESERVER|ZONE|SUBUSER)[0-9]*$/i" => 2,
+            "/^(PERIOD|ACTION|AUTH|TARGET|X-FEE-COMMAND|RENEWALMODE|LIMIT|WIDE)$/i" => 3,
+            "/^(NS_LIST|TRANSFERLOCK|DNSSEC0|X-FEE-AMOUNT|LOG|TYPE|OBJECT|INACTIVE|OBJECTID|OBJECTCLASS|ORDER|ORDERBY|CURRENCYFROM|CURRENCYTO)$/i" => 4,
         ];
 
         $contactTypes = [
-            "OWNERCONTACT" => 5,
-            "ADMINCONTACT" => 6,
-            "TECHCONTACT" => 7,
-            "BILLINGCONTACT" => 8
+            "OWNERCONTACT|REGISTRANT" => 5,
+            "ADMINCONTACT|TECHNICAL" => 6,
+            "TECHCONTACT|BILLING" => 7,
+            "BILLINGCONTACT|ADMIN" => 8,
         ];
         $contactFields = [
             "FIRSTNAME" => 1,
-            "LASTNAME" => 2,
-            "ORGANIZATION" => 3,
-            "STREET" => 4,
-            "ZIP" => 5,
-            "CITY" => 6,
-            "STATE" => 7,
-            "COUNTRY" => 8,
-            "PHONE" => 9,
-            "EMAIL" => 10,
-            "CONTACT" => 11
+            "MIDDLENAME" => 2,
+            "LASTNAME" => 3,
+            "ORGANIZATION" => 4,
+            "STREET" => 5,
+            "ZIP" => 6,
+            "CITY" => 7,
+            "STATE" => 8,
+            "COUNTRY" => 9,
+            "PHONE|PHONENUMBER" => 10,
+            "EMAIL" => 11,
+            "CONTACT" => 12,
+            "LEGALFORM" => 13,
+            "IDENTIFICACION" => 14,
+            "TIPO-IDENTIFICACION" => 15,
         ];
 
-        foreach ($contactTypes as $type => $typePriority) {
-            foreach ($contactFields as $field => $fieldPriority) {
-                $priority["/^{$type}[0-9]+{$field}$/"] = ($typePriority * 10) + $fieldPriority;
+        return [
+            "properties" => $keyProperties,
+            "contact" => [
+                "types" => $contactTypes,
+                "fields" => $contactFields
+            ]
+        ];
+    }
+
+    /**
+     * Generate the priority array with properties dynamically including contact fields and their priority
+     *
+     * @return array<string,int> The priority array
+     */
+    private static function getPropertiesPriority(): array
+    {
+        $propertiesWithPriority = self::getPropertiesContactFieldsWithPriority();
+
+        foreach ($propertiesWithPriority["contact"]["types"] as $typePattern => $typePriority) {
+            foreach ($propertiesWithPriority["contact"]["fields"] as $fieldPattern => $fieldPriority) {
+                $propertiesWithPriority["properties"]["/^({$typePattern})[_0-9]*({$fieldPattern}[0-9]*)$/i"] = ($typePriority * 100) + $fieldPriority;
             }
         }
 
-        return $priority;
+        return $propertiesWithPriority["properties"];
     }
 
     /**
