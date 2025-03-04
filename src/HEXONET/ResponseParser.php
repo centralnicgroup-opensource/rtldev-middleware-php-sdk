@@ -13,13 +13,14 @@ namespace CNIC\HEXONET;
  * HEXONET ResponseParser
  *
  * @package CNIC\HEXONET
+ * @final
  */
 final class ResponseParser
 {
     /**
      * Method to parse plain API response into js object
      * @param string $raw API plain response
-     * @return array<string,mixed> API response as hash
+     * @return array<string,mixed>
      */
     public static function parse($raw)
     {

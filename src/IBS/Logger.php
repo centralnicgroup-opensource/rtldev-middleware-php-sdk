@@ -14,14 +14,15 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-
 class Logger implements \CNIC\LoggerInterface
 {
     /**
-     * output/log given data
-     * @param string $post post request data in string format
+     * Output/log given data
+     *
+     * @param string $post Post request data in string format
      * @param Response $r Response to log
-     * @param string|null $error error message
+     * @param string|null $error Error message
+     * @return void
      */
     public function log($post, $r, $error = null): void
     {

@@ -13,6 +13,43 @@ namespace CNIC;
  * Common Response Interface
  *
  * @package CNIC
+ * @method int getCode() Get API response code
+ * @method string getDescription() Get API response description
+ * @method string getPlain() Get Plain API response
+ * @method float getQueuetime() Get Queuetime of API response
+ * @method array<string> getHash() Get API response as Hash
+ * @method float getRuntime() Get Runtime of API response
+ * @method bool isError() Check if current API response represents an error case
+ * @method bool isSuccess() Check if current API response represents a success case
+ * @method bool isTmpError() Check if current API response represents a temporary error case
+ * @method bool isPending() Check if current operation is returned as pending
+ * @method ResponseInterface addColumn(string $key, array<string> $data) Add a column to the column list
+ * @method ResponseInterface addRecord(array<string> $h) Add a record to the record list
+ * @method ColumnInterface|null getColumn(string $key) Get column by column name
+ * @method string|null getColumnIndex(string $colkey, int $index) Get Data by Column Name and Index
+ * @method array<string> getColumnKeys() Get Column Names
+ * @method ColumnInterface[] getColumns() Get List of Columns
+ * @method array<string> getCommand() Get Command used in this request
+ * @method string getCommandPlain() Get Command used in this request in plain text format
+ * @method int|null getCurrentPageNumber() Get Page Number of current List Query
+ * @method RecordInterface|null getCurrentRecord() Get Record of current record index
+ * @method int|null getFirstRecordIndex() Get Index of first row in this response
+ * @method int|null getLastRecordIndex() Get last record index of the current list query
+ * @method array<string> getListHash() Get Response as List Hash including useful meta data for tables
+ * @method RecordInterface|null getNextRecord() Get next record in record list
+ * @method int|null getNextPageNumber() Get Page Number of next list query
+ * @method int getNumberOfPages() Get the number of pages available for this list query
+ * @method array<string> getPagination() Get object containing all paging data
+ * @method int|null getPreviousPageNumber() Get Page Number of previous list query
+ * @method RecordInterface|null getPreviousRecord() Get previous record in record list
+ * @method RecordInterface|null getRecord(int $idx) Get Record at given index
+ * @method RecordInterface[] getRecords() Get all Records
+ * @method int getRecordsCount() Get count of rows in this response
+ * @method int getRecordsTotalCount() Get total count of records available for the list query
+ * @method int getRecordsLimitation() Get limit(ation) setting of the current list query
+ * @method bool hasNextPage() Check if this list query has a next page
+ * @method bool hasPreviousPage() Check if this list query has a previous page
+ * @method ResponseInterface rewindRecordList() Reset index in record list back to zero
  */
 interface ResponseInterface
 {
@@ -22,11 +59,11 @@ interface ResponseInterface
      * @param array<string> $cmd API command used within this request
      * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
      */
-    public function __construct($raw, $cmd, $ph = []);
+    public function __construct(string $raw, array $cmd, array $ph = []);
 
     /**
      * Get API response code
-     * @return integer API response code
+     * @return int API response code
      */
     public function getCode(): int;
 
@@ -90,32 +127,32 @@ interface ResponseInterface
     /**
      * Add a column to the column list
      * @param string $key column name
-     * @param string[] $data array of column data
+     * @param array<string> $data array of column data
      * @return ResponseInterface
      */
-    public function addColumn($key, $data): ResponseInterface;
+    public function addColumn(string $key, array $data): ResponseInterface;
 
     /**
      * Add a record to the record list
      * @param array<string> $h row hash data
      * @return ResponseInterface
      */
-    public function addRecord($h): ResponseInterface;
+    public function addRecord(array $h): ResponseInterface;
 
     /**
      * Get column by column name
      * @param string $key column name
      * @return ColumnInterface|null column instance or null if column does not exist
      */
-    public function getColumn($key): ?ColumnInterface;
+    public function getColumn(string $key): ?ColumnInterface;
 
     /**
      * Get Data by Column Name and Index
      * @param string $colkey column name
-     * @param integer $index column data index
+     * @param int $index column data index
      * @return string|null column data at index or null if not found
      */
-    public function getColumnIndex($colkey, $index): ?string;
+    public function getColumnIndex(string $colkey, int $index): ?string;
 
     /**
      * Get Column Names
@@ -143,25 +180,25 @@ interface ResponseInterface
 
     /**
      * Get Page Number of current List Query
-     * @return integer|null page number or null in case of a non-list response
+     * @return int|null page number or null in case of a non-list response
      */
     public function getCurrentPageNumber(): ?int;
 
     /**
      * Get Record of current record index
-     * @return RecordInterface|null Record or null in case of a non-list rfunction getCurrentRecordesponse
+     * @return RecordInterface|null Record or null in case of a non-list response
      */
     public function getCurrentRecord(): ?RecordInterface;
 
     /**
      * Get Index of first row in this response
-     * @return integer|null first row index
+     * @return int|null first row index
      */
     public function getFirstRecordIndex(): ?int;
 
     /**
      * Get last record index of the current list query
-     * @return integer|null record index or null for a non-list response
+     * @return int|null record index or null for a non-list response
      */
     public function getLastRecordIndex(): ?int;
 
@@ -179,13 +216,13 @@ interface ResponseInterface
 
     /**
      * Get Page Number of next list query
-     * @return integer|null page number or null if there's no next page
+     * @return int|null page number or null if there's no next page
      */
     public function getNextPageNumber(): ?int;
 
     /**
      * Get the number of pages available for this list query
-     * @return integer number of pages
+     * @return int number of pages
      */
     public function getNumberOfPages(): int;
 
@@ -197,7 +234,7 @@ interface ResponseInterface
 
     /**
      * Get Page Number of previous list query
-     * @return integer|null page number or null if there's no previous page
+     * @return int|null page number or null if there's no previous page
      */
     public function getPreviousPageNumber(): ?int;
 
@@ -209,10 +246,10 @@ interface ResponseInterface
 
     /**
      * Get Record at given index
-     * @param integer $idx record index
+     * @param int $idx record index
      * @return RecordInterface|null Record or null if index does not exist
      */
-    public function getRecord($idx): ?RecordInterface;
+    public function getRecord(int $idx): ?RecordInterface;
 
     /**
      * Get all Records
@@ -222,20 +259,20 @@ interface ResponseInterface
 
     /**
      * Get count of rows in this response
-     * @return integer count of rows
+     * @return int count of rows
      */
     public function getRecordsCount(): int;
 
     /**
      * Get total count of records available for the list query
-     * @return integer total count of records or count of records for a non-list response
+     * @return int total count of records or count of records for a non-list response
      */
     public function getRecordsTotalCount(): int;
 
     /**
      * Get limit(ation) setting of the current list query
      * This is the count of requested rows
-     * @return integer limit setting or count requested rows
+     * @return int limit setting or count requested rows
      */
     public function getRecordsLimitation(): int;
 

@@ -14,7 +14,6 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-
 class Record extends \CNIC\HEXONET\Record // implements \CNIC\RecordInterface
 {
 }

@@ -14,7 +14,6 @@ namespace CNIC\CNR;
  *
  * @package CNIC\CNR
  */
-
 class Logger extends \CNIC\HEXONET\Logger
 {
 }

@@ -26,10 +26,10 @@ class ResponseTranslator
 
     /**
      * translate a raw api response
-     * @param String $raw API raw response
+     * @param string $raw API raw response
      * @param array<string> $cmd requested API command
      * @param array<string> $ph list of place holder vars
-     * @return String
+     * @return string
      */
     public static function translate($raw, $cmd, $ph = [])
     {

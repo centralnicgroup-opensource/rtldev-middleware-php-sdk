@@ -14,9 +14,13 @@ namespace CNIC\CNR;
  *
  * @package CNIC\CNR
  */
-
 class SessionClient extends \CNIC\CNR\Client
 {
+    /**
+     * Constructor
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         $reflection = new \ReflectionClass(get_called_class());
@@ -27,9 +31,11 @@ class SessionClient extends \CNIC\CNR\Client
         $cfgpath = implode(DIRECTORY_SEPARATOR, [dirname($fname), "config.json"]);
         parent::__construct($cfgpath);
     }
+
     /**
      * Perform API login to start session-based communication
-     * @return \CNIC\CNR\Response Response
+     *
+     * @return \CNIC\CNR\Response
      */
     public function login()
     {
@@ -45,7 +51,8 @@ class SessionClient extends \CNIC\CNR\Client
 
     /**
      * Perform API logout to close API session in use
-     * @return \CNIC\CNR\Response Response
+     *
+     * @return \CNIC\CNR\Response
      */
     public function logout()
     {
@@ -59,6 +66,7 @@ class SessionClient extends \CNIC\CNR\Client
 
     /**
      * Apply session data (session id and system entity) to given php session object
+     *
      * @param array<string,mixed> $session php session instance ($_SESSION)
      * @return $this
      */
@@ -74,6 +82,7 @@ class SessionClient extends \CNIC\CNR\Client
     /**
      * Use existing configuration out of php session object
      * to rebuild and reuse connection settings
+     *
      * @param array<string,mixed> $session php session object ($_SESSION)
      * @return $this
      */

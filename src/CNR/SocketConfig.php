@@ -14,17 +14,17 @@ namespace CNIC\CNR;
  *
  * @package CNIC\CNR
  */
-
 class SocketConfig extends \CNIC\HEXONET\SocketConfig
 {
     /**
-     * parameter to trigger creation of a backend session
+     * Parameter to trigger creation of a backend session
      * @var bool
      */
     private $persistent = false;
 
     /**
      * Create POST data string out of connection data
+     *
      * @param array<int|string,mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
@@ -38,13 +38,13 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
         if (strlen($this->user)) {
             $params[$this->parameters["command"]] .= "\nSUBUSER={$this->user}";
         }
-        return http_build_query($params);//RFC1738 x-www-form-urlencoded as default
+        return http_build_query($params); // RFC1738 x-www-form-urlencoded as default
     }
 
     /**
-     * add persistent parameter to request (request api session)
+     * Add persistent parameter to request (request API session)
      *
-     * @param boolean $value
+     * @param bool $value
      * @return $this
      */
     public function setPersistent($value = false)
@@ -54,7 +54,8 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
     }
 
     /**
-     * get persistent parameter returned
+     * Get persistent parameter returned
+     *
      * @return bool
      */
     public function getPersistent()
@@ -64,6 +65,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
 
     /**
      * Set API Session ID to use
+     *
      * @param string $value API Session ID
      * @return $this
      */

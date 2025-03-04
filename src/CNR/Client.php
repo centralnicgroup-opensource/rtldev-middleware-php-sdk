@@ -18,7 +18,6 @@ use CNIC\CNR\Response;
  *
  * @package CNIC\CNR
  */
-
 class Client extends \CNIC\HEXONET\Client
 {
     /**
@@ -50,8 +49,9 @@ class Client extends \CNIC\HEXONET\Client
 
     /**
      * Perform API request using the given command
+     *
      * @param array<mixed> $cmd API command to request
-     * @return Response Response
+     * @return Response
      */
     public function request($cmd = [])
     {
@@ -60,7 +60,8 @@ class Client extends \CNIC\HEXONET\Client
     }
 
     /**
-     * set default logger to use
+     * Set default logger to use
+     *
      * @return $this
      */
     public function setDefaultLogger()
@@ -71,6 +72,7 @@ class Client extends \CNIC\HEXONET\Client
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
+     *
      * @param array<string> $cmd API command
      * @return array<string>
      */

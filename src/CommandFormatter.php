@@ -2,6 +2,11 @@
 
 namespace CNIC;
 
+/**
+ * CommandFormatter
+ *
+ * @package CNIC
+ */
 class CommandFormatter
 {
     /**
@@ -27,11 +32,12 @@ class CommandFormatter
 
     /**
      * Flatten API command's nested arrays for easier handling
+     *
      * @param array<mixed> $cmd API Command
      * @param bool $toupper flag to convert keys to uppercase or leave as is
      * @return array<mixed>
      */
-    public static function flattenCommand($cmd, $toupper = true)
+    public static function flattenCommand($cmd, $toupper = true): array
     {
         $newcmd = [];
         foreach ($cmd as $key => $val) {
