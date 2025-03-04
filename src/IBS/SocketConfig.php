@@ -14,7 +14,6 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-
 class SocketConfig extends \CNIC\HEXONET\SocketConfig
 {
     /**
@@ -22,16 +21,19 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
      * @var string
      */
     protected $login;
+
     /**
      * account password
      * @var string
      */
     protected $pw;
+
     /**
      * remote ip address (ip filter)
      * @var string
      */
     protected $remoteaddr;
+
     /**
      * list of http request parameters
      * @var array<string>
@@ -39,6 +41,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
     protected $parameters;
 
     /**
+     * Constructor
      * @param array<mixed> $parameters
      */
     public function __construct(array $parameters)
@@ -49,7 +52,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
         $this->remoteaddr = "";
     }
 
-        /**
+    /**
      * Get POST data container of connection data
      * @param array<mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
@@ -74,7 +77,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
      * Create POST data string out of connection data
      * @param array<int|string,mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
-     * @return string POST data string
+     * @return string
      */
     public function getPOSTData($command = [], $secured = false)
     {
@@ -82,7 +85,7 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
         return http_build_query($params);//RFC1738 x-www-form-urlencoded as default
     }
 
-        /**
+    /**
      * Set account name to use
      * @param string $value account name
      * @return $this
@@ -95,7 +98,6 @@ class SocketConfig extends \CNIC\HEXONET\SocketConfig
 
     /**
      * Get current login (including role)
-     *
      * @return string
      */
     public function getLogin(): string

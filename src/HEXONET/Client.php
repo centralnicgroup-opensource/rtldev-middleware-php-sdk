@@ -20,7 +20,6 @@ use CNIC\IDNA\Factory\ConverterFactory;
  *
  * @package CNIC\HEXONET
  */
-
 class Client
 {
     /**
@@ -28,41 +27,49 @@ class Client
      * @var array<mixed>
      */
     public $settings;
+
     /**
      * API connection url
      * @var string
      */
     protected $socketURL;
+
     /**
      * Object covering API connection data
      * @var SocketConfig
      */
     protected $socketConfig;
+
     /**
      * activity flag for debug mode
      * @var boolean
      */
     protected $debugMode;
+
     /**
      * user agent
      * @var string
      */
     protected $ua;
+
     /**
      * additional curl options to use
      * @var array<string>
      */
     protected $curlopts = [];
+
     /**
      * logger function name for debug mode
      * @var \CNIC\LoggerInterface
      */
     protected $logger;
+
     /**
      * is connected to OT&E
      * @var bool
      */
     public $isOTE = false;
+
     /**
      * curl handle cache
      * @var \CurlHandle|null
@@ -136,7 +143,7 @@ class Client
      * Serialize given command for POST request including connection configuration data
      * @param string|array<string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
-     * @return string encoded POST data string
+     * @return string
      */
     public function getPOSTData($cmd, $secured = false)
     {
@@ -151,7 +158,7 @@ class Client
 
     /**
      * Get the API Session ID that is currently set
-     * @return string|null API Session ID currently in use
+     * @return string|null
      */
     public function getSession()
     {
@@ -161,7 +168,7 @@ class Client
 
     /**
      * Get the API connection url that is currently set
-     * @return string API connection url currently in use
+     * @return string
      */
     public function getURL()
     {
@@ -185,7 +192,7 @@ class Client
 
     /**
      * Get the user agent string
-     * @return string user agent string
+     * @return string
      */
     public function getUserAgent()
     {
@@ -251,7 +258,7 @@ class Client
 
     /**
      * Get the current module version
-     * @return string module version
+     * @return string
      */
     public function getVersion()
     {
@@ -401,7 +408,7 @@ class Client
     /**
      * Perform API request using the given command
      * @param array<mixed> $cmd API command to request
-     * @return Response Response
+     * @return Response
      */
     public function request($cmd)
     {
@@ -427,7 +434,6 @@ class Client
             }
             $this->chandle = $tmp;
         }
-
 
         curl_setopt_array($this->chandle, [
             // CURLOPT_VERBOSE         => $this->debugMode,
@@ -469,7 +475,7 @@ class Client
      * Useful for tables
      * @param Response $rr API Response of current page
      * @throws \Exception in case Command Parameter LAST is in use while using this method
-     * @return Response|null Response or null in case there are no further list entries
+     * @return Response|null
      */
     public function requestNextResponsePage($rr)
     {
@@ -496,7 +502,7 @@ class Client
     /**
      * Request all pages/entries for the given query command
      * @param array<string,mixed> $cmd API list command to use
-     * @return Response[] Responses
+     * @return Response[]
      */
     public function requestAllResponsePages($cmd)
     {
@@ -568,7 +574,7 @@ class Client
      */
     public function useLIVESystem()
     {
-        if (isset($this->settings["env"]["ote"]["entity"])) {
+        if (isset($this->settings["env"]["live"]["entity"])) {
             $this->socketConfig->setSystemEntity($this->settings["env"]["live"]["entity"]);
         }
         $this->isOTE = false;

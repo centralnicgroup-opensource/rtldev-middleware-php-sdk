@@ -43,7 +43,8 @@
     "squizlabs/php_codesniffer": "^3.7",
     "phpunit/phpunit": "^10.5",
     "phpstan/phpstan": "^2.0",
-    "phpstan/extension-installer": "^1.4"
+    "phpstan/extension-installer": "^1.4",
+    "smeghead/php-class-diagram": "^1.5"
   },
   "autoload": {
     "psr-4": {
@@ -51,11 +52,12 @@
     }
   },
   "scripts": {
-    "docs": "rm -rf build docs;test ! -e phpdoc.phar && wget https://phpdoc.org/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar;./phpdoc.phar",
+    "docs": "rm -rf build docs; test ! -e phpdoc.phar && wget https://phpdoc.org/phpDocumentor.phar -O phpdoc.phar && chmod +x phpdoc.phar; ./phpdoc.phar -c phpdoc.dist.xml",
     "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html --debug",
-    "phpstan": "phpstan analyse -c .github/linters/phpstan.neon"
+    "phpstan": "phpstan analyse -c .github/linters/phpstan.neon",
+    "generate-uml": "test ! -e plantuml.jar && wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar; php-class-diagram --jig-diagram src/ >> ./docs/uml.puml; java -jar plantuml.jar ./docs/uml.puml -o uml_diagram"
   },
   "config": {
     "allow-plugins": {

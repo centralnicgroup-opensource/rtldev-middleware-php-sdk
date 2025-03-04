@@ -15,12 +15,12 @@ use CNIC\HEXONET\ResponseParser as RP;
  * HEXONET ResponseTemplateManager
  *
  * @package CNIC\HEXONET
+ * @final
  */
-
 final class ResponseTemplateManager
 {
     /**
-     * template container
+     * Template container
      * @var array<string>
      */
     public static $templates = [
@@ -40,7 +40,7 @@ final class ResponseTemplateManager
      * Generate API response template string for given code and description
      * @param string $code API response code
      * @param string $description API response description
-     * @return string generate response template string
+     * @return string
      */
     public static function generateTemplate($code, $description)
     {
@@ -67,7 +67,7 @@ final class ResponseTemplateManager
     /**
      * Get response template instance from template container
      * @param string $id template id
-     * @return Response template instance
+     * @return Response
      */
     public static function getTemplate($id)
     {
@@ -79,7 +79,7 @@ final class ResponseTemplateManager
 
     /**
      * Return all available response templates
-     * @return array<mixed> all available response instances
+     * @return array<mixed>
      */
     public static function getTemplates()
     {
@@ -93,7 +93,7 @@ final class ResponseTemplateManager
     /**
      * Check if given template exists in template container
      * @param string $id template id
-     * @return bool boolean result
+     * @return bool
      */
     public static function hasTemplate($id)
     {
@@ -104,7 +104,7 @@ final class ResponseTemplateManager
      * Check if given API response hash matches a given template by code and description
      * @param array<string> $tpl api response hash
      * @param string $id template id
-     * @return bool boolean result
+     * @return bool
      */
     public static function isTemplateMatchHash($tpl, $id)
     {
@@ -119,7 +119,7 @@ final class ResponseTemplateManager
      * Check if given API plain response matches a given template by code and description
      * @param string $plain API plain response
      * @param string $id template id
-     * @return bool boolean result
+     * @return bool
      */
     public static function isTemplateMatchPlain($plain, $id)
     {

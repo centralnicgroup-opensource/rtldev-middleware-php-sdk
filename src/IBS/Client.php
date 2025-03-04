@@ -19,7 +19,6 @@ use CNIC\IBS\Response;
  *
  * @package CNIC\IBS
  */
-
 class Client extends \CNIC\HEXONET\Client
 {
     /**
@@ -51,9 +50,10 @@ class Client extends \CNIC\HEXONET\Client
 
     /**
      * Serialize given command for POST request including connection configuration data
+     *
      * @param array<int|string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
-     * @return string encoded POST data string
+     * @return string
      */
     public function getPOSTData($cmd, $secured = false)
     {
@@ -63,6 +63,7 @@ class Client extends \CNIC\HEXONET\Client
     /**
      * Get the API Session ID that is currently set
      * Note: not supported.
+     *
      * @throws \Exception
      */
     public function getSession()
@@ -73,6 +74,8 @@ class Client extends \CNIC\HEXONET\Client
     /**
      * Set one time password to be used for API communication
      * Note: not supported.
+     *
+     * @throws \Exception
      */
     public function setOTP($value = "")
     {
@@ -81,6 +84,7 @@ class Client extends \CNIC\HEXONET\Client
 
     /**
      * Set an API session id to be used for API communication
+     *
      * @param string $value API session id (optional, for reset)
      * @throws \Exception
      */
@@ -92,10 +96,11 @@ class Client extends \CNIC\HEXONET\Client
     /**
      * Set Credentials to be used for API communication
      * Note: not supported.
-     * @throws \Exception
+     *
      * @param string $uid account name (optional, for reset)
      * @param string $role role user id (optional, for reset)
      * @param string $pw role user password (optional, for reset)
+     * @throws \Exception
      */
     public function setRoleCredentials($uid = "", $role = "", $pw = "")
     {
@@ -104,6 +109,7 @@ class Client extends \CNIC\HEXONET\Client
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
+     *
      * @param array<string> $cmd API command
      * @return array<string>
      */
@@ -115,9 +121,10 @@ class Client extends \CNIC\HEXONET\Client
 
     /**
      * Perform API request using the given command
+     *
      * @param array<mixed> $cmd API command to request
      * @param string $path Path to the API endpoint
-     * @return Response Response
+     * @return Response
      */
     public function request($cmd, $path = "")
     {
@@ -184,6 +191,7 @@ class Client extends \CNIC\HEXONET\Client
     /**
      * Set a data view to a given subuser
      * Note: not supported.
+     *
      * @param string $uid subuser account name
      * @throws \Exception
      */
@@ -195,6 +203,7 @@ class Client extends \CNIC\HEXONET\Client
     /**
      * Activate High Performance Setup
      * Note: not supported.
+     *
      * @throws \Exception
      */
     public function useHighPerformanceConnectionSetup()
@@ -203,7 +212,8 @@ class Client extends \CNIC\HEXONET\Client
     }
 
     /**
-     * set default logger to use
+     * Set default logger to use
+     *
      * @return $this
      */
     public function setDefaultLogger()

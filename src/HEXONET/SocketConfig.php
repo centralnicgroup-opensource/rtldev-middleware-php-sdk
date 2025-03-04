@@ -14,7 +14,6 @@ namespace CNIC\HEXONET;
  *
  * @package CNIC\HEXONET
  */
-
 class SocketConfig
 {
     /**
@@ -22,36 +21,43 @@ class SocketConfig
      * @var string
      */
     protected $entity;
+
     /**
      * account name
      * @var string
      */
     protected $login;
+
     /**
      * one time password (2FA)
      * @var string
      */
     private $otp;
+
     /**
      * account password
      * @var string
      */
     protected $pw;
+
     /**
      * remote ip address (ip filter)
      * @var string
      */
     protected $remoteaddr;
+
     /**
      * API session id
      * @var string
      */
     protected $session;
+
     /**
      * subuser account name (subuser specific data view)
      * @var string
      */
     protected $user;
+
     /**
      * list of http request parameters
      * @var array<string>
@@ -59,6 +65,7 @@ class SocketConfig
     protected $parameters;
 
     /**
+     * Constructor
      * @param array<mixed> $parameters
      */
     public function __construct(array $parameters)
@@ -123,7 +130,7 @@ class SocketConfig
      * Create POST data string out of connection data
      * @param array<int|string,mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
-     * @return string POST data string
+     * @return string
      */
     public function getPOSTData($command = [], $secured = false)
     {
@@ -133,7 +140,7 @@ class SocketConfig
 
     /**
      * Get API Session ID in use
-     * @return string API Session ID
+     * @return string
      */
     public function getSession()
     {
@@ -142,7 +149,7 @@ class SocketConfig
 
     /**
      * Get API System Entity in use
-     * @return string API System Entity
+     * @return string
      */
     public function getSystemEntity()
     {

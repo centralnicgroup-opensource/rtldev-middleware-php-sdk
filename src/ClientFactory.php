@@ -2,11 +2,17 @@
 
 namespace CNIC;
 
+/**
+ * ClientFactory
+ *
+ * @package CNIC
+ */
 class ClientFactory
 {
     /**
      * Returns Client Instance by configuration
-     * @param array<mixed> $params configuration settings
+     *
+     * @param array<mixed> $params Configuration settings
      * @param \CNIC\HEXONET\Logger|\CNIC\CNR\Logger $logger Logger Instance (optional)
      * @return \CNIC\HEXONET\SessionClient|\CNIC\CNR\SessionClient|\CNIC\IBS\SessionClient
      * @throws \Exception

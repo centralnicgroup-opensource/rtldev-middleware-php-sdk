@@ -14,9 +14,12 @@ namespace CNIC\HEXONET;
  *
  * @package CNIC\HEXONET
  */
-
 class SessionClient extends Client
 {
+    /**
+     * Constructor
+     * @throws \Exception
+     */
     public function __construct()
     {
         $reflection = new \ReflectionClass(get_called_class());
@@ -31,7 +34,7 @@ class SessionClient extends Client
     /**
      * Perform API login to start session-based communication
      * @param string $otp optional one time password
-     * @return Response Response
+     * @return Response
      */
     public function login($otp = "")
     {
@@ -49,7 +52,7 @@ class SessionClient extends Client
      * Use given specific command parameters.
      * @param array<string,mixed> $params given specific command parameters
      * @param string $otp optional one time password
-     * @return Response Response
+     * @return Response
      */
     public function loginExtended($params, $otp = "")
     {
@@ -67,7 +70,7 @@ class SessionClient extends Client
 
     /**
      * Perform API logout to close API session in use
-     * @return Response Response
+     * @return Response
      */
     public function logout()
     {

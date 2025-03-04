@@ -14,7 +14,6 @@ namespace CNIC\HEXONET;
  *
  * @package CNIC\HEXONET
  */
-
 class Logger implements \CNIC\LoggerInterface
 {
     /**
@@ -22,6 +21,7 @@ class Logger implements \CNIC\LoggerInterface
      * @param string $post post request data in string format
      * @param Response $r Response to log
      * @param string|null $error error message
+     * @return void
      */
     public function log($post, $r, $error = null): void
     {

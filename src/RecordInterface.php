@@ -13,8 +13,10 @@ namespace CNIC;
  * Common Record Interface
  *
  * @package CNIC
+ * @method __construct(array<string> $data) Constructor
+ * @method array<string> getData() Get row data
+ * @method string|null getDataByKey(string $key) Get row data for given column
  */
-
 interface RecordInterface
 {
     /**
@@ -32,22 +34,25 @@ interface RecordInterface
     public function __construct(array $data);
 
     /**
-     * get row data
+     * Get row data
+     *
      * @return array<string> row data
      */
     public function getData(): array;
 
     /**
-     * get row data for given column
+     * Get row data for given column
+     *
      * @param string $key column name
      * @return string|null row data for given column or null if column does not exist
      */
-    public function getDataByKey($key): ?string;
+    public function getDataByKey(string $key): ?string;
 
     /**
-     * check if record has data for given column
+     * Check if record has data for given column
+     *
      * @param string $key column name
      * @return bool boolean result
      */
-    //private function hasData($key): bool;
+    //public function hasData(string $key): bool;
 }

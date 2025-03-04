@@ -46,10 +46,10 @@ class ResponseTranslator
 
     /**
      * translate a raw api response
-     * @param String $raw API raw response
+     * @param string $raw API raw response
      * @param array<string> $cmd requested API command
      * @param array<string> $ph list of place holder vars
-     * @return String
+     * @return string
      */
     public static function translate($raw, $cmd, $ph = [])
     {
@@ -127,8 +127,7 @@ class ResponseTranslator
      * @param string $val The value to be used in replacement if a match is found.
      * @param array<string> $cmd The command data containing replacements, if applicable.
      * @param array<string> $ph An array of placeholder values for further replacements.
-     *
-     * @return bool Returns true if replacements were performed, false otherwise.
+     * @return bool
      */
     protected static function findMatch($regex, &$newraw, $val, $cmd, $ph)
     {

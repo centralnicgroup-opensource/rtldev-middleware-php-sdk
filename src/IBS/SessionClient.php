@@ -14,9 +14,12 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-
 class SessionClient extends \CNIC\IBS\Client
 {
+    /**
+     * Constructor
+     * @throws \Exception
+     */
     public function __construct()
     {
         $reflection = new \ReflectionClass(get_called_class());
@@ -32,7 +35,7 @@ class SessionClient extends \CNIC\IBS\Client
      * Perform API login to start session-based communication
      * @param string $otp optional one time password
      * @throws \Exception
-     * @return Response Response
+     * @return Response
      */
     public function login($otp = "")
     {
@@ -45,7 +48,7 @@ class SessionClient extends \CNIC\IBS\Client
      * @param array<string,mixed> $params given specific command parameters
      * @param string $otp optional one time password
      * @throws \Exception
-     * @return Response Response
+     * @return Response
      */
     public function loginExtended($params, $otp = "")
     {
@@ -55,7 +58,7 @@ class SessionClient extends \CNIC\IBS\Client
     /**
      * Perform API logout to close API session in use
      * @throws \Exception
-     * @return Response Response
+     * @return Response
      */
     public function logout()
     {
