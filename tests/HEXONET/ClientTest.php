@@ -2,13 +2,13 @@
 
 //declare(strict_types=1);
 
-namespace CNICTEST;
+namespace CNICTEST\HEXONET;
 
 use CNIC\ClientFactory as CF;
 use CNIC\HEXONET\Client as CL;
 use CNIC\HEXONET\Response as R;
 
-final class HexonetClientTest extends \PHPUnit\Framework\TestCase
+final class ClientTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \CNIC\HEXONET\SessionClient $cl

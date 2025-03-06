@@ -2,7 +2,7 @@
 
 //declare(strict_types=1);
 
-namespace CNICTEST;
+namespace CNICTEST\HEXONET;
 
 use CNIC\HEXONET\SocketConfig as SC;
 

@@ -2,7 +2,7 @@
 
 //declare(strict_types=1);
 
-namespace CNICTEST;
+namespace CNICTEST\HEXONET;
 
 final class RecordTest extends \PHPUnit\Framework\TestCase
 {

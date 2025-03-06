@@ -20,20 +20,20 @@ use CNIC\IBS\ResponseParser as RP;
 final class ResponseTemplateManager
 {
     /**
-     * Template container
+     * template container
      * @var array<string>
      */
     public static $templates = [
-        "403" => self::generateTemplate("FAILURE", "403 Forbidden"),
-        "404" => self::generateTemplate("FAILURE", "421 Page not found"),
-        "500" => self::generateTemplate("FAILURE", "500 Internal server error"),
-        "empty" => self::generateTemplate("FAILURE", "423 Empty API response. Probably unreachable API end point {CONNECTION_URL}"),
-        "error" => self::generateTemplate("FAILURE", "421 Command failed due to server error. Please retry."),
-        "httperror" => self::generateTemplate("FAILURE", "421 Command failed due to HTTP communication error{HTTPERROR}."),
-        "invalid" => self::generateTemplate("FAILURE", "423 Invalid API response. Contact Support"),
-        "nocurl" => self::generateTemplate("FAILURE", "423 API access error: curl_init failed"),
-        "notfound" => self::generateTemplate("FAILURE", "500 Response Template not found"),
-        "unauthorized" => self::generateTemplate("FAILURE", "530 Unauthorized")
+        "403" => "status=FAILURE\r\nmessage=403 Forbidden\r\n",
+        "404" => "status=FAILURE\r\nmessage=421 Page not found\r\n",
+        "500" => "status=FAILURE\r\nmessage=500 Internal server error\r\n",
+        "empty" => "status=FAILURE\r\nmessage=423 Empty API response. Probably unreachable API end point {CONNECTION_URL}\r\n",
+        "error" => "status=FAILURE\r\nmessage=421 Command failed due to server error. Please retry.\r\n",
+        "httperror" => "status=FAILURE\r\nmessage=421 Command failed due to HTTP communication error{HTTPERROR}.\r\n",
+        "invalid" => "status=FAILURE\r\nmessage=423 Invalid API response. Contact Support\r\n",
+        "nocurl" => "status=FAILURE\r\nmessage=423 API access error: curl_init failed\r\n",
+        "notfound" => "status=FAILURE\r\nmessage=500 Response Template not found\r\n",
+        "unauthorized" => "status=FAILURE\r\nmessage=530 Unauthorized\r\n"
     ];
 
     /**
