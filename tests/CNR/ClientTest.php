@@ -2,14 +2,14 @@
 
 //declare(strict_types=1);
 
-namespace CNICTEST;
+namespace CNICTEST\CNR;
 
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CL;
 use CNIC\CNR\Response as R;
 use CNIC\IDNA\Factory\ConverterFactory;
 
-final class CNRClientTest extends \PHPUnit\Framework\TestCase
+final class ClientTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \CNIC\CNR\SessionClient $cl

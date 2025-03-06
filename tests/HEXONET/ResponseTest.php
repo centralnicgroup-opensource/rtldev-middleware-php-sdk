@@ -2,7 +2,7 @@
 
 //declare(strict_types=1);
 
-namespace CNICTEST;
+namespace CNICTEST\HEXONET;
 
 use CNIC\HEXONET\Response as R;
 use CNIC\HEXONET\ResponseTemplateManager as RTM;

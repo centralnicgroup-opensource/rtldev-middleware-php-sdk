@@ -35,6 +35,9 @@ final class ResponseParser
             list($varName, $value) = explode("=", $str, 2);
             $varName = trim($varName);
             $value = trim($value);
+            if ((bool)preg_match("/date|paiduntil|expiration$/i", $varName)) {
+                $value = str_replace("/", "-", $value);
+            }
             $result[$varName] = $value;
         }
         return $result;
