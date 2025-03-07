@@ -160,6 +160,20 @@
 
 
 
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/CNIC-IBS-ResponseTemplateManager.html#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">final</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                             
+                                    </dd>
+                                            </dl>
 
 
 
@@ -290,7 +304,7 @@
     <span class="phpdocumentor-signature__visibility">public</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
     <span class="phpdocumentor-signature__name">$templates</span>
-     = <span class="phpdocumentor-signature__default-value">[&quot;403&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;403 Forbidden&quot;), &quot;404&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;421 Page not found&quot;), &quot;500&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;500 Internal server error&quot;), &quot;empty&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;423 Empty API response. Probably unreachable API end point {CONNECTION_URL}&quot;), &quot;error&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;421 Command failed due to server error. Please retry.&quot;), &quot;httperror&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;421 Command failed due to HTTP communication error{HTTPERROR}.&quot;), &quot;invalid&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;423 Invalid API response. Contact Support&quot;), &quot;nocurl&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;423 API access error: curl_init failed&quot;), &quot;notfound&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;500 Response Template not found&quot;), &quot;unauthorized&quot; =&gt; self::generateTemplate(&quot;FAILURE&quot;, &quot;530 Unauthorized&quot;)]</span></code>
+     = <span class="phpdocumentor-signature__default-value">[&quot;403&quot; =&gt; &quot;status=FAILURE\r\nmessage=403 Forbidden\r\n&quot;, &quot;404&quot; =&gt; &quot;status=FAILURE\r\nmessage=421 Page not found\r\n&quot;, &quot;500&quot; =&gt; &quot;status=FAILURE\r\nmessage=500 Internal server error\r\n&quot;, &quot;empty&quot; =&gt; &quot;status=FAILURE\r\nmessage=423 Empty API response. Probably unreachable API end point {CONNECTION_URL}\r\n&quot;, &quot;error&quot; =&gt; &quot;status=FAILURE\r\nmessage=421 Command failed due to server error. Please retry.\r\n&quot;, &quot;httperror&quot; =&gt; &quot;status=FAILURE\r\nmessage=421 Command failed due to HTTP communication error{HTTPERROR}.\r\n&quot;, &quot;invalid&quot; =&gt; &quot;status=FAILURE\r\nmessage=423 Invalid API response. Contact Support\r\n&quot;, &quot;nocurl&quot; =&gt; &quot;status=FAILURE\r\nmessage=423 API access error: curl_init failed\r\n&quot;, &quot;notfound&quot; =&gt; &quot;status=FAILURE\r\nmessage=500 Response Template not found\r\n&quot;, &quot;unauthorized&quot; =&gt; &quot;status=FAILURE\r\nmessage=530 Unauthorized\r\n&quot;]</span></code>
 
     
     
@@ -433,10 +447,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>generate response template string</p>
-</section>
-
             </section>
 
 </article>
@@ -488,10 +498,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-IBS-Response.html"><abbr title="\CNIC\IBS\Response">Response</abbr></a></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>template instance</p>
-</section>
-
             </section>
 
 </article>
@@ -531,10 +537,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>all available response instances</p>
-</section>
-
             </section>
 
 </article>
@@ -586,10 +588,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">bool</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>boolean result</p>
-</section>
-
             </section>
 
 </article>
@@ -650,10 +648,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">bool</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>boolean result</p>
-</section>
-
             </section>
 
 </article>
@@ -714,10 +708,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">bool</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>boolean result</p>
-</section>
-
             </section>
 
 </article>

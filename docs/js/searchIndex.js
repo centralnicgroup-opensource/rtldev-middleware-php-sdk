@@ -3,7 +3,7 @@ Search.appendIndex(
                 {
             "fqsen": "\\CNIC\\ClientFactory",
             "name": "ClientFactory",
-            "summary": "Client\u0020Factory",
+            "summary": "ClientFactory",
             "url": "classes/CNIC-ClientFactory.html"
         },                {
             "fqsen": "\\CNIC\\ClientFactory\u003A\u003AgetClient\u0028\u0029",
@@ -28,7 +28,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\CNR\\Client\u003A\u003AsetDefaultLogger\u0028\u0029",
             "name": "setDefaultLogger",
-            "summary": "set\u0020default\u0020logger\u0020to\u0020use",
+            "summary": "Set\u0020default\u0020logger\u0020to\u0020use",
             "url": "classes/CNIC-CNR-Client.html#method_setDefaultLogger"
         },                {
             "fqsen": "\\CNIC\\CNR\\Client\u003A\u003AautoIDNConvert\u0028\u0029",
@@ -93,12 +93,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AsetPersistent\u0028\u0029",
             "name": "setPersistent",
-            "summary": "add\u0020persistent\u0020parameter\u0020to\u0020request\u0020\u0028request\u0020api\u0020session\u0029",
+            "summary": "Add\u0020persistent\u0020parameter\u0020to\u0020request\u0020\u0028request\u0020API\u0020session\u0029",
             "url": "classes/CNIC-CNR-SocketConfig.html#method_setPersistent"
         },                {
             "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AgetPersistent\u0028\u0029",
             "name": "getPersistent",
-            "summary": "get\u0020persistent\u0020parameter\u0020returned",
+            "summary": "Get\u0020persistent\u0020parameter\u0020returned",
             "url": "classes/CNIC-CNR-SocketConfig.html#method_getPersistent"
         },                {
             "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003AsetSession\u0028\u0029",
@@ -113,7 +113,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\CNR\\SocketConfig\u003A\u003A\u0024persistent",
             "name": "persistent",
-            "summary": "parameter\u0020to\u0020trigger\u0020creation\u0020of\u0020a\u0020backend\u0020session",
+            "summary": "Parameter\u0020to\u0020trigger\u0020creation\u0020of\u0020a\u0020backend\u0020session",
             "url": "classes/CNIC-CNR-SocketConfig.html#property_persistent"
         },                {
             "fqsen": "\\CNIC\\ColumnInterface",
@@ -143,7 +143,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\CommandFormatter",
             "name": "CommandFormatter",
-            "summary": "",
+            "summary": "CommandFormatter",
             "url": "classes/CNIC-CommandFormatter.html"
         },                {
             "fqsen": "\\CNIC\\CommandFormatter\u003A\u003AgetSortedCommand\u0028\u0029",
@@ -703,7 +703,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Response\u003A\u003A\u0024columnkeys",
             "name": "columnkeys",
-            "summary": "Column\u0020names\u0020available\u0020in\u0020this\u0020responsse",
+            "summary": "Column\u0020names\u0020available\u0020in\u0020this\u0020response",
             "url": "classes/CNIC-HEXONET-Response.html#property_columnkeys"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\Response\u003A\u003A\u0024columns",
@@ -773,7 +773,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\HEXONET\\ResponseTemplateManager\u003A\u003A\u0024templates",
             "name": "templates",
-            "summary": "template\u0020container",
+            "summary": "Template\u0020container",
             "url": "classes/CNIC-HEXONET-ResponseTemplateManager.html#property_templates"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\ResponseTranslator",
@@ -838,7 +838,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\HEXONET\\SocketConfig\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructor",
             "url": "classes/CNIC-HEXONET-SocketConfig.html#method___construct"
         },                {
             "fqsen": "\\CNIC\\HEXONET\\SocketConfig\u003A\u003AgetPOSTDataParams\u0028\u0029",
@@ -993,7 +993,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\IBS\\Client\u003A\u003AsetDefaultLogger\u0028\u0029",
             "name": "setDefaultLogger",
-            "summary": "set\u0020default\u0020logger\u0020to\u0020use",
+            "summary": "Set\u0020default\u0020logger\u0020to\u0020use",
             "url": "classes/CNIC-IBS-Client.html#method_setDefaultLogger"
         },                {
             "fqsen": "\\CNIC\\IBS\\Client\u003A\u003A\u0024socketConfig",
@@ -1013,7 +1013,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\IBS\\Logger\u003A\u003Alog\u0028\u0029",
             "name": "log",
-            "summary": "output\/log\u0020given\u0020data",
+            "summary": "Output\/log\u0020given\u0020data",
             "url": "classes/CNIC-IBS-Logger.html#method_log"
         },                {
             "fqsen": "\\CNIC\\IBS\\Record",
@@ -1373,7 +1373,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\IBS\\SocketConfig\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructor",
             "url": "classes/CNIC-IBS-SocketConfig.html#method___construct"
         },                {
             "fqsen": "\\CNIC\\IBS\\SocketConfig\u003A\u003AgetPOSTDataParams\u0028\u0029",
@@ -1433,7 +1433,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\LoggerInterface\u003A\u003Alog\u0028\u0029",
             "name": "log",
-            "summary": "output\/log\u0020given\u0020data",
+            "summary": "Output\/log\u0020given\u0020data",
             "url": "classes/CNIC-LoggerInterface.html#method_log"
         },                {
             "fqsen": "\\CNIC\\MONIKER\\SessionClient",
@@ -1453,12 +1453,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\RecordInterface\u003A\u003AgetData\u0028\u0029",
             "name": "getData",
-            "summary": "get\u0020row\u0020data",
+            "summary": "Get\u0020row\u0020data",
             "url": "classes/CNIC-RecordInterface.html#method_getData"
         },                {
             "fqsen": "\\CNIC\\RecordInterface\u003A\u003AgetDataByKey\u0028\u0029",
             "name": "getDataByKey",
-            "summary": "get\u0020row\u0020data\u0020for\u0020given\u0020column",
+            "summary": "Get\u0020row\u0020data\u0020for\u0020given\u0020column",
             "url": "classes/CNIC-RecordInterface.html#method_getDataByKey"
         },                {
             "fqsen": "\\CNIC\\ResponseInterface",
