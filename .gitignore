@@ -16,7 +16,14 @@ reports/**/*
 # which contains sensitive data 
 # (used for setting secrets for local testing)
 env.sh
+
+# uml diagram related
 plantuml.jar
-docs
 uml.puml
-!docs/uml_diagram
+
+# Ignore everything in docs
+docs/**
+
+# Except the uml_diagram directory
+!docs/uml_diagram/
+!docs/uml_diagram/**/*
