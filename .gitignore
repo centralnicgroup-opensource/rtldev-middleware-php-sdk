@@ -18,3 +18,4 @@ reports/**/*
 env.sh
 plantuml.jar
 docs
+uml.puml
