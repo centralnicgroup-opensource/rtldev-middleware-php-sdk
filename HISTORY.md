@@ -1,3 +1,10 @@
+## [11.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.3...v11.0.4) (2025-03-12)
+
+
+### Bug Fixes
+
+* **deps:** bump cross-spawn from 7.0.3 to 7.0.6 ([29582be](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/29582beb9ed30fc94d0eff9a746cb3b4e1046186))
+
 ## [11.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.2...v11.0.3) (2025-03-07)
 
 
