@@ -7,5 +7,5 @@ on:
 
 jobs:
   tests:
-    uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-test.yml@main
+    uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-test.yml@RSRMID-2092-doc-php-sdk-features-and-comparision
     secrets: inherit
