@@ -57,7 +57,7 @@
     "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit --coverage-html=./reports/html --debug",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon",
-    "generate-uml": "test ! -e plantuml.jar && wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar; php-class-diagram --jig-diagram src/ >> uml.puml; java -jar plantuml.jar uml.puml -o docs/uml_diagram"
+    "generate-uml": "test ! -e plantuml.jar && wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar; ./vendor/bin/php-class-diagram --jig-diagram src/ >> ./docs/uml.puml; java -jar plantuml.jar ./docs/uml.puml -o uml_diagram"
   },
   "config": {
     "allow-plugins": {
