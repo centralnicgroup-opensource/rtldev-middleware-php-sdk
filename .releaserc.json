@@ -30,7 +30,7 @@
                 "assets": [
                     "HISTORY.md",
                     "@(package?(-lock)|composer).json",
-                    "docs",
+                    "docs/**/*",
                     "src/HEXONET/Client.php"
                 ]
             }

@@ -19,3 +19,4 @@ env.sh
 plantuml.jar
 docs
 uml.puml
+!docs/uml_diagram
