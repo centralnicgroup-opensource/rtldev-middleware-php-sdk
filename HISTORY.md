@@ -1,3 +1,10 @@
+## [11.0.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.4...v11.0.5) (2025-03-12)
+
+
+### Bug Fixes
+
+* **workflows:** update test workflow reference and adjust UML generation path ([7ea7b40](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/7ea7b40e554aaf2c60c6858577ba7dae1e967e09))
+
 ## [11.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.3...v11.0.4) (2025-03-12)
 
 
