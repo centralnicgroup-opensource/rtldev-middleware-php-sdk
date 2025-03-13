@@ -6,17 +6,20 @@
 .github export-ignore
 reports export-ignore
 tests export-ignore
+docs export-ignore 
+build export-ignore
 
 # files to exclude
 .releaserc.json export-ignore
-composer.json export-ignore
+package.json export-ignore
+package-lock.json export-ignore
 phpdoc.dist.xml export-ignore
 phpunit.xml.dist export-ignore
 *.sh export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 
-# fix language issue
+# fix language issue in github repo
 *.html linguist-detectable=false
 *.js linguist-detectable=false
 *.css linguist-detectable=false

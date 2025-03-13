@@ -2,7 +2,6 @@
 /tests/logs/*.log
 basic-test.php
 vendor
-reports
 node_modules
 build/api-cache
 .phpunit.result.cache
@@ -10,7 +9,7 @@ php-sdk.phar
 php-sdk.phar.gz
 phpDocumentor.phar
 phpdoc.phar
-reports/**/*
+reports
 # do not remove the following line
 # it blocks env.sh from being committed
 # which contains sensitive data 
@@ -22,8 +21,4 @@ plantuml.jar
 uml.puml
 
 # Ignore everything in docs
-docs/**
-
-# Except the uml_diagram directory
-!docs/uml_diagram/
-!docs/uml_diagram/**/*
+docs
