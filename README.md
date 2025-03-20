@@ -22,7 +22,13 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 ```composer require centralnic-reseller/php-sdk```
 
+Find a demo app for the Brand of choice in the tests folder that should help you with getting started.
+
+e.g. `tests/HEXONET/app.php`, `tests/CNR/app.php` etc.
+
 ## Dev Container
+If you want to contribute, we recommend using Visual Studio Code and to follow the below setup instructions:
+
 * Add an entry in your hosts file: ```127.0.0.1         devsdk.hexonet.net```
 
 PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.hexonet.net```
