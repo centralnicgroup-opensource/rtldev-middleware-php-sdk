@@ -90,7 +90,7 @@ class Client extends \CNIC\HEXONET\Client
         $asciipattern = "/^[a-zA-Z0-9\.-]+$/i";
         // DOMAIN params get auto-converted by API
         // RSRBE-7149 for NS coverage
-        $keypattern = "/^(NAMESERVER|NS|DNSZONE)([0-9]*)$/i";
+        $keypattern = "/^(PARENTDOMAIN|NAMESERVER|NS|DNSZONE)([0-9]*)$/i";
         $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS|DNSZONE)$/i";
         $toconvert = [];
         $idxs = [];
