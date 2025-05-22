@@ -1,3 +1,10 @@
+## [11.0.6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.5...v11.0.6) (2025-05-22)
+
+
+### Bug Fixes
+
+* **cnr client:** to temporarily activate auto-idn conversion for parameter PARENTDOMAIN ([efb52d4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/efb52d4f4b0b681d306c25458ca1f0f75bb77f91))
+
 ## [11.0.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.4...v11.0.5) (2025-03-12)
 
 
