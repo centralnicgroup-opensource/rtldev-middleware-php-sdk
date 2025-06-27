@@ -167,8 +167,9 @@ class Client extends \CNIC\HEXONET\Client
                 "Content-Length: " . strlen($data),
                 "Connection: keep-alive"
             ],
-            CURLOPT_SSL_VERIFYPEER => 0, // IBS only
-            CURLOPT_SSL_VERIFYHOST => 0  // IBS only
+            CURLOPT_SSL_VERIFYPEER => 0, // IBS / Moniker only
+            CURLOPT_SSL_VERIFYHOST => 0, // IBS / Moniker only
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 // IBS / Moniker only
         ] + $this->curlopts);
 
         // which is by default tested for by phpStan
