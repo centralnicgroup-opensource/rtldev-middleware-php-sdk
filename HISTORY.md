@@ -1,3 +1,10 @@
+## [11.0.7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.6...v11.0.7) (2025-06-27)
+
+
+### Bug Fixes
+
+* **ibs / moniker client:** add explicit curl option to ip resolve via ipv4 ([303bf01](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/303bf019ce55ddff2e36ef44e125b3343b5c66f4))
+
 ## [11.0.6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.5...v11.0.6) (2025-05-22)
 
 
