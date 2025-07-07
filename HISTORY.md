@@ -1,3 +1,10 @@
+## [11.0.8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.7...v11.0.8) (2025-07-07)
+
+
+### Bug Fixes
+
+* **all brands:** increase CURLOPT_CONNECTTIMEOUT to 30s ([e9244f0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e9244f041447af535f7ec22dde51e7a740f935a7))
+
 ## [11.0.7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.6...v11.0.7) (2025-06-27)
 
 
