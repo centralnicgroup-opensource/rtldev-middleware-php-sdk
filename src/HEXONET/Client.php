@@ -438,7 +438,7 @@ class Client
         curl_setopt_array($this->chandle, [
             // CURLOPT_VERBOSE         => $this->debugMode,
             CURLOPT_URL             => $cfg["CONNECTION_URL"],
-            CURLOPT_CONNECTTIMEOUT  => 5, // 5s
+            CURLOPT_CONNECTTIMEOUT  => 30, // 30s, 300s by default
             CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
             CURLOPT_POST            => 1,
             CURLOPT_HEADER          => 0,
