@@ -1,3 +1,10 @@
+## [11.0.9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.8...v11.0.9) (2025-07-18)
+
+
+### Bug Fixes
+
+* **ibs registar:** fallback to product_0_code/message in case main props are n/a ([9663c02](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/9663c029091bcc30b80480180b2918cf47445fd6))
+
 ## [11.0.8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.7...v11.0.8) (2025-07-07)
 
 
