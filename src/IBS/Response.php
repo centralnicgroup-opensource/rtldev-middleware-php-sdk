@@ -97,7 +97,12 @@ class Response extends \CNIC\HEXONET\Response // implements \CNIC\ResponseInterf
      */
     public function getCode()
     {
-        return ($this->hash["code"]) ? intval($this->hash["code"]) : 200;
+        foreach (["code", "product_0_code"] as $key) {
+            if (isset($this->hash[$key])) {
+                return intval($this->hash[$key]);
+            }
+        }
+        return 200; // default code
     }
 
     /**
@@ -115,7 +120,7 @@ class Response extends \CNIC\HEXONET\Response // implements \CNIC\ResponseInterf
      */
     public function getDescription()
     {
-        return $this->hash["message"] ?? "Command completed successfully";
+        return $this->hash["message"] ?? $this->hash["product_0_message"] ?? "Command completed successfully";
     }
 
     /**
