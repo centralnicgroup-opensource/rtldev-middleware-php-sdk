@@ -1,3 +1,10 @@
+## [11.0.10](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.9...v11.0.10) (2025-08-20)
+
+
+### Bug Fixes
+
+* **ResponseTranslator:** add translation for authorization (EPP Code) failure messages ([ae7f47b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ae7f47b026f10432d46a71b38f532e9cccda7d77))
+
 ## [11.0.9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.8...v11.0.9) (2025-07-18)
 
 

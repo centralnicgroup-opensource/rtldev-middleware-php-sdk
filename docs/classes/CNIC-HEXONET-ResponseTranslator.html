@@ -272,6 +272,8 @@
         &quot;Invalid attribute value syntax; resource record \\[(.+)\\]&quot; =&gt; &quot;Invalid Syntax for DNSZone Resource Record: \$1&quot;,
         &quot;Missing required attribute; CLASS(?:=| \\[MUST BE )PREMIUM_([\\w\\+]+)[\\s\\]]&quot; =&gt; &quot;Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_\$1.&quot;,
         &quot;Syntax error in Parameter DOMAIN \\((.+)\\)&quot; =&gt; &quot;The Domain Name \$1 is invalid.&quot;,
+        // CNR
+        &quot;Authorization failed.*(?:\\[.*(authori[sz]ation (information|code|password)|authinfo).*\\]|wrong auth code)&quot; =&gt; &quot;The provided Authorization Code (EPP Code) is incorrect. Please verify the correct Authorization Code with the current registrar and try again.&quot;,
     ],
 ]</span></code>
 
@@ -306,7 +308,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/ResponseTranslator.php"><a href="files/src-hexonet-responsetranslator.html"><abbr title="src/HEXONET/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">54</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 
     </aside>
 
@@ -375,7 +377,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/ResponseTranslator.php"><a href="files/src-hexonet-responsetranslator.html"><abbr title="src/HEXONET/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">132</span>
+    <span class="phpdocumentor-element-found-in__line">134</span>
 
     </aside>
 
@@ -489,6 +491,8 @@ performs replacements based on the matched pattern, command data, and placeholde
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 
