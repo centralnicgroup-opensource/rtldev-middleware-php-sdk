@@ -30,8 +30,6 @@ $cl = \CNIC\ClientFactory::getClient([
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setCredentials($user, $password);
 $r = $cl->login();
-// or this line for using 2FA
-// $r = $cl->login('.. here your otp code ...');
 if ($r->isSuccess()) {
     echo "LOGIN SUCCEEDED.\n";
 

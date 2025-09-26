@@ -14,6 +14,6 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-class Column extends \CNIC\HEXONET\Column // implements \CNIC\ColumnInterface
+class Column extends \CNIC\CNR\Column // implements \CNIC\ColumnInterface
 {
 }

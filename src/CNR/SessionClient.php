@@ -10,15 +10,14 @@
 namespace CNIC\CNR;
 
 /**
- * CNR API Client
+ * CNR Session API Client
  *
  * @package CNIC\CNR
  */
-class SessionClient extends \CNIC\CNR\Client
+class SessionClient extends Client
 {
     /**
      * Constructor
-     *
      * @throws \Exception
      */
     public function __construct()
@@ -34,8 +33,7 @@ class SessionClient extends \CNIC\CNR\Client
 
     /**
      * Perform API login to start session-based communication
-     *
-     * @return \CNIC\CNR\Response
+     * @return Response
      */
     public function login()
     {
@@ -65,7 +63,7 @@ class SessionClient extends \CNIC\CNR\Client
     }
 
     /**
-     * Apply session data (session id and system entity) to given php session object
+     * Apply session data (session id, login) to given php session object
      *
      * @param array<string,mixed> $session php session instance ($_SESSION)
      * @return $this

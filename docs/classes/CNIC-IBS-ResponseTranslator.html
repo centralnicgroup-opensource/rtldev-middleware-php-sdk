@@ -65,10 +65,6 @@
                 
             </li>
                     <li>
-                <a href="namespaces/cnic-hexonet.html" class="">HEXONET</a>
-                
-            </li>
-                    <li>
                 <a href="namespaces/cnic-ibs.html" class="">IBS</a>
                 
             </li>
@@ -87,10 +83,6 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="packages/CNIC-CNR.html" class="">CNR</a>
-                
-            </li>
-                    <li>
-                <a href="packages/CNIC-HEXONET.html" class="">HEXONET</a>
                 
             </li>
                     <li>
@@ -230,14 +222,14 @@
             phpdocumentor-element
             -property
             -private
-            -static                                                        "
+            -static                                            "
 >
     <h4 class="phpdocumentor-element__name" id="property_descriptionRegexMap">
         $descriptionRegexMap
         <a href="classes/CNIC-IBS-ResponseTranslator.html#property_descriptionRegexMap" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/IBS/ResponseTranslator.php"><a href="files/src-ibs-responsetranslator.html"><abbr title="src/IBS/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
@@ -250,15 +242,13 @@
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__visibility">private</span>
+    <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$descriptionRegexMap</span>
      = <span class="phpdocumentor-signature__default-value">[]</span></code>
 
     
     
-    
-
     
 
     
@@ -473,8 +463,6 @@ performs replacements based on the matched pattern, command data, and placeholde
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
-                            d=document.getElementsByClassName("line-numbers");
-                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 

@@ -15,7 +15,7 @@
                 "replacements": [
                     {
                         "files": [
-                            "src/HEXONET/Client.php"
+                            "src/CNR/Client.php"
                         ],
                         "from": "\"\\d+\\.\\d+\\.\\d+\"",
                         "to": "\"${nextRelease.version}\"",
@@ -31,7 +31,7 @@
                     "HISTORY.md",
                     "@(package?(-lock)|composer).json",
                     "docs",
-                    "src/HEXONET/Client.php"
+                    "src/CNR/Client.php"
                 ]
             }
         ],

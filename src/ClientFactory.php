@@ -13,24 +13,32 @@ class ClientFactory
      * Returns Client Instance by configuration
      *
      * @param array<mixed> $params Configuration settings
-     * @param \CNIC\HEXONET\Logger|\CNIC\CNR\Logger $logger Logger Instance (optional)
-     * @return \CNIC\HEXONET\SessionClient|\CNIC\CNR\SessionClient|\CNIC\IBS\SessionClient
+     * @param \CNIC\CNR\Logger $logger Logger Instance (optional)
+     * @return \CNIC\CNR\SessionClient|\CNIC\IBS\SessionClient
      * @throws \Exception
      */
     public static function getClient($params, $logger = null)
     {
-        if (!(bool)preg_match("/^HEXONET|ISPAPI|CNR|CNIC|IBS|MONIKER$/i", $params["registrar"])) {
-            throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
-        }
-        // if we dynamically instantiate via string, phpStan start complaining ...
-        if ((bool)preg_match("/^HEXONET|ISPAPI$/i", $params["registrar"])) {
-            $cl = new \CNIC\HEXONET\SessionClient();
-        } elseif ((bool)preg_match("/^IBS$/i", $params["registrar"])) {
-            $cl = new \CNIC\IBS\SessionClient();
-        } elseif ((bool)preg_match("/^MONIKER$/i", $params["registrar"])) {
-            $cl = new \CNIC\MONIKER\SessionClient();
-        } else {
-            $cl = new \CNIC\CNR\SessionClient();
+        // if we dynamically instantiate via string, phpStan starts complaining ...
+        switch (strtoupper($params["registrar"])) {
+            case "CNR":
+            case "CNIC":
+                $cl = new \CNIC\CNR\SessionClient();
+                $cl->setCustomLogger($logger ?? new \CNIC\CNR\Logger());
+                break;
+            case "IBS":
+                $cl = new \CNIC\IBS\SessionClient();
+                $cl->setCustomLogger($logger ?? new \CNIC\IBS\Logger());
+                break;
+            case "MONIKER":
+                $cl = new \CNIC\MONIKER\SessionClient();
+                $cl->setCustomLogger($logger ?? new \CNIC\IBS\Logger());
+                break;
+            case "HEXONET":
+            case "ISPAPI":
+                throw new \Exception("Registrar `" . $params["registrar"] . "` has seen EOL, use version 11 of this library.");
+            default:
+                throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
         }
 
         if (!empty($params["sandbox"])) {
@@ -61,18 +69,6 @@ class ClientFactory
         if (!empty($params["proxyserver"])) {
             $cl->setProxy($params["proxyserver"]);
         }
-        if (is_null($logger)) {
-            // if we dynamically instantiate via string, phpStan start complaining ...
-            if ((bool)preg_match("/^HEXONET|ISPAPI$/i", $params["registrar"])) {
-                $logger = new \CNIC\HEXONET\Logger();
-            } else if ((bool)preg_match("/^IBS|MONIKER$/i", $params["registrar"])) {
-                $logger = new \CNIC\IBS\Logger();
-            } else {
-                $logger = new \CNIC\CNR\Logger();
-            }
-        }
-        $cl->setCustomLogger($logger);
-
         return $cl;
     }
 }

@@ -12,15 +12,15 @@ namespace CNIC\IBS;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\CommandFormatter;
-use CNIC\HEXONET\Column;
-use CNIC\HEXONET\Record;
+use CNIC\CNR\Column;
+use CNIC\CNR\Record;
 
 /**
  * IBS Response
  *
  * @package CNIC\IBS
  */
-class Response extends \CNIC\HEXONET\Response // implements \CNIC\ResponseInterface
+class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
 {
     /**
      * Regex for pagination related column keys

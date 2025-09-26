@@ -65,10 +65,6 @@
                 
             </li>
                     <li>
-                <a href="namespaces/cnic-hexonet.html" class="">HEXONET</a>
-                
-            </li>
-                    <li>
                 <a href="namespaces/cnic-ibs.html" class="">IBS</a>
                 
             </li>
@@ -87,10 +83,6 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="packages/CNIC-CNR.html" class="">CNR</a>
-                
-            </li>
-                    <li>
-                <a href="packages/CNIC-HEXONET.html" class="">HEXONET</a>
                 
             </li>
                     <li>
@@ -129,9 +121,6 @@
         <h2 class="phpdocumentor-content__title">
     Logger
 
-        <span class="phpdocumentor-element__extends">
-        extends <a href="classes/CNIC-HEXONET-Logger.html"><abbr title="\CNIC\HEXONET\Logger">Logger</abbr></a>
-    </span>
     
             <div class="phpdocumentor-element__package">
             in package
@@ -141,6 +130,9 @@
                             </ul>
         </div>
     
+            <span class="phpdocumentor-element__implements">
+            implements
+                            <a href="classes/CNIC-LoggerInterface.html"><abbr title="\CNIC\LoggerInterface">LoggerInterface</abbr></a>                    </span>
     
     </h2>
 
@@ -174,6 +166,13 @@
 
 
 
+    <h4 id="toc-interfaces">
+        Interfaces
+        <a href="classes/CNIC-CNR-Logger.html#toc-interfaces" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
+                    <dt class="phpdocumentor-table-of-contents__entry -interface"><a href="classes/CNIC-LoggerInterface.html"><abbr title="\CNIC\LoggerInterface">LoggerInterface</abbr></a></dt><dd>Common Logger Interface</dd>    </dl>
 
 
 
@@ -188,7 +187,7 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Logger.html#method_log">log()</a>
+    <a class="" href="classes/CNIC-CNR-Logger.html#method_log">log()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
@@ -216,11 +215,11 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_log">
         log()
-        <a href="classes/CNIC-HEXONET-Logger.html#method_log" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Logger.html#method_log" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Logger.php"><a href="files/src-hexonet-logger.html"><abbr title="src/HEXONET/Logger.php">Logger.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Logger.php"><a href="files/src-cnr-logger.html"><abbr title="src/CNR/Logger.php">Logger.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">26</span>
 
@@ -230,7 +229,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">log</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$r</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$error</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+                    <span class="phpdocumentor-signature__name">log</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$r</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$error</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -249,7 +248,7 @@
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$r</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Response to log</p>
@@ -311,8 +310,6 @@
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
-                            d=document.getElementsByClassName("line-numbers");
-                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 
@@ -388,7 +385,7 @@
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/CNIC-HEXONET-Logger.html#method_log">log()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Logger.html#method_log">log()</a></li>
                                     </ul>
             </li>
                     </ul>

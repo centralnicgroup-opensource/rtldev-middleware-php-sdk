@@ -14,7 +14,7 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-class SocketConfig extends \CNIC\HEXONET\SocketConfig
+class SocketConfig extends \CNIC\CNR\SocketConfig
 {
     /**
      * account name

@@ -7,15 +7,14 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/CONTRIBUTING.md)
 
-This module is a connector library for the insanely fast CNIC Backend APIs (HEXONET, CentralNic Reseller formerly known as RRPproxy). Do not hesitate to contact us in case of questions.
+This module is a connector library for the insanely fast CNIC Backend APIs (CentralNic Reseller, internet.bs, moniker). Do not hesitate to contact us in case of questions.
 
 ## Resources
 
 * Documentation Links (PHP-SDK internal registrar id available in round brackets):
-    * [HEXONET (HEXONET)](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
     * [CentralNic Reseller (CNR)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
-    * [Internet.bs (IBS)](https://www.hexonet.support/hc/en-gb/articles/13651711901213-Self-Development-Kit-for-PHP)
-    * [Moniker (MONIKER)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
+    * [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
+    * [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
 * [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
 
 ## Usage
@@ -24,14 +23,14 @@ This module is a connector library for the insanely fast CNIC Backend APIs (HEXO
 
 Find a demo app for the Brand of choice in the tests folder that should help you with getting started.
 
-e.g. `tests/HEXONET/app.php`, `tests/CNR/app.php` etc.
+e.g. `tests/CNR/app.php` etc.
 
 ## Dev Container
 If you want to contribute, we recommend using Visual Studio Code and to follow the below setup instructions:
 
-* Add an entry in your hosts file: ```127.0.0.1         devsdk.hexonet.net```
+* Add an entry in your hosts file: ```127.0.0.1         devsdk.centralnicreseller.net```
 
-PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.hexonet.net```
+PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.centralnicreseller.net```
 
 ## Running the Demo Application
 
@@ -45,9 +44,6 @@ To run the demo application, follow these steps:
      # CentralNic Reseller
      export RTLDEV_MW_CI_USER_CNR=<your-username>
      export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
-     # HEXONET
-     export RTLDEV_MW_CI_USER_HEXONET=<your-username>
-     export RTLDEV_MW_CI_USERPASSWORD_HEXONET=<your-password>
      # internet.bs
      export RTLDEV_MW_CI_USER_IBS=<your-username>
      export RTLDEV_MW_CI_USERPASSWORD_IBS=<your-password>
@@ -63,8 +59,6 @@ To run the demo application, follow these steps:
     ```sh
     # CentralNic Reseller
     npm run test-demo-cnr
-    # HEXONET
-    npm run test-demo-hexonet
     # internet.bs
     npm run test-demo-ibs
     # Moniker
@@ -77,8 +71,6 @@ To run the demo application, follow these steps:
    ```plaintext
    # CentralNic Reseller
    tests/CNR/app.php
-   # HEXONET
-   tests/HEXONET/app.php
    # internet.bs
    tests/IBS/app.php
    # Moniker

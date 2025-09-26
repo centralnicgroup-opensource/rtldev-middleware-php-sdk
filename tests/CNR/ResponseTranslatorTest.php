@@ -5,8 +5,8 @@
 namespace CNICTEST\CNR;
 
 use CNIC\CNR\Response as R;
-use CNIC\HEXONET\ResponseTranslator as RT;
-use CNIC\HEXONET\ResponseTemplateManager as RTM;
+use CNIC\CNR\ResponseTranslator as RT;
+use CNIC\CNR\ResponseTemplateManager as RTM;
 
 final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
 {
@@ -85,7 +85,7 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
     /**
      * Test ACL error translation
      */
-    public function testACLTranslation(): void
+    public function testAclTranslation(): void
     {
         $cmd = ["COMMAND" => "StatusAccount"];
         $r = new R("[RESPONSE]\r\ncode=530\r\ndescription=Authorization failed; Operation forbidden by ACL\r\nEOF\r\n", $cmd);

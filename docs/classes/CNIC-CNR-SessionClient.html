@@ -65,10 +65,6 @@
                 
             </li>
                     <li>
-                <a href="namespaces/cnic-hexonet.html" class="">HEXONET</a>
-                
-            </li>
-                    <li>
                 <a href="namespaces/cnic-ibs.html" class="">IBS</a>
                 
             </li>
@@ -87,10 +83,6 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="packages/CNIC-CNR.html" class="">CNR</a>
-                
-            </li>
-                    <li>
-                <a href="packages/CNIC-HEXONET.html" class="">HEXONET</a>
                 
             </li>
                     <li>
@@ -156,7 +148,7 @@
 
     </aside>
 
-            <p class="phpdocumentor-summary">CNR API Client</p>
+            <p class="phpdocumentor-summary">CNR Session API Client</p>
 
 
 
@@ -187,42 +179,42 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_isOTE">$isOTE</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_isOTE">$isOTE</a>
     <span>
                         &nbsp;: bool            </span>
 </dt>
 <dd>is connected to OT&amp;E</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_settings">$settings</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_settings">$settings</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>registrar api settings</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_chandle">$chandle</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_chandle">$chandle</a>
     <span>
                         &nbsp;: <abbr title="\CurlHandle">CurlHandle</abbr>|null            </span>
 </dt>
 <dd>curl handle cache</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_curlopts">$curlopts</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_curlopts">$curlopts</a>
     <span>
                         &nbsp;: array&lt;string|int, string&gt;            </span>
 </dt>
 <dd>additional curl options to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_debugMode">$debugMode</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_debugMode">$debugMode</a>
     <span>
                         &nbsp;: bool            </span>
 </dt>
 <dd>activity flag for debug mode</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_logger">$logger</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_logger">$logger</a>
     <span>
                         &nbsp;: <a href="classes/CNIC-LoggerInterface.html"><abbr title="\CNIC\LoggerInterface">LoggerInterface</abbr></a>            </span>
 </dt>
@@ -236,14 +228,14 @@
 <dd>Object covering API connection data</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_socketURL">$socketURL</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_socketURL">$socketURL</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
 <dd>API connection url</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#property_ua">$ua</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#property_ua">$ua</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
@@ -265,77 +257,77 @@
 <dd>Constructor</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_close">close()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_close">close()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
 <dd>Close all curl handles</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_disableDebugMode">disableDebugMode()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_disableDebugMode">disableDebugMode()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Disable Debug Output</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_enableDebugMode">enableDebugMode()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_enableDebugMode">enableDebugMode()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Enable Debug Output to STDOUT</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getPOSTData">getPOSTData()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getPOSTData">getPOSTData()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Serialize given command for POST request including connection configuration data</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getProxy">getProxy()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getProxy">getProxy()</a>
     <span>
                                 &nbsp;: string|null    </span>
 </dt>
 <dd>Get proxy configuration for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getReferer">getReferer()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getReferer">getReferer()</a>
     <span>
                                 &nbsp;: string|null    </span>
 </dt>
 <dd>Get Referer configuration for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getSession">getSession()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getSession">getSession()</a>
     <span>
                                 &nbsp;: string|null    </span>
 </dt>
 <dd>Get the API Session ID that is currently set</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getURL">getURL()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getURL">getURL()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get the API connection url that is currently set</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getUserAgent">getUserAgent()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getUserAgent">getUserAgent()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get the user agent string</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_getVersion">getVersion()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_getVersion">getVersion()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get the current module version</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_IDNConvert">IDNConvert()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_IDNConvert">IDNConvert()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
@@ -363,16 +355,16 @@
 <dd>Perform API request using the given command</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_requestAllResponsePages">requestAllResponsePages()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_requestAllResponsePages">requestAllResponsePages()</a>
     <span>
-                                &nbsp;: array&lt;string|int, <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>&gt;    </span>
+                                &nbsp;: array&lt;string|int, <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>&gt;    </span>
 </dt>
 <dd>Request all pages/entries for the given query command</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_requestNextResponsePage">requestNextResponsePage()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_requestNextResponsePage">requestNextResponsePage()</a>
     <span>
-                                &nbsp;: <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>|null    </span>
+                                &nbsp;: <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>|null    </span>
 </dt>
 <dd>Request the next page of list entries for the current list query
 Useful for tables</dd>
@@ -390,17 +382,17 @@ to rebuild and reuse connection settings</dd>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
-<dd>Apply session data (session id and system entity) to given php session object</dd>
+<dd>Apply session data (session id, login) to given php session object</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setCredentials">setCredentials()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setCredentials">setCredentials()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set Credentials to be used for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setCustomLogger">setCustomLogger()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setCustomLogger">setCustomLogger()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
@@ -412,31 +404,24 @@ create your own class implementing \CNIC\LoggerInterface</dd>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
-<dd>Set default logger to use</dd>
+<dd>set default logger to use</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setOTP">setOTP()</a>
-    <span>
-                                &nbsp;: $this    </span>
-</dt>
-<dd>Set one time password to be used for API communication</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setProxy">setProxy()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setProxy">setProxy()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set proxy to use for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setReferer">setReferer()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setReferer">setReferer()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set Referer to use for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setRemoteIPAddress">setRemoteIPAddress()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setRemoteIPAddress">setRemoteIPAddress()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
@@ -444,56 +429,56 @@ create your own class implementing \CNIC\LoggerInterface</dd>
 To be used in case you have an active ip filter setting.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setRoleCredentials">setRoleCredentials()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setRoleCredentials">setRoleCredentials()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set Credentials to be used for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setSession">setSession()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setSession">setSession()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set an API session id to be used for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setURL">setURL()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setURL">setURL()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set another connection url to be used for API communication</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setUserAgent">setUserAgent()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setUserAgent">setUserAgent()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set a custom user agent (for platforms that use this SDK)</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_setUserView">setUserView()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_setUserView">setUserView()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set a data view to a given subuser</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Activate High Performance Setup</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_useLIVESystem">useLIVESystem()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_useLIVESystem">useLIVESystem()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
 <dd>Set LIVE System for API communication (this is the default setting)</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-HEXONET-Client.html#method_useOTESystem">useOTESystem()</a>
+    <a class="" href="classes/CNIC-CNR-Client.html#method_useOTESystem">useOTESystem()</a>
     <span>
                                 &nbsp;: $this    </span>
 </dt>
@@ -524,17 +509,17 @@ To be used in case you have an active ip filter setting.</dd>
             phpdocumentor-element
             -property
             -public
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_isOTE">
         $isOTE
-        <a href="classes/CNIC-HEXONET-Client.html#property_isOTE" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_isOTE" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">71</span>
 
@@ -544,15 +529,13 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$isOTE</span>
      = <span class="phpdocumentor-signature__default-value">false</span></code>
 
     
     
-    
-
     
 
     
@@ -563,17 +546,17 @@ To be used in case you have an active ip filter setting.</dd>
             phpdocumentor-element
             -property
             -public
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_settings">
         $settings
-        <a href="classes/CNIC-HEXONET-Client.html#property_settings" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_settings" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">29</span>
 
@@ -583,8 +566,8 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$settings</span>
     </code>
 
@@ -594,25 +577,23 @@ To be used in case you have an active ip filter setting.</dd>
 
     
 
-    
-
 </article>
                     <article
         class="
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_chandle">
         $chandle
-        <a href="classes/CNIC-HEXONET-Client.html#property_chandle" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_chandle" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">77</span>
 
@@ -622,8 +603,8 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type"><abbr title="\CurlHandle">CurlHandle</abbr>|null</span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><abbr title="\CurlHandle">CurlHandle</abbr>|null</span>
     <span class="phpdocumentor-signature__name">$chandle</span>
      = <span class="phpdocumentor-signature__default-value">null</span></code>
 
@@ -633,25 +614,23 @@ To be used in case you have an active ip filter setting.</dd>
 
     
 
-    
-
 </article>
                     <article
         class="
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_curlopts">
         $curlopts
-        <a href="classes/CNIC-HEXONET-Client.html#property_curlopts" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_curlopts" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">59</span>
 
@@ -661,8 +640,8 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
     <span class="phpdocumentor-signature__name">$curlopts</span>
      = <span class="phpdocumentor-signature__default-value">[]</span></code>
 
@@ -672,25 +651,23 @@ To be used in case you have an active ip filter setting.</dd>
 
     
 
-    
-
 </article>
                     <article
         class="
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_debugMode">
         $debugMode
-        <a href="classes/CNIC-HEXONET-Client.html#property_debugMode" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_debugMode" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">47</span>
 
@@ -700,8 +677,8 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$debugMode</span>
     </code>
 
@@ -711,25 +688,23 @@ To be used in case you have an active ip filter setting.</dd>
 
     
 
-    
-
 </article>
                     <article
         class="
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_logger">
         $logger
-        <a href="classes/CNIC-HEXONET-Client.html#property_logger" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_logger" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">65</span>
 
@@ -739,8 +714,8 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type"><a href="classes/CNIC-LoggerInterface.html"><abbr title="\CNIC\LoggerInterface">LoggerInterface</abbr></a></span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/CNIC-LoggerInterface.html"><abbr title="\CNIC\LoggerInterface">LoggerInterface</abbr></a></span>
     <span class="phpdocumentor-signature__name">$logger</span>
     </code>
 
@@ -750,27 +725,25 @@ To be used in case you have an active ip filter setting.</dd>
 
     
 
-    
-
 </article>
                     <article
         class="
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_socketConfig">
         $socketConfig
         <a href="classes/CNIC-CNR-Client.html#property_socketConfig" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">41</span>
 
     </aside>
 
@@ -778,8 +751,8 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type"><a href="classes/CNIC-CNR-SocketConfig.html"><abbr title="\CNIC\CNR\SocketConfig">SocketConfig</abbr></a></span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/CNIC-CNR-SocketConfig.html"><abbr title="\CNIC\CNR\SocketConfig">SocketConfig</abbr></a></span>
     <span class="phpdocumentor-signature__name">$socketConfig</span>
     </code>
 
@@ -789,25 +762,23 @@ To be used in case you have an active ip filter setting.</dd>
 
     
 
-    
-
 </article>
                     <article
         class="
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_socketURL">
         $socketURL
-        <a href="classes/CNIC-HEXONET-Client.html#property_socketURL" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_socketURL" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">35</span>
 
@@ -817,15 +788,13 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$socketURL</span>
     </code>
 
     
     
-    
-
     
 
     
@@ -836,17 +805,17 @@ To be used in case you have an active ip filter setting.</dd>
             phpdocumentor-element
             -property
             -protected
-                                                                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_ua">
         $ua
-        <a href="classes/CNIC-HEXONET-Client.html#property_ua" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#property_ua" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
-                                            </span>
+                                </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">53</span>
 
@@ -856,15 +825,13 @@ To be used in case you have an active ip filter setting.</dd>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$ua</span>
     </code>
 
     
     
-    
-
     
 
     
@@ -892,7 +859,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
@@ -936,13 +903,13 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_close">
         close()
-        <a href="classes/CNIC-HEXONET-Client.html#method_close" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_close" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">524</span>
+    <span class="phpdocumentor-element-found-in__line">509</span>
 
     </aside>
 
@@ -971,11 +938,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_disableDebugMode">
         disableDebugMode()
-        <a href="classes/CNIC-HEXONET-Client.html#method_disableDebugMode" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_disableDebugMode" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">136</span>
 
@@ -1010,11 +977,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_enableDebugMode">
         enableDebugMode()
-        <a href="classes/CNIC-HEXONET-Client.html#method_enableDebugMode" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_enableDebugMode" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">126</span>
 
@@ -1049,11 +1016,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getPOSTData">
         getPOSTData()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getPOSTData" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getPOSTData" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">148</span>
 
@@ -1109,11 +1076,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getProxy">
         getProxy()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getProxy" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getProxy" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">224</span>
 
@@ -1148,11 +1115,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getReferer">
         getReferer()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getReferer" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getReferer" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">251</span>
 
@@ -1187,11 +1154,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getSession">
         getSession()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getSession" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getSession" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">163</span>
 
@@ -1226,11 +1193,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getURL">
         getURL()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getURL" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getURL" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">173</span>
 
@@ -1265,11 +1232,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getUserAgent">
         getUserAgent()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getUserAgent" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getUserAgent" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">197</span>
 
@@ -1304,11 +1271,11 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_getVersion">
         getVersion()
-        <a href="classes/CNIC-HEXONET-Client.html#method_getVersion" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_getVersion" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">263</span>
 
@@ -1343,13 +1310,13 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_IDNConvert">
         IDNConvert()
-        <a href="classes/CNIC-HEXONET-Client.html#method_IDNConvert" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_IDNConvert" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">355</span>
+    <span class="phpdocumentor-element-found-in__line">340</span>
 
     </aside>
 
@@ -1400,7 +1367,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">40</span>
+    <span class="phpdocumentor-element-found-in__line">38</span>
 
     </aside>
 
@@ -1439,7 +1406,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">57</span>
+    <span class="phpdocumentor-element-found-in__line">55</span>
 
     </aside>
 
@@ -1478,7 +1445,7 @@ To be used in case you have an active ip filter setting.</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">56</span>
+    <span class="phpdocumentor-element-found-in__line">398</span>
 
     </aside>
 
@@ -1499,7 +1466,7 @@ To be used in case you have an active ip filter setting.</dd>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>API command to request</p>
+                    <section class="phpdocumentor-description"><p>API command to request (optional for session login)</p>
 </section>
 
             </dd>
@@ -1523,13 +1490,13 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_requestAllResponsePages">
         requestAllResponsePages()
-        <a href="classes/CNIC-HEXONET-Client.html#method_requestAllResponsePages" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_requestAllResponsePages" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">507</span>
+    <span class="phpdocumentor-element-found-in__line">492</span>
 
     </aside>
 
@@ -1537,7 +1504,7 @@ To be used in case you have an active ip filter setting.</dd>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">requestAllResponsePages</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">requestAllResponsePages</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1562,7 +1529,7 @@ To be used in case you have an active ip filter setting.</dd>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>&gt;</span>
             </section>
 
 </article>
@@ -1574,13 +1541,13 @@ To be used in case you have an active ip filter setting.</dd>
 >
     <h4 class="phpdocumentor-element__name" id="method_requestNextResponsePage">
         requestNextResponsePage()
-        <a href="classes/CNIC-HEXONET-Client.html#method_requestNextResponsePage" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_requestNextResponsePage" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">480</span>
+    <span class="phpdocumentor-element-found-in__line">465</span>
 
     </aside>
 
@@ -1589,7 +1556,7 @@ Useful for tables</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">requestNextResponsePage</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$rr</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>|null</span></code>
+                    <span class="phpdocumentor-signature__name">requestNextResponsePage</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$rr</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>|null</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1599,7 +1566,7 @@ Useful for tables</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$rr</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a></span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>API Response of current page</p>
@@ -1611,7 +1578,7 @@ Useful for tables</p>
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/CNIC-HEXONET-Client.html#method_requestNextResponsePage#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_requestNextResponsePage#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -1631,7 +1598,7 @@ Useful for tables</p>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-HEXONET-Response.html"><abbr title="\CNIC\HEXONET\Response">Response</abbr></a>|null</span>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CNIC-CNR-Response.html"><abbr title="\CNIC\CNR\Response">Response</abbr></a>|null</span>
             </section>
 
 </article>
@@ -1649,7 +1616,7 @@ Useful for tables</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">89</span>
+    <span class="phpdocumentor-element-found-in__line">87</span>
 
     </aside>
 
@@ -1701,11 +1668,11 @@ to rebuild and reuse connection settings</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/SessionClient.php"><a href="files/src-cnr-sessionclient.html"><abbr title="src/CNR/SessionClient.php">SessionClient.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">73</span>
+    <span class="phpdocumentor-element-found-in__line">71</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Apply session data (session id and system entity) to given php session object</p>
+        <p class="phpdocumentor-summary">Apply session data (session id, login) to given php session object</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1746,13 +1713,13 @@ to rebuild and reuse connection settings</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setCredentials">
         setCredentials()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setCredentials" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setCredentials" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">327</span>
+    <span class="phpdocumentor-element-found-in__line">312</span>
 
     </aside>
 
@@ -1806,11 +1773,11 @@ to rebuild and reuse connection settings</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setCustomLogger">
         setCustomLogger()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setCustomLogger" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setCustomLogger" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">106</span>
 
@@ -1862,11 +1829,11 @@ create your own class implementing \CNIC\LoggerInterface</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">67</span>
+    <span class="phpdocumentor-element-found-in__line">116</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Set default logger to use</p>
+        <p class="phpdocumentor-summary">set default logger to use</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1893,81 +1860,13 @@ create your own class implementing \CNIC\LoggerInterface</p>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_setOTP">
-        setOTP()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setOTP" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">285</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Set one time password to be used for API communication</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">setOTP</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">$this</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$value</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&quot;&quot;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>one time password (optional, for reset)</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/CNIC-HEXONET-Client.html#method_setOTP#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>in case this feature is not supported</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">$this</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_setProxy">
         setProxy()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setProxy" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setProxy" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">210</span>
 
@@ -2014,11 +1913,11 @@ create your own class implementing \CNIC\LoggerInterface</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setReferer">
         setReferer()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setReferer" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setReferer" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">237</span>
 
@@ -2065,13 +1964,13 @@ create your own class implementing \CNIC\LoggerInterface</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setRemoteIPAddress">
         setRemoteIPAddress()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setRemoteIPAddress" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setRemoteIPAddress" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">312</span>
+    <span class="phpdocumentor-element-found-in__line">297</span>
 
     </aside>
 
@@ -2102,7 +2001,7 @@ To be used in case you have an active ip filter setting.</p>
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/CNIC-HEXONET-Client.html#method_setRemoteIPAddress#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setRemoteIPAddress#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -2134,13 +2033,13 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setRoleCredentials">
         setRoleCredentials()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setRoleCredentials" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setRoleCredentials" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">341</span>
+    <span class="phpdocumentor-element-found-in__line">326</span>
 
     </aside>
 
@@ -2203,13 +2102,13 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setSession">
         setSession()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setSession" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setSession" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">299</span>
+    <span class="phpdocumentor-element-found-in__line">284</span>
 
     </aside>
 
@@ -2254,11 +2153,11 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setURL">
         setURL()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setURL" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setURL" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">273</span>
 
@@ -2305,11 +2204,11 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setUserAgent">
         setUserAgent()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setUserAgent" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setUserAgent" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">185</span>
 
@@ -2374,13 +2273,13 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_setUserView">
         setUserView()
-        <a href="classes/CNIC-HEXONET-Client.html#method_setUserView" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_setUserView" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">536</span>
+    <span class="phpdocumentor-element-found-in__line">521</span>
 
     </aside>
 
@@ -2425,13 +2324,13 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_useHighPerformanceConnectionSetup">
         useHighPerformanceConnectionSetup()
-        <a href="classes/CNIC-HEXONET-Client.html#method_useHighPerformanceConnectionSetup" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_useHighPerformanceConnectionSetup" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">546</span>
+    <span class="phpdocumentor-element-found-in__line">531</span>
 
     </aside>
 
@@ -2464,13 +2363,13 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_useLIVESystem">
         useLIVESystem()
-        <a href="classes/CNIC-HEXONET-Client.html#method_useLIVESystem" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_useLIVESystem" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">575</span>
+    <span class="phpdocumentor-element-found-in__line">557</span>
 
     </aside>
 
@@ -2503,13 +2402,13 @@ To be used in case you have an active ip filter setting.</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_useOTESystem">
         useOTESystem()
-        <a href="classes/CNIC-HEXONET-Client.html#method_useOTESystem" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CNIC-CNR-Client.html#method_useOTESystem" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/HEXONET/Client.php"><a href="files/src-hexonet-client.html"><abbr title="src/HEXONET/Client.php">Client.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">562</span>
+    <span class="phpdocumentor-element-found-in__line">547</span>
 
     </aside>
 
@@ -2548,7 +2447,7 @@ To be used in case you have an active ip filter setting.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Client.php"><a href="files/src-cnr-client.html"><abbr title="src/CNR/Client.php">Client.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">79</span>
+    <span class="phpdocumentor-element-found-in__line">351</span>
 
     </aside>
 
@@ -2623,8 +2522,6 @@ To be used in case you have an active ip filter setting.</p>
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
-                            d=document.getElementsByClassName("line-numbers");
-                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 
@@ -2700,15 +2597,15 @@ To be used in case you have an active ip filter setting.</p>
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_isOTE">$isOTE</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_settings">$settings</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_chandle">$chandle</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_curlopts">$curlopts</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_debugMode">$debugMode</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_logger">$logger</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_isOTE">$isOTE</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_settings">$settings</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_chandle">$chandle</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_curlopts">$curlopts</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_debugMode">$debugMode</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_logger">$logger</a></li>
                                                     <li class=""><a href="classes/CNIC-CNR-Client.html#property_socketConfig">$socketConfig</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_socketURL">$socketURL</a></li>
-                                                    <li class=""><a href="classes/CNIC-HEXONET-Client.html#property_ua">$ua</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_socketURL">$socketURL</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-Client.html#property_ua">$ua</a></li>
                                             </ul>
                 </li>
             
@@ -2716,39 +2613,38 @@ To be used in case you have an active ip filter setting.</p>
             <li>
                 <ul class="phpdocumentor-list -clean">
                                             <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method___construct">__construct()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_close">close()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_disableDebugMode">disableDebugMode()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_enableDebugMode">enableDebugMode()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getPOSTData">getPOSTData()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getProxy">getProxy()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getReferer">getReferer()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getSession">getSession()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getURL">getURL()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getUserAgent">getUserAgent()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_getVersion">getVersion()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_IDNConvert">IDNConvert()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_close">close()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_disableDebugMode">disableDebugMode()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_enableDebugMode">enableDebugMode()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getPOSTData">getPOSTData()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getProxy">getProxy()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getReferer">getReferer()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getSession">getSession()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getURL">getURL()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getUserAgent">getUserAgent()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_getVersion">getVersion()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_IDNConvert">IDNConvert()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_login">login()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_logout">logout()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-Client.html#method_request">request()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_requestAllResponsePages">requestAllResponsePages()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_requestNextResponsePage">requestNextResponsePage()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_requestAllResponsePages">requestAllResponsePages()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_requestNextResponsePage">requestNextResponsePage()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_reuseSession">reuseSession()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-SessionClient.html#method_saveSession">saveSession()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setCredentials">setCredentials()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setCustomLogger">setCustomLogger()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setCredentials">setCredentials()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setCustomLogger">setCustomLogger()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-Client.html#method_setDefaultLogger">setDefaultLogger()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setOTP">setOTP()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setProxy">setProxy()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setReferer">setReferer()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setRemoteIPAddress">setRemoteIPAddress()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setRoleCredentials">setRoleCredentials()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setSession">setSession()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setURL">setURL()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setUserAgent">setUserAgent()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_setUserView">setUserView()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_useLIVESystem">useLIVESystem()</a></li>
-                                            <li class=""><a href="classes/CNIC-HEXONET-Client.html#method_useOTESystem">useOTESystem()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setProxy">setProxy()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setReferer">setReferer()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setRemoteIPAddress">setRemoteIPAddress()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setRoleCredentials">setRoleCredentials()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setSession">setSession()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setURL">setURL()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setUserAgent">setUserAgent()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_setUserView">setUserView()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_useLIVESystem">useLIVESystem()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-Client.html#method_useOTESystem">useOTESystem()</a></li>
                                             <li class=""><a href="classes/CNIC-CNR-Client.html#method_autoIDNConvert">autoIDNConvert()</a></li>
                                     </ul>
             </li>

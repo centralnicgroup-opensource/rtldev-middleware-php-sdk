@@ -20,7 +20,7 @@ class Logger implements \CNIC\LoggerInterface
      * Output/log given data
      *
      * @param string $post Post request data in string format
-     * @param \CNIC\HEXONET\Response $r Response to log
+     * @param \CNIC\CNR\Response $r Response to log
      * @param string|null $error Error message
      * @return void
      */

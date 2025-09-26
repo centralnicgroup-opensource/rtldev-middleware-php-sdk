@@ -33,24 +33,10 @@ class SessionClient extends \CNIC\IBS\Client
 
     /**
      * Perform API login to start session-based communication
-     * @param string $otp optional one time password
      * @throws \Exception
      * @return Response
      */
-    public function login($otp = "")
-    {
-        throw new \Exception("Method not supported");
-    }
-
-    /**
-     * Perform API login to start session-based communication.
-     * Use given specific command parameters.
-     * @param array<string,mixed> $params given specific command parameters
-     * @param string $otp optional one time password
-     * @throws \Exception
-     * @return Response
-     */
-    public function loginExtended($params, $otp = "")
+    public function login()
     {
         throw new \Exception("Method not supported");
     }
@@ -66,7 +52,7 @@ class SessionClient extends \CNIC\IBS\Client
     }
 
     /**
-     * Apply session data (session id and system entity) to given php session object
+     * Apply session data (session id, login) to given php session object
      * @param array<string,mixed> $session php session instance ($_SESSION)
      * @throws \Exception
      * @return $this

@@ -1,6 +1,6 @@
 {
   "name": "rtldev-middleware-php-sdk",
-  "description": "PHP SDK for the insanely fast CNIC Backend APIs (HEXONET, CNR former RRPproxy)",
+  "description": "PHP SDK for the insanely fast Team Internet Backend APIs (Centralnic Reseller, Internet.bs, Moniker)",
   "version": "0.0.0-development",
   "private": true,
   "author": {
@@ -22,19 +22,20 @@
   ],
   "scripts": {
     "test-demo-cnr": "php -f tests/CNR/app.php",
-    "test-demo-hexonet": "php -f tests/HEXONET/app.php",
     "test-demo-ibs": "php -f tests/IBS/app.php",
     "test-demo-moniker": "php -f tests/MONIKER/app.php"
   },
   "keywords": [
-    "hexonet",
-    "rrpproxy",
+    "cnr",
     "cnic",
     "domain",
     "api",
     "connector",
     "isp",
-    "ispapi",
+    "centralnic",
+    "reseller",
+    "internet.bs",
+    "moniker",
     "ssl",
     "cert",
     "dns",

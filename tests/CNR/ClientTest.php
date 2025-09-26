@@ -16,9 +16,13 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
      */
     public static $cl;
     /**
-     * @var string user name
+     * @var string user name (with role as we don't know the account pw)
      */
     public static $user;
+    /**
+     * @var string user name excluding role
+     */
+    public static $userNoRole;
     /**
      * @var string password
      */
@@ -41,24 +45,21 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         ]);
         self::$cl = $cl;
         self::$user = getenv("RTLDEV_MW_CI_USER_CNR") ?: "";
-        self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_CNR") ?: "";
-        self::$role = getenv("RTLDEV_MW_CI_ROLE_CNR") ?: "";
-        self::$rolepw = getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR") ?: "";
-
         if (self::$user === "") {
             echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR.\n";
             exit(1);
         }
 
-        if (self::$pw === "") {
-            echo "Please provide environment variables RTLDEV_MW_CI_USERPASSWORD_CNR.\n";
-            exit(1);
-        }
-
+        self::$role = getenv("RTLDEV_MW_CI_ROLE_CNR") ?: "";
         if (self::$role === "") {
             echo "Please provide environment variables RTLDEV_MW_CI_ROLE_CNR.\n";
             exit(1);
         }
+
+        // qmtest pass is unknown, we emulate it via role
+        self::$userNoRole = self::$user;
+        self::$pw = self::$rolepw = getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR") ?: "";
+        self::$user .= ":" . self::$role;
 
         if (self::$rolepw === "") {
             echo "Please provide environment variables RTLDEV_MW_CI_ROLEPASSWORD_CNR.\n";
@@ -68,12 +69,12 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
 
     protected function tearDown(): void
     {
-        // Add a 0.5ms delay
-        usleep(500); // microseconds
+        // Add a 0.5s delay
+        usleep(500000); // ms
         parent::tearDown();
     }
 
-    public function testGetPOSTDataSecured(): void
+    public function testGetPostDataSecured(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw);
         $enc = self::$cl->getPOSTData([
@@ -82,17 +83,15 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
             "PASSWORD" => self::$pw
         ], true);
 
-        $expected = implode("&", [
-            "s_login=" . rawurlencode(self::$user),
-            "s_pw=%2A%2A%2A",
-            implode("%0A", [
-                "s_command=COMMAND%3DCheckAuthentication",
-                "SUBUSER%3D" . rawurlencode(self::$user),
-                "PASSWORD%3D%2A%2A%2A"
+        $expected = http_build_query([
+            "s_login" => self::$user,
+            "s_pw" => "***",
+            "s_command" => implode("\n", [
+                "COMMAND=CheckAuthentication",
+                "SUBUSER=" . self::$user,
+                "PASSWORD=***"
             ])
         ]);
-
-        self::$cl->setCredentials();
 
         self::$cl->setCredentials();
 
@@ -102,7 +101,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetPOSTDataObj(): void
+    public function testGetPostDataObj(): void
     {
         $enc = self::$cl->getPOSTData([
             "COMMAND" => "ModifyDomain",
@@ -114,13 +113,13 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetPOSTDataStr(): void
+    public function testGetPostDataStr(): void
     {
         $enc = self::$cl->getPOSTData("COMMAND=StatusAccount");
         $this->assertEquals("s_command=COMMAND%3DStatusAccount", $enc);
     }
 
-    public function testGetPOSTDataNull(): void
+    public function testGetPostDataNull(): void
     {
         $enc = self::$cl->getPOSTData([
             "COMMAND" => "ModifyDomain",
@@ -135,7 +134,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($sessid);
     }
 
-    public function testGetSessionIDSet(): void
+    public function testGetSessionIdSet(): void
     {
         $sess = "testsession12345";
         $sessid = self::$cl->setSession($sess)->getSession();
@@ -143,7 +142,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->setSession();
     }
 
-    public function testGetURL(): void
+    public function testGetUrl(): void
     {
         $url = self::$cl->getURL();
         $this->assertEquals($url, self::$cl->settings["env"]["live"]["url"]);
@@ -176,7 +175,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(self::$cl->getUserAgent(), $ua);
     }
 
-    public function testSetURL(): void
+    public function testSetUrl(): void
     {
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
@@ -186,21 +185,6 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals($url, $newurl);
             self::$cl->setURL($oldurl);
         }
-    }
-
-    public function testSetOTPSet(): void
-    {
-        $this->expectException(\Exception::class);
-        self::$cl->setOTP("12345678");
-    }
-
-    public function testSetOTPReset(): void
-    {
-        self::$cl->setOTP();
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
     public function testSetSessionSet(): void
@@ -214,7 +198,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSetSessionCredentials(): void
     {
-        // credentials and otp code have to be unset when session id is set
+        // credentials have to be unset when session id is set
         self::$cl->setRoleCredentials("myaccountid", "myrole", "mypassword")
             ->setSession("12345678");
         $tmp = self::$cl->getPOSTData([
@@ -256,13 +240,21 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         self::$cl->setSession();
     }
 
-    public function testSetRemoteIPAddressSet(): void
+    public function testSetRemoteIpAddressSetThrows(): void
+    {
+        unset(self::$cl->settings["parameters"]["ipfilter"]);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Feature `IP Filter` not supported");
+        self::$cl->setRemoteIPAddress("10.10.10.10");
+    }
+
+    public function testSetRemoteIpAddressSet(): void
     {
         $this->expectException(\Exception::class);
         self::$cl->setRemoteIPAddress("10.10.10.10");
     }
 
-    public function testSetRemoteIPAddressReset(): void
+    public function testSetRemoteIpAddressReset(): void
     {
         self::$cl->setRemoteIPAddress();
         $tmp = self::$cl->getPOSTData([
@@ -310,21 +302,9 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
     }
 
-    public function testLoginCredsOK(): void
+    public function testLoginCredsOk(): void
     {
-        self::$cl->useOTESystem()
-            ->setCredentials(self::$user, self::$pw);
-        $r = self::$cl->login();
-        $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true);
-        $rec = $r->getRecord(0);
-        $this->assertNotNull($rec);
-        $this->assertNotNull($rec->getDataByKey("SESSIONID"));
-    }
-
-    public function testLoginRoleCredsOK(): void
-    {
-        self::$cl->setRoleCredentials(self::$user, self::$role, self::$rolepw);
+        self::$cl->useOTESystem()->setCredentials(self::$user, self::$pw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isSuccess(), true, $r->getPlain());
@@ -333,35 +313,71 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($rec->getDataByKey("SESSIONID"));
     }
 
-    public function testLoginCredsFAIL(): void
+    public function testLoginRoleCredsOk(): void
     {
-        self::$cl->setCredentials(self::$user, "WRONGPASSWORD");
+        self::$cl->setRoleCredentials(self::$userNoRole, self::$role, self::$rolepw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isError(), true);
+        $this->assertEquals($r->isSuccess(), true, $r->getPlain());
+        $rec = $r->getRecord(0);
+        $this->assertNotNull($rec);
+        $this->assertNotNull($rec->getDataByKey("SESSIONID"));
     }
 
-    public function testLogoutOK(): void
+    public function testLoginCredsFail(): void
+    {
+        self::markTestSkipped("CNR locks accounts temporarily on failed login attempts / temp. ip ban, so we skip this test for now.");
+        //self::$cl->setCredentials("UNKNOWNACC", "WRONGPASSWORD");
+        //$r = self::$cl->login();
+        //$this->assertInstanceOf(R::class, $r);
+        //$this->assertEquals($r->isError(), true, $r->getPlain());
+    }
+
+    //TODO -> not covered: login failed; http timeout
+    //TODO -> not covered: login succeeded; no session returned
+
+    public function testLogoutOk(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true);
-
+        $this->assertEquals($r->isSuccess(), true, $r->getPlain());
         $r = self::$cl->logout();
         $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true);
+        $this->assertEquals($r->isSuccess(), true, $r->getPlain());
     }
 
-    public function testLogoutFAIL(): void
+    public function testLogoutFail(): void
     {
         $r = self::$cl->logout();
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isError(), true);
     }
 
+    public function testRequestCurlExecFail2(): void
+    {
+        self::$cl->settings["env"]["ote"]["url"] = "http://gregeragregaegaegag.com/geragaerg/call.cgi";
+        self::$cl->setCredentials(self::$user, self::$pw)
+            ->useOTESystem();
+        $r = self::$cl->request([
+            "COMMAND" => "StatusAccount"
+        ]);
+        $this->assertInstanceOf(R::class, $r);
+        $this->assertEquals($r->isSuccess(), false);
+        $this->assertEquals($r->getCode(), 421);
+        $this->assertEquals($r->getDescription(), "Command failed due to HTTP communication error (Could not resolve host: gregeragregaegaegag.com).");
+    }
+
     public function testRequestFlattenCommand(): void
     {
+        $cfgpath = implode(DIRECTORY_SEPARATOR, ["src", "CNR", "config.json"]);
+        $file = file_get_contents($cfgpath);
+        $this->assertNotEquals(false, $file);
+        // @phpstan-ignore-next-line
+        $orgsettings = json_decode($file, true);
+        // restore
+        self::$cl->settings["env"]["ote"]["url"] = $orgsettings["env"]["ote"]["url"];
+
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
         $r = self::$cl->request([
@@ -369,13 +385,13 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
             "DOMAIN" => ["example.com", "example.net"]
         ]);
         $this->assertInstanceOf(R::class, $r);
-        /*$this->assertEquals($r->isSuccess(), true, (
+        $this->assertEquals($r->isSuccess(), true, (
             $r->getCommandPlain() . "\n\n" .
             $r->getPlain() . "\n\n" .
             self::$cl->getPOSTData($r->getCommand())
         ));
         $this->assertEquals($r->getCode(), 200);
-        $this->assertEquals($r->getDescription(), "Command completed successfully");*/
+        $this->assertEquals($r->getDescription(), "Command completed successfully");
         $cmd = $r->getCommand();
         $keys = array_keys($cmd);
         $this->assertEquals(in_array("DOMAIN0", $keys), true);
@@ -491,7 +507,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         }
     }*/
 
-    public function testRequestAUTOIdnConvert(): void
+    public function testRequestAutomaticIdnConvert(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
@@ -500,10 +516,10 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
             "DOMAIN" => ["example.com", "dömäin.example", "example.net"]
         ]);
         $this->assertInstanceOf(R::class, $r);
-        /*$this->assertEquals($r->isSuccess(), true);
+        $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
         $this->assertEquals($r->getDescription(), "Command completed successfully");
-        $this->assertNotNull($r->getColumn("DOMAINCHECK"));*/
+        $this->assertNotNull($r->getColumn("DOMAINCHECK"));
         // If api-side idn conversion wouldn't be working, you globally get
         // 505 Invalid attribute value syntax; DOMAIN1: (e.g. xn--d^min-ira7j.com)
         // In addition the API Command has to stay unchanged
@@ -518,7 +534,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("example.net", $cmd["DOMAIN2"]);
     }
 
-    public function testRequestAUTOIdnConvert1a(): void
+    public function testRequestAutomaticIdnConvert1a(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
@@ -540,7 +556,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         //--------------- EXCEPTION [END] -----------
     }
 
-    public function testRequestAUTOIdnConvert2(): void
+    public function testRequestAutomaticIdnConvert2(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
@@ -571,7 +587,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
         $this->assertEquals($r->getDescription(), "Command completed successfully");
-        //TODO: this response is a tmp error in node-sdk; "httperror" template
+        //TODO: this response is a tmp error in php-sdk; "httperror" template
     }
 
     public function testRequestCodeTmpErrorNoDbg(): void
@@ -582,7 +598,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->isSuccess(), true);
         $this->assertEquals($r->getCode(), 200);
         $this->assertEquals($r->getDescription(), "Command completed successfully");
-        //TODO: this response is a tmp error in node-sdk; "httperror" template
+        //TODO: this response is a tmp error in php-sdk; "httperror" template
     }
 
     public function testRequestNextResponsePageNoLast(): void
@@ -645,7 +661,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($r->getLastRecordIndex(), 1);
     }
 
-    public function testRequestAllResponsePagesOK(): void
+    public function testRequestAllResponsePagesOk(): void
     {
         $pages = self::$cl->requestAllResponsePages([
             "COMMAND" => "QueryDomainList",
@@ -694,8 +710,8 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
     public function testSetReferer(): void
     {
         $this->assertEquals(self::$cl->getReferer(), null);
-        self::$cl->setReferer("https://www.hexonet.net/");
-        $this->assertEquals(self::$cl->getReferer(), "https://www.hexonet.net/");
+        self::$cl->setReferer("https://www.centralnicreseller.com/");
+        $this->assertEquals(self::$cl->getReferer(), "https://www.centralnicreseller.com/");
         self::$cl->setReferer();
         $this->assertEquals(self::$cl->getReferer(), null);
     }

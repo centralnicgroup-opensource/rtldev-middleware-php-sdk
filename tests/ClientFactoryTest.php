@@ -5,12 +5,12 @@
 namespace CNICTEST;
 
 use CNIC\ClientFactory as CF;
-use CNIC\HEXONET\Client as CL;
+use CNIC\CNR\Client as CL;
 
 final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \CNIC\HEXONET\SessionClient|null $cl
+     * @var \CNIC\CNR\SessionClient|null $cl
      */
     public static $cl;
     /**
@@ -30,34 +30,34 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Basic test for getClient with Registrar HEXONET
+     * Basic test for getClient with legacy Registrar HEXONET
      * @return void
      */
-    public function testHexonetClient1()
+    public function testHexonetClient()
     {
-        $cl = CF::getClient([
+        $this->expectException(\Exception::class);
+        CF::getClient([
             "registrar" => "HEXONET"
         ]);
-        $this->assertInstanceOf(CL::class, $cl);
     }
 
     /**
-     * Extended Basic test for getClient with Registrar HEXONET
+     * Extended Basic test for getClient with Registrar CNR
      * @return void
      */
-    public function testHexonetClient2()
+    public function testCNRClient1()
     {
         $cl = CF::getClient([
-            "registrar" => "HEXONET",
+            "registrar" => "CNR",
             "username" => self::$user,
             "password" => self::$pw,
             "sandbox" => true,
-            "referer" => "https://www.hexonet.net",
+            "referer" => "https://www.centralnicreseller.com",
             "ua" => [
                 "name" => "WHMCS",
                 "version" => "8.2.0",
                 "modules" => [
-                    "ispapi" => "7.0.4"
+                    "cnic" => "7.0.4"
                 ]
             ],
             "proxyserver" => "http://192.168.2.31",
@@ -70,7 +70,7 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
      * Basic test for getClient with Registrar CNR
      * @return void
      */
-    public function testCNRClient()
+    public function testCNRClient2()
     {
         $cl = CF::getClient([
             "registrar" => "CNR"
@@ -85,7 +85,7 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
     public function testInvalidClient()
     {
         $this->expectException(\Exception::class);
-        $cl = CF::getClient([
+        CF::getClient([
             "registrar" => "InvalidRegistrar"
         ]);
     }

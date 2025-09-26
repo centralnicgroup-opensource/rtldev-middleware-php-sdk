@@ -19,7 +19,7 @@ use CNIC\IBS\Response;
  *
  * @package CNIC\IBS
  */
-class Client extends \CNIC\HEXONET\Client
+class Client extends \CNIC\CNR\Client
 {
     /**
      * Object covering API connection data
@@ -72,17 +72,6 @@ class Client extends \CNIC\HEXONET\Client
     }
 
     /**
-     * Set one time password to be used for API communication
-     * Note: not supported.
-     *
-     * @throws \Exception
-     */
-    public function setOTP($value = "")
-    {
-        throw new \Exception("Feature `OTP` not supported.");
-    }
-
-    /**
      * Set an API session id to be used for API communication
      *
      * @param string $value API session id (optional, for reset)
@@ -126,7 +115,7 @@ class Client extends \CNIC\HEXONET\Client
      * @param string $path Path to the API endpoint
      * @return Response
      */
-    public function request($cmd, $path = "")
+    public function request(array $cmd = [], $path = "")
     {
         // flatten nested api command bulk parameters and sort them
         $mycmd = CommandFormatter::flattenCommand($cmd, false);
