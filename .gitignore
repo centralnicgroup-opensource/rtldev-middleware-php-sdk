@@ -5,6 +5,7 @@ vendor
 node_modules
 build/api-cache
 .phpunit.result.cache
+.phpunit.cache
 php-sdk.phar
 php-sdk.phar.gz
 phpDocumentor.phar
