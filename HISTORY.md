@@ -1,3 +1,16 @@
+# [12.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.10...v12.0.0) (2025-09-26)
+
+
+### Code Refactoring
+
+* **hexonet eol:** brand has seen deprecation and the cleanup has been covered ([1f0faa0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/1f0faa0598141f2ad95109481fb7ac3d94d81bcf))
+
+
+### BREAKING CHANGES
+
+* **hexonet eol:** We removed the support for Brand HEXONET. If you still need a working connection,
+please use v11 of this library until the final system shutdown.
+
 ## [11.0.10](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.9...v11.0.10) (2025-08-20)
 
 

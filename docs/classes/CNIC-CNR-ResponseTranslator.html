@@ -114,22 +114,19 @@
                                 <section>
                                         <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic.html">CNIC</a></li>
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic-ibs.html">IBS</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/cnic-cnr.html">CNR</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    Column
+    ResponseTranslator
 
-        <span class="phpdocumentor-element__extends">
-        extends <a href="classes/CNIC-CNR-Column.html"><abbr title="\CNIC\CNR\Column">Column</abbr></a>
-    </span>
     
             <div class="phpdocumentor-element__package">
             in package
             <ul class="phpdocumentor-breadcrumbs">
                                     <li class="phpdocumentor-breadcrumb"><a href="packages/CNIC.html">CNIC</a></li>
-                                    <li class="phpdocumentor-breadcrumb"><a href="packages/CNIC-IBS.html">IBS</a></li>
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/CNIC-CNR.html">CNR</a></li>
                             </ul>
         </div>
     
@@ -142,13 +139,13 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/IBS/Column.php"><a href="files/src-ibs-column.html"><abbr title="src/IBS/Column.php">Column.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/ResponseTranslator.php"><a href="files/src-cnr-responsetranslator.html"><abbr title="src/CNR/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">IBS Column</p>
+            <p class="phpdocumentor-summary">CNR ResponseTranslator</p>
 
 
 
@@ -160,7 +157,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/CNIC-IBS-Column.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-ResponseTranslator.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -174,52 +171,38 @@
 
 <h4 id="toc-properties">
     Properties
-    <a href="classes/CNIC-IBS-Column.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-ResponseTranslator.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a class="" href="classes/CNIC-CNR-Column.html#property_length">$length</a>
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a class="" href="classes/CNIC-CNR-ResponseTranslator.html#property_descriptionRegexMap">$descriptionRegexMap</a>
     <span>
-                        &nbsp;: int            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd>count of column data entries</dd>
+<dd>hidden class var of API description regex mappings for translation</dd>
 
     </dl>
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/CNIC-IBS-Column.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CNIC-CNR-ResponseTranslator.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-CNR-Column.html#method___construct">__construct()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Constructor</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-CNR-Column.html#method_getData">getData()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, string&gt;    </span>
-</dt>
-<dd>Get column data</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-CNR-Column.html#method_getDataByIndex">getDataByIndex()</a>
-    <span>
-                                &nbsp;: string|null    </span>
-</dt>
-<dd>Get column data at given index</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/CNIC-CNR-Column.html#method_getKey">getKey()</a>
+    <a class="" href="classes/CNIC-CNR-ResponseTranslator.html#method_translate">translate()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Get column name</dd>
+<dd>translate a raw api response</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a class="" href="classes/CNIC-CNR-ResponseTranslator.html#method_findMatch">findMatch()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+<dd>Finds a match in the given text and performs replacements based on patterns and placeholders.</dd>
 
     </dl>
 
@@ -231,38 +214,51 @@
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/CNIC-IBS-Column.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/CNIC-CNR-ResponseTranslator.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
         class="
             phpdocumentor-element
             -property
-            -public
-                                                                    "
+            -private
+            -static                                                        "
 >
-    <h4 class="phpdocumentor-element__name" id="property_length">
-        $length
-        <a href="classes/CNIC-CNR-Column.html#property_length" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_descriptionRegexMap">
+        $descriptionRegexMap
+        <a href="classes/CNIC-CNR-ResponseTranslator.html#property_descriptionRegexMap" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Column.php"><a href="files/src-cnr-column.html"><abbr title="src/CNR/Column.php">Column.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/ResponseTranslator.php"><a href="files/src-cnr-responsetranslator.html"><abbr title="src/CNR/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">23</span>
+    <span class="phpdocumentor-element-found-in__line">25</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">count of column data entries</p>
+        <p class="phpdocumentor-summary">hidden class var of API description regex mappings for translation</p>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__type">int</span>
-    <span class="phpdocumentor-signature__name">$length</span>
-    </code>
+        <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$descriptionRegexMap</span>
+     = <span class="phpdocumentor-signature__default-value">[
+    // HX - just for future reference, can be cleaned up if we have something similar in place for CNR
+    &quot;Authorization failed; Operation forbidden by ACL&quot; =&gt; &quot;Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List&quot;,
+    // CNR
+    &quot;Missing required attribute; premium domain name. please provide required parameters&quot; =&gt; &quot;Confirm the Premium pricing by providing the necessary premium domain price data.&quot;,
+    &quot;SkipPregQuote&quot; =&gt; [
+        // HX - just for future reference
+        //&quot;Invalid attribute value syntax; resource record \[(.+)\]&quot; =&gt; &quot;Invalid Syntax for DNSZone Resource Record: $1&quot;,
+        //&quot;Missing required attribute; CLASS(?:=| \[MUST BE )PREMIUM_([\w\+]+)[\s\]]&quot; =&gt; &quot;Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_$1.&quot;,
+        //&quot;Syntax error in Parameter DOMAIN \((.+)\)&quot; =&gt; &quot;The Domain Name $1 is invalid.&quot;,
+        // CNR
+        &quot;Authorization failed.*(?:\\[.*(authori[sz]ation (information|code|password)|authinfo).*\\]|wrong auth code)&quot; =&gt; &quot;The provided Authorization Code (EPP Code) is incorrect. Please verify the correct Authorization Code with the current registrar and try again.&quot;,
+    ],
+]</span></code>
 
     
     
@@ -278,32 +274,32 @@
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/CNIC-IBS-Column.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/CNIC-CNR-ResponseTranslator.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
         class="phpdocumentor-element
             -method
             -public
-                                                        "
+                                    -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method___construct">
-        __construct()
-        <a href="classes/CNIC-CNR-Column.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_translate">
+        translate()
+        <a href="classes/CNIC-CNR-ResponseTranslator.html#method_translate" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Column.php"><a href="files/src-cnr-column.html"><abbr title="src/CNR/Column.php">Column.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/ResponseTranslator.php"><a href="files/src-cnr-responsetranslator.html"><abbr title="src/CNR/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">43</span>
+    <span class="phpdocumentor-element-found-in__line">47</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Constructor</p>
+        <p class="phpdocumentor-summary">translate a raw api response</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">translate</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$raw</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ph</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -312,150 +308,34 @@
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$key</span>
+                <span class="phpdocumentor-signature__argument__name">$raw</span>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Column Name</p>
+                    <section class="phpdocumentor-description"><p>API raw response</p>
 </section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$data</span>
+                <span class="phpdocumentor-signature__argument__name">$cmd</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Column Data</p>
+                    <section class="phpdocumentor-description"><p>requested API command</p>
 </section>
 
             </dd>
-            </dl>
-
-    
-
-    
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getData">
-        getData()
-        <a href="classes/CNIC-CNR-Column.html#method_getData" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Column.php"><a href="files/src-cnr-column.html"><abbr title="src/CNR/Column.php">Column.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">63</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get column data</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getData</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getDataByIndex">
-        getDataByIndex()
-        <a href="classes/CNIC-CNR-Column.html#method_getDataByIndex" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Column.php"><a href="files/src-cnr-column.html"><abbr title="src/CNR/Column.php">Column.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">73</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get column data at given index</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getDataByIndex</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$idx</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string|null</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$idx</span>
-                : <span class="phpdocumentor-signature__argument__return-type">int</span>
-                            </dt>
+                <span class="phpdocumentor-signature__argument__name">$ph</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>data index</p>
+                    <section class="phpdocumentor-description"><p>list of place holder vars</p>
 </section>
 
             </dd>
             </dl>
 
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string|null</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getKey">
-        getKey()
-        <a href="classes/CNIC-CNR-Column.html#method_getKey" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/Column.php"><a href="files/src-cnr-column.html"><abbr title="src/CNR/Column.php">Column.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">54</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get column name</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getKey</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
     
 
     
@@ -466,13 +346,103 @@
             </section>
 
 </article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_findMatch">
+        findMatch()
+        <a href="classes/CNIC-CNR-ResponseTranslator.html#method_findMatch" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/CNR/ResponseTranslator.php"><a href="files/src-cnr-responsetranslator.html"><abbr title="src/CNR/ResponseTranslator.php">ResponseTranslator.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">125</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Finds a match in the given text and performs replacements based on patterns and placeholders.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">findMatch</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$regex</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$newraw</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$val</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ph</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <section class="phpdocumentor-description"><p>This function searches for a specified regular expression pattern in the provided text and
+performs replacements based on the matched pattern, command data, and placeholder values.</p>
+</section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$regex</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The regular expression pattern to search for.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$newraw</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The input text where the match will be searched for and replacements applied.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$val</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The value to be used in replacement if a match is found.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$cmd</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The command data containing replacements, if applicable.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$ph</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>An array of placeholder values for further replacements.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
+</article>
             </section>
 
         <div class="phpdocumentor-modal" id="source-view">
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/IBS/Column.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/CNR/ResponseTranslator.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -573,25 +543,23 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/CNIC-IBS-Column.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/CNIC-IBS-Column.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/CNIC-CNR-ResponseTranslator.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/CNIC-CNR-ResponseTranslator.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
-                                                    <li class=""><a href="classes/CNIC-CNR-Column.html#property_length">$length</a></li>
+                                                    <li class=""><a href="classes/CNIC-CNR-ResponseTranslator.html#property_descriptionRegexMap">$descriptionRegexMap</a></li>
                                             </ul>
                 </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/CNIC-CNR-Column.html#method___construct">__construct()</a></li>
-                                            <li class=""><a href="classes/CNIC-CNR-Column.html#method_getData">getData()</a></li>
-                                            <li class=""><a href="classes/CNIC-CNR-Column.html#method_getDataByIndex">getDataByIndex()</a></li>
-                                            <li class=""><a href="classes/CNIC-CNR-Column.html#method_getKey">getKey()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-ResponseTranslator.html#method_translate">translate()</a></li>
+                                            <li class=""><a href="classes/CNIC-CNR-ResponseTranslator.html#method_findMatch">findMatch()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -611,7 +579,7 @@
     </section>
 </section>
         </div>
-        <a href="classes/CNIC-IBS-Column.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/CNIC-CNR-ResponseTranslator.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
