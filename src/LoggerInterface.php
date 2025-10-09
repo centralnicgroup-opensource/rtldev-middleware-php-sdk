@@ -24,5 +24,5 @@ interface LoggerInterface
      * @param \CNIC\CNR\Response $r Response to log
      * @param string|null $error Error message
      */
-    public function log(string $post, \CNIC\CNR\Response $r, string $error = null): void;
+    public function log(string $post, \CNIC\CNR\Response $r, ?string $error = null): void;
 }
