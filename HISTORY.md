@@ -1,3 +1,10 @@
+## [12.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v12.0.0...v12.0.1) (2025-10-10)
+
+
+### Bug Fixes
+
+* **php 8.4:** implicitly marking parameter as nullable is deprecated ([682f94d](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/682f94dd062d78b2586843d0adb98a2d54d509f9))
+
 # [12.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v11.0.10...v12.0.0) (2025-09-26)
 
 
