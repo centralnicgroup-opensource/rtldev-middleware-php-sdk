@@ -21,10 +21,10 @@ class Logger implements \CNIC\LoggerInterface
      *
      * @param string $post Post request data in string format
      * @param \CNIC\CNR\Response $r Response to log
-     * @param string|null $error Error message
+     * @param string|null $error Error message (optional)
      * @return void
      */
-    public function log($post, $r, $error = null): void
+    public function log(string $post, \CNIC\CNR\Response $r, ?string $error = null): void
     {
         // apply your custom logging / output here
     }

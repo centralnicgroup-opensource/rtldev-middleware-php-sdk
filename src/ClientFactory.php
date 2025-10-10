@@ -13,11 +13,11 @@ class ClientFactory
      * Returns Client Instance by configuration
      *
      * @param array<mixed> $params Configuration settings
-     * @param \CNIC\CNR\Logger $logger Logger Instance (optional)
+     * @param \CNIC\CNR\Logger|null $logger Logger Instance (optional)
      * @return \CNIC\CNR\SessionClient|\CNIC\IBS\SessionClient
      * @throws \Exception
      */
-    public static function getClient($params, $logger = null)
+    public static function getClient($params, ?\CNIC\CNR\Logger $logger = null)
     {
         // if we dynamically instantiate via string, phpStan starts complaining ...
         switch (strtoupper($params["registrar"])) {

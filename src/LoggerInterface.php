@@ -13,7 +13,7 @@ namespace CNIC;
  * Common Logger Interface
  *
  * @package CNIC
- * @method void log(string $post, \CNIC\CNR\Response $r, string $error = null) Output/log given data
+ * @method void log(string $post, \CNIC\CNR\Response $r, string|null $error) Output/log given data
  */
 interface LoggerInterface
 {
@@ -22,7 +22,7 @@ interface LoggerInterface
      *
      * @param string $post Post request data in string format
      * @param \CNIC\CNR\Response $r Response to log
-     * @param string|null $error Error message
+     * @param string|null $error Error message (optional)
      */
-    public function log(string $post, \CNIC\CNR\Response $r, string $error = null): void;
+    public function log(string $post, \CNIC\CNR\Response $r, ?string $error = null): void;
 }

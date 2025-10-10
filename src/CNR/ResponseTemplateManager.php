@@ -51,10 +51,10 @@ final class ResponseTemplateManager
      * Add response template to template container
      * @param string $id template id
      * @param string $plain API plain response or API response code (when providing $descr)
-     * @param string|null $descr API response description
+     * @param string|null $descr API response description (optional)
      * @return self
      */
-    public static function addTemplate($id, $plain, $descr = null)
+    public static function addTemplate(string $id, string $plain, ?string $descr = null)
     {
         if (is_null($descr)) {
             self::$templates[$id] = $plain;
