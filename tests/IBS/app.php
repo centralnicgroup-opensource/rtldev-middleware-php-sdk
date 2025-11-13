@@ -19,8 +19,10 @@ $cl->useOTESystem()//LIVE System would be used otherwise by default
    //->setRemoteIPAddress("1.2.3.4") // provide ip address used for active ip filter
    ->setCredentials($user, $password)
    ->enableDebugMode();
-$r = $cl->request(["tld" => "nl"], "Domain/Tldinfo");
+$r = $cl->request(["domain" => "tronexats.com"], "Domain/Info");
 $cl->close(); // close connection(s) to the API
+echo $r->getPlain();
+echo print_r($r->getHash(), true);
 
 // --- SESSION BASED API COMMUNICATION ---
 echo "\n\n--- SESSION-BASED API COMMUNICATION ----\n";

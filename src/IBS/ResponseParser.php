@@ -24,22 +24,18 @@ final class ResponseParser
      */
     public static function parse($raw)
     {
-        /** @var array<string,mixed> $result */
-        $result = [];
-        $tmp = preg_replace("/\r\n/", "\n", $raw);
-        if (is_null($tmp)) {
-            $tmp = $raw;
-        }
-        $arr = explode("\n", $tmp);
-        foreach ($arr as $str) {
-            list($varName, $value) = explode("=", $str, 2);
-            $varName = trim($varName);
-            $value = trim($value);
-            if ((bool)preg_match("/date|paiduntil|expiration$/i", $varName)) {
-                $value = str_replace("/", "-", $value);
+        $result = json_decode($raw, true);
+        if (!is_null($result)) {
+            foreach ($result as $key => $value) {
+                if (preg_match("/date|paiduntil|expiration$/i", $key)) {
+                    $result[$key] = str_replace("/", "-", $value);
+                }
             }
-            $result[$varName] = $value;
+            return $result;
         }
-        return $result;
+        return [
+            "status" => "FAILURE",
+            "message" => "423 Invalid JSON API response. Contact Support"
+        ];
     }
 }

@@ -118,7 +118,7 @@ class Client extends \CNIC\CNR\Client
     public function request(array $cmd = [], $path = "")
     {
         // flatten nested api command bulk parameters and sort them
-        $mycmd = CommandFormatter::flattenCommand($cmd, false);
+        $mycmd = CommandFormatter::flattenCommand($cmd + ["ResponseFormat" => "JSON"], false);
         // auto convert umlaut names to punycode
         $mycmd = $this->autoIDNConvert($mycmd);
         // request command to API

@@ -55,8 +55,8 @@ class ResponseTranslator
         // Missing status or message in API Response
         if (
             (
-                !preg_match("/status[\s]*=/i", $newraw) // missing status
-                || preg_match("/status[\s]*=\r\n/i", $newraw) // empty status
+                !preg_match("/\"status\":/i", $newraw) // missing status
+                || preg_match("/\"status\":\"\"/i", $newraw) // empty status
                 // do not check for message as it is optional in success cases
             )
             && RTM::hasTemplate("invalid")
