@@ -1,3 +1,17 @@
+# [13.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v12.0.1...v13.0.0) (2025-11-13)
+
+
+### Features
+
+* **ibs and moniker registrar brand:** switched to JSON API ([701fa3a](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/701fa3ab468b25dba6a336533831a678258702b9))
+
+
+### BREAKING CHANGES
+
+* **ibs and moniker registrar brand:** By ths breaking change, we switch to the more developer-friendly JSON API /
+ResponseFormat. Note that this has an impact on the data structure as well. By upgrading, please
+ensure to test and review your app as well.
+
 ## [12.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v12.0.0...v12.0.1) (2025-10-10)
 
 
