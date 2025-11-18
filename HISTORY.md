@@ -1,3 +1,10 @@
+## [13.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.0.0...v13.0.1) (2025-11-18)
+
+
+### Bug Fixes
+
+* **deps:** bump glob from 10.4.5 to 10.5.0 ([f19205b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/f19205bbc3c906f3e611effc2c62ca0457ecd630))
+
 # [13.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v12.0.1...v13.0.0) (2025-11-13)
 
 
