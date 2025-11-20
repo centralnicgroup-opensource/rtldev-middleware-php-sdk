@@ -11,6 +11,8 @@ php-sdk.phar.gz
 phpDocumentor.phar
 phpdoc.phar
 reports
+package-lock.json
+.pnpm-store
 # do not remove the following line
 # it blocks env.sh from being committed
 # which contains sensitive data 
