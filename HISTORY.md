@@ -1,3 +1,10 @@
+# [13.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.0.1...v13.1.0) (2026-01-19)
+
+
+### Features
+
+* **context support:** set custom context data via client and access it later again via response ([ed28dde](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ed28dde70914031b466c61925ffb7df4d982715c))
+
 ## [13.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.0.0...v13.0.1) (2025-11-18)
 
 

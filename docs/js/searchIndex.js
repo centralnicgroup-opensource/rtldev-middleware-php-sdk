@@ -166,6 +166,16 @@ Search.appendIndex(
             "summary": "Set\u0020LIVE\u0020System\u0020for\u0020API\u0020communication\u0020\u0028this\u0020is\u0020the\u0020default\u0020setting\u0029",
             "url": "classes/CNIC-CNR-Client.html#method_useLIVESystem"
         },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003AsetContext\u0028\u0029",
+            "name": "setContext",
+            "summary": "Set\u0020context\u0020data\u0020for\u0020the\u0020client\u0020\u0028to\u0020be\u0020used\u0020in\u0020a\u0020custom\u0020logger\u0020to\u0020access\u0020additional\u0020data\u0020at\u0020logging\u0020time\u0020again\u0029\nThe\u0020use\u0020of\u0020this\u0020context\u0020data\u0020is\u0020optional\u0020and\u0020has\u0020no\u0020impact\u0020on\u0020the\u0020SDK\u0020behaviour\u0020itself.",
+            "url": "classes/CNIC-CNR-Client.html#method_setContext"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Client\u003A\u003A\u0024context",
+            "name": "context",
+            "summary": "context\u0020data\u0020for\u0020the\u0020client",
+            "url": "classes/CNIC-CNR-Client.html#property_context"
+        },                {
             "fqsen": "\\CNIC\\CNR\\Client\u003A\u003A\u0024settings",
             "name": "settings",
             "summary": "registrar\u0020api\u0020settings",
@@ -305,6 +315,11 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "Constructor",
             "url": "classes/CNIC-CNR-Response.html#method___construct"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Response\u003A\u003AgetContext\u0028\u0029",
+            "name": "getContext",
+            "summary": "Get\u0020context\u0020data\u0020for\u0020the\u0020response",
+            "url": "classes/CNIC-CNR-Response.html#method_getContext"
         },                {
             "fqsen": "\\CNIC\\CNR\\Response\u003A\u003AgetCode\u0028\u0029",
             "name": "getCode",
@@ -550,6 +565,11 @@ Search.appendIndex(
             "name": "records",
             "summary": "Record\u0020List\u0020\u0028List\u0020of\u0020rows\u0029",
             "url": "classes/CNIC-CNR-Response.html#property_records"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Response\u003A\u003A\u0024context",
+            "name": "context",
+            "summary": "Context\u0020data\u0020for\u0020the\u0020response",
+            "url": "classes/CNIC-CNR-Response.html#property_context"
         },                {
             "fqsen": "\\CNIC\\CNR\\ResponseParser",
             "name": "ResponseParser",
@@ -1130,6 +1150,11 @@ Search.appendIndex(
             "name": "requestUrl",
             "summary": "API\u0020request\u0020url",
             "url": "classes/CNIC-IBS-Response.html#property_requestUrl"
+        },                {
+            "fqsen": "\\CNIC\\IBS\\Response\u003A\u003A\u0024context",
+            "name": "context",
+            "summary": "Context\u0020data\u0020for\u0020the\u0020response",
+            "url": "classes/CNIC-IBS-Response.html#property_context"
         },                {
             "fqsen": "\\CNIC\\IBS\\ResponseParser",
             "name": "ResponseParser",
