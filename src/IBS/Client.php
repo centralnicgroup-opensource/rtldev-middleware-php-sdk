@@ -130,7 +130,7 @@ class Client extends \CNIC\CNR\Client
         if (!$this->chandle) {
             $tmp = curl_init();
             if ($tmp === false) {
-                $r = new Response("nocurl", $mycmd, $cfg);
+                $r = new Response("nocurl", $mycmd, $cfg, $this->context);
                 if ($this->debugMode) {
                     $secured = $this->getPOSTData($mycmd, true);
                     $this->logger->log($secured, $r, "CURL for PHP missing.");
@@ -169,8 +169,7 @@ class Client extends \CNIC\CNR\Client
             $error = curl_error($this->chandle);
             $r = "httperror|" . $error;
         }
-        $response = new Response($r, $mycmd, $cfg);
-
+        $response = new Response($r, $mycmd, $cfg, $this->context);
         if ($this->debugMode) {
             $secured = $this->getPOSTData($mycmd, false);
             $this->logger->log($secured, $response, $error);

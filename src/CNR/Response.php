@@ -69,17 +69,25 @@ class Response // implements \CNIC\ResponseInterface
     protected $records;
 
     /**
+     * Context data for the response
+     * @var array<string,mixed>
+     */
+    protected $context;
+
+    /**
      * Constructor
      * @param string $raw API plain response
      * @param array<string> $cmd API command used within this request
      * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
+     * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      */
-    public function __construct($raw, $cmd = [], $ph = [])
+    public function __construct($raw, $cmd = [], $ph = [], $context = [])
     {
         if (isset($cmd["PASSWORD"])) { // make password no longer accessible
             $cmd["PASSWORD"] = "***";
         }
 
+        $this->context = $context;
         $this->raw = RT::translate($raw, $cmd, $ph);
         $this->hash = RP::parse($this->raw);
         $this->command = $cmd;
@@ -115,6 +123,15 @@ class Response // implements \CNIC\ResponseInterface
                 $this->addRecord($d);
             }
         }
+    }
+
+    /**
+     * Get context data for the response
+     * @return array<string,mixed>
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 
     /**

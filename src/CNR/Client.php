@@ -23,6 +23,11 @@ use CNIC\IDNA\Factory\ConverterFactory;
 class Client
 {
     /**
+     * context data for the client
+     * @var array<string,mixed>
+     */
+    protected array $context = [];
+    /**
      * registrar api settings
      * @var array<mixed>
      */
@@ -410,7 +415,7 @@ class Client
         if (!$this->chandle) {
             $tmp = curl_init();
             if ($tmp === false) {
-                $r = new Response("nocurl", $mycmd, $cfg);
+                $r = new Response("nocurl", $mycmd, $cfg, $this->context);
                 if ($this->debugMode) {
                     $secured = $this->getPOSTData($mycmd, true);
                     $this->logger->log($secured, $r, "CURL for PHP missing.");
@@ -446,8 +451,7 @@ class Client
             $error = curl_error($this->chandle);
             $r = "httperror|" . $error;
         }
-        $response = new Response($r, $mycmd, $cfg);
-
+        $response = new Response($r, $mycmd, $cfg, $this->context);
         if ($this->debugMode) {
             $secured = $this->getPOSTData($mycmd, true);
             $this->logger->log($secured, $response, $error);
@@ -558,5 +562,17 @@ class Client
     {
         $this->isOTE = false;
         return $this->setURL($this->settings["env"]["live"]["url"]);
+    }
+    /**
+     * Set context data for the client (to be used in a custom logger to access additional data at logging time again)
+     * The use of this context data is optional and has no impact on the SDK behaviour itself.
+     * Will be forwarded either to the logger or to the Response object
+     * @param array<string,mixed> $context
+     * @return $this
+     */
+    public function setContext(array $context)
+    {
+        $this->context = $context;
+        return $this;
     }
 }
