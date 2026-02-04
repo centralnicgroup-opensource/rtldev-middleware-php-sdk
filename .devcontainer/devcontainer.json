@@ -1,46 +1,48 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.224.2/containers/jekyll
 {
 	"name": "dstack-phpsdk",
-	"dockerComposeFile": [
-	  "docker-compose.yml"
-	],
+	"dockerComposeFile": "docker-compose.yml",
 	"service": "phpsdk",
 	"workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
 	"shutdownAction": "stopCompose",
 	"customizations": {
 	  "vscode": {
 		"extensions": [
-			"GitHub.vscode-pull-request-github",
+			"github.vscode-github-actions",
+			"gitHub.vscode-pull-request-github",
 			"ms-vscode-remote.remote-containers",
 			"felixfbecker.php-debug",
 			"bmewburn.vscode-intelephense-client",
 			"mrmlnc.vscode-apache",
+			"ms-azuretools.vscode-docker",
 			"xdebug.php-debug",
 			"neilbrayfield.php-docblocker",
-			"GitHub.copilot",
-			"ms-vscode.live-server"
+			"gitHub.copilot",
+			"ms-vscode.live-server",
+			"SanderRonde.phpstan-vscode",
+			"trunk.io"
 		],
 		"settings": {
 		  "terminal.integrated.defaultProfile.linux": "zsh",
-		  "php.validate.executablePath": "/usr/local/bin/php",
-		  "terminal.integrated.profiles.linux": {
-			"zsh": {
-			  "path": "/bin/zsh"
-			}
-		  }
+			"terminal.integrated.profiles.linux": {
+				"zsh": {
+					"path": "/bin/zsh"
+				}
+			},
+			"php.validate.executablePath": "/usr/local/bin/php",
+			"php.executablePath": "/usr/local/bin/php",
+		    "php.suggest.basic": false
 		}
 	  }
 	},
+	"remoteUser": "vscode",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 		  "version": "latest"
 		}
-	  },
-	  "mounts": [
+	},
+	"mounts": [
 		"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/WSL_USER,type=bind,consistency=cached"
-	  ],
-	"remoteUser": "vscode",
+	],
 	"postCreateCommand": "zsh /post-create.sh"
-  }
+}
   
