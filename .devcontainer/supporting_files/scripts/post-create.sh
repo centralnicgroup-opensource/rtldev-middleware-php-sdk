@@ -8,7 +8,6 @@ export SHELL="/usr/bin/zsh"
 
 # Configuration
 readonly SCRIPT_NAME="post-create.sh"
-readonly PROJECT_PATH="/usr/share/rtldev-middleware-whmcs-src"
 
 # Color definitions
 readonly COLOR_RESET='\033[0m'
