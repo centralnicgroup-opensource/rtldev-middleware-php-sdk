@@ -29,12 +29,6 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
     protected $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
 
     /**
-     * API request url
-     * @var string
-     */
-    protected $requestUrl = "";
-
-    /**
      * Context data for the response
      * @var array<string,mixed>
      */
@@ -56,7 +50,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
         $this->context = $context;
         $this->raw = RT::translate($raw, $cmd, $ph);
         $this->hash = RP::parse($this->raw);
-        $this->requestUrl = $ph["CONNECTION_URL"];
+        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
         $this->command = $cmd;
         $this->columnkeys = [];
         $this->columns = [];
@@ -88,15 +82,6 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
             }
             $this->addRecord($d);
         }
-    }
-
-    /**
-     * Get Request URL
-     * @return string
-     */
-    public function getRequestURL()
-    {
-        return $this->requestUrl;
     }
 
     /**
