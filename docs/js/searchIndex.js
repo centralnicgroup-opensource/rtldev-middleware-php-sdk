@@ -321,6 +321,11 @@ Search.appendIndex(
             "summary": "Get\u0020context\u0020data\u0020for\u0020the\u0020response",
             "url": "classes/CNIC-CNR-Response.html#method_getContext"
         },                {
+            "fqsen": "\\CNIC\\CNR\\Response\u003A\u003AgetRequestURL\u0028\u0029",
+            "name": "getRequestURL",
+            "summary": "Get\u0020Request\u0020URL",
+            "url": "classes/CNIC-CNR-Response.html#method_getRequestURL"
+        },                {
             "fqsen": "\\CNIC\\CNR\\Response\u003A\u003AgetCode\u0028\u0029",
             "name": "getCode",
             "summary": "Get\u0020API\u0020response\u0020code",
@@ -570,6 +575,11 @@ Search.appendIndex(
             "name": "context",
             "summary": "Context\u0020data\u0020for\u0020the\u0020response",
             "url": "classes/CNIC-CNR-Response.html#property_context"
+        },                {
+            "fqsen": "\\CNIC\\CNR\\Response\u003A\u003A\u0024requestUrl",
+            "name": "requestUrl",
+            "summary": "API\u0020request\u0020url",
+            "url": "classes/CNIC-CNR-Response.html#property_requestUrl"
         },                {
             "fqsen": "\\CNIC\\CNR\\ResponseParser",
             "name": "ResponseParser",
@@ -926,11 +936,6 @@ Search.appendIndex(
             "summary": "Constructor",
             "url": "classes/CNIC-IBS-Response.html#method___construct"
         },                {
-            "fqsen": "\\CNIC\\IBS\\Response\u003A\u003AgetRequestURL\u0028\u0029",
-            "name": "getRequestURL",
-            "summary": "Get\u0020Request\u0020URL",
-            "url": "classes/CNIC-IBS-Response.html#method_getRequestURL"
-        },                {
             "fqsen": "\\CNIC\\IBS\\Response\u003A\u003AgetCode\u0028\u0029",
             "name": "getCode",
             "summary": "Get\u0020API\u0020response\u0020code",
@@ -1145,11 +1150,6 @@ Search.appendIndex(
             "name": "paginationkeys",
             "summary": "Regex\u0020for\u0020pagination\u0020related\u0020column\u0020keys",
             "url": "classes/CNIC-IBS-Response.html#property_paginationkeys"
-        },                {
-            "fqsen": "\\CNIC\\IBS\\Response\u003A\u003A\u0024requestUrl",
-            "name": "requestUrl",
-            "summary": "API\u0020request\u0020url",
-            "url": "classes/CNIC-IBS-Response.html#property_requestUrl"
         },                {
             "fqsen": "\\CNIC\\IBS\\Response\u003A\u003A\u0024context",
             "name": "context",
@@ -1375,6 +1375,11 @@ Search.appendIndex(
             "name": "getDescription",
             "summary": "Get\u0020API\u0020response\u0020description",
             "url": "classes/CNIC-ResponseInterface.html#method_getDescription"
+        },                {
+            "fqsen": "\\CNIC\\ResponseInterface\u003A\u003AgetRequestURL\u0028\u0029",
+            "name": "getRequestURL",
+            "summary": "Get\u0020Request\u0020URL",
+            "url": "classes/CNIC-ResponseInterface.html#method_getRequestURL"
         },                {
             "fqsen": "\\CNIC\\ResponseInterface\u003A\u003AgetPlain\u0028\u0029",
             "name": "getPlain",

@@ -1,3 +1,10 @@
+## [13.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.0...v13.1.1) (2026-03-03)
+
+
+### Bug Fixes
+
+* **Response:** streamline request URL handling and remove redundant method ([4f7536f](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/4f7536fba7c420239296d68f26c73a02c23cdcbc))
+
 # [13.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.0.1...v13.1.0) (2026-01-19)
 
 
