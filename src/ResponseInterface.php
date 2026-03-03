@@ -15,6 +15,7 @@ namespace CNIC;
  * @package CNIC
  * @method int getCode() Get API response code
  * @method string getDescription() Get API response description
+ * @method string getRequestURL() Get Request URL
  * @method string getPlain() Get Plain API response
  * @method float getQueuetime() Get Queuetime of API response
  * @method array<string> getHash() Get API response as Hash
@@ -72,6 +73,12 @@ interface ResponseInterface
      * @return string API response description
      */
     public function getDescription(): string;
+
+    /**
+     * Get Request URL
+     * @return string Request URL
+     */
+    public function getRequestURL(): string;
 
     /**
      * Get Plain API response

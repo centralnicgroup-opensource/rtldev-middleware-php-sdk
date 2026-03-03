@@ -75,6 +75,12 @@ class Response // implements \CNIC\ResponseInterface
     protected $context;
 
     /**
+     * API request url
+     * @var string
+     */
+    protected $requestUrl = "";
+
+    /**
      * Constructor
      * @param string $raw API plain response
      * @param array<string> $cmd API command used within this request
@@ -90,6 +96,7 @@ class Response // implements \CNIC\ResponseInterface
         $this->context = $context;
         $this->raw = RT::translate($raw, $cmd, $ph);
         $this->hash = RP::parse($this->raw);
+        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
         $this->command = $cmd;
         $this->columnkeys = [];
         $this->columns = [];
@@ -132,6 +139,15 @@ class Response // implements \CNIC\ResponseInterface
     public function getContext()
     {
         return $this->context;
+    }
+
+    /**
+     * Get Request URL
+     * @return string
+     */
+    public function getRequestURL()
+    {
+        return $this->requestUrl;
     }
 
     /**
