@@ -1,3 +1,10 @@
+## [13.1.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.1...v13.1.2) (2026-03-24)
+
+
+### Bug Fixes
+
+* **deps:** bumped node to support all versions equals to or greater than 24.10.0 ([54afc35](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/54afc350c0a95ec6578c76b9195c1a87a5514ce0))
+
 ## [13.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.0...v13.1.1) (2026-03-03)
 
 
