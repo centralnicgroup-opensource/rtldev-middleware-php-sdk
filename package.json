@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": "^24.10.0"
+    "node": ">=24.10.0"
   },
   "homepage": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk",
   "repository": "github:centralnicgroup-opensource/rtldev-middleware-php-sdk.git",
