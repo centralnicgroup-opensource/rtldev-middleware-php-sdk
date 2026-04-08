@@ -1,3 +1,10 @@
+## [13.1.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.2...v13.1.3) (2026-04-08)
+
+
+### Bug Fixes
+
+* **IBS & Moniker ResponseTranslator:** update namespace import for ResponseTemplateManager ([7d1fab1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/7d1fab18e6cb54b356e6193938b7590d00f9034b))
+
 ## [13.1.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.1...v13.1.2) (2026-03-24)
 
 
