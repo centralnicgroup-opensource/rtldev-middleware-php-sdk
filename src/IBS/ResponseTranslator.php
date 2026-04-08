@@ -9,7 +9,7 @@
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\ResponseTemplateManager as RTM;
+use CNIC\IBS\ResponseTemplateManager as RTM;
 
 /**
  * IBS ResponseTranslator
