@@ -49,7 +49,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
 
         $this->context = $context;
         $this->raw = RT::translate($raw, $cmd, $ph);
-        $this->hash = RP::parse($this->raw);
+        $this->hash = RP::parse($this->raw, $cmd);
         $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
         $this->command = $cmd;
         $this->columnkeys = [];

@@ -52,11 +52,12 @@ class ResponseTranslator
             }
         }
 
-        // Missing status or message in API Response
+        // Missing or empty status in API Response
         if (
             (
-                !preg_match("/\"status\":/i", $newraw) // missing status
-                || preg_match("/\"status\":\"\"/i", $newraw) // empty status
+                (!preg_match("/\"status\":/i", $newraw) && !preg_match("/^status=/im", $newraw)) // missing status
+                || preg_match("/\"status\":\s*\"\"/i", $newraw) // empty status (JSON)
+                || preg_match("/^status=\r?$/im", $newraw) // empty status (plain text)
                 // do not check for message as it is optional in success cases
             )
             && RTM::hasTemplate("invalid")
@@ -65,9 +66,38 @@ class ResponseTranslator
         }
 
         if (empty(self::$descriptionRegexMap)) {
-            return $newraw;
+            return self::replacePlaceholders($newraw, $ph);
         }
-        // TODO, check HX if you added something to descriptionRegexMap
+
+        // Iterate through the description-to-regex mapping
+        // generic API response description rewrite
+        $data = false;
+        foreach (self::$descriptionRegexMap as $regex => $val) {
+            // Check if $regex should be treated as multiple patterns
+            if ($regex === "SkipPregQuote") {
+                // Iterate through each temporary pattern in $val
+                foreach ($val as $tmpRegex => $tmpVal) {
+                    // Attempt to find a match using the temporary pattern
+                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal, $cmd, $ph);
+
+                    // If a match is found, exit the inner loop
+                    if ($data) {
+                        break;
+                    }
+                }
+            } else {
+                // Escape the pattern and attempt to find a match
+                // for the given pattern ($regex)
+                $escapedRegex = preg_quote($regex, "/");
+                $data = self::findMatch($escapedRegex, $newraw, $val, $cmd, $ph);
+            }
+
+            // If a match is found, exit the outer loop
+            if ($data) {
+                break;
+            }
+        }
+
         return $newraw;
     }
 
@@ -103,14 +133,25 @@ class ResponseTranslator
         }
 
         // Generic replacing of placeholder vars
-        if (preg_match("/\{[^}]+\}/", $newraw)) {
-            foreach ($ph as $key => $val) {
-                $newraw = preg_replace("/\{" . preg_quote($key, "/") . "\}/", $val, $newraw) ?? $newraw;
-            }
-            $newraw = preg_replace("/\{[^}]+\}/", "", $newraw) ?? $newraw;
-            $return = true;
-        }
+        $before = $newraw;
+        $newraw = self::replacePlaceholders($newraw, $ph);
+        return $return || $newraw !== $before;
+    }
 
-        return $return;
+    /**
+     * Replace placeholder vars like {CONNECTION_URL} in a string
+     * @param string $raw input string
+     * @param array<string> $ph placeholder key-value pairs
+     * @return string
+     */
+    protected static function replacePlaceholders($raw, $ph)
+    {
+        if (preg_match("/\{[A-Z][A-Z0-9_]*\}/", $raw)) {
+            foreach ($ph as $key => $val) {
+                $raw = preg_replace("/\{" . preg_quote($key, "/") . "\}/", $val, $raw) ?? $raw;
+            }
+            $raw = preg_replace("/\s?\{[A-Z][A-Z0-9_]*\}/", "", $raw) ?? $raw;
+        }
+        return $raw;
     }
 }
