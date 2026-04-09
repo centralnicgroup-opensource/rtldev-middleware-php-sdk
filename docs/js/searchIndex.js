@@ -1163,7 +1163,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\CNIC\\IBS\\ResponseParser\u003A\u003Aparse\u0028\u0029",
             "name": "parse",
-            "summary": "Method\u0020to\u0020parse\u0020plain\u0020API\u0020response\u0020into\u0020js\u0020object",
+            "summary": "Method\u0020to\u0020parse\u0020API\u0020response\u0020into\u0020associative\u0020array",
             "url": "classes/CNIC-IBS-ResponseParser.html#method_parse"
         },                {
             "fqsen": "\\CNIC\\IBS\\ResponseTemplateManager",
@@ -1225,6 +1225,11 @@ Search.appendIndex(
             "name": "findMatch",
             "summary": "Finds\u0020a\u0020match\u0020in\u0020the\u0020given\u0020text\u0020and\u0020performs\u0020replacements\u0020based\u0020on\u0020patterns\u0020and\u0020placeholders.",
             "url": "classes/CNIC-IBS-ResponseTranslator.html#method_findMatch"
+        },                {
+            "fqsen": "\\CNIC\\IBS\\ResponseTranslator\u003A\u003AreplacePlaceholders\u0028\u0029",
+            "name": "replacePlaceholders",
+            "summary": "Replace\u0020placeholder\u0020vars\u0020like\u0020\u007BCONNECTION_URL\u007D\u0020in\u0020a\u0020string",
+            "url": "classes/CNIC-IBS-ResponseTranslator.html#method_replacePlaceholders"
         },                {
             "fqsen": "\\CNIC\\IBS\\ResponseTranslator\u003A\u003A\u0024descriptionRegexMap",
             "name": "descriptionRegexMap",

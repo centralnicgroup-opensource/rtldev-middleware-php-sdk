@@ -1,3 +1,10 @@
+## [13.1.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.3...v13.1.4) (2026-04-09)
+
+
+### Bug Fixes
+
+* **ibs/moniker registrar sdk:** enhanced parsing logic for API responses to support both plain responses and json responses, improved error response handling ([a6f1264](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a6f1264c91cb77256b04d07717daaf43fe253520))
+
 ## [13.1.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.2...v13.1.3) (2026-04-08)
 
 

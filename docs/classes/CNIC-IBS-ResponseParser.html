@@ -195,7 +195,7 @@
     <span>
                                 &nbsp;: array&lt;string, mixed&gt;    </span>
 </dt>
-<dd>Method to parse plain API response into js object</dd>
+<dd>Method to parse API response into associative array</dd>
 
     </dl>
 
@@ -225,15 +225,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/IBS/ResponseParser.php"><a href="files/src-ibs-responseparser.html"><abbr title="src/IBS/ResponseParser.php">ResponseParser.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">26</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Method to parse plain API response into js object</p>
+        <p class="phpdocumentor-summary">Method to parse API response into associative array</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">parse</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$raw</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, mixed&gt;</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">parse</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$raw</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cmd</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -246,7 +246,16 @@
                 : <span class="phpdocumentor-argument-list__argument__type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>API plain response</p>
+                    <section class="phpdocumentor-description"><p>API response</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$cmd</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, string&gt;</span>
+                 = <span class="phpdocumentor-argument-list__argument__default-value">[]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>API command used within this request</p>
 </section>
 
             </dd>
