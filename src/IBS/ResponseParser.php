@@ -27,31 +27,34 @@ final class ResponseParser
     {
         $isJson = empty($cmd) || (isset($cmd["ResponseFormat"]) && strtoupper($cmd["ResponseFormat"]) === "JSON");
 
-        if ($isJson) {
-            $result = json_decode($raw, true);
-            if (!is_null($result)) {
-                foreach ($result as $key => $value) {
-                    if (preg_match("/date|paiduntil|expiration$/i", $key)) {
-                        $result[$key] = str_replace("/", "-", $value);
-                    }
-                }
-                return $result;
-            }
-        }
+        $result = $isJson ? json_decode($raw, true) : null;
+
         // Plain text key=value format (templates and non-JSON responses)
-        $data = [];
-        foreach (preg_split("/\r\n|\n/", $raw) ?: [] as $line) {
-            $line = trim($line);
-            if ($line !== "" && ($pos = strpos($line, "=")) !== false) {
-                $data[substr($line, 0, $pos)] = substr($line, $pos + 1);
+        if (is_null($result)) {
+            $data = [];
+            foreach (preg_split("/\r\n|\n/", $raw) ?: [] as $line) {
+                $line = trim($line);
+                if ($line !== "" && ($pos = strpos($line, "=")) !== false) {
+                    $data[substr($line, 0, $pos)] = substr($line, $pos + 1);
+                }
             }
+            $result = !empty($data) ? $data : null;
         }
-        if (!empty($data)) {
-            return $data;
+
+        if (is_null($result)) {
+            return [
+                "status" => "FAILURE",
+                "message" => "423 Invalid API response. Contact Support"
+            ];
         }
-        return [
-            "status" => "FAILURE",
-            "message" => "423 Invalid API response. Contact Support"
-        ];
+
+        // Normalize date separators (handles nested arrays)
+        array_walk_recursive($result, function (&$value, $key) {
+            if (is_string($value) && preg_match("/date|paiduntil|expiration$/i", $key)) {
+                $value = str_replace("/", "-", $value);
+            }
+        });
+
+        return $result;
     }
 }
