@@ -1,3 +1,10 @@
+## [13.1.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.4...v13.1.5) (2026-04-22)
+
+
+### Bug Fixes
+
+* **IBS/Moniker ResponseParser:** streamline JSON parsing and error handling for API responses ([cd4d197](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/cd4d197cc24a97b2a4fbcfe1a84548d5edfba156))
+
 ## [13.1.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.3...v13.1.4) (2026-04-09)
 
 
