@@ -267,7 +267,7 @@ class Client
      */
     public function getVersion()
     {
-        return "13.1.5";
+        return "13.1.6";
     }
 
     /**

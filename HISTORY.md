@@ -1,3 +1,10 @@
+## [13.1.6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.5...v13.1.6) (2026-04-28)
+
+
+### Bug Fixes
+
+* **CNR ResponseTranslator:** enhance placeholder replacement logic and add test for literal brace content preservation ([b7d2340](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b7d2340725fe42f018a3c5e8e04184327f90aefe))
+
 ## [13.1.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.4...v13.1.5) (2026-04-22)
 
 

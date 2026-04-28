@@ -651,6 +651,11 @@ Search.appendIndex(
             "summary": "Finds\u0020a\u0020match\u0020in\u0020the\u0020given\u0020text\u0020and\u0020performs\u0020replacements\u0020based\u0020on\u0020patterns\u0020and\u0020placeholders.",
             "url": "classes/CNIC-CNR-ResponseTranslator.html#method_findMatch"
         },                {
+            "fqsen": "\\CNIC\\CNR\\ResponseTranslator\u003A\u003AreplacePlaceholders\u0028\u0029",
+            "name": "replacePlaceholders",
+            "summary": "Replace\u0020known\u0020placeholders\u0020in\u0020DESCRIPTION\u0020while\u0020preserving\u0020literal\u0020brace\u0020content.",
+            "url": "classes/CNIC-CNR-ResponseTranslator.html#method_replacePlaceholders"
+        },                {
             "fqsen": "\\CNIC\\CNR\\ResponseTranslator\u003A\u003A\u0024descriptionRegexMap",
             "name": "descriptionRegexMap",
             "summary": "hidden\u0020class\u0020var\u0020of\u0020API\u0020description\u0020regex\u0020mappings\u0020for\u0020translation",
