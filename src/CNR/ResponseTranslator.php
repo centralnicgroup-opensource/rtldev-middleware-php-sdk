@@ -50,6 +50,7 @@ class ResponseTranslator
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
         // curl error handling
+        $httperror = "";
         $isHTTPError = substr($newraw, 0, 10) === "httperror|";
         if ($isHTTPError) {
             list($newraw, $httperror) = explode("|", $newraw);
@@ -106,7 +107,7 @@ class ResponseTranslator
             }
         }
 
-        return $newraw;
+        return self::replacePlaceholders($newraw, $ph);
     }
 
     /**
@@ -138,21 +139,56 @@ class ResponseTranslator
 
             // If $newraw matches $qregex, replace with "description=" . $val
             $tmp = preg_replace($qregex, "description=" . $val, $newraw);
-            if ($tmp !== null && strcmp($tmp, $newraw) !== 0) {
+            if ($tmp !== null && $tmp !== $newraw) {
                 $newraw = $tmp;
                 $return = true;
             }
         }
 
-        // Generic replacing of placeholder vars
-        if (preg_match("/\{[^}]+\}/", $newraw)) {
-            foreach ($ph as $key => $val) {
-                $newraw = preg_replace("/\{" . preg_quote($key, "/") . "\}/", $val, $newraw) ?? $newraw;
-            }
-            $newraw = preg_replace("/\{[^}]+\}/", "", $newraw) ?? $newraw;
-            $return = true;
-        }
-
         return $return;
+    }
+
+    /**
+     * Replace known placeholders in DESCRIPTION while preserving literal brace content.
+     *
+     * @param string $raw input response
+     * @param array<string> $ph placeholder key-value pairs
+     * @return string
+     */
+    protected static function replacePlaceholders($raw, $ph)
+    {
+        $tmp = preg_replace_callback(
+            '/^(description\s*=\s*)(.*)$/im',
+            static function ($matches) use ($ph) {
+                $description = $matches[2];
+
+                if (strpos($description, '{') === false) {
+                    return $matches[0];
+                }
+
+                $description = preg_replace_callback(
+                    '/\{([^}]+)\}/',
+                    static function ($tokenMatches) use ($ph) {
+                        $token = $tokenMatches[1];
+
+                        if (array_key_exists($token, $ph)) {
+                            return $ph[$token];
+                        }
+
+                        if (preg_match('/^[A-Z][A-Z0-9_]*$/', $token) === 1) {
+                            return '';
+                        }
+
+                        return $tokenMatches[0];
+                    },
+                    $description
+                );
+
+                return $matches[1] . ($description ?? $matches[2]);
+            },
+            $raw
+        );
+
+        return $tmp ?? $raw;
     }
 }

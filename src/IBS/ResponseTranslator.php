@@ -37,6 +37,7 @@ class ResponseTranslator
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
         // curl error handling
+        $httperror = "";
         $isHTTPError = substr($newraw, 0, 10) === "httperror|";
         if ($isHTTPError) {
             list($newraw, $httperror) = explode("|", $newraw);

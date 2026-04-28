@@ -27,6 +27,26 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test literal brace content is preserved in response data
+     */
+    public function testLiteralBraceContentIsPreserved(): void
+    {
+        $spfValue = "v=spf1 exists:%{i}.spf.hc461-90.ca.test.com -all";
+        $raw = RT::translate(
+            "[RESPONSE]\r\ncode=200\r\ndescription=" . $spfValue . "\r\nproperty[TXT]=" . $spfValue . "\r\nEOF\r\n",
+            []
+        );
+
+        $this->assertStringContainsString("description=" . $spfValue, $raw);
+        $this->assertStringContainsString("property[TXT]=" . $spfValue, $raw);
+
+        $literalValue = "Literal brace content {i} should stay";
+        $raw = RT::translate("[RESPONSE]\r\ncode=200\r\ndescription=" . $literalValue . "\r\nEOF\r\n", []);
+
+        $this->assertStringContainsString("description=" . $literalValue, $raw);
+    }
+
+    /**
      * Test isTemplateMatchHash method
      */
     public function testIsTemplateMatchHash(): void
