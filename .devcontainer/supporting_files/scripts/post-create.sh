@@ -91,16 +91,19 @@ setup_pnpm_global_packages() {
         export ZSH_CACHE_DIR="$HOME/.cache/oh-my-zsh"
         mkdir -p "$ZSH_CACHE_DIR"
 
+        # Export PNPM environment variables for current session
+        export PNPM_HOME="$HOME/.local/share/pnpm"
+        export PATH="$PNPM_HOME:$PATH"
+        mkdir -p "$PNPM_HOME"
+
         # Setup pnpm for current user
         if [[ ! -f ~/.zshrc ]] || ! grep -q "pnpm" ~/.zshrc; then
             execute_with_indent "pnpm setup" "Setting up pnpm for current user"
         fi
-
-        # Source zsh configuration with proper error handling
-        if [[ -f ~/.zshrc ]]; then
-            execute_with_indent "source ~/.zshrc" "Sourcing zsh configuration"
-        fi
     fi
+
+    # Ensure pnpm global-bin-dir matches PNPM_HOME (avoids PATH mismatch)
+    pnpm config set global-bin-dir "$PNPM_HOME" 2>/dev/null || true
 
     # Install global packages with error handling
     local packages=(
@@ -135,10 +138,10 @@ setup_php_nodejs_dependencies() {
 
     # Install Node.js dependencies
     if [[ -f "package.json" ]]; then
-        if execute_with_indent "pnpm install --frozen-lockfile --silent" "Installing Node.js dependencies with pnpm"; then
+        if execute_with_indent "pnpm install --frozen-lockfile --silent --force" "Installing Node.js dependencies with pnpm"; then
             log_success "Node.js dependencies installed"
         else
-            if execute_with_indent "pnpm install --no-frozen-lockfile --silent" "Installing Node.js dependencies without frozen lockfile"; then
+            if execute_with_indent "pnpm install --no-frozen-lockfile --silent --force" "Installing Node.js dependencies without frozen lockfile"; then
                 log_detail "Node.js dependencies installed without frozen lockfile"
             else
                 log_error "Failed to install Node.js dependencies"
@@ -156,7 +159,7 @@ setup_dev_symlinks() {
         return 0
     fi
     log_info "Setting up development symlinks..."
-    local files=(".gitconfig" ".zsh_history")
+    local files=(".zsh_history")
     for file in "${files[@]}"; do
         local source="/WSL_USER/${file}"
         local target="${HOME}/${file}"
