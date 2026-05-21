@@ -14,7 +14,6 @@
     "moniker",
     "domain",
     "ssl",
-    "domain",
     "isp",
     "cert",
     "dns",
@@ -43,12 +42,16 @@
     "squizlabs/php_codesniffer": "^4.0",
     "phpunit/phpunit": "^10.5",
     "phpstan/phpstan": "^2.0",
-    "phpstan/extension-installer": "^1.4",
-    "smeghead/php-class-diagram": "^1.5"
+    "phpstan/extension-installer": "^1.4"
   },
   "autoload": {
     "psr-4": {
       "CNIC\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CNICTEST\\": "tests/"
     }
   },
   "scripts": {
@@ -57,15 +60,11 @@
     "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "test": "XDEBUG_MODE=coverage phpunit",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon",
-    "generate-uml": "test ! -e plantuml.jar && wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar; ./vendor/bin/php-class-diagram --jig-diagram src/ >> ./docs/uml.puml; java -jar plantuml.jar ./docs/uml.puml -o uml_diagram"
+    "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test ! -e plantuml.jar && wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar; tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ >> ./docs/uml.puml; java -jar plantuml.jar ./docs/uml.puml -o uml_diagram"
   },
   "config": {
     "allow-plugins": {
       "phpstan/extension-installer": true
     }
-  },
-  "stability-flags": {
-  },
-  "platform-dev": {
   }
 }
