@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\IBS\SessionClient | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
+        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../doctum.js"></script>
+        <script async defer src="../../js/bootstrap.min.js"></script>
+        <script async defer src="../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_IBS_SessionClient" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                    <li><a href="../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/IBS.html">IBS</a></li><li class="backslash">\</li><li>SessionClient</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>SessionClient    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>SessionClient</strong>        extends <a href="../../CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/SessionClient.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>IBS API Client</p></p>                    </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_context">
+                                        protected                                        <abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$context</td>
+                <td class="last"><p>context data for the client</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_context">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_settings">
+                                                                                mixed[]
+                                                                                
+                                    </td>
+                <td>$settings</td>
+                <td class="last"><p>registrar api settings</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_settings">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_socketURL">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$socketURL</td>
+                <td class="last"><p>API connection url</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_socketURL">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_socketConfig">
+                                        protected                                        <a href="../../CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a>
+                                                                                
+                                    </td>
+                <td>$socketConfig</td>
+                <td class="last"><p>Object covering API connection data</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#property_socketConfig">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_debugMode">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$debugMode</td>
+                <td class="last"><p>activity flag for debug mode</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_debugMode">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_ua">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$ua</td>
+                <td class="last"><p>user agent</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_ua">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_curlopts">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$curlopts</td>
+                <td class="last"><p>additional curl options to use</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_curlopts">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_logger">
+                                        protected                                        <a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+                                                                                
+                                    </td>
+                <td>$logger</td>
+                <td class="last"><p>logger function name for debug mode</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_logger">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_isOTE">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$isOTE</td>
+                <td class="last"><p>is connected to OT&amp;E</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_isOTE">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_chandle">
+                                        protected                                        CurlHandle|null
+                                                                                
+                                    </td>
+                <td>$chandle</td>
+                <td class="last"><p>curl handle cache</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#property_chandle">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>()
+        
+                                            <p>Constructor</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setCustomLogger">setCustomLogger</a>(<a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
+        
+                                            <p><p>set custom logger to use instead of default one
+create your own class implementing \CNIC\LoggerInterface</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setCustomLogger">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setDefaultLogger">setDefaultLogger</a>()
+        
+                                            <p><p>Set default logger to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_setDefaultLogger">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_enableDebugMode">enableDebugMode</a>()
+        
+                                            <p><p>Enable Debug Output to STDOUT</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_enableDebugMode">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_disableDebugMode">disableDebugMode</a>()
+        
+                                            <p><p>Disable Debug Output</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_disableDebugMode">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPOSTData">getPOSTData</a>(string|<abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $cmd, bool $secured = false)
+        
+                                            <p><p>Serialize given command for POST request including connection configuration data</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_getPOSTData">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSession">getSession</a>()
+        
+                                            <p><p>Get the API Session ID that is currently set
+Note: not supported.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_getSession">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getURL">getURL</a>()
+        
+                                            <p><p>Get the API connection url that is currently set</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_getURL">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setUserAgent">setUserAgent</a>(string $str, string $rv, string[] $modules = [])
+        
+                                            <p><p>Set a custom user agent (for platforms that use this SDK)</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setUserAgent">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getUserAgent">getUserAgent</a>()
+        
+                                            <p><p>Get the user agent string</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_getUserAgent">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setProxy">setProxy</a>(string $proxy = &quot;&quot;)
+        
+                                            <p><p>Set proxy to use for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setProxy">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getProxy">getProxy</a>()
+        
+                                            <p><p>Get proxy configuration for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_getProxy">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setReferer">setReferer</a>(string $referer = &quot;&quot;)
+        
+                                            <p><p>Set Referer to use for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setReferer">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getReferer">getReferer</a>()
+        
+                                            <p><p>Get Referer configuration for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_getReferer">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getVersion">getVersion</a>()
+        
+                                            <p><p>Get the current module version</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_getVersion">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setURL">setURL</a>(string $value)
+        
+                                            <p><p>Set another connection url to be used for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setURL">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setSession">setSession</a>(string $value = &quot;&quot;)
+        
+                                            <p><p>Set an API session id to be used for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_setSession">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setRemoteIPAddress">setRemoteIPAddress</a>(string $value = &quot;&quot;)
+        
+                                            <p><p>Set an Remote IP Address to be used for API communication
+To be used in case you have an active ip filter setting.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setRemoteIPAddress">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setCredentials">setCredentials</a>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
+        
+                                            <p><p>Set Credentials to be used for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setCredentials">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setRoleCredentials">setRoleCredentials</a>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
+        
+                                            <p><p>Set Credentials to be used for API communication
+Note: not supported.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_setRoleCredentials">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed[]
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_IDNConvert">IDNConvert</a>(string[] $domains)
+        
+                                            <p><p>Convert domain names to idn + punycode if necessary</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_IDNConvert">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string[]
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_autoIDNConvert">autoIDNConvert</a>(string[] $cmd)
+        
+                                            <p><p>Auto convert API command parameters to punycode, if necessary.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_autoIDNConvert">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_request">request</a>(array $cmd = [], string $path = &quot;&quot;)
+        
+                                            <p><p>Perform API request using the given command</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_request">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_requestNextResponsePage">requestNextResponsePage</a>(<a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $rr)
+        
+                                            <p><p>Request the next page of list entries for the current list query
+Useful for tables</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_requestNextResponsePage">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>[]
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_requestAllResponsePages">requestAllResponsePages</a>(<abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $cmd)
+        
+                                            <p><p>Request all pages/entries for the given query command</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_requestAllResponsePages">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_close">close</a>()
+        
+                                            <p><p>Close all curl handles</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_close">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setUserView">setUserView</a>(string $uid = &quot;&quot;)
+        
+                                            <p><p>Set a data view to a given subuser
+Note: not supported.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_setUserView">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup</a>()
+        
+                                            <p><p>Activate High Performance Setup
+Note: not supported.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_useHighPerformanceConnectionSetup">
+<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useOTESystem">useOTESystem</a>()
+        
+                                            <p><p>Set OT&amp;E System for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_useOTESystem">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useLIVESystem">useLIVESystem</a>()
+        
+                                            <p><p>Set LIVE System for API communication (this is the default setting)</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_useLIVESystem">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setContext">setContext</a>(array $context)
+        
+                                            <p><p>Set context data for the client (to be used in a custom logger to access additional data at logging time again)
+The use of this context data is optional and has no impact on the SDK behaviour itself.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Client.html#method_setContext">
+<abbr title="CNIC\CNR\Client">Client</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_login">login</a>()
+        
+                                            <p><p>Perform API login to start session-based communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logout">logout</a>()
+        
+                                            <p><p>Perform API logout to close API session in use</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_saveSession">saveSession</a>(<abbr title="CNIC\IBS\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $session)
+        
+                                            <p><p>Apply session data (session id, login) to given php session object</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    $this
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_reuseSession">reuseSession</a>(<abbr title="CNIC\IBS\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $session)
+        
+                                            <p><p>Use existing configuration out of php session object
+to rebuild and reuse connection settings</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/SessionClient.php#L23">at line 23</a></div>
+        <code>                    
+    <strong>__construct</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p>Constructor</p>                        
+        </div>
+        <div class="tags">
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setCustomLogger">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setCustomLogger">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L111">at line 111</a></div>
+        <code>                    $this
+    <strong>setCustomLogger</strong>(<a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>set custom logger to use instead of default one
+create your own class implementing \CNIC\LoggerInterface</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></td>
+                <td>$customLogger</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setDefaultLogger">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setDefaultLogger">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L208">at line 208</a></div>
+        <code>                    $this
+    <strong>setDefaultLogger</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set default logger to use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_enableDebugMode">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_enableDebugMode">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L131">at line 131</a></div>
+        <code>                    $this
+    <strong>enableDebugMode</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Enable Debug Output to STDOUT</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_disableDebugMode">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_disableDebugMode">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L141">at line 141</a></div>
+        <code>                    $this
+    <strong>disableDebugMode</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Disable Debug Output</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPOSTData">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_getPOSTData">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L58">at line 58</a></div>
+        <code>                    string
+    <strong>getPOSTData</strong>(string|<abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $cmd, bool $secured = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Serialize given command for POST request including connection configuration data</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr></td>
+                <td>$cmd</td>
+                <td><p>API command to encode</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$secured</td>
+                <td><p>secure password (when used for output)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSession">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_getSession">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L69">at line 69</a></div>
+        <code>                    string|null
+    <strong>getSession</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the API Session ID that is currently set
+Note: not supported.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getURL">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_getURL">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L178">at line 178</a></div>
+        <code>                    string
+    <strong>getURL</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the API connection url that is currently set</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setUserAgent">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setUserAgent">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L190">at line 190</a></div>
+        <code>                    $this
+    <strong>setUserAgent</strong>(string $str, string $rv, string[] $modules = [])
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set a custom user agent (for platforms that use this SDK)</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$str</td>
+                <td><p>user agent label</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$rv</td>
+                <td><p>user agent revision</p></td>
+            </tr>
+                    <tr>
+                <td>string[]</td>
+                <td>$modules</td>
+                <td><p>further modules to add to user agent string, format: [&quot;<module1>/<version>&quot;, &quot;<module2>/<version>&quot;, ... ]</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserAgent">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_getUserAgent">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L202">at line 202</a></div>
+        <code>                    string
+    <strong>getUserAgent</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the user agent string</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setProxy">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setProxy">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L215">at line 215</a></div>
+        <code>                    $this
+    <strong>setProxy</strong>(string $proxy = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set proxy to use for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$proxy</td>
+                <td><p>proxy to use (optional, for reset)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getProxy">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_getProxy">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L229">at line 229</a></div>
+        <code>                    string|null
+    <strong>getProxy</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get proxy configuration for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setReferer">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setReferer">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L242">at line 242</a></div>
+        <code>                    $this
+    <strong>setReferer</strong>(string $referer = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set Referer to use for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$referer</td>
+                <td><p>Referer (optional, for reset)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReferer">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_getReferer">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L256">at line 256</a></div>
+        <code>                    string|null
+    <strong>getReferer</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Referer configuration for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getVersion">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_getVersion">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L268">at line 268</a></div>
+        <code>                    string
+    <strong>getVersion</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the current module version</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setURL">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setURL">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L278">at line 278</a></div>
+        <code>                    $this
+    <strong>setURL</strong>(string $value)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set another connection url to be used for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>API connection url to set</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSession">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setSession">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L80">at line 80</a></div>
+        <code>                    $this
+    <strong>setSession</strong>(string $value = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set an API session id to be used for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>API session id (optional, for reset)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setRemoteIPAddress">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setRemoteIPAddress">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L302">at line 302</a></div>
+        <code>                    $this
+    <strong>setRemoteIPAddress</strong>(string $value = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set an Remote IP Address to be used for API communication
+To be used in case you have an active ip filter setting.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>Remote IP Address (optional, for reset)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setCredentials">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setCredentials">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L317">at line 317</a></div>
+        <code>                    $this
+    <strong>setCredentials</strong>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set Credentials to be used for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uid</td>
+                <td><p>account name (optional, for reset)</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$pw</td>
+                <td><p>account password (optional, for reset)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setRoleCredentials">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setRoleCredentials">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L94">at line 94</a></div>
+        <code>                    $this
+    <strong>setRoleCredentials</strong>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set Credentials to be used for API communication
+Note: not supported.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uid</td>
+                <td><p>account name (optional, for reset)</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$role</td>
+                <td><p>role user id (optional, for reset)</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$pw</td>
+                <td><p>role user password (optional, for reset)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_IDNConvert">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_IDNConvert">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L345">at line 345</a></div>
+        <code>                    mixed[]
+    <strong>IDNConvert</strong>(string[] $domains)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Convert domain names to idn + punycode if necessary</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string[]</td>
+                <td>$domains</td>
+                <td><p>list of domain names (or tlds)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed[]</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_autoIDNConvert">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_autoIDNConvert">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L105">at line 105</a></div>
+        <code>            protected        string[]
+    <strong>autoIDNConvert</strong>(string[] $cmd)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Auto convert API command parameters to punycode, if necessary.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string[]</td>
+                <td>$cmd</td>
+                <td><p>API command</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string[]</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_request">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_request">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L118">at line 118</a></div>
+        <code>                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>
+    <strong>request</strong>(array $cmd = [], string $path = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Perform API request using the given command</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command to request (optional for session login)</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td><p>Path to the API endpoint</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_requestNextResponsePage">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_requestNextResponsePage">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L469">at line 469</a></div>
+        <code>                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>|null
+    <strong>requestNextResponsePage</strong>(<a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $rr)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Request the next page of list entries for the current list query
+Useful for tables</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></td>
+                <td>$rr</td>
+                <td><p>API Response of current page</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_requestAllResponsePages">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_requestAllResponsePages">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L496">at line 496</a></div>
+        <code>                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>[]
+    <strong>requestAllResponsePages</strong>(<abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $cmd)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Request all pages/entries for the given query command</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr></td>
+                <td>$cmd</td>
+                <td><p>API list command to use</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>[]</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_close">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_close">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L513">at line 513</a></div>
+        <code>                    void
+    <strong>close</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Close all curl handles</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setUserView">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setUserView">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L187">at line 187</a></div>
+        <code>                    $this
+    <strong>setUserView</strong>(string $uid = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set a data view to a given subuser
+Note: not supported.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uid</td>
+                <td><p>subuser account name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useHighPerformanceConnectionSetup">
+        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_useHighPerformanceConnectionSetup">
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/Client.php#L198">at line 198</a></div>
+        <code>                    $this
+    <strong>useHighPerformanceConnectionSetup</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Activate High Performance Setup
+Note: not supported.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useOTESystem">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_useOTESystem">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L551">at line 551</a></div>
+        <code>                    $this
+    <strong>useOTESystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set OT&amp;E System for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useLIVESystem">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_useLIVESystem">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L561">at line 561</a></div>
+        <code>                    $this
+    <strong>useLIVESystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set LIVE System for API communication (this is the default setting)</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setContext">
+        <div class="location">in <a href="../../CNIC/CNR/Client.html#method_setContext">
+<abbr title="CNIC\CNR\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/CNR/Client.php#L573">at line 573</a></div>
+        <code>                    $this
+    <strong>setContext</strong>(array $context)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set context data for the client (to be used in a custom logger to access additional data at logging time again)
+The use of this context data is optional and has no impact on the SDK behaviour itself.</p></p>                <p><p>Will be forwarded either to the logger or to the Response object</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$context</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_login">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/SessionClient.php#L39">at line 39</a></div>
+        <code>                    <a href="../../CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a>
+    <strong>login</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Perform API login to start session-based communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_logout">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/SessionClient.php#L49">at line 49</a></div>
+        <code>                    <a href="../../CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a>
+    <strong>logout</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Perform API logout to close API session in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_saveSession">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/SessionClient.php#L60">at line 60</a></div>
+        <code>                    $this
+    <strong>saveSession</strong>(<abbr title="CNIC\IBS\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $session)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Apply session data (session id, login) to given php session object</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="CNIC\IBS\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr></td>
+                <td>$session</td>
+                <td><p>php session instance ($_SESSION)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reuseSession">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/IBS/SessionClient.php#L72">at line 72</a></div>
+        <code>                    $this
+    <strong>reuseSession</strong>(<abbr title="CNIC\IBS\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr> $session)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Use existing configuration out of php session object
+to rebuild and reuse connection settings</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="CNIC\IBS\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr></td>
+                <td>$session</td>
+                <td><p>php session object ($_SESSION)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>$this</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

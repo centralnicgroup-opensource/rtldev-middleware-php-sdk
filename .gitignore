@@ -8,8 +8,6 @@ build/api-cache
 .phpunit.cache
 php-sdk.phar
 php-sdk.phar.gz
-phpDocumentor.phar
-phpdoc.phar
 reports
 package-lock.json
 .pnpm-store
@@ -23,6 +21,3 @@ env.sh
 plantuml.jar
 uml.puml
 tools/
-
-# Ignore everything in docs
-docs
