@@ -192,8 +192,9 @@ main() {
     setup_pnpm_global_packages
     # change github hooks directory to run scripts like pre-commit/pre-push
     git config core.hooksPath $OLDPWD/.github/hooks
-    # use gh CLI for git credentials (avoids VS Code credential helper conflicts)
-    git config --local credential.helper '!gh auth git-credential'
+    # use gh CLI for git credentials (clear system-level VS Code helper first)
+    git config --local --replace-all credential.helper ''
+    git config --local --add credential.helper '!gh auth git-credential'
 
     # install composer & nodejs deps
     setup_php_nodejs_dependencies
