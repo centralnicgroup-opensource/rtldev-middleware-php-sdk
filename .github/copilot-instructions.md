@@ -105,6 +105,7 @@ composer phpstan       # Static analysis
 
 ## Do NOT
 
+- Read, display, or expose the contents of `env.sh` — it contains secrets
 - Add dependencies without explicit request — this is a lightweight SDK
 - Create custom exception classes — use `\Exception` directly
 - Use mocking frameworks (Mockery, Prophecy) — use ResponseTemplateManager
