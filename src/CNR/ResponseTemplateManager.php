@@ -14,6 +14,7 @@ use CNIC\CNR\ResponseParser as RP;
 /**
  * CNR ResponseTemplateManager
  *
+ * @psalm-api
  * @package CNIC\CNR
  * @final
  */

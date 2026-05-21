@@ -12,8 +12,8 @@ namespace CNIC;
 /**
  * Common Logger Interface
  *
+ * @psalm-api
  * @package CNIC
- * @method void log(string $post, \CNIC\CNR\Response $r, string|null $error) Output/log given data
  */
 interface LoggerInterface
 {

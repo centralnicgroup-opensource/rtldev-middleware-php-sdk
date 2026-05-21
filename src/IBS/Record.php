@@ -12,6 +12,7 @@ namespace CNIC\IBS;
 /**
  * IBS Record
  *
+ * @psalm-api
  * @package CNIC\IBS
  */
 class Record extends \CNIC\CNR\Record // implements \CNIC\RecordInterface

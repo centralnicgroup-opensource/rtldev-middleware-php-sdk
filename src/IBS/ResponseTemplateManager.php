@@ -14,6 +14,7 @@ use CNIC\IBS\ResponseParser as RP;
 /**
  * IBS ResponseTemplateManager
  *
+ * @psalm-api
  * @package CNIC\IBS
  * @final
  */

@@ -51,7 +51,7 @@ class Client extends \CNIC\CNR\Client
     /**
      * Serialize given command for POST request including connection configuration data
      *
-     * @param array<int|string,mixed> $cmd API command to encode
+     * @param array<string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
      * @return string
      */

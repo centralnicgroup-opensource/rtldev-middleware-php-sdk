@@ -12,45 +12,8 @@ namespace CNIC;
 /**
  * Common Response Interface
  *
+ * @psalm-api
  * @package CNIC
- * @method int getCode() Get API response code
- * @method string getDescription() Get API response description
- * @method string getRequestURL() Get Request URL
- * @method string getPlain() Get Plain API response
- * @method float getQueuetime() Get Queuetime of API response
- * @method array<string> getHash() Get API response as Hash
- * @method float getRuntime() Get Runtime of API response
- * @method bool isError() Check if current API response represents an error case
- * @method bool isSuccess() Check if current API response represents a success case
- * @method bool isTmpError() Check if current API response represents a temporary error case
- * @method bool isPending() Check if current operation is returned as pending
- * @method ResponseInterface addColumn(string $key, array<string> $data) Add a column to the column list
- * @method ResponseInterface addRecord(array<string> $h) Add a record to the record list
- * @method ColumnInterface|null getColumn(string $key) Get column by column name
- * @method string|null getColumnIndex(string $colkey, int $index) Get Data by Column Name and Index
- * @method array<string> getColumnKeys() Get Column Names
- * @method ColumnInterface[] getColumns() Get List of Columns
- * @method array<string> getCommand() Get Command used in this request
- * @method string getCommandPlain() Get Command used in this request in plain text format
- * @method int|null getCurrentPageNumber() Get Page Number of current List Query
- * @method RecordInterface|null getCurrentRecord() Get Record of current record index
- * @method int|null getFirstRecordIndex() Get Index of first row in this response
- * @method int|null getLastRecordIndex() Get last record index of the current list query
- * @method array<string> getListHash() Get Response as List Hash including useful meta data for tables
- * @method RecordInterface|null getNextRecord() Get next record in record list
- * @method int|null getNextPageNumber() Get Page Number of next list query
- * @method int getNumberOfPages() Get the number of pages available for this list query
- * @method array<string> getPagination() Get object containing all paging data
- * @method int|null getPreviousPageNumber() Get Page Number of previous list query
- * @method RecordInterface|null getPreviousRecord() Get previous record in record list
- * @method RecordInterface|null getRecord(int $idx) Get Record at given index
- * @method RecordInterface[] getRecords() Get all Records
- * @method int getRecordsCount() Get count of rows in this response
- * @method int getRecordsTotalCount() Get total count of records available for the list query
- * @method int getRecordsLimitation() Get limit(ation) setting of the current list query
- * @method bool hasNextPage() Check if this list query has a next page
- * @method bool hasPreviousPage() Check if this list query has a previous page
- * @method ResponseInterface rewindRecordList() Reset index in record list back to zero
  */
 interface ResponseInterface
 {

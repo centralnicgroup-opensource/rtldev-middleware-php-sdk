@@ -18,6 +18,7 @@ use CNIC\CNR\Record;
 /**
  * IBS Response
  *
+ * @psalm-api
  * @package CNIC\IBS
  */
 class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface

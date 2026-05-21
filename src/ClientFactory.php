@@ -5,6 +5,7 @@ namespace CNIC;
 /**
  * ClientFactory
  *
+ * @psalm-api
  * @package CNIC
  */
 class ClientFactory

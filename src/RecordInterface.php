@@ -12,10 +12,8 @@ namespace CNIC;
 /**
  * Common Record Interface
  *
+ * @psalm-api
  * @package CNIC
- * @method __construct(array<string> $data) Constructor
- * @method array<string> getData() Get row data
- * @method string|null getDataByKey(string $key) Get row data for given column
  */
 interface RecordInterface
 {

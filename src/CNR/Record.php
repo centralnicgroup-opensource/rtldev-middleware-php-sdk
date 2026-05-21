@@ -12,6 +12,7 @@ namespace CNIC\CNR;
 /**
  * CNR Record
  *
+ * @psalm-api
  * @package CNIC\CNR
  */
 class Record // implements \CNIC\RecordInterface

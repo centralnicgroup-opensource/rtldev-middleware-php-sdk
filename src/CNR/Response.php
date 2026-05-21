@@ -16,6 +16,7 @@ use CNIC\CommandFormatter;
 /**
  * CNR Response
  *
+ * @psalm-api
  * @package CNIC\CNR
  */
 class Response // implements \CNIC\ResponseInterface
