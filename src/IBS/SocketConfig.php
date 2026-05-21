@@ -58,6 +58,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      * @param bool $secured if password has to be returned "hidden"
      * @return array<string,string>
      */
+    #[\Override]
     protected function getPOSTDataParams($command, $secured)
     {
         $params = $command; // here $command is just an array of request parameters
@@ -79,6 +80,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      * @param bool $secured if password has to be returned "hidden"
      * @return string
      */
+    #[\Override]
     public function getPOSTData($command = [], $secured = false)
     {
         $params = $this->getPOSTDataParams($command, $secured);
@@ -90,6 +92,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      * @param string $value account name
      * @return $this
      */
+    #[\Override]
     public function setLogin($value)
     {
         $this->login = $value;
@@ -100,6 +103,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      * Get current login (including role)
      * @return string
      */
+    #[\Override]
     public function getLogin(): string
     {
         return $this->login;
@@ -110,6 +114,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      * @param string $value account password
      * @return $this
      */
+    #[\Override]
     public function setPassword($value)
     {
         $this->pw = $value;
@@ -121,6 +126,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      * @param string $value remote ip address
      * @return $this
      */
+    #[\Override]
     public function setRemoteAddress($value)
     {
         $this->remoteaddr = $value;
