@@ -88,6 +88,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get API response code
      * @return int
      */
+    #[\Override]
     public function getCode()
     {
         foreach (["code", "product_0_code"] as $key) {
@@ -111,6 +112,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get API response description
      * @return string
      */
+    #[\Override]
     public function getDescription()
     {
         return $this->hash["message"] ?? $this->hash["product_0_message"] ?? "Command completed successfully";
@@ -120,6 +122,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Plain API response
      * @return string
      */
+    #[\Override]
     public function getPlain()
     {
         return $this->raw;
@@ -129,6 +132,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Queuetime of API response
      * @throws \Exception
      */
+    #[\Override]
     public function getQueuetime()
     {
         throw new \Exception("Not supported");
@@ -138,6 +142,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get API response as Hash
      * @return array<string,mixed>
      */
+    #[\Override]
     public function getHash()
     {
         return $this->hash;
@@ -147,6 +152,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Runtime of API response
      * @throws \Exception
      */
+    #[\Override]
     public function getRuntime()
     {
         throw new \Exception("Not supported");
@@ -157,6 +163,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * API response code is an 5xx code
      * @return bool
      */
+    #[\Override]
     public function isError()
     {
         return ($this->hash["status"] === "FAILURE");
@@ -167,6 +174,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * API response code is an 2xx code
      * @return bool
      */
+    #[\Override]
     public function isSuccess()
     {
         return $this->hash["status"] === "SUCCESS";
@@ -176,6 +184,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Check if current API response represents a temporary error case
      * @throws \Exception
      */
+    #[\Override]
     public function isTmpError()
     {
         throw new \Exception("Not supported");
@@ -185,6 +194,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Check if current operation is returned as pending
      * @throws \Exception
      */
+    #[\Override]
     public function isPending()
     {
         throw new \Exception("Not supported");
@@ -196,6 +206,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * @param string[] $data array of column data
      * @return $this
      */
+    #[\Override]
     public function addColumn($key, $data)
     {
         $col = new Column($key, $data);
@@ -209,6 +220,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * @param array<string> $h row hash data
      * @return $this
      */
+    #[\Override]
     public function addRecord($h)
     {
         $this->records[] = new Record($h);
@@ -220,6 +232,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * @param string $key column name
      * @return Column|null
      */
+    #[\Override]
     public function getColumn($key)
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
@@ -231,6 +244,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * @param int $index column data index
      * @return string|null
      */
+    #[\Override]
     public function getColumnIndex($colkey, $index)
     {
         $col = $this->getColumn($colkey);
@@ -242,6 +256,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * @param bool $filterPaginationKeys strip pagination columns
      * @return string[]
      */
+    #[\Override]
     public function getColumnKeys($filterPaginationKeys = false)
     {
         if ($filterPaginationKeys) {
@@ -256,6 +271,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get List of Columns
      * @return Column[]
      */
+    #[\Override]
     public function getColumns()
     {
         return $this->columns;
@@ -265,6 +281,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Command used in this request
      * @return array<string>
      */
+    #[\Override]
     public function getCommand()
     {
         return CommandFormatter::getSortedCommand($this->command);
@@ -274,6 +291,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Command used in this request in plain text format
      * @return string
      */
+    #[\Override]
     public function getCommandPlain()
     {
         return CommandFormatter::formatCommand($this->getCommand());
@@ -283,6 +301,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Page Number of current List Query
      * @return int|null
      */
+    #[\Override]
     public function getCurrentPageNumber()
     {
         return 1;
@@ -292,6 +311,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Record of current record index
      * @return Record|null
      */
+    #[\Override]
     public function getCurrentRecord()
     {
         return $this->hasCurrentRecord() ? $this->records[$this->recordIndex] : null;
@@ -301,6 +321,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Index of first row in this response
      * @return int|null
      */
+    #[\Override]
     public function getFirstRecordIndex()
     {
         return 0;
@@ -310,6 +331,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get last record index of the current list query
      * @return int|null
      */
+    #[\Override]
     public function getLastRecordIndex()
     {
         static $last = null;
@@ -330,6 +352,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Response as List Hash including useful meta data for tables
      * @throws \Exception
      */
+    #[\Override]
     public function getListHash()
     {
         throw new \Exception("Not implemented.");
@@ -339,6 +362,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get next record in record list
      * @return Record|null
      */
+    #[\Override]
     public function getNextRecord()
     {
         if ($this->hasNextRecord()) {
@@ -351,6 +375,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Page Number of next list query
      * @return int|null
      */
+    #[\Override]
     public function getNextPageNumber()
     {
         $cp = $this->getCurrentPageNumber();
@@ -366,6 +391,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get the number of pages available for this list query
      * @return int
      */
+    #[\Override]
     public function getNumberOfPages()
     {
         $t = $this->getRecordsTotalCount();
@@ -380,6 +406,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get object containing all paging data
      * @return array<string,int|null>
      */
+    #[\Override]
     public function getPagination()
     {
         return [
@@ -399,6 +426,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get Page Number of previous list query
      * @return int|null
      */
+    #[\Override]
     public function getPreviousPageNumber()
     {
         $cp = $this->getCurrentPageNumber();
@@ -416,6 +444,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get previous record in record list
      * @return Record|null
      */
+    #[\Override]
     public function getPreviousRecord()
     {
         if ($this->hasPreviousRecord()) {
@@ -429,6 +458,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * @param int $idx record index
      * @return Record|null
      */
+    #[\Override]
     public function getRecord($idx)
     {
         if ($idx >= 0 && $this->getRecordsCount() > $idx) {
@@ -441,6 +471,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get all Records
      * @return Record[]
      */
+    #[\Override]
     public function getRecords()
     {
         return $this->records;
@@ -450,6 +481,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get count of rows in this response
      * @return int
      */
+    #[\Override]
     public function getRecordsCount()
     {
         return count($this->records);
@@ -459,6 +491,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Get total count of records available for the list query
      * @return int
      */
+    #[\Override]
     public function getRecordsTotalCount()
     {
         return $this->getRecordsCount();
@@ -469,6 +502,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * This is the count of requested rows
      * @return int
      */
+    #[\Override]
     public function getRecordsLimitation()
     {
         return $this->getRecordsCount();
@@ -478,6 +512,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Check if this list query has a next page
      * @return bool
      */
+    #[\Override]
     public function hasNextPage()
     {
         return false;
@@ -487,6 +522,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Check if this list query has a previous page
      * @return bool
      */
+    #[\Override]
     public function hasPreviousPage()
     {
         return false;
@@ -496,6 +532,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      * Reset index in record list back to zero
      * @return $this
      */
+    #[\Override]
     public function rewindRecordList()
     {
         $this->recordIndex = 0;

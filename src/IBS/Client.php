@@ -55,6 +55,7 @@ class Client extends \CNIC\CNR\Client
      * @param bool $secured secure password (when used for output)
      * @return string
      */
+    #[\Override]
     public function getPOSTData($cmd, $secured = false)
     {
         return $this->socketConfig->getPOSTData($cmd, $secured);
@@ -66,6 +67,7 @@ class Client extends \CNIC\CNR\Client
      *
      * @throws \Exception
      */
+    #[\Override]
     public function getSession()
     {
         throw new \Exception("Feature `API Session` Not supported.");
@@ -77,6 +79,7 @@ class Client extends \CNIC\CNR\Client
      * @param string $value API session id (optional, for reset)
      * @throws \Exception
      */
+    #[\Override]
     public function setSession($value = "")
     {
         throw new \Exception("Feature `API Session` not supported.");
@@ -91,6 +94,7 @@ class Client extends \CNIC\CNR\Client
      * @param string $pw role user password (optional, for reset)
      * @throws \Exception
      */
+    #[\Override]
     public function setRoleCredentials($uid = "", $role = "", $pw = "")
     {
         throw new \Exception("Feature `User Role` not supported.");
@@ -102,6 +106,7 @@ class Client extends \CNIC\CNR\Client
      * @param array<string> $cmd API command
      * @return array<string>
      */
+    #[\Override]
     protected function autoIDNConvert($cmd)
     {
         // no IDN conversion needed
@@ -115,6 +120,7 @@ class Client extends \CNIC\CNR\Client
      * @param string $path Path to the API endpoint
      * @return Response
      */
+    #[\Override]
     public function request(array $cmd = [], $path = "")
     {
         // flatten nested api command bulk parameters and sort them
@@ -184,6 +190,7 @@ class Client extends \CNIC\CNR\Client
      * @param string $uid subuser account name
      * @throws \Exception
      */
+    #[\Override]
     public function setUserView($uid = "")
     {
         throw new \Exception("Feature `User View / Subresellersystem` not supported.");
@@ -195,6 +202,7 @@ class Client extends \CNIC\CNR\Client
      *
      * @throws \Exception
      */
+    #[\Override]
     public function useHighPerformanceConnectionSetup()
     {
         throw new \Exception("Feature `High Performance Connection Setup` not supported.");
@@ -205,6 +213,7 @@ class Client extends \CNIC\CNR\Client
      *
      * @return $this
      */
+    #[\Override]
     public function setDefaultLogger()
     {
         $this->logger = new L();

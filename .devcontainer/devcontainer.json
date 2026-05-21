@@ -1,9 +1,15 @@
 {
 	"name": "dstack-phpsdk",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "phpsdk",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile",
+		"args": {
+			"PHP_VERSION": "8.3"
+		}
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/rtldev-middleware-php-sdk,type=bind,consistency=cached",
 	"workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
-	"shutdownAction": "stopCompose",
+	"shutdownAction": "stopContainer",
 	"customizations": {
 	  "vscode": {
 		"extensions": [

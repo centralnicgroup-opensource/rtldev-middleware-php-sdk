@@ -23,6 +23,7 @@ class Logger implements \CNIC\LoggerInterface
      * @param string|null $error error message (optional)
      * @return void
      */
+    #[\Override]
     public function log($post, \CNIC\CNR\Response $r, ?string $error = null): void
     {
          echo implode("\n", [
