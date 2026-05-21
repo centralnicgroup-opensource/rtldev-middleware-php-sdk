@@ -113,12 +113,6 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetPostDataStr(): void
-    {
-        $enc = self::$cl->getPOSTData("COMMAND=StatusAccount");
-        $this->assertEquals("s_command=COMMAND%3DStatusAccount", $enc);
-    }
-
     public function testGetPostDataNull(): void
     {
         $enc = self::$cl->getPOSTData([

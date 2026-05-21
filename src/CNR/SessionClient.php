@@ -12,6 +12,7 @@ namespace CNIC\CNR;
 /**
  * CNR Session API Client
  *
+ * @psalm-api
  * @package CNIC\CNR
  */
 class SessionClient extends Client

@@ -12,6 +12,7 @@ namespace MYCUSTOMNAMESPACE;
 /**
  * MYCUSTOMNAMESPACE Logger
  *
+ * @psalm-api
  * @package MYCUSTOMNAMESPACE
  */
 class Logger implements \CNIC\LoggerInterface

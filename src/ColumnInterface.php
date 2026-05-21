@@ -12,11 +12,8 @@ namespace CNIC;
 /**
  * Common Column Interface
  *
+ * @psalm-api
  * @package CNIC
- * @method __construct(string $key, array<string> $data) Constructor
- * @method string getKey() Get column name
- * @method string[] getData() Get column data
- * @method string|null getDataByIndex(int $idx) Get column data at given index
  */
 interface ColumnInterface
 {

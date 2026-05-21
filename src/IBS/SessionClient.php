@@ -12,6 +12,7 @@ namespace CNIC\IBS;
 /**
  * IBS API Client
  *
+ * @psalm-api
  * @package CNIC\IBS
  */
 class SessionClient extends \CNIC\IBS\Client

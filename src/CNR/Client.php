@@ -18,6 +18,7 @@ use CNIC\IDNA\Factory\ConverterFactory;
 /**
  * CNR API Client
  *
+ * @psalm-api
  * @package CNIC\CNR
  */
 class Client
@@ -146,19 +147,13 @@ class Client
 
     /**
      * Serialize given command for POST request including connection configuration data
-     * @param string|array<string,mixed> $cmd API command to encode
+     * @param array<string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
      * @return string
      */
     public function getPOSTData($cmd, $secured = false)
     {
-        if (is_string($cmd)) {
-            $command = [];
-            parse_str($cmd, $command);
-        } else {
-            $command = $cmd;
-        }
-        return $this->socketConfig->getPOSTData($command, $secured);
+        return $this->socketConfig->getPOSTData($cmd, $secured);
     }
 
     /**

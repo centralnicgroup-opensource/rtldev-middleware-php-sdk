@@ -12,6 +12,7 @@ namespace CNIC\CNR;
 /**
  * CNR Column
  *
+ * @psalm-api
  * @package CNIC\CNR
  */
 class Column // implements \CNIC\ColumnInterface
