@@ -14,7 +14,7 @@ namespace CNIC\CNR;
  *
  * @package CNIC\CNR
  */
-class Logger implements \CNIC\LoggerInterface
+final class Logger implements \CNIC\LoggerInterface
 {
     /**
      * output/log given data
@@ -29,7 +29,7 @@ class Logger implements \CNIC\LoggerInterface
          echo implode("\n", [
             print_r($r->getCommand(), true),
             $post,
-            $error ? "HTTP communication failed: " . $error : "",
+            ($error !== null && $error !== '') ? "HTTP communication failed: " . $error : "",
             $r->getPlain()
          ]);
     }

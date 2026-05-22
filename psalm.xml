@@ -14,4 +14,12 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <LessSpecificReturnStatement>
+            <errorLevel type="suppress">
+                <directory name="src" />
+            </errorLevel>
+        </LessSpecificReturnStatement>
+
+    </issueHandlers>
 </psalm>

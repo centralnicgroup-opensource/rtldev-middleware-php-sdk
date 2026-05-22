@@ -16,7 +16,7 @@ use CNIC\CNR\ResponseTemplateManager as RTM;
  *
  * @package CNIC\CNR
  */
-class ResponseTranslator
+final class ResponseTranslator
 {
     /**
      * hidden class var of API description regex mappings for translation
@@ -87,7 +87,7 @@ class ResponseTranslator
                 // Iterate through each temporary pattern in $val
                 foreach ($val as $tmpRegex => $tmpVal) {
                     // Attempt to find a match using the temporary pattern
-                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal, $cmd, $ph);
+                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal, $cmd);
 
                     // If a match is found, exit the inner loop
                     if ($data) {
@@ -98,7 +98,7 @@ class ResponseTranslator
                 // Escape the pattern and attempt to find a match
                 // for the given pattern ($regex)
                 $escapedRegex = preg_quote($regex, "/");
-                $data = self::findMatch($escapedRegex, $newraw, $val, $cmd, $ph);
+                $data = self::findMatch($escapedRegex, $newraw, $val, $cmd);
             }
 
             // If a match is found, exit the outer loop
@@ -120,10 +120,9 @@ class ResponseTranslator
      * @param string $newraw The input text where the match will be searched for and replacements applied.
      * @param string $val The value to be used in replacement if a match is found.
      * @param array<string> $cmd The command data containing replacements, if applicable.
-     * @param array<string> $ph An array of placeholder values for further replacements.
      * @return bool
      */
-    protected static function findMatch($regex, &$newraw, $val, $cmd, $ph)
+    private static function findMatch($regex, &$newraw, $val, $cmd)
     {
         // match the response for given description
         // NOTE: we match if the description starts with the given description

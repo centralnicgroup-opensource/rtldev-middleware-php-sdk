@@ -26,6 +26,8 @@ final class ResponseParser
     {
         /** @var array<string,mixed> $hash */
         $hash = [];
+        /** @var array<string, list<string>> $properties */
+        $properties = [];
         $tmp = preg_replace("/\r\n/", "\n", $raw);
         if (is_null($tmp)) {
             $tmp = $raw;
@@ -35,25 +37,25 @@ final class ResponseParser
             if (preg_match("/^([^\=]*[^\t\= ])[\t ]*=[\t ]*(.*)$/", $item, $m)) {
                 $attr = $m[1];
                 $value = $m[2];
-                $value = preg_replace("/[\t ]*$/", "", $value);
+                $value = preg_replace("/[\t ]*$/", "", $value) ?? $value;
                 if (preg_match("/^property\[([^\]]*)\]/i", $attr, $m)) {
-                    if (!array_key_exists("PROPERTY", $hash)) {
-                        $hash["PROPERTY"] = [];
-                    }
                     $prop = strtoupper($m[1]);
                     $tmp = preg_replace("/\s/", "", $prop);
                     if (!is_null($tmp)) {
                         $prop = $tmp;
                     }
-                    if (array_key_exists($prop, $hash["PROPERTY"])) {
-                        $hash["PROPERTY"][$prop][] = $value;
+                    if (array_key_exists($prop, $properties)) {
+                        $properties[$prop][] = $value;
                     } else {
-                        $hash["PROPERTY"][$prop] = [$value];
+                        $properties[$prop] = [$value];
                     }
                 } else {
                     $hash[strtoupper($attr)] = $value;
                 }
             }
+        }
+        if ($properties !== []) {
+            $hash["PROPERTY"] = $properties;
         }
         return $hash;
     }

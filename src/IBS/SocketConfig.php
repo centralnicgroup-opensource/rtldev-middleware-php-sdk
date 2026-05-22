@@ -14,7 +14,7 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-class SocketConfig extends \CNIC\CNR\SocketConfig
+final class SocketConfig extends \CNIC\CNR\SocketConfig
 {
     /**
      * account name
@@ -46,6 +46,7 @@ class SocketConfig extends \CNIC\CNR\SocketConfig
      */
     public function __construct(array $parameters)
     {
+        parent::__construct($parameters);
         $this->parameters = $parameters;
         $this->login = "";
         $this->pw = "";

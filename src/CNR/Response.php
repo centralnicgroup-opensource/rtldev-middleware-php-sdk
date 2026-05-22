@@ -41,7 +41,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Regex for pagination related column keys
-     * @var string
+     * @var non-empty-string
      */
     protected $paginationkeys = "/^TOTAL|COUNT|LIMIT|FIRST|LAST$/";
 
@@ -348,7 +348,7 @@ class Response // implements \CNIC\ResponseInterface
         $first = $this->getFirstRecordIndex();
         $limit = $this->getRecordsLimitation();
         if ($first !== null && $limit) {
-            return (int)(floor($first / $limit) + 1);
+            return intdiv($first, $limit) + 1;
         }
         return null;
     }
@@ -408,7 +408,7 @@ class Response // implements \CNIC\ResponseInterface
         $lh = [];
         foreach ($this->records as $rec) {
             $data = $rec->getData();
-            foreach ($data as $col => $val) {
+            foreach (array_keys($data) as $col) {
                 if ((bool)preg_match($this->paginationkeys, $col)) {
                     unset($data[$col]);
                 }

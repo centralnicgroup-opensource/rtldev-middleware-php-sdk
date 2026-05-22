@@ -15,6 +15,6 @@ namespace CNIC\MONIKER;
  * @package CNIC\MONIKER
  */
 
-class SessionClient extends \CNIC\IBS\SessionClient
+final class SessionClient extends \CNIC\IBS\SessionClient
 {
 }

@@ -16,7 +16,7 @@ use CNIC\IBS\ResponseTemplateManager as RTM;
  *
  * @package CNIC\IBS
  */
-class ResponseTranslator
+final class ResponseTranslator
 {
     /**
      * hidden class var of API description regex mappings for translation
@@ -30,6 +30,7 @@ class ResponseTranslator
      * @param array<string> $cmd requested API command
      * @param array<string> $ph list of place holder vars
      * @return string
+     * @psalm-suppress UnusedParam $cmd kept for API consistency with CNR\ResponseTranslator
      */
     public static function translate($raw, $cmd, $ph = [])
     {
@@ -79,7 +80,7 @@ class ResponseTranslator
                 // Iterate through each temporary pattern in $val
                 foreach ($val as $tmpRegex => $tmpVal) {
                     // Attempt to find a match using the temporary pattern
-                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal, $cmd, $ph);
+                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal);
 
                     // If a match is found, exit the inner loop
                     if ($data) {
@@ -90,7 +91,7 @@ class ResponseTranslator
                 // Escape the pattern and attempt to find a match
                 // for the given pattern ($regex)
                 $escapedRegex = preg_quote($regex, "/");
-                $data = self::findMatch($escapedRegex, $newraw, $val, $cmd, $ph);
+                $data = self::findMatch($escapedRegex, $newraw, $val);
             }
 
             // If a match is found, exit the outer loop
@@ -99,7 +100,7 @@ class ResponseTranslator
             }
         }
 
-        return $newraw;
+        return self::replacePlaceholders($newraw, $ph);
     }
 
     /**
@@ -111,12 +112,9 @@ class ResponseTranslator
      * @param string $regex The regular expression pattern to search for.
      * @param string $newraw The input text where the match will be searched for and replacements applied.
      * @param string $val The value to be used in replacement if a match is found.
-     * @param array<string> $requestdata The request data containing replacements, if applicable.
-     * @param array<string> $ph An array of placeholder values for further replacements.
-     *
      * @return bool Returns true if replacements were performed, false otherwise.
      */
-    protected static function findMatch($regex, &$newraw, $val, $requestdata, $ph)
+    private static function findMatch($regex, &$newraw, $val)
     {
         // match the response for given description
         // NOTE: we match if the description starts with the given description
@@ -133,10 +131,7 @@ class ResponseTranslator
             }
         }
 
-        // Generic replacing of placeholder vars
-        $before = $newraw;
-        $newraw = self::replacePlaceholders($newraw, $ph);
-        return $return || $newraw !== $before;
+        return $return;
     }
 
     /**

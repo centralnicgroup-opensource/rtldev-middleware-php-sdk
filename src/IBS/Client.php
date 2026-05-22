@@ -22,19 +22,16 @@ use CNIC\IBS\Response;
 class Client extends \CNIC\CNR\Client
 {
     /**
-     * Object covering API connection data
-     * @var SocketConfig
-     */
-    protected $socketConfig;
-
-    /**
      * Constructor
      *
      * @param string $path Path to the configuration file
      */
     public function __construct($path = "")
     {
-        $contents = file_get_contents($path) ?: "";
+        $contents = file_get_contents($path);
+        if ($contents === false) {
+            $contents = "";
+        }
         $settings = json_decode($contents, true);
         if (is_null($settings) || $settings === false || $settings === true) {
             $settings = [];

@@ -89,7 +89,10 @@ class Client
      */
     public function __construct($path = "")
     {
-        $contents = file_get_contents($path) ?: "";
+        $contents = file_get_contents($path);
+        if ($contents === false) {
+            $contents = "";
+        }
         $settings = json_decode($contents, true);
         if (is_null($settings) || $settings === false || $settings === true) {
             $settings = [];
@@ -531,7 +534,7 @@ class Client
     {
         $oldurl = $this->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        if (!empty($hostname)) {
+        if (is_string($hostname) && $hostname !== '') {
             $url = str_replace($hostname, "127.0.0.1", $oldurl);
             $url = str_replace("https://", "http://", $url);
             $this->setURL($url);
