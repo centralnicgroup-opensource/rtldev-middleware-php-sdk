@@ -547,7 +547,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
      */
     private function hasColumn($key)
     {
-        return (array_search($key, $this->columnkeys) !== false);
+        return (in_array($key, $this->columnkeys));
     }
 
     /**

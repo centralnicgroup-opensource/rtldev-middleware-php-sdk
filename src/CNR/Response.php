@@ -247,7 +247,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     public function isPending()
     {
-        return isset($this->hash["PENDING"]) ? $this->hash["PENDING"] === "1" : false;
+        return isset($this->hash["PENDING"]) && $this->hash["PENDING"] === "1";
     }
 
     /**
@@ -620,7 +620,7 @@ class Response // implements \CNIC\ResponseInterface
      */
     private function hasColumn($key)
     {
-        return (array_search($key, $this->columnkeys) !== false);
+        return (in_array($key, $this->columnkeys));
     }
 
     /**

@@ -1,12 +1,12 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
+#declare(strict_types=1);
 /**
  * CNIC\IBS
  * Copyright © CentralNic Group PLC
  */
-
 namespace CNIC\IBS;
 
 /**

@@ -38,7 +38,7 @@ final class ResponseParser
                     $data[substr($line, 0, $pos)] = substr($line, $pos + 1);
                 }
             }
-            $result = !empty($data) ? $data : null;
+            $result = $data === [] ? null : $data;
         }
 
         if (is_null($result)) {

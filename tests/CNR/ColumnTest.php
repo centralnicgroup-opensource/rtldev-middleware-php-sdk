@@ -1,7 +1,8 @@
 <?php
 
-//declare(strict_types=1);
+declare(strict_types=1);
 
+//declare(strict_types=1);
 namespace CNICTEST\CNR;
 
 final class ColumnTest extends \PHPUnit\Framework\TestCase

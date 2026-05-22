@@ -67,7 +67,7 @@ final class ResponseTranslator
             $newraw = RTM::$templates["invalid"];
         }
 
-        if (empty(self::$descriptionRegexMap)) {
+        if (self::$descriptionRegexMap === []) {
             return self::replacePlaceholders($newraw, $ph);
         }
 

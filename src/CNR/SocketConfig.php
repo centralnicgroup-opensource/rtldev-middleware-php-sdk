@@ -26,31 +26,31 @@ class SocketConfig
      * account name
      * @var string
      */
-    protected $login;
+    protected $login = "";
 
     /**
      * account password
      * @var string
      */
-    protected $pw;
+    protected $pw = "";
 
     /**
      * remote ip address (ip filter)
      * @var string
      */
-    protected $remoteaddr;
+    protected $remoteaddr = "";
 
     /**
      * API session id
      * @var string
      */
-    protected $session;
+    protected $session = "";
 
     /**
      * subuser account name (subuser specific data view)
      * @var string
      */
-    protected $user;
+    protected $user = "";
 
     /**
      * list of http request parameters
@@ -65,11 +65,6 @@ class SocketConfig
     public function __construct(array $parameters)
     {
         $this->parameters = $parameters;
-        $this->login = "";
-        $this->pw = "";
-        $this->remoteaddr = "";
-        $this->session = "";
-        $this->user = "";
     }
 
     /**
@@ -81,16 +76,16 @@ class SocketConfig
     protected function getPOSTDataParams($command, $secured)
     {
         $params = [];
-        if (strlen($this->login)) {
+        if (strlen($this->login) !== 0) {
             $params[$this->parameters["login"]] = $this->login;
         }
-        if (strlen($this->pw)) {
+        if (strlen($this->pw) !== 0) {
             $params[$this->parameters["password"]] = $secured ? "***" : $this->pw;
         }
         if (strlen($this->remoteaddr) && isset($this->parameters["ipfilter"])) {
             $params[$this->parameters["ipfilter"]] = $this->remoteaddr;
         }
-        if (strlen($this->session)) {
+        if (strlen($this->session) !== 0) {
             $params[$this->parameters["session"]] = $this->session;
         }
         if (strlen($this->user) && isset($this->parameters["subuser"])) {
@@ -125,7 +120,7 @@ class SocketConfig
         if ($this->getPersistent()) {
             $params["persistent"] = 1;
         }
-        if (strlen($this->user)) {
+        if (strlen($this->user) !== 0) {
             $params[$this->parameters["command"]] .= "\nSUBUSER={$this->user}";
         }
         return http_build_query($params); // RFC1738 x-www-form-urlencoded as default
@@ -176,8 +171,6 @@ class SocketConfig
 
     /**
      * Get current login (including role)
-     *
-     * @return string
      */
     public function getLogin(): string
     {
