@@ -1,12 +1,12 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
+#declare(strict_types=1);
 /**
  * CNIC
  * Copyright © CentralNic Group PLC
  */
-
 namespace CNIC;
 
 /**
@@ -98,14 +98,12 @@ interface ResponseInterface
      * Add a column to the column list
      * @param string $key column name
      * @param array<string> $data array of column data
-     * @return ResponseInterface
      */
     public function addColumn(string $key, array $data): ResponseInterface;
 
     /**
      * Add a record to the record list
      * @param array<string> $h row hash data
-     * @return ResponseInterface
      */
     public function addRecord(array $h): ResponseInterface;
 
@@ -260,7 +258,6 @@ interface ResponseInterface
 
     /**
      * Reset index in record list back to zero
-     * @return ResponseInterface
      */
     public function rewindRecordList(): ResponseInterface;
 

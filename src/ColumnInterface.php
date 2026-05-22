@@ -1,12 +1,12 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
+#declare(strict_types=1);
 /**
  * CNIC
  * Copyright © CentralNic Group PLC
  */
-
 namespace CNIC;
 
 /**
@@ -27,8 +27,6 @@ interface ColumnInterface
 
     /**
      * Get column name
-     *
-     * @return string
      */
     public function getKey(): string;
 
@@ -43,7 +41,6 @@ interface ColumnInterface
      * Get column data at given index
      *
      * @param int $idx data index
-     * @return string|null
      */
     public function getDataByIndex(int $idx): ?string;
 

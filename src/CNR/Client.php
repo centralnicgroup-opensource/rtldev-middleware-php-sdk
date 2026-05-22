@@ -54,9 +54,8 @@ class Client
 
     /**
      * user agent
-     * @var string
      */
-    protected $ua;
+    protected string $ua = '';
 
     /**
      * additional curl options to use
@@ -80,7 +79,7 @@ class Client
      * curl handle cache
      * @var \CurlHandle|null
      */
-    protected $chandle = null;
+    protected $chandle;
 
     /**
      * Constructor
@@ -199,7 +198,7 @@ class Client
      */
     public function getUserAgent()
     {
-        if (!strlen($this->ua)) {
+        if ($this->ua === '') {
             $this->ua = "PHP-SDK (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $this->getVersion() . ") php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
         }
         return $this->ua;
@@ -384,7 +383,7 @@ class Client
                 $idxs[] = $key;
             }
         }
-        if (!empty($toconvert)) {
+        if ($toconvert !== []) {
             $results = $this->IDNConvert($toconvert);
             foreach ($results as $idx => $row) {
                 $cmd[$idxs[$idx]] = $row["punycode"];

@@ -22,7 +22,6 @@ final class Logger implements \CNIC\LoggerInterface
      * @param string $post Post request data in string format
      * @param \CNIC\CNR\Response $r Response to log
      * @param string|null $error Error message (optional)
-     * @return void
      */
     #[\Override]
     public function log(string $post, \CNIC\CNR\Response $r, ?string $error = null): void

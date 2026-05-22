@@ -15,8 +15,6 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testPlaceHolderReplacements(): void
     {
-        $cmd = ["COMMAND" => "StatusAccount"];
-
         // ensure no vars are returned in response, just in case no place holder replacements are provided
         $r = new R("");
         $this->assertEquals(0, preg_match("/\{[A-Z_]+\}/", $r->getDescription()), "case 1");
@@ -51,7 +49,6 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsTemplateMatchHash(): void
     {
-        $cmd = ["COMMAND" => "StatusAccount"];
         $r = new R("");
         $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
     }
@@ -61,7 +58,6 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsTemplateMatchPlain(): void
     {
-        $cmd = ["COMMAND" => "StatusAccount"];
         $r = new R("");
         $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
     }
@@ -71,7 +67,6 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructorVars(): void
     {
-        $cmd = ["COMMAND" => "StatusAccount"];
         $r = new R("");
         $this->assertEquals(423, $r->getCode());
         $this->assertEquals("Empty API response. Probably unreachable API end point", $r->getDescription());
@@ -95,7 +90,6 @@ final class ResponseTranslatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetHash(): void
     {
-        $cmd = ["COMMAND" => "StatusAccount"];
         $r = new R("");
         $h = $r->getHash();
         $this->assertEquals("423", $h["CODE"]);

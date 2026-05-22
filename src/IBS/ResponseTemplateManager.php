@@ -57,11 +57,7 @@ final class ResponseTemplateManager
      */
     public static function addTemplate($id, $plain, $descr = null)
     {
-        if (is_null($descr)) {
-            self::$templates[$id] = $plain;
-        } else {
-            self::$templates[$id] = self::generateTemplate($plain, $descr);
-        }
+        self::$templates[$id] = is_null($descr) ? $plain : self::generateTemplate($plain, $descr);
         return new self();
     }
 

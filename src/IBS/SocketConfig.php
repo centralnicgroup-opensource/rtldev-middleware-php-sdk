@@ -20,19 +20,19 @@ final class SocketConfig extends \CNIC\CNR\SocketConfig
      * account name
      * @var string
      */
-    protected $login;
+    protected $login = "";
 
     /**
      * account password
      * @var string
      */
-    protected $pw;
+    protected $pw = "";
 
     /**
      * remote ip address (ip filter)
      * @var string
      */
-    protected $remoteaddr;
+    protected $remoteaddr = "";
 
     /**
      * list of http request parameters
@@ -48,9 +48,6 @@ final class SocketConfig extends \CNIC\CNR\SocketConfig
     {
         parent::__construct($parameters);
         $this->parameters = $parameters;
-        $this->login = "";
-        $this->pw = "";
-        $this->remoteaddr = "";
     }
 
     /**
@@ -63,10 +60,10 @@ final class SocketConfig extends \CNIC\CNR\SocketConfig
     protected function getPOSTDataParams($command, $secured)
     {
         $params = $command; // here $command is just an array of request parameters
-        if (strlen($this->login)) {
+        if (strlen($this->login) !== 0) {
             $params[$this->parameters["login"]] = $this->login;
         }
-        if (strlen($this->pw)) {
+        if (strlen($this->pw) !== 0) {
             $params[$this->parameters["password"]] = $secured ? "***" : $this->pw;
         }
         if (strlen($this->remoteaddr) && isset($this->parameters["ipfilter"])) {
@@ -102,7 +99,6 @@ final class SocketConfig extends \CNIC\CNR\SocketConfig
 
     /**
      * Get current login (including role)
-     * @return string
      */
     #[\Override]
     public function getLogin(): string
