@@ -59,11 +59,16 @@
   "scripts": {
     "docs": "rm -rf build/api-cache docs; test -f tools/doctum.phar || (mkdir -p tools && wget -q https://doctum.long-term.support/releases/5.6/doctum.phar -O tools/doctum.phar && echo 'bd9fee08e7672ffdafae294cb064c71b3f6582992a5f87ac9ac9b2bcd44a5fce  tools/doctum.phar' | sha256sum -c && chmod +x tools/doctum.phar); php tools/doctum.phar update doctum.config.php",
     "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
-    "lint": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
+    "phpcs": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
+    "lint": [
+      "@phpcs",
+      "@phpstan",
+      "@psalm"
+    ],
     "test": "XDEBUG_MODE=coverage phpunit",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon",
-    "psalm": "psalm --no-cache --threads=1 --monochrome",
-    "psalm:colored": "psalm --no-cache --threads=1",
+    "psalm": "psalm --config=.github/linters/psalm.xml --no-cache --threads=1 --monochrome",
+    "psalm:colored": "psalm --config=.github/linters/psalm.xml --no-cache --threads=1",
     "rector": "rector process --dry-run",
     "rector:fix": "rector process",
     "docs:serve": "php -S 0.0.0.0:8000 -t docs",
