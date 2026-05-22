@@ -86,7 +86,7 @@
 
     
     <p>        interface
-    <strong>ResponseInterface</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php">View source</a>)
+    <strong>ResponseInterface</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php">View source</a>)
 </p>
 
         
@@ -165,7 +165,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string[]
+                    array
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getHash">getHash</a>()
@@ -190,7 +190,8 @@
                 <div class="col-md-8">
                     <a href="#method_isError">isError</a>()
         
-                                            <p><p>Check if current API response represents an error case</p></p>                </div>
+                                            <p><p>Check if current API response represents an error case
+API response code is an 5xx code</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -200,7 +201,8 @@
                 <div class="col-md-8">
                     <a href="#method_isSuccess">isSuccess</a>()
         
-                                            <p><p>Check if current API response represents a success case</p></p>                </div>
+                                            <p><p>Check if current API response represents a success case
+API response code is an 2xx code</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -210,7 +212,8 @@
                 <div class="col-md-8">
                     <a href="#method_isTmpError">isTmpError</a>()
         
-                                            <p><p>Check if current API response represents a temporary error case</p></p>                </div>
+                                            <p><p>Check if current API response represents a temporary error case
+API response code is an 4xx code</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -228,7 +231,7 @@
                     <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addColumn">addColumn</a>(string $key, string[] $data)
+                    <a href="#method_addColumn">addColumn</a>(string $key, array $data)
         
                                             <p><p>Add a column to the column list</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -238,14 +241,14 @@
                     <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addRecord">addRecord</a>(string[] $h)
+                    <a href="#method_addRecord">addRecord</a>(array $h)
         
                                             <p><p>Add a record to the record list</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\ColumnInterface|null">ColumnInterface|null</abbr>
+                    <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getColumn">getColumn</a>(string $key)
@@ -265,7 +268,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string[]
+                    array
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getColumnKeys">getColumnKeys</a>()
@@ -275,7 +278,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\ColumnInterface[]">ColumnInterface[]</abbr>
+                    <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>[]
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getColumns">getColumns</a>()
@@ -285,7 +288,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string[]
+                    array
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getCommand">getCommand</a>()
@@ -315,7 +318,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getCurrentRecord">getCurrentRecord</a>()
@@ -345,7 +348,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string[]
+                    array
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getListHash">getListHash</a>()
@@ -355,7 +358,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getNextRecord">getNextRecord</a>()
@@ -385,7 +388,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string[]
+                    array
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getPagination">getPagination</a>()
@@ -405,7 +408,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getPreviousRecord">getPreviousRecord</a>()
@@ -415,7 +418,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getRecord">getRecord</a>(int $idx)
@@ -425,7 +428,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <abbr title="CNIC\RecordInterface[]">RecordInterface[]</abbr>
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>[]
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getRecords">getRecords</a>()
@@ -458,9 +461,10 @@
                     int
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getRecordsLimitation">getRecordsLimitation</a>() $et limit(ation)
+                    <a href="#method_getRecordsLimitation">getRecordsLimitation</a>()
         
-                                            <p><p>setting of the current list query</p></p>                </div>
+                                            <p><p>Get limit(ation) setting of the current list query
+This is the count of requested rows</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -501,7 +505,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L63">at line 63</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L26">at line 26</a></div>
         <code>                    
     <strong>__construct</strong>(string $raw, array $cmd, array $ph = [])
         </code>
@@ -545,7 +549,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCode">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L32">at line 32</a></div>
         <code>                    int
     <strong>getCode</strong>()
         </code>
@@ -565,7 +569,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td></td>
+            <td><p>API response code</p></td>
         </tr>
     </table>
 
@@ -578,7 +582,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getDescription">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L38">at line 38</a></div>
         <code>                    string
     <strong>getDescription</strong>()
         </code>
@@ -598,7 +602,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td></td>
+            <td><p>API response description</p></td>
         </tr>
     </table>
 
@@ -611,7 +615,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRequestURL">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L44">at line 44</a></div>
         <code>                    string
     <strong>getRequestURL</strong>()
         </code>
@@ -631,7 +635,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td></td>
+            <td><p>Request URL</p></td>
         </tr>
     </table>
 
@@ -644,7 +648,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlain">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L50">at line 50</a></div>
         <code>                    string
     <strong>getPlain</strong>()
         </code>
@@ -664,7 +668,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td></td>
+            <td><p>Plain API response</p></td>
         </tr>
     </table>
 
@@ -677,7 +681,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getQueuetime">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L56">at line 56</a></div>
         <code>                    float
     <strong>getQueuetime</strong>()
         </code>
@@ -697,7 +701,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>float</td>
-            <td></td>
+            <td><p>Queuetime of API response</p></td>
         </tr>
     </table>
 
@@ -710,8 +714,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getHash">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    string[]
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L62">at line 62</a></div>
+        <code>                    array
     <strong>getHash</strong>()
         </code>
     </h3>
@@ -729,8 +733,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>string[]</td>
-            <td></td>
+            <td>array</td>
+            <td><p>API response hash</p></td>
         </tr>
     </table>
 
@@ -743,7 +747,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRuntime">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L68">at line 68</a></div>
         <code>                    float
     <strong>getRuntime</strong>()
         </code>
@@ -763,7 +767,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>float</td>
-            <td></td>
+            <td><p>Runtime of API response</p></td>
         </tr>
     </table>
 
@@ -776,7 +780,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isError">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L75">at line 75</a></div>
         <code>                    bool
     <strong>isError</strong>()
         </code>
@@ -787,7 +791,8 @@
             
 
         <div class="method-description">
-                            <p><p>Check if current API response represents an error case</p></p>                        
+                            <p><p>Check if current API response represents an error case
+API response code is an 5xx code</p></p>                        
         </div>
         <div class="tags">
             
@@ -796,7 +801,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>boolean result</p></td>
         </tr>
     </table>
 
@@ -809,7 +814,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isSuccess">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L82">at line 82</a></div>
         <code>                    bool
     <strong>isSuccess</strong>()
         </code>
@@ -820,7 +825,8 @@
             
 
         <div class="method-description">
-                            <p><p>Check if current API response represents a success case</p></p>                        
+                            <p><p>Check if current API response represents a success case
+API response code is an 2xx code</p></p>                        
         </div>
         <div class="tags">
             
@@ -829,7 +835,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>boolean result</p></td>
         </tr>
     </table>
 
@@ -842,7 +848,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isTmpError">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L89">at line 89</a></div>
         <code>                    bool
     <strong>isTmpError</strong>()
         </code>
@@ -853,7 +859,8 @@
             
 
         <div class="method-description">
-                            <p><p>Check if current API response represents a temporary error case</p></p>                        
+                            <p><p>Check if current API response represents a temporary error case
+API response code is an 4xx code</p></p>                        
         </div>
         <div class="tags">
             
@@ -862,7 +869,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td>result</td>
         </tr>
     </table>
 
@@ -875,7 +882,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isPending">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L95">at line 95</a></div>
         <code>                    bool
     <strong>isPending</strong>()
         </code>
@@ -895,7 +902,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td>result</td>
         </tr>
     </table>
 
@@ -908,9 +915,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_addColumn">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L102">at line 102</a></div>
         <code>                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
-    <strong>addColumn</strong>(string $key, string[] $data)
+    <strong>addColumn</strong>(string $key, array $data)
         </code>
     </h3>
     <div class="details">    
@@ -928,12 +935,12 @@
                     <tr>
                 <td>string</td>
                 <td>$key</td>
-                <td></td>
+                <td><p>column name</p></td>
             </tr>
                     <tr>
-                <td>string[]</td>
+                <td>array</td>
                 <td>$data</td>
-                <td></td>
+                <td><p>array of column data</p></td>
             </tr>
             </table>
 
@@ -956,9 +963,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L108">at line 108</a></div>
         <code>                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
-    <strong>addRecord</strong>(string[] $h)
+    <strong>addRecord</strong>(array $h)
         </code>
     </h3>
     <div class="details">    
@@ -974,9 +981,9 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string[]</td>
+                <td>array</td>
                 <td>$h</td>
-                <td></td>
+                <td><p>row hash data</p></td>
             </tr>
             </table>
 
@@ -999,8 +1006,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumn">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\ColumnInterface|null">ColumnInterface|null</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L115">at line 115</a></div>
+        <code>                    <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
     <strong>getColumn</strong>(string $key)
         </code>
     </h3>
@@ -1019,7 +1026,7 @@
                     <tr>
                 <td>string</td>
                 <td>$key</td>
-                <td></td>
+                <td><p>column name</p></td>
             </tr>
             </table>
 
@@ -1028,8 +1035,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\ColumnInterface|null">ColumnInterface|null</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null</td>
+            <td><p>column instance or null if column does not exist</p></td>
         </tr>
     </table>
 
@@ -1042,7 +1049,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumnIndex">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L123">at line 123</a></div>
         <code>                    string|null
     <strong>getColumnIndex</strong>(string $colkey, int $index)
         </code>
@@ -1062,12 +1069,12 @@
                     <tr>
                 <td>string</td>
                 <td>$colkey</td>
-                <td></td>
+                <td><p>column name</p></td>
             </tr>
                     <tr>
                 <td>int</td>
                 <td>$index</td>
-                <td></td>
+                <td><p>column data index</p></td>
             </tr>
             </table>
 
@@ -1077,7 +1084,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string|null</td>
-            <td></td>
+            <td><p>column data at index or null if not found</p></td>
         </tr>
     </table>
 
@@ -1090,8 +1097,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumnKeys">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    string[]
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L129">at line 129</a></div>
+        <code>                    array
     <strong>getColumnKeys</strong>()
         </code>
     </h3>
@@ -1109,8 +1116,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>string[]</td>
-            <td></td>
+            <td>array</td>
+            <td><p>Array of Column Names</p></td>
         </tr>
     </table>
 
@@ -1123,8 +1130,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumns">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\ColumnInterface[]">ColumnInterface[]</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L135">at line 135</a></div>
+        <code>                    <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>[]
     <strong>getColumns</strong>()
         </code>
     </h3>
@@ -1142,8 +1149,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\ColumnInterface[]">ColumnInterface[]</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>[]</td>
+            <td><p>Array of Columns</p></td>
         </tr>
     </table>
 
@@ -1156,8 +1163,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommand">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    string[]
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L141">at line 141</a></div>
+        <code>                    array
     <strong>getCommand</strong>()
         </code>
     </h3>
@@ -1175,8 +1182,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>string[]</td>
-            <td></td>
+            <td>array</td>
+            <td>command</td>
         </tr>
     </table>
 
@@ -1189,7 +1196,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommandPlain">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L147">at line 147</a></div>
         <code>                    string
     <strong>getCommandPlain</strong>()
         </code>
@@ -1209,7 +1216,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td></td>
+            <td>command</td>
         </tr>
     </table>
 
@@ -1222,7 +1229,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCurrentPageNumber">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L153">at line 153</a></div>
         <code>                    int|null
     <strong>getCurrentPageNumber</strong>()
         </code>
@@ -1242,7 +1249,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int|null</td>
-            <td></td>
+            <td><p>page number or null in case of a non-list response</p></td>
         </tr>
     </table>
 
@@ -1255,8 +1262,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCurrentRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L159">at line 159</a></div>
+        <code>                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getCurrentRecord</strong>()
         </code>
     </h3>
@@ -1274,8 +1281,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null in case of a non-list response</p></td>
         </tr>
     </table>
 
@@ -1288,7 +1295,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFirstRecordIndex">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L165">at line 165</a></div>
         <code>                    int|null
     <strong>getFirstRecordIndex</strong>()
         </code>
@@ -1308,7 +1315,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int|null</td>
-            <td></td>
+            <td><p>first row index</p></td>
         </tr>
     </table>
 
@@ -1321,7 +1328,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getLastRecordIndex">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L171">at line 171</a></div>
         <code>                    int|null
     <strong>getLastRecordIndex</strong>()
         </code>
@@ -1341,7 +1348,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int|null</td>
-            <td></td>
+            <td><p>record index or null for a non-list response</p></td>
         </tr>
     </table>
 
@@ -1354,8 +1361,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getListHash">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    string[]
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L177">at line 177</a></div>
+        <code>                    array
     <strong>getListHash</strong>()
         </code>
     </h3>
@@ -1373,8 +1380,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>string[]</td>
-            <td></td>
+            <td>array</td>
+            <td><p>hash including list meta data and array of rows in hash notation</p></td>
         </tr>
     </table>
 
@@ -1387,8 +1394,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getNextRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L183">at line 183</a></div>
+        <code>                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getNextRecord</strong>()
         </code>
     </h3>
@@ -1406,8 +1413,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null in case there's no further record</p></td>
         </tr>
     </table>
 
@@ -1420,7 +1427,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getNextPageNumber">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L189">at line 189</a></div>
         <code>                    int|null
     <strong>getNextPageNumber</strong>()
         </code>
@@ -1440,7 +1447,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int|null</td>
-            <td></td>
+            <td><p>page number or null if there's no next page</p></td>
         </tr>
     </table>
 
@@ -1453,7 +1460,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getNumberOfPages">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L195">at line 195</a></div>
         <code>                    int
     <strong>getNumberOfPages</strong>()
         </code>
@@ -1473,7 +1480,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td></td>
+            <td><p>number of pages</p></td>
         </tr>
     </table>
 
@@ -1486,8 +1493,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPagination">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    string[]
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L201">at line 201</a></div>
+        <code>                    array
     <strong>getPagination</strong>()
         </code>
     </h3>
@@ -1505,8 +1512,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>string[]</td>
-            <td></td>
+            <td>array</td>
+            <td><p>paginator data</p></td>
         </tr>
     </table>
 
@@ -1519,7 +1526,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPreviousPageNumber">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L207">at line 207</a></div>
         <code>                    int|null
     <strong>getPreviousPageNumber</strong>()
         </code>
@@ -1539,7 +1546,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int|null</td>
-            <td></td>
+            <td><p>page number or null if there's no previous page</p></td>
         </tr>
     </table>
 
@@ -1552,8 +1559,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPreviousRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L213">at line 213</a></div>
+        <code>                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getPreviousRecord</strong>()
         </code>
     </h3>
@@ -1571,8 +1578,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null if there's no previous record</p></td>
         </tr>
     </table>
 
@@ -1585,8 +1592,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L220">at line 220</a></div>
+        <code>                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getRecord</strong>(int $idx)
         </code>
     </h3>
@@ -1605,7 +1612,7 @@
                     <tr>
                 <td>int</td>
                 <td>$idx</td>
-                <td></td>
+                <td><p>record index</p></td>
             </tr>
             </table>
 
@@ -1614,8 +1621,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\RecordInterface|null">RecordInterface|null</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null if index does not exist</p></td>
         </tr>
     </table>
 
@@ -1628,8 +1635,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecords">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
-        <code>                    <abbr title="CNIC\RecordInterface[]">RecordInterface[]</abbr>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L226">at line 226</a></div>
+        <code>                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>[]
     <strong>getRecords</strong>()
         </code>
     </h3>
@@ -1647,8 +1654,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><abbr title="CNIC\RecordInterface[]">RecordInterface[]</abbr></td>
-            <td></td>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>[]</td>
+            <td><p>array of records</p></td>
         </tr>
     </table>
 
@@ -1661,7 +1668,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsCount">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L232">at line 232</a></div>
         <code>                    int
     <strong>getRecordsCount</strong>()
         </code>
@@ -1681,7 +1688,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td></td>
+            <td><p>count of rows</p></td>
         </tr>
     </table>
 
@@ -1694,7 +1701,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsTotalCount">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L238">at line 238</a></div>
         <code>                    int
     <strong>getRecordsTotalCount</strong>()
         </code>
@@ -1714,7 +1721,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td></td>
+            <td><p>total count of records or count of records for a non-list response</p></td>
         </tr>
     </table>
 
@@ -1727,9 +1734,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsLimitation">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L245">at line 245</a></div>
         <code>                    int
-    <strong>getRecordsLimitation</strong>() $et limit(ation)
+    <strong>getRecordsLimitation</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -1738,26 +1745,17 @@
             
 
         <div class="method-description">
-                            <p><p>setting of the current list query</p></p>                        
+                            <p><p>Get limit(ation) setting of the current list query
+This is the count of requested rows</p></p>                        
         </div>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>)</td>
-                <td>$et limit(ation</td>
-                <td></td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td></td>
+            <td><p>limit setting or count requested rows</p></td>
         </tr>
     </table>
 
@@ -1770,7 +1768,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_hasNextPage">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L251">at line 251</a></div>
         <code>                    bool
     <strong>hasNextPage</strong>()
         </code>
@@ -1790,7 +1788,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>boolean result</p></td>
         </tr>
     </table>
 
@@ -1803,7 +1801,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_hasPreviousPage">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L257">at line 257</a></div>
         <code>                    bool
     <strong>hasPreviousPage</strong>()
         </code>
@@ -1823,7 +1821,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>boolean result</p></td>
         </tr>
     </table>
 
@@ -1836,7 +1834,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_rewindRecordList">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/ResponseInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/ResponseInterface.php#L262">at line 262</a></div>
         <code>                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>rewindRecordList</strong>()
         </code>

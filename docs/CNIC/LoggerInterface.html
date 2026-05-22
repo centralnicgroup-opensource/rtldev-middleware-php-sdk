@@ -86,7 +86,7 @@
 
     
     <p>        interface
-    <strong>LoggerInterface</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/LoggerInterface.php">View source</a>)
+    <strong>LoggerInterface</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/LoggerInterface.php">View source</a>)
 </p>
 
         
@@ -108,7 +108,7 @@
                     void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_log">log</a>(string $post, <a href="../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $r, string|null $error)
+                    <a href="#method_log">log</a>(string $post, <a href="../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $r, string|null $error = null)
         
                                             <p><p>Output/log given data</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -121,9 +121,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_log">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/src/LoggerInterface.php#L18">at line 18</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/LoggerInterface.php#L27">at line 27</a></div>
         <code>                    void
-    <strong>log</strong>(string $post, <a href="../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $r, string|null $error)
+    <strong>log</strong>(string $post, <a href="../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $r, string|null $error = null)
         </code>
     </h3>
     <div class="details">    
@@ -141,17 +141,17 @@
                     <tr>
                 <td>string</td>
                 <td>$post</td>
-                <td></td>
+                <td><p>Post request data in string format</p></td>
             </tr>
                     <tr>
                 <td><a href="../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></td>
                 <td>$r</td>
-                <td></td>
+                <td><p>Response to log</p></td>
             </tr>
                     <tr>
                 <td>string|null</td>
                 <td>$error</td>
-                <td></td>
+                <td><p>Error message (optional)</p></td>
             </tr>
             </table>
 

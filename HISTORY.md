@@ -1,3 +1,23 @@
+# [14.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.6...v14.0.0) (2026-05-22)
+
+
+### Build System
+
+* **linter,devcontainer:** review and PHP min version upgrade to 8.3 ([981c3b4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/981c3b4dabdcd4d38b695f33656ced8e10368b37))
+
+
+### Code Refactoring
+
+* **psalm:** review reported issues ([5894cb6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5894cb6811c0d57772fd68b6b1f93f3d7d35af98))
+* **psalm:** review reported issues ([3f729e0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/3f729e0633bb0a2e822ae59ab836dc4229b02d7e))
+
+
+### BREAKING CHANGES
+
+* **psalm:** Some of our classes are now final.
+* **psalm:** getPOSTData no longer supports string inputs
+* **linter,devcontainer:** minimum PHP version is now 8.3
+
 ## [13.1.6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.5...v13.1.6) (2026-04-28)
 
 

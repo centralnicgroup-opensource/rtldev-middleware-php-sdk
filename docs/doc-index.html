@@ -162,15 +162,11 @@
         <dl id="indexE"><dt><a href="CNIC/CNR/Client.html#method_enableDebugMode">
 <abbr title="CNIC\CNR\Client">Client</abbr>::enableDebugMode</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
                     <dd><p>Enable Debug Output to STDOUT</p></dd>        </dl><h2 id="letterF">F</h2>
-        <dl id="indexF"><dt><a href="CNIC/CNR/ResponseTranslator.html#method_findMatch">
-<abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr>::findMatch</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseTranslator.html"><abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
-                    <dd><p>Finds a match in the given text and performs replacements based on patterns and placeholders.</p></dd><dt><a href="CNIC/CommandFormatter.html#method_flattenCommand">
+        <dl id="indexF"><dt><a href="CNIC/CommandFormatter.html#method_flattenCommand">
 <abbr title="CNIC\CommandFormatter">CommandFormatter</abbr>::flattenCommand</a>() &mdash; <em>Method in class <a href="CNIC/CommandFormatter.html"><abbr title="CNIC\CommandFormatter">CommandFormatter</abbr></a></em></dt>
                     <dd><p>Flatten API command's nested arrays for easier handling</p></dd><dt><a href="CNIC/CommandFormatter.html#method_formatCommand">
 <abbr title="CNIC\CommandFormatter">CommandFormatter</abbr>::formatCommand</a>() &mdash; <em>Method in class <a href="CNIC/CommandFormatter.html"><abbr title="CNIC\CommandFormatter">CommandFormatter</abbr></a></em></dt>
-                    <dd><p>Format the command array into a plain text string</p></dd><dt><a href="CNIC/IBS/ResponseTranslator.html#method_findMatch">
-<abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr>::findMatch</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseTranslator.html"><abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
-                    <dd><p>Finds a match in the given text and performs replacements based on patterns and placeholders.</p></dd>        </dl><h2 id="letterG">G</h2>
+                    <dd><p>Format the command array into a plain text string</p></dd>        </dl><h2 id="letterG">G</h2>
         <dl id="indexG"><dt><a href="CNIC/CNR/Client.html#method_getPOSTData">
 <abbr title="CNIC\CNR\Client">Client</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
                     <dd><p>Serialize given command for POST request including connection configuration data</p></dd><dt><a href="CNIC/CNR/Client.html#method_getSession">
@@ -420,7 +416,8 @@ This is the count of requested rows</p></dd><dt><a href="CNIC/IBS/ResponseTempla
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getRecordsTotalCount</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Get total count of records available for the list query</p></dd><dt><a href="CNIC/ResponseInterface.html#method_getRecordsLimitation">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getRecordsLimitation</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
-                    <dd><p>setting of the current list query</p></dd>        </dl><h2 id="letterH">H</h2>
+                    <dd><p>Get limit(ation) setting of the current list query
+This is the count of requested rows</p></dd>        </dl><h2 id="letterH">H</h2>
         <dl id="indexH"><dt>$<a href="CNIC/CNR/Response.html#property_hash">
 <abbr title="CNIC\CNR\Response">Response</abbr>#hash</a> &mdash; <em>Property in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>hash representation of plain API response</p></dd><dt><a href="CNIC/CNR/Response.html#method_hasNextPage">
@@ -475,11 +472,14 @@ API response code is an 2xx code</p></dd><dt><a href="CNIC/IBS/Response.html#met
 <abbr title="CNIC\IBS\ResponseTemplateManager">ResponseTemplateManager</abbr>::isTemplateMatchPlain</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseTemplateManager.html"><abbr title="CNIC\IBS\ResponseTemplateManager">ResponseTemplateManager</abbr></a></em></dt>
                     <dd><p>Check if given API plain response matches a given template by code and description</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isError">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::isError</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
-                    <dd><p>Check if current API response represents an error case</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isSuccess">
+                    <dd><p>Check if current API response represents an error case
+API response code is an 5xx code</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isSuccess">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::isSuccess</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
-                    <dd><p>Check if current API response represents a success case</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isTmpError">
+                    <dd><p>Check if current API response represents a success case
+API response code is an 2xx code</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isTmpError">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::isTmpError</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
-                    <dd><p>Check if current API response represents a temporary error case</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isPending">
+                    <dd><p>Check if current API response represents a temporary error case
+API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isPending">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::isPending</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Check if current operation is returned as pending</p></dd>        </dl><h2 id="letterL">L</h2>
         <dl id="indexL"><dt>$<a href="CNIC/CNR/Client.html#property_logger">
@@ -626,9 +626,7 @@ The use of this context data is optional and has no impact on the SDK behaviour 
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Set API Session ID to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setUser">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setUser</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set subuser account name (for subuser data view)</p></dd><dt>$<a href="CNIC/IBS/Client.html#property_socketConfig">
-<abbr title="CNIC\IBS\Client">Client</abbr>#socketConfig</a> &mdash; <em>Property in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
-                    <dd><p>Object covering API connection data</p></dd><dt><a href="CNIC/IBS/Client.html#method_setSession">
+                    <dd><p>Set subuser account name (for subuser data view)</p></dd><dt><a href="CNIC/IBS/Client.html#method_setSession">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/IBS/Client.html#method_setRoleCredentials">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setRoleCredentials</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
@@ -698,7 +696,8 @@ e.g.</p></dd><dt><a href="CNIC/CNR/Response.html#method___construct">
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/RecordInterface.html#method___construct">
 <abbr title="CNIC\RecordInterface">RecordInterface</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/ResponseInterface.html#method___construct">
+                    <dd><p>Constructor
+e.g.</p></dd><dt><a href="CNIC/ResponseInterface.html#method___construct">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd>Constructor</dd>        </dl></div><div id="footer">
         Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
