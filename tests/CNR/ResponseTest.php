@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 //declare(strict_types=1);
 
 namespace CNICTEST\CNR;
 
 use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
+use PHPUnit\Framework\TestCase;
 
-final class ResponseTest extends \PHPUnit\Framework\TestCase
+final class ResponseTest extends TestCase
 {
     /**
      * @var string user name
      */
-    public static $user;
+    public static string $user;
     /**
      * @var string password
      */
-    public static $pw;
+    public static string $pw;
 
     public static function setupBeforeClass(): void
     {

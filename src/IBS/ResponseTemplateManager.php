@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -24,7 +24,7 @@ final class ResponseTemplateManager
      * template container
      * @var array<string>
      */
-    public static $templates = [
+    public static array $templates = [
         "403" => "status=FAILURE\r\nmessage=403 Forbidden\r\n",
         "404" => "status=FAILURE\r\nmessage=421 Page not found\r\n",
         "500" => "status=FAILURE\r\nmessage=500 Internal server error\r\n",
@@ -41,9 +41,8 @@ final class ResponseTemplateManager
      * Generate API response template string for given status and description
      * @param string $status API response code
      * @param string $description API response description
-     * @return string
      */
-    public static function generateTemplate($status, $description)
+    public static function generateTemplate(string $status, string $description): string
     {
         return "status=$status\r\nmessage=$description\r\n";
     }
@@ -53,9 +52,8 @@ final class ResponseTemplateManager
      * @param string $id template id
      * @param string $plain API plain response or API response code (when providing $descr)
      * @param string|null $descr API response description
-     * @return self
      */
-    public static function addTemplate($id, $plain, $descr = null)
+    public static function addTemplate(string $id, string $plain, ?string $descr = null): self
     {
         self::$templates[$id] = is_null($descr) ? $plain : self::generateTemplate($plain, $descr);
         return new self();
@@ -64,9 +62,8 @@ final class ResponseTemplateManager
     /**
      * Get response template instance from template container
      * @param string $id template id
-     * @return Response
      */
-    public static function getTemplate($id)
+    public static function getTemplate(string $id): Response
     {
         if (self::hasTemplate($id)) {
             return new Response($id);
@@ -78,7 +75,7 @@ final class ResponseTemplateManager
      * Return all available response templates
      * @return array<mixed>
      */
-    public static function getTemplates()
+    public static function getTemplates(): array
     {
         $tpls = [];
         foreach (self::$templates as $key => $raw) {
@@ -90,9 +87,8 @@ final class ResponseTemplateManager
     /**
      * Check if given template exists in template container
      * @param string $id template id
-     * @return bool
      */
-    public static function hasTemplate($id)
+    public static function hasTemplate(string $id): bool
     {
         return array_key_exists($id, self::$templates);
     }
@@ -101,9 +97,8 @@ final class ResponseTemplateManager
      * Check if given API response hash matches a given template by code and description
      * @param array<string> $tpl api response hash
      * @param string $id template id
-     * @return bool
      */
-    public static function isTemplateMatchHash($tpl, $id)
+    public static function isTemplateMatchHash(array $tpl, string $id): bool
     {
         $h = self::getTemplate($id)->getHash();
         return (
@@ -116,9 +111,8 @@ final class ResponseTemplateManager
      * Check if given API plain response matches a given template by code and description
      * @param string $plain API plain response
      * @param string $id template id
-     * @return bool
      */
-    public static function isTemplateMatchPlain($plain, $id)
+    public static function isTemplateMatchPlain(string $plain, string $id): bool
     {
         $h = self::getTemplate($id)->getHash();
         $tpl = RP::parse($plain);

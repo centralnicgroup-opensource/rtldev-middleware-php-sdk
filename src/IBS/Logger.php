@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -9,25 +9,29 @@
 
 namespace CNIC\IBS;
 
+use CNIC\CNR\Response;
+use CNIC\IBS\Response as IBSResponse;
+use CNIC\LoggerInterface;
+
 /**
  * IBS Logger
  *
  * @package CNIC\IBS
  */
-final class Logger implements \CNIC\LoggerInterface
+final class Logger implements LoggerInterface
 {
     /**
      * Output/log given data
      *
      * @param string $post Post request data in string format
-     * @param \CNIC\CNR\Response $r Response to log
+     * @param Response $r Response to log
      * @param string|null $error Error message (optional)
      */
     #[\Override]
-    public function log(string $post, \CNIC\CNR\Response $r, ?string $error = null): void
+    public function log(string $post, Response $r, ?string $error = null): void
     {
         $requestUrl = '';
-        if ($r instanceof \CNIC\IBS\Response) {
+        if ($r instanceof IBSResponse) {
             $requestUrl = $r->getRequestURL();
         }
 
@@ -36,7 +40,7 @@ final class Logger implements \CNIC\LoggerInterface
             "\tAPI:  " . $requestUrl . "\n" .
             "\tPOST: " . $post . "\n\n" .
             "R E S P O N S E\n" .
-            (($error !== null && $error !== '') ? "\tHTTP communication failed: " . $error . "\n" : "") .
+            ($error !== null && $error !== '' ? "\tHTTP communication failed: " . $error . "\n" : "") .
             "\t" . (preg_replace("/\n/", "\n\t", $r->getPlain()) ?? $r->getPlain())
         );
     }

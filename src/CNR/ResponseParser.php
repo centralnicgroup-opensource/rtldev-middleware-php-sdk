@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -22,7 +22,7 @@ final class ResponseParser
      * @param string $raw API plain response
      * @return array<string,mixed>
      */
-    public static function parse($raw)
+    public static function parse(string $raw): array
     {
         /** @var array<string,mixed> $hash */
         $hash = [];

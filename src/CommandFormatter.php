@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CNIC;
 
 /**
@@ -37,7 +39,7 @@ final class CommandFormatter
      * @param bool $toupper flag to convert keys to uppercase or leave as is
      * @return array<string,string>
      */
-    public static function flattenCommand($cmd, $toupper = true): array
+    public static function flattenCommand(array $cmd, bool $toupper = true): array
     {
         $newcmd = [];
         foreach ($cmd as $key => $val) {

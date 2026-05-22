@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-#declare(strict_types=1);
 /**
  * CNIC
  * Copyright © CentralNic Group PLC
  */
+
 namespace CNIC;
 
 /**
@@ -118,9 +118,9 @@ interface ResponseInterface
      * Get Data by Column Name and Index
      * @param string $colkey column name
      * @param int $index column data index
-     * @return string|null column data at index or null if not found
+     * @return mixed|null column data at index or null if not found
      */
-    public function getColumnIndex(string $colkey, int $index): ?string;
+    public function getColumnIndex(string $colkey, int $index): mixed;
 
     /**
      * Get Column Names
@@ -132,7 +132,7 @@ interface ResponseInterface
      * Get List of Columns
      * @return ColumnInterface[] Array of Columns
      */
-    public function getColumns();
+    public function getColumns(): array;
 
     /**
      * Get Command used in this request
@@ -223,7 +223,7 @@ interface ResponseInterface
      * Get all Records
      * @return RecordInterface[] array of records
      */
-    public function getRecords();
+    public function getRecords(): array;
 
     /**
      * Get count of rows in this response

@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -8,6 +8,9 @@
  */
 
 namespace CNIC\CNR;
+
+use CNIC\CNR\Column;
+use CNIC\CNR\Response;
 
 /**
  * CNR Session API Client
@@ -34,15 +37,14 @@ class SessionClient extends Client
 
     /**
      * Perform API login to start session-based communication
-     * @return Response
      */
-    public function login()
+    public function login(): Response
     {
         $this->socketConfig->setPersistent(true);
         $rr = $this->request();
         if ($rr->isSuccess()) {
             $col = $rr->getColumn("SESSIONID");
-            $this->setSession($col ? $col->getData()[0] : "");
+            $this->setSession($col instanceof Column ? $col->getData()[0] : "");
         }
         $this->socketConfig->setPersistent(false);
         return $rr;
@@ -51,9 +53,8 @@ class SessionClient extends Client
     /**
      * Perform API logout to close API session in use
      *
-     * @return \CNIC\CNR\Response
      */
-    public function logout()
+    public function logout(): Response
     {
         $rr = $this->request(["COMMAND" => "StopSession"]);
         if ($rr->isSuccess()) {
@@ -69,7 +70,7 @@ class SessionClient extends Client
      * @param array<string,mixed> $session php session instance ($_SESSION)
      * @return $this
      */
-    public function saveSession(&$session)
+    public function saveSession(array &$session)
     {
         $session["socketcfg"] = [
             "login" => $this->socketConfig->getLogin(),
@@ -85,7 +86,7 @@ class SessionClient extends Client
      * @param array<string,mixed> $session php session object ($_SESSION)
      * @return $this
      */
-    public function reuseSession(&$session)
+    public function reuseSession(array &$session)
     {
         if (isset($session["socketcfg"]["login"], $session["socketcfg"]["session"])) {
             $this->setCredentials($session["socketcfg"]["login"]);

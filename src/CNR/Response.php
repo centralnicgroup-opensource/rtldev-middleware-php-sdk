@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -9,6 +9,7 @@
 
 namespace CNIC\CNR;
 
+use CNIC\CNR\Column;
 use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
 use CNIC\CommandFormatter;
@@ -25,61 +26,58 @@ class Response // implements \CNIC\ResponseInterface
      * The API Command used within this request
      * @var array<string>
      */
-    protected $command;
+    protected array $command;
 
     /**
      * plain API response
-     * @var string
      */
-    protected $raw;
+    protected string $raw;
 
     /**
      * hash representation of plain API response
      * @var array<string,mixed>
      */
-    protected $hash;
+    protected array $hash;
 
     /**
      * Regex for pagination related column keys
      * @var non-empty-string
      */
-    protected $paginationkeys = "/^TOTAL|COUNT|LIMIT|FIRST|LAST$/";
+    protected string $paginationkeys = "/^TOTAL|COUNT|LIMIT|FIRST|LAST$/";
 
     /**
      * Column names available in this response
      * @var string[]
      */
-    protected $columnkeys;
+    protected array $columnkeys;
 
     /**
      * Container of Column Instances
      * @var Column[]
      */
-    protected $columns;
+    protected array $columns;
 
     /**
      * Record Index we currently point to in record list
-     * @var int
      */
-    protected $recordIndex;
+    protected int $recordIndex;
 
     /**
      * Record List (List of rows)
      * @var Record[]
      */
-    protected $records;
+    protected array $records;
 
     /**
      * Context data for the response
      * @var array<string,mixed>
      */
-    protected $context;
+    protected array $context;
 
     /**
      * API request url
-     * @var string
      */
-    protected $requestUrl = "";
+    protected string $requestUrl = "";
 
     /**
      * Constructor
@@ -88,7 +86,7 @@ class Response // implements \CNIC\ResponseInterface
      * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      */
-    public function __construct($raw, $cmd = [], $ph = [], $context = [])
+    public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
     {
         if (isset($cmd["PASSWORD"])) { // make password no longer accessible
             $cmd["PASSWORD"] = "***";
@@ -120,8 +118,9 @@ class Response // implements \CNIC\ResponseInterface
             for ($i = 0; $i < $count; $i++) {
                 $d = [];
                 foreach ($colKeys as $k) {
+                    $k .= "";
                     $col = $this->getColumn($k);
-                    if ($col) {
+                    if ($col instanceof Column) {
                         $v = $col->getDataByIndex($i);
                         if ($v !== null) {
                             $d[$k] = $v;
@@ -137,52 +136,47 @@ class Response // implements \CNIC\ResponseInterface
      * Get context data for the response
      * @return array<string,mixed>
      */
-    public function getContext()
+    public function getContext(): array
     {
         return $this->context;
     }
 
     /**
      * Get Request URL
-     * @return string
      */
-    public function getRequestURL()
+    public function getRequestURL(): string
     {
         return $this->requestUrl;
     }
 
     /**
      * Get API response code
-     * @return int
      */
-    public function getCode()
+    public function getCode(): int
     {
         return intval($this->hash["CODE"], 10);
     }
 
     /**
      * Get API response description
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->hash["DESCRIPTION"];
     }
 
     /**
      * Get Plain API response
-     * @return string
      */
-    public function getPlain()
+    public function getPlain(): string
     {
         return $this->raw;
     }
 
     /**
      * Get Queuetime of API response
-     * @return float
      */
-    public function getQueuetime()
+    public function getQueuetime(): float
     {
         if (array_key_exists("QUEUETIME", $this->hash)) {
             return floatval($this->hash["QUEUETIME"]);
@@ -194,16 +188,15 @@ class Response // implements \CNIC\ResponseInterface
      * Get API response as Hash
      * @return array<mixed>
      */
-    public function getHash()
+    public function getHash(): array
     {
         return $this->hash;
     }
 
     /**
      * Get Runtime of API response
-     * @return float
      */
-    public function getRuntime()
+    public function getRuntime(): float
     {
         if (array_key_exists("RUNTIME", $this->hash)) {
             return floatval($this->hash["RUNTIME"]);
@@ -214,9 +207,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Check if current API response represents an error case
      * API response code is an 5xx code
-     * @return bool
      */
-    public function isError()
+    public function isError(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "5";
     }
@@ -224,9 +216,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Check if current API response represents a success case
      * API response code is an 2xx code
-     * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "2";
     }
@@ -234,18 +225,16 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Check if current API response represents a temporary error case
      * API response code is an 4xx code
-     * @return bool
      */
-    public function isTmpError()
+    public function isTmpError(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "4";
     }
 
     /**
      * Check if current operation is returned as pending
-     * @return bool
      */
-    public function isPending()
+    public function isPending(): bool
     {
         return isset($this->hash["PENDING"]) && $this->hash["PENDING"] === "1";
     }
@@ -256,7 +245,7 @@ class Response // implements \CNIC\ResponseInterface
      * @param string[] $data array of column data
      * @return $this
      */
-    public function addColumn($key, $data)
+    public function addColumn(string $key, array $data)
     {
         $col = new Column($key, $data);
         $this->columns[] = $col;
@@ -266,10 +255,10 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Add a record to the record list
-     * @param array<string> $h row hash data
+     * @param array<string,mixed> $h row hash data
      * @return $this
      */
-    public function addRecord($h)
+    public function addRecord(array $h)
     {
         $this->records[] = new Record($h);
         return $this;
@@ -278,9 +267,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Get column by column name
      * @param string $key column name
-     * @return Column|null
      */
-    public function getColumn($key)
+    public function getColumn(string $key): ?Column
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
     }
@@ -289,12 +277,11 @@ class Response // implements \CNIC\ResponseInterface
      * Get Data by Column Name and Index
      * @param string $colkey column name
      * @param int $index column data index
-     * @return string|null
      */
-    public function getColumnIndex($colkey, $index)
+    public function getColumnIndex(string $colkey, int $index): mixed
     {
         $col = $this->getColumn($colkey);
-        return $col ? $col->getDataByIndex($index) : null;
+        return $col instanceof Column ? $col->getDataByIndex($index) : null;
     }
 
     /**
@@ -302,7 +289,7 @@ class Response // implements \CNIC\ResponseInterface
      * @param bool $filterPaginationKeys strip pagination columns
      * @return string[]
      */
-    public function getColumnKeys($filterPaginationKeys = false)
+    public function getColumnKeys(bool $filterPaginationKeys = false): array
     {
         if ($filterPaginationKeys) {
             // Ensure that preg_grep always returns an array
@@ -316,7 +303,7 @@ class Response // implements \CNIC\ResponseInterface
      * Get List of Columns
      * @return Column[]
      */
-    public function getColumns()
+    public function getColumns(): array
     {
         return $this->columns;
     }
@@ -325,25 +312,23 @@ class Response // implements \CNIC\ResponseInterface
      * Get Command used in this request
      * @return array<string>
      */
-    public function getCommand()
+    public function getCommand(): array
     {
         return CommandFormatter::getSortedCommand($this->command);
     }
 
     /**
      * Get Command used in this request in plain text format
-     * @return string
      */
-    public function getCommandPlain()
+    public function getCommandPlain(): string
     {
         return CommandFormatter::formatCommand($this->getCommand());
     }
 
     /**
      * Get Page Number of current List Query
-     * @return int|null
      */
-    public function getCurrentPageNumber()
+    public function getCurrentPageNumber(): ?int
     {
         $first = $this->getFirstRecordIndex();
         $limit = $this->getRecordsLimitation();
@@ -355,25 +340,23 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Record of current record index
-     * @return Record|null
      */
-    public function getCurrentRecord()
+    public function getCurrentRecord(): ?Record
     {
         return $this->hasCurrentRecord() ? $this->records[$this->recordIndex] : null;
     }
 
     /**
      * Get Index of first row in this response
-     * @return int|null
      */
-    public function getFirstRecordIndex()
+    public function getFirstRecordIndex(): ?int
     {
         $col = $this->getColumn("FIRST");
-        if ($col) {
+        if ($col instanceof Column) {
             $f = $col->getDataByIndex(0);
             return $f === null ? 0 : intval($f, 10);
         }
-        if ($this->getRecordsCount()) {
+        if ($this->getRecordsCount() !== 0) {
             return 0;
         }
         return null;
@@ -381,19 +364,18 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get last record index of the current list query
-     * @return int|null
      */
-    public function getLastRecordIndex()
+    public function getLastRecordIndex(): ?int
     {
         $col = $this->getColumn("LAST");
-        if ($col) {
+        if ($col instanceof Column) {
             $l = $col->getDataByIndex(0);
             if ($l !== null) {
                 return intval($l, 10);
             }
         }
         $c = $this->getRecordsCount();
-        if ($c) {
+        if ($c !== 0) {
             return $c - 1;
         }
         return null;
@@ -403,7 +385,7 @@ class Response // implements \CNIC\ResponseInterface
      * Get Response as List Hash including useful meta data for tables
      * @return array<mixed>
      */
-    public function getListHash()
+    public function getListHash(): array
     {
         $lh = [];
         foreach ($this->records as $rec) {
@@ -426,9 +408,8 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get next record in record list
-     * @return Record|null
      */
-    public function getNextRecord()
+    public function getNextRecord(): ?Record
     {
         if ($this->hasNextRecord()) {
             return $this->records[++$this->recordIndex];
@@ -438,9 +419,8 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Page Number of next list query
-     * @return int|null
      */
-    public function getNextPageNumber()
+    public function getNextPageNumber(): ?int
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -453,9 +433,8 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get the number of pages available for this list query
-     * @return int
      */
-    public function getNumberOfPages()
+    public function getNumberOfPages(): int
     {
         $t = $this->getRecordsTotalCount();
         $limit = $this->getRecordsLimitation();
@@ -469,7 +448,7 @@ class Response // implements \CNIC\ResponseInterface
      * Get object containing all paging data
      * @return array<string,int|null>
      */
-    public function getPagination()
+    public function getPagination(): array
     {
         return [
             "COUNT" => $this->getRecordsCount(),
@@ -486,9 +465,8 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get Page Number of previous list query
-     * @return int|null
      */
-    public function getPreviousPageNumber()
+    public function getPreviousPageNumber(): ?int
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -503,9 +481,8 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get previous record in record list
-     * @return Record|null
      */
-    public function getPreviousRecord()
+    public function getPreviousRecord(): ?Record
     {
         if ($this->hasPreviousRecord()) {
             return $this->records[--$this->recordIndex];
@@ -516,9 +493,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Get Record at given index
      * @param int $idx record index
-     * @return Record|null
      */
-    public function getRecord($idx)
+    public function getRecord(int $idx): ?Record
     {
         if ($idx >= 0 && $this->getRecordsCount() > $idx) {
             return $this->records[$idx];
@@ -530,28 +506,26 @@ class Response // implements \CNIC\ResponseInterface
      * Get all Records
      * @return Record[]
      */
-    public function getRecords()
+    public function getRecords(): array
     {
         return $this->records;
     }
 
     /**
      * Get count of rows in this response
-     * @return int
      */
-    public function getRecordsCount()
+    public function getRecordsCount(): int
     {
         return count($this->records);
     }
 
     /**
      * Get total count of records available for the list query
-     * @return int
      */
-    public function getRecordsTotalCount()
+    public function getRecordsTotalCount(): int
     {
         $col = $this->getColumn("TOTAL");
-        if ($col) {
+        if ($col instanceof Column) {
             $t = $col->getDataByIndex(0);
             if ($t !== null) {
                 return intval($t, 10);
@@ -563,12 +537,11 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Get limit(ation) setting of the current list query
      * This is the count of requested rows
-     * @return int
      */
-    public function getRecordsLimitation()
+    public function getRecordsLimitation(): int
     {
         $col = $this->getColumn("LIMIT");
-        if ($col) {
+        if ($col instanceof Column) {
             $l = $col->getDataByIndex(0);
             if ($l !== null) {
                 return intval($l, 10);
@@ -579,9 +552,8 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Check if this list query has a next page
-     * @return bool
      */
-    public function hasNextPage()
+    public function hasNextPage(): bool
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
@@ -592,15 +564,14 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Check if this list query has a previous page
-     * @return bool
      */
-    public function hasPreviousPage()
+    public function hasPreviousPage(): bool
     {
         $cp = $this->getCurrentPageNumber();
         if ($cp === null) {
             return false;
         }
-        return (($cp - 1) > 0);
+        return ($cp - 1 > 0);
     }
 
     /**
@@ -616,19 +587,17 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Check if column exists in response
      * @param string $key column name
-     * @return bool
      */
-    private function hasColumn($key)
+    private function hasColumn(string $key): bool
     {
-        return (in_array($key, $this->columnkeys));
+        return in_array($key, $this->columnkeys);
     }
 
     /**
      * Check if the record list contains a record for the
      * current record index in use
-     * @return bool
      */
-    private function hasCurrentRecord()
+    private function hasCurrentRecord(): bool
     {
         $len = $this->getRecordsCount();
         return (
@@ -641,9 +610,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Check if the record list contains a next record for the
      * current record index in use
-     * @return bool
      */
-    private function hasNextRecord()
+    private function hasNextRecord(): bool
     {
         $next = $this->recordIndex + 1;
         return ($this->hasCurrentRecord() && ($next < $this->getRecordsCount()));
@@ -652,9 +620,8 @@ class Response // implements \CNIC\ResponseInterface
     /**
      * Check if the record list contains a previous record for the
      * current record index in use
-     * @return bool
      */
-    private function hasPreviousRecord()
+    private function hasPreviousRecord(): bool
     {
         return ($this->recordIndex > 0 && $this->hasCurrentRecord());
     }

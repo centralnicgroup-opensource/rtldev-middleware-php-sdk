@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use CNIC\ClientFactory;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 $user = getenv('RTLDEV_MW_CI_USER_CNR');
@@ -18,7 +22,7 @@ if ($rolepassword === false) {
     die("Please provide environment variables RTLDEV_MW_CI_ROLEPASSWORD_CNR.\n");
 }
 
-$cl = \CNIC\ClientFactory::getClient([
+$cl = ClientFactory::getClient([
     "registrar" => "CNR" // fka RRPproxy
 ]);
 $cl->useOTESystem() //LIVE System would be used otherwise by default
@@ -47,7 +51,7 @@ echo "Time: $end1 seconds\n";
 // --- SESSION BASED API COMMUNICATION ---
 echo "--- SESSION-BASED API COMMUNICATION ----\n";
 
-$cl = \CNIC\ClientFactory::getClient([
+$cl = ClientFactory::getClient([
     "registrar" => "CNR" // fka RRPproxy
 ]);
 $cl->useOTESystem() //LIVE System would be used otherwise by default

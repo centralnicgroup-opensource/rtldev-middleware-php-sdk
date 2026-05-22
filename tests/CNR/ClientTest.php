@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 //declare(strict_types=1);
 
 namespace CNICTEST\CNR;
@@ -7,42 +9,40 @@ namespace CNICTEST\CNR;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CL;
 use CNIC\CNR\Response as R;
+use CNIC\CNR\SessionClient;
 use CNIC\IDNA\Factory\ConverterFactory;
+use PHPUnit\Framework\TestCase;
 
-final class ClientTest extends \PHPUnit\Framework\TestCase
+final class ClientTest extends TestCase
 {
-    /**
-     * @var \CNIC\CNR\SessionClient $cl
-     */
-    public static $cl;
+    public static SessionClient $cl;
     /**
      * @var string user name (with role as we don't know the account pw)
      */
-    public static $user;
+    public static string $user;
     /**
      * @var string user name excluding role
      */
-    public static $userNoRole;
+    public static string $userNoRole;
     /**
      * @var string password
      */
-    public static $pw;
+    public static string $pw;
     /**
      * @var string role id
      */
-    public static $role;
+    public static string $role;
     /**
      * @var string role password
      */
-    public static $rolepw;
+    public static string $rolepw;
 
     public static function setUpBeforeClass(): void
     {
-        //session_start();
-        /** @var \CNIC\CNR\SessionClient $cl */
         $cl = CF::getClient([
             "registrar" => "CNR"
         ]);
+        \assert($cl instanceof SessionClient);
         self::$cl = $cl;
         self::$user = getenv("RTLDEV_MW_CI_USER_CNR") ?: "";
         if (self::$user === "") {
@@ -218,12 +218,13 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testSaveReuseSession(): void
     {
+        $session = [];
         self::$cl->setSession("12345678")
-            ->saveSession($_SESSION);
+            ->saveSession($session);
         $cl2 = CF::getClient([
             "registrar" => "CNR"
         ]);
-        $cl2->reuseSession($_SESSION);
+        $cl2->reuseSession($session);
         $tmp = $cl2->getPOSTData([
             "COMMAND" => "StatusAccount"
         ]);
@@ -435,7 +436,7 @@ final class ClientTest extends \PHPUnit\Framework\TestCase
         foreach ($idns as $idn => $ace) {
             $tmp = idn_to_ascii(
                 $idn,
-                ((bool)preg_match("/\.(art|be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $idn)) ?
+                (bool)preg_match("/\.(art|be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $idn) ?
                     IDNA_NONTRANSITIONAL_TO_ASCII :
                     IDNA_DEFAULT,
                 INTL_IDNA_VARIANT_UTS46

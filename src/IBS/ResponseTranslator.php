@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -22,26 +22,25 @@ final class ResponseTranslator
      * hidden class var of API description regex mappings for translation
      * @var array<mixed>
      */
-    private static $descriptionRegexMap = [];
+    private static array $descriptionRegexMap = [];
 
     /**
      * translate a raw api response
      * @param string $raw API raw response
      * @param array<string> $cmd requested API command
      * @param array<string> $ph list of place holder vars
-     * @return string
      * @psalm-suppress UnusedParam $cmd kept for API consistency with CNR\ResponseTranslator
      */
-    public static function translate($raw, $cmd, $ph = [])
+    public static function translate(string $raw, array $cmd, array $ph = []): string
     {
-        $newraw = empty($raw) ? "empty" : $raw;
+        $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
         // curl error handling
         $httperror = "";
         $isHTTPError = substr($newraw, 0, 10) === "httperror|";
         if ($isHTTPError) {
-            list($newraw, $httperror) = explode("|", $newraw);
+            [$newraw, $httperror] = explode("|", $newraw);
         }
 
         // Explicit call for a static template
@@ -114,7 +113,7 @@ final class ResponseTranslator
      * @param string $val The value to be used in replacement if a match is found.
      * @return bool Returns true if replacements were performed, false otherwise.
      */
-    private static function findMatch($regex, &$newraw, $val)
+    private static function findMatch(string $regex, string &$newraw, string $val): bool
     {
         // match the response for given description
         // NOTE: we match if the description starts with the given description
@@ -138,9 +137,8 @@ final class ResponseTranslator
      * Replace placeholder vars like {CONNECTION_URL} in a string
      * @param string $raw input string
      * @param array<string> $ph placeholder key-value pairs
-     * @return string
      */
-    protected static function replacePlaceholders($raw, $ph)
+    protected static function replacePlaceholders(string $raw, array $ph): string
     {
         if (preg_match("/\{[A-Z][A-Z0-9_]*\}/", $raw)) {
             foreach ($ph as $key => $val) {

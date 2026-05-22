@@ -6,8 +6,9 @@ declare(strict_types=1);
 namespace CNICTEST\CNR;
 
 use CNIC\CNR\SocketConfig as SC;
+use PHPUnit\Framework\TestCase;
 
-final class SocketConfigTest extends \PHPUnit\Framework\TestCase
+final class SocketConfigTest extends TestCase
 {
     /**
      * test getPOSTData method

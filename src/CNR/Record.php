@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -27,9 +27,9 @@ class Record // implements \CNIC\RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @var array<string>
+     * @var array<string,mixed>
      */
-    private $data;
+    private array $data;
 
     /**
      * Constructor
@@ -41,18 +41,18 @@ class Record // implements \CNIC\RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @param array<string> $data data object
+     * @param array<string,mixed> $data data object
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
 
     /**
      * get row data
-     * @return array<string>
+     * @return array<string,mixed>
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -60,9 +60,8 @@ class Record // implements \CNIC\RecordInterface
     /**
      * get row data for given column
      * @param string $key column name
-     * @return string|null
      */
-    public function getDataByKey($key)
+    public function getDataByKey(string $key): mixed
     {
         if ($this->hasData($key)) {
             return $this->data[$key];
@@ -73,9 +72,8 @@ class Record // implements \CNIC\RecordInterface
     /**
      * check if record has data for given column
      * @param string $key column name
-     * @return bool
      */
-    private function hasData($key)
+    private function hasData(string $key): bool
     {
         return array_key_exists($key, $this->data);
     }

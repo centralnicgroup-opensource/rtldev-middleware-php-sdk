@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 //declare(strict_types=1);
 
 namespace CNICTEST\CNR;
 
 use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
+use PHPUnit\Framework\TestCase;
 
-final class ResponseTemplateManagerTest extends \PHPUnit\Framework\TestCase
+final class ResponseTemplateManagerTest extends TestCase
 {
     public function testGetTemplateNotFound(): void
     {

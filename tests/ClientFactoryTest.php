@@ -7,21 +7,20 @@ namespace CNICTEST;
 
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CL;
+use CNIC\CNR\SessionClient;
+use PHPUnit\Framework\TestCase;
 
-final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
+final class ClientFactoryTest extends TestCase
 {
-    /**
-     * @var \CNIC\CNR\SessionClient|null $cl
-     */
-    public static $cl;
+    public static ?SessionClient $cl = null;
     /**
      * @var string user name
      */
-    public static $user;
+    public static string $user;
     /**
      * @var string password
      */
-    public static $pw;
+    public static string $pw;
 
     public static function setUpBeforeClass(): void
     {
@@ -32,9 +31,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Basic test for getClient with legacy Registrar HEXONET
-     * @return void
      */
-    public function testHexonetClient()
+    public function testHexonetClient(): void
     {
         $this->expectException(\Exception::class);
         CF::getClient([
@@ -44,9 +42,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Extended Basic test for getClient with Registrar CNR
-     * @return void
      */
-    public function testCNRClient1()
+    public function testCNRClient1(): void
     {
         $cl = CF::getClient([
             "registrar" => "CNR",
@@ -69,9 +66,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Basic test for getClient with Registrar CNR
-     * @return void
      */
-    public function testCNRClient2()
+    public function testCNRClient2(): void
     {
         $cl = CF::getClient([
             "registrar" => "CNR"
@@ -81,9 +77,8 @@ final class ClientFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Basic test for getClient with invalid Registrar ID
-     * @return void
      */
-    public function testInvalidClient()
+    public function testInvalidClient(): void
     {
         $this->expectException(\Exception::class);
         CF::getClient([

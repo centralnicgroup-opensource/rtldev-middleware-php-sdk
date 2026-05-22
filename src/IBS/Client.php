@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -9,24 +9,25 @@
 
 namespace CNIC\IBS;
 
+use CNIC\CNR\Client as CNRClient;
 use CNIC\CommandFormatter;
 use CNIC\IBS\Logger as L;
-use CNIC\IBS\SocketConfig;
 use CNIC\IBS\Response;
+use CNIC\IBS\SocketConfig;
 
 /**
  * IBS API Client
  *
  * @package CNIC\IBS
  */
-class Client extends \CNIC\CNR\Client
+class Client extends CNRClient
 {
     /**
      * Constructor
      *
      * @param string $path Path to the configuration file
      */
-    public function __construct($path = "")
+    public function __construct(string $path = "")
     {
         $contents = file_get_contents($path);
         if ($contents === false) {
@@ -50,10 +51,9 @@ class Client extends \CNIC\CNR\Client
      *
      * @param array<string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
-     * @return string
      */
     #[\Override]
-    public function getPOSTData($cmd, $secured = false)
+    public function getPOSTData(array $cmd, bool $secured = false): string
     {
         return $this->socketConfig->getPOSTData($cmd, $secured);
     }
@@ -65,7 +65,7 @@ class Client extends \CNIC\CNR\Client
      * @throws \Exception
      */
     #[\Override]
-    public function getSession()
+    public function getSession(): ?string
     {
         throw new \Exception("Feature `API Session` Not supported.");
     }
@@ -104,7 +104,7 @@ class Client extends \CNIC\CNR\Client
      * @return array<string>
      */
     #[\Override]
-    protected function autoIDNConvert($cmd)
+    protected function autoIDNConvert(array $cmd): array
     {
         // no IDN conversion needed
         return $cmd;
@@ -115,10 +115,9 @@ class Client extends \CNIC\CNR\Client
      *
      * @param array<mixed> $cmd API command to request
      * @param string $path Path to the API endpoint
-     * @return Response
      */
     #[\Override]
-    public function request(array $cmd = [], $path = "")
+    public function request(array $cmd = [], $path = ""): Response
     {
         // flatten nested api command bulk parameters and sort them
         $mycmd = CommandFormatter::flattenCommand($cmd + ["ResponseFormat" => "JSON"], false);
@@ -130,7 +129,7 @@ class Client extends \CNIC\CNR\Client
         ];
         $data = $this->getPOSTData($mycmd);
 
-        if (!$this->chandle) {
+        if (!$this->chandle instanceof \CurlHandle) {
             $tmp = curl_init();
             if ($tmp === false) {
                 $r = new Response("nocurl", $mycmd, $cfg, $this->context);
@@ -164,9 +163,8 @@ class Client extends \CNIC\CNR\Client
             CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 // IBS / Moniker only
         ] + $this->curlopts);
 
-        // which is by default tested for by phpStan
-        /** @var string|false $r */
         $r = curl_exec($this->chandle);
+        \assert(\is_string($r) || $r === false);
         $error = null;
         if ($r === false) {
             $error = curl_error($this->chandle);

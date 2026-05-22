@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -23,9 +23,9 @@ final class ResponseParser
      * @param array<string> $cmd API command used within this request
      * @return array<string,mixed>
      */
-    public static function parse($raw, $cmd = [])
+    public static function parse(string $raw, array $cmd = []): array
     {
-        $isJson = empty($cmd) || (isset($cmd["ResponseFormat"]) && strtoupper($cmd["ResponseFormat"]) === "JSON");
+        $isJson = $cmd === [] || (isset($cmd["ResponseFormat"]) && strtoupper($cmd["ResponseFormat"]) === "JSON");
 
         $result = $isJson ? json_decode($raw, true) : null;
 
@@ -49,7 +49,7 @@ final class ResponseParser
         }
 
         // Normalize date separators (handles nested arrays)
-        array_walk_recursive($result, function (mixed &$value, string $key) {
+        array_walk_recursive($result, function (mixed &$value, string $key): void {
             if (is_string($value) && preg_match("/date|paiduntil|expiration$/i", $key)) {
                 $value = str_replace("/", "-", $value);
             }

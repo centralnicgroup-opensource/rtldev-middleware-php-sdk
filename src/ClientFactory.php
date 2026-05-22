@@ -1,6 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CNIC;
+
+use CNIC\CNR\Logger;
+use CNIC\CNR\SessionClient;
+use CNIC\IBS\Logger as IBSLogger;
+use CNIC\IBS\SessionClient as IBSSessionClient;
+use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
 
 /**
  * ClientFactory
@@ -14,26 +22,25 @@ class ClientFactory
      * Returns Client Instance by configuration
      *
      * @param array<mixed> $params Configuration settings
-     * @param \CNIC\CNR\Logger|null $logger Logger Instance (optional)
-     * @return \CNIC\CNR\SessionClient|\CNIC\IBS\SessionClient
+     * @param Logger|null $logger Logger Instance (optional)
      * @throws \Exception
      */
-    public static function getClient($params, ?\CNIC\CNR\Logger $logger = null)
+    public static function getClient(array $params, ?Logger $logger = null): SessionClient|IBSSessionClient
     {
         // if we dynamically instantiate via string, phpStan starts complaining ...
         switch (strtoupper($params["registrar"])) {
             case "CNR":
             case "CNIC":
-                $cl = new \CNIC\CNR\SessionClient();
-                $cl->setCustomLogger($logger ?? new \CNIC\CNR\Logger());
+                $cl = new SessionClient();
+                $cl->setCustomLogger($logger ?? new Logger());
                 break;
             case "IBS":
-                $cl = new \CNIC\IBS\SessionClient();
-                $cl->setCustomLogger($logger ?? new \CNIC\IBS\Logger());
+                $cl = new IBSSessionClient();
+                $cl->setCustomLogger($logger ?? new IBSLogger());
                 break;
             case "MONIKER":
-                $cl = new \CNIC\MONIKER\SessionClient();
-                $cl->setCustomLogger($logger ?? new \CNIC\IBS\Logger());
+                $cl = new MONIKERSessionClient();
+                $cl->setCustomLogger($logger ?? new IBSLogger());
                 break;
             case "HEXONET":
             case "ISPAPI":

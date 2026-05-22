@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -19,21 +19,19 @@ class Column // implements \CNIC\ColumnInterface
 {
     /**
      * count of column data entries
-     * @var int
      */
-    public $length;
+    public int $length;
 
     /**
      * column key name
-     * @var string
      */
-    private $key;
+    private string $key;
 
     /**
      * column data container
      * @var string[]
      */
-    private $data;
+    private array $data;
 
     /**
      * Constructor
@@ -41,7 +39,7 @@ class Column // implements \CNIC\ColumnInterface
      * @param string $key Column Name
      * @param string[] $data Column Data
      */
-    public function __construct($key, $data)
+    public function __construct(string $key, array $data)
     {
         $this->key = $key;
         $this->data = $data;
@@ -50,9 +48,8 @@ class Column // implements \CNIC\ColumnInterface
 
     /**
      * Get column name
-     * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -61,7 +58,7 @@ class Column // implements \CNIC\ColumnInterface
      * Get column data
      * @return string[]
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -69,9 +66,8 @@ class Column // implements \CNIC\ColumnInterface
     /**
      * Get column data at given index
      * @param integer $idx data index
-     * @return string|null
      */
-    public function getDataByIndex($idx)
+    public function getDataByIndex(int $idx): mixed
     {
         return $this->hasDataIndex($idx) ? $this->data[$idx] : null;
     }
@@ -79,9 +75,8 @@ class Column // implements \CNIC\ColumnInterface
     /**
      * Check if column has a given data index
      * @param integer $idx data index
-     * @return bool
      */
-    private function hasDataIndex($idx)
+    private function hasDataIndex(int $idx): bool
     {
         return ($idx >= 0 && $idx < $this->length);
     }

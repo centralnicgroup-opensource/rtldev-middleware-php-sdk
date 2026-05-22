@@ -6,8 +6,8 @@ namespace CNICTEST\IBS;
 
 use CNIC\IBS\Response as R;
 use CNIC\IBS\ResponseParser as RP;
-use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\IBS\ResponseTemplateManager as RTM;
+use CNIC\IBS\ResponseTranslator as RT;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseTest extends TestCase
