@@ -25,7 +25,7 @@ class Response extends \CNIC\CNR\Response // implements \CNIC\ResponseInterface
 {
     /**
      * Regex for pagination related column keys
-     * @var string
+     * @var non-empty-string
      */
     protected $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
 

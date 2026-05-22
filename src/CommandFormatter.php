@@ -7,7 +7,7 @@ namespace CNIC;
  *
  * @package CNIC
  */
-class CommandFormatter
+final class CommandFormatter
 {
     /**
      * Get the sorted command array based on priority
@@ -33,23 +33,22 @@ class CommandFormatter
     /**
      * Flatten API command's nested arrays for easier handling
      *
-     * @param array<mixed> $cmd API Command
+     * @param array<string, mixed> $cmd API Command
      * @param bool $toupper flag to convert keys to uppercase or leave as is
-     * @return array<mixed>
+     * @return array<string,string>
      */
     public static function flattenCommand($cmd, $toupper = true): array
     {
         $newcmd = [];
         foreach ($cmd as $key => $val) {
             if (isset($val)) {
-                $val = preg_replace("/\r|\n/", "", $val);
                 $newKey = $toupper ? \strtoupper($key) : $key;
                 if (is_array($val)) {
-                    foreach ($cmd[$key] as $idx => $v) {
-                        $newcmd[$newKey . $idx] = $v;
+                    foreach ($val as $idx => $v) {
+                        $newcmd[$newKey . $idx] = preg_replace("/\r|\n/", "", (string)$v) ?? (string)$v;
                     }
                 } else {
-                    $newcmd[$newKey] = $val;
+                    $newcmd[$newKey] = preg_replace("/\r|\n/", "", (string)$val) ?? (string)$val;
                 }
             }
         }
@@ -150,7 +149,7 @@ class CommandFormatter
     {
         foreach ($priority as $pattern => $priorityValue) {
             // Check if the pattern is a regex or a plain string
-            if ((substr($pattern, 0, 1) === '/' && preg_match($pattern, $key)) || $pattern === $key) {
+            if ($pattern !== '' && (($pattern[0] === '/' && preg_match($pattern, $key)) || $pattern === $key)) {
                 return $priorityValue;
             }
         }

@@ -57,6 +57,7 @@ class SessionClient extends \CNIC\IBS\Client
      * @param array<string,mixed> $session php session instance ($_SESSION)
      * @throws \Exception
      * @return $this
+     * @psalm-suppress PossiblyUnusedParam stub for future implementation
      */
     public function saveSession(&$session)
     {
@@ -69,6 +70,7 @@ class SessionClient extends \CNIC\IBS\Client
      * @param array<string,mixed> $session php session object ($_SESSION)
      * @throws \Exception
      * @return $this
+     * @psalm-suppress PossiblyUnusedParam stub for future implementation
      */
     public function reuseSession(&$session)
     {

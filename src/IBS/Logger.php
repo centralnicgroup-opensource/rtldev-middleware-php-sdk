@@ -14,7 +14,7 @@ namespace CNIC\IBS;
  *
  * @package CNIC\IBS
  */
-class Logger implements \CNIC\LoggerInterface
+final class Logger implements \CNIC\LoggerInterface
 {
     /**
      * Output/log given data
@@ -37,8 +37,8 @@ class Logger implements \CNIC\LoggerInterface
             "\tAPI:  " . $requestUrl . "\n" .
             "\tPOST: " . $post . "\n\n" .
             "R E S P O N S E\n" .
-            ($error ? "\tHTTP communication failed: " . $error . "\n" : "") .
-            "\t" . preg_replace("/\n/", "\n\t", $r->getPlain())
+            (($error !== null && $error !== '') ? "\tHTTP communication failed: " . $error . "\n" : "") .
+            "\t" . (preg_replace("/\n/", "\n\t", $r->getPlain()) ?? $r->getPlain())
         );
     }
 }
