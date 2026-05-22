@@ -77,9 +77,10 @@ To run the demo application, follow these steps:
    tests/MONIKER/app.php
    ```
 
-## Authors
+## Maintainers
 
-* **Kai Schwarz** - *development* - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
+* **Kai Schwarz** - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
+* **Asif Nawaz**  - [KaiSchwarz-cnic](https://github.com/AsifNawaz-cnic)
 
 ## License
 
