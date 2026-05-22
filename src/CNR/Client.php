@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -9,11 +9,12 @@
 
 namespace CNIC\CNR;
 
-use CNIC\CommandFormatter;
 use CNIC\CNR\Logger as L;
-use CNIC\CNR\SocketConfig;
 use CNIC\CNR\Response;
+use CNIC\CNR\SocketConfig;
+use CNIC\CommandFormatter;
 use CNIC\IDNA\Factory\ConverterFactory;
+use CNIC\LoggerInterface;
 
 /**
  * CNR API Client
@@ -32,25 +33,22 @@ class Client
      * registrar api settings
      * @var array<mixed>
      */
-    public $settings;
+    public array $settings;
 
     /**
      * API connection url
-     * @var string
      */
-    protected $socketURL;
+    protected string $socketURL;
 
     /**
      * Object covering API connection data
-     * @var SocketConfig
      */
-    protected $socketConfig;
+    protected SocketConfig $socketConfig;
 
     /**
      * activity flag for debug mode
-     * @var boolean
      */
-    protected $debugMode;
+    protected bool $debugMode;
 
     /**
      * user agent
@@ -61,32 +59,29 @@ class Client
      * additional curl options to use
      * @var array<string>
      */
-    protected $curlopts = [];
+    protected array $curlopts = [];
 
     /**
      * logger function name for debug mode
-     * @var \CNIC\LoggerInterface
      */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * is connected to OT&E
-     * @var bool
      */
-    public $isOTE = false;
+    public bool $isOTE = false;
 
     /**
      * curl handle cache
-     * @var \CurlHandle|null
      */
-    protected $chandle;
+    protected ?\CurlHandle $chandle = null;
 
     /**
      * Constructor
      *
      * @param string $path Path to the configuration file
      */
-    public function __construct($path = "")
+    public function __construct(string $path = "")
     {
         $contents = file_get_contents($path);
         if ($contents === false) {
@@ -108,10 +103,9 @@ class Client
     /**
      * set custom logger to use instead of default one
      * create your own class implementing \CNIC\LoggerInterface
-     * @param \CNIC\LoggerInterface $customLogger
      * @return $this
      */
-    public function setCustomLogger($customLogger)
+    public function setCustomLogger(LoggerInterface $customLogger)
     {
         $this->logger = $customLogger;
         return $this;
@@ -151,18 +145,16 @@ class Client
      * Serialize given command for POST request including connection configuration data
      * @param array<string,mixed> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
-     * @return string
      */
-    public function getPOSTData($cmd, $secured = false)
+    public function getPOSTData(array $cmd, bool $secured = false): string
     {
         return $this->socketConfig->getPOSTData($cmd, $secured);
     }
 
     /**
      * Get the API Session ID that is currently set
-     * @return string|null
      */
-    public function getSession()
+    public function getSession(): ?string
     {
         $sessid = $this->socketConfig->getSession();
         return ($sessid === "" ? null : $sessid);
@@ -170,9 +162,8 @@ class Client
 
     /**
      * Get the API connection url that is currently set
-     * @return string
      */
-    public function getURL()
+    public function getURL(): string
     {
         return $this->socketURL;
     }
@@ -184,19 +175,17 @@ class Client
      * @param array<string> $modules further modules to add to user agent string, format: ["<module1>/<version>", "<module2>/<version>", ... ]
      * @return $this
      */
-    public function setUserAgent($str, $rv, $modules = [])
+    public function setUserAgent(string $str, string $rv, array $modules = [])
     {
-        $mods = empty($modules) ? "" : " " . implode(" ", $modules);
-        $this->ua = ($str . " (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $rv . ")" . $mods . " php-sdk/" . $this->getVersion() . " php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION])
-        );
+        $mods = $modules === [] ? "" : " " . implode(" ", $modules);
+        $this->ua = $str . " (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $rv . ")" . $mods . " php-sdk/" . $this->getVersion() . " php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
         return $this;
     }
 
     /**
      * Get the user agent string
-     * @return string
      */
-    public function getUserAgent()
+    public function getUserAgent(): string
     {
         if ($this->ua === '') {
             $this->ua = "PHP-SDK (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $this->getVersion() . ") php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
@@ -209,9 +198,9 @@ class Client
      * @param string $proxy proxy to use (optional, for reset)
      * @return $this
      */
-    public function setProxy($proxy = "")
+    public function setProxy(string $proxy = "")
     {
-        if (empty($proxy)) {
+        if ($proxy === '' || $proxy === '0') {
             unset($this->curlopts[CURLOPT_PROXY]);
         } else {
             $this->curlopts[CURLOPT_PROXY] = $proxy;
@@ -221,9 +210,8 @@ class Client
 
     /**
      * Get proxy configuration for API communication
-     * @return string|null
      */
-    public function getProxy()
+    public function getProxy(): ?string
     {
         if (isset($this->curlopts[CURLOPT_PROXY])) {
             return $this->curlopts[CURLOPT_PROXY];
@@ -236,9 +224,9 @@ class Client
      * @param string $referer Referer (optional, for reset)
      * @return $this
      */
-    public function setReferer($referer = "")
+    public function setReferer(string $referer = "")
     {
-        if (empty($referer)) {
+        if ($referer === '' || $referer === '0') {
             unset($this->curlopts[CURLOPT_REFERER]);
         } else {
             $this->curlopts[CURLOPT_REFERER] = $referer;
@@ -248,9 +236,8 @@ class Client
 
     /**
      * Get Referer configuration for API communication
-     * @return string|null
      */
-    public function getReferer()
+    public function getReferer(): ?string
     {
         if (isset($this->curlopts[CURLOPT_REFERER])) {
             return $this->curlopts[CURLOPT_REFERER];
@@ -260,9 +247,8 @@ class Client
 
     /**
      * Get the current module version
-     * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return "14.0.0";
     }
@@ -272,7 +258,7 @@ class Client
      * @param string $value API connection url to set
      * @return $this
      */
-    public function setURL($value)
+    public function setURL(string $value)
     {
         $this->socketURL = $value;
         return $this;
@@ -283,7 +269,7 @@ class Client
      * @param string $value API session id (optional, for reset)
      * @return $this
      */
-    public function setSession($value = "")
+    public function setSession(string $value = "")
     {
         $this->socketConfig->setSession($value);
         return $this;
@@ -296,9 +282,9 @@ class Client
      * @throws \Exception in case this feature is unsupported
      * @return $this
      */
-    public function setRemoteIPAddress($value = "")
+    public function setRemoteIPAddress(string $value = "")
     {
-        if (!empty($value) && !isset($this->settings["parameters"]["ipfilter"])) {
+        if ($value !== '' && $value !== '0' && !isset($this->settings["parameters"]["ipfilter"])) {
             throw new \Exception("Feature `IP Filter` not supported");
         }
         $this->socketConfig->setRemoteAddress($value);
@@ -311,7 +297,7 @@ class Client
      * @param string $pw account password (optional, for reset)
      * @return $this
      */
-    public function setCredentials($uid = "", $pw = "")
+    public function setCredentials(string $uid = "", string $pw = "")
     {
         $this->socketConfig->setLogin($uid);
         $this->socketConfig->setPassword($pw);
@@ -325,10 +311,10 @@ class Client
      * @param string $pw role user password (optional, for reset)
      * @return $this
      */
-    public function setRoleCredentials($uid = "", $role = "", $pw = "")
+    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = "")
     {
         $login = $uid;
-        if (!empty($role)) {
+        if ($role !== '' && $role !== '0') {
             $login .= $this->settings["roleSeparator"] . $role;
         }
         return $this->setCredentials($login, $pw);
@@ -339,7 +325,7 @@ class Client
      * @param array<string> $domains list of domain names (or tlds)
      * @return array<mixed>
      */
-    public function IDNConvert($domains)
+    public function IDNConvert(array $domains): array
     {
         return ConverterFactory::convert($domains);
     }
@@ -350,7 +336,7 @@ class Client
      * @param array<string> $cmd API command
      * @return array<string>
      */
-    protected function autoIDNConvert($cmd)
+    protected function autoIDNConvert(array $cmd): array
     {
         // only convert if configured for the registrar
         // and ignore commands in string format (even deprecated)
@@ -395,9 +381,8 @@ class Client
     /**
      * Perform API request using the given command
      * @param array<mixed> $cmd API command to request (optional for session login)
-     * @return Response
      */
-    public function request(array $cmd = [])
+    public function request(array $cmd = []): Response
     {
         // flatten nested api command bulk parameters and sort them
         $mycmd = CommandFormatter::flattenCommand($cmd);
@@ -409,7 +394,7 @@ class Client
         ];
         $data = $this->getPOSTData($mycmd);
 
-        if (!$this->chandle) {
+        if (!$this->chandle instanceof \CurlHandle) {
             $tmp = curl_init();
             if ($tmp === false) {
                 $r = new Response("nocurl", $mycmd, $cfg, $this->context);
@@ -440,9 +425,8 @@ class Client
             ]
         ] + $this->curlopts);
 
-        // which is by default tested for by phpStan
-        /** @var string|false $r */
         $r = curl_exec($this->chandle);
+        \assert(\is_string($r) || $r === false);
         $error = null;
         if ($r === false) {
             $error = curl_error($this->chandle);
@@ -461,9 +445,8 @@ class Client
      * Useful for tables
      * @param Response $rr API Response of current page
      * @throws \Exception in case Command Parameter LAST is in use while using this method
-     * @return Response|null
      */
-    public function requestNextResponsePage($rr)
+    public function requestNextResponsePage(Response $rr): ?Response
     {
         $mycmd = $rr->getCommand();
         if (array_key_exists("LAST", $mycmd)) {
@@ -490,7 +473,7 @@ class Client
      * @param array<string,mixed> $cmd API list command to use
      * @return Response[]
      */
-    public function requestAllResponsePages($cmd)
+    public function requestAllResponsePages(array $cmd): array
     {
         $responses = [];
         $rr = $this->request(array_merge([], $cmd, ["FIRST" => 0]));
@@ -499,15 +482,14 @@ class Client
         do {
             $responses[$idx++] = $tmp;
             $tmp = $this->requestNextResponsePage($tmp);
-        } while ($tmp !== null);
+        } while ($tmp instanceof Response);
         return $responses;
     }
 
     /**
      * Close all curl handles
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         if (!is_null($this->chandle)) {
             curl_close($this->chandle);
@@ -519,7 +501,7 @@ class Client
      * @param string $uid subuser account name
      * @return $this
      */
-    public function setUserView($uid = "")
+    public function setUserView(string $uid = "")
     {
         $this->socketConfig->setUser($uid);
         return $this;

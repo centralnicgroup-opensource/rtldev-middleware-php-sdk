@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use CNIC\ClientFactory;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 $user = getenv('RTLDEV_MW_CI_USER_IBS');
@@ -12,7 +16,7 @@ if ($user === false || $password === false) {
 
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n\n";
-$cl = \CNIC\ClientFactory::getClient([
+$cl = ClientFactory::getClient([
     "registrar" => "IBS"
 ]);
 $cl->useOTESystem()//LIVE System would be used otherwise by default

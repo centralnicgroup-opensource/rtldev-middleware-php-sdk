@@ -1,11 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<ruleset name="super-linter">
-    <description>The default coding standard for usage with GitHub Super-Linter. It just includes PSR12.</description>
+<ruleset name="php-sdk">
+    <description>PSR-12 with SlevomatCodingStandard rules for modern PHP.</description>
+
     <!-- Use PSR-12 as a base -->
-    <rule ref="PSR12"/>
+    <rule ref="PSR12">
+        <!-- Allow declare(strict_types=1) before file-level docblock (Slevomat handles this) -->
+        <exclude name="PSR12.Files.FileHeader.IncorrectOrder"/>
+    </rule>
+
     <arg value="s"/>
     <arg value="q"/>
     <arg value="n"/>
     <arg name="colors"/>
+
+    <!-- Require strict types declaration -->
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Unused imports -->
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+        <properties>
+            <property name="searchAnnotations" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Require fully qualified exceptions/functions/constants in global namespace -->
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="allowFullyQualifiedGlobalClasses" value="true"/>
+            <property name="allowFullyQualifiedGlobalFunctions" value="true"/>
+            <property name="allowFullyQualifiedGlobalConstants" value="true"/>
+            <property name="searchAnnotations" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Require use statements sorted alphabetically -->
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+
+    <!-- Require typed properties -->
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
+
+    <!-- Require return type hints -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
+
+    <!-- Require parameter type hints -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
+
+    <!-- Forbid useless parentheses -->
+    <rule ref="SlevomatCodingStandard.PHP.UselessParentheses"/>
+
+    <!-- Forbid useless semicolons -->
+    <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
+
+    <!-- Require null coalescing operator when possible -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+
+    <!-- Use short list syntax -->
+    <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
+
+    <!-- Require use of null safe operator -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullSafeObjectOperator"/>
+
+    <!-- Forbid superfluous @var inline annotations -->
+    <rule ref="SlevomatCodingStandard.PHP.RequireExplicitAssertion"/>
 </ruleset>

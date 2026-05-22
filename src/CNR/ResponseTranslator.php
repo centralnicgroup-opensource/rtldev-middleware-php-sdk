@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -22,7 +22,7 @@ final class ResponseTranslator
      * hidden class var of API description regex mappings for translation
      * @var array<mixed>
      */
-    private static $descriptionRegexMap = [
+    private static array $descriptionRegexMap = [
         // HX - just for future reference, can be cleaned up if we have something similar in place for CNR
         "Authorization failed; Operation forbidden by ACL" => "Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List",
         // CNR
@@ -42,18 +42,17 @@ final class ResponseTranslator
      * @param string $raw API raw response
      * @param array<string> $cmd requested API command
      * @param array<string> $ph list of place holder vars
-     * @return string
      */
-    public static function translate($raw, $cmd, $ph = [])
+    public static function translate(string $raw, array $cmd, array $ph = []): string
     {
-        $newraw = empty($raw) ? "empty" : $raw;
+        $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
         // curl error handling
         $httperror = "";
         $isHTTPError = substr($newraw, 0, 10) === "httperror|";
         if ($isHTTPError) {
-            list($newraw, $httperror) = explode("|", $newraw);
+            [$newraw, $httperror] = explode("|", $newraw);
         }
 
         // Explicit call for a static template
@@ -120,9 +119,8 @@ final class ResponseTranslator
      * @param string $newraw The input text where the match will be searched for and replacements applied.
      * @param string $val The value to be used in replacement if a match is found.
      * @param array<string> $cmd The command data containing replacements, if applicable.
-     * @return bool
      */
-    private static function findMatch($regex, &$newraw, $val, $cmd)
+    private static function findMatch(string $regex, string &$newraw, string $val, array $cmd): bool
     {
         // match the response for given description
         // NOTE: we match if the description starts with the given description
@@ -152,9 +150,8 @@ final class ResponseTranslator
      *
      * @param string $raw input response
      * @param array<string> $ph placeholder key-value pairs
-     * @return string
      */
-    protected static function replacePlaceholders($raw, $ph)
+    protected static function replacePlaceholders(string $raw, array $ph): string
     {
         $tmp = preg_replace_callback(
             '/^(description\s*=\s*)(.*)$/im',

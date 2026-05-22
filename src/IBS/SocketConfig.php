@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -9,36 +9,35 @@
 
 namespace CNIC\IBS;
 
+use CNIC\CNR\SocketConfig as CNRSocketConfig;
+
 /**
  * IBS SocketConfig
  *
  * @package CNIC\IBS
  */
-final class SocketConfig extends \CNIC\CNR\SocketConfig
+final class SocketConfig extends CNRSocketConfig
 {
     /**
      * account name
-     * @var string
      */
-    protected $login = "";
+    protected string $login = "";
 
     /**
      * account password
-     * @var string
      */
-    protected $pw = "";
+    protected string $pw = "";
 
     /**
      * remote ip address (ip filter)
-     * @var string
      */
-    protected $remoteaddr = "";
+    protected string $remoteaddr = "";
 
     /**
      * list of http request parameters
      * @var array<string>
      */
-    protected $parameters;
+    protected array $parameters;
 
     /**
      * Constructor
@@ -57,7 +56,7 @@ final class SocketConfig extends \CNIC\CNR\SocketConfig
      * @return array<string,string>
      */
     #[\Override]
-    protected function getPOSTDataParams($command, $secured)
+    protected function getPOSTDataParams(array $command, bool $secured): array
     {
         $params = $command; // here $command is just an array of request parameters
         if (strlen($this->login) !== 0) {
@@ -76,10 +75,9 @@ final class SocketConfig extends \CNIC\CNR\SocketConfig
      * Create POST data string out of connection data
      * @param array<int|string,mixed> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
-     * @return string
      */
     #[\Override]
-    public function getPOSTData($command = [], $secured = false)
+    public function getPOSTData(array $command = [], bool $secured = false): string
     {
         $params = $this->getPOSTDataParams($command, $secured);
         return http_build_query($params);//RFC1738 x-www-form-urlencoded as default

@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-#declare(strict_types=1);
 /**
  * CNIC\MONIKER
  * Copyright © CentralNic Group PLC
  */
+
 namespace CNIC\MONIKER;
+
+use CNIC\IBS\SessionClient as IBSSessionClient;
 
 /**
  * MONIKER API Client
@@ -15,6 +17,6 @@ namespace CNIC\MONIKER;
  * @package CNIC\MONIKER
  */
 
-final class SessionClient extends \CNIC\IBS\SessionClient
+final class SessionClient extends IBSSessionClient
 {
 }

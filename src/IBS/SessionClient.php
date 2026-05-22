@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\IBS
@@ -9,13 +9,15 @@
 
 namespace CNIC\IBS;
 
+use CNIC\IBS\Client;
+
 /**
  * IBS API Client
  *
  * @psalm-api
  * @package CNIC\IBS
  */
-class SessionClient extends \CNIC\IBS\Client
+class SessionClient extends Client
 {
     /**
      * Constructor
@@ -35,9 +37,8 @@ class SessionClient extends \CNIC\IBS\Client
     /**
      * Perform API login to start session-based communication
      * @throws \Exception
-     * @return Response
      */
-    public function login()
+    public function login(): Response
     {
         throw new \Exception("Method not supported");
     }
@@ -45,9 +46,8 @@ class SessionClient extends \CNIC\IBS\Client
     /**
      * Perform API logout to close API session in use
      * @throws \Exception
-     * @return Response
      */
-    public function logout()
+    public function logout(): Response
     {
         throw new \Exception("Method not supported");
     }
@@ -59,7 +59,7 @@ class SessionClient extends \CNIC\IBS\Client
      * @return $this
      * @psalm-suppress PossiblyUnusedParam stub for future implementation
      */
-    public function saveSession(&$session)
+    public function saveSession(array &$session)
     {
         throw new \Exception("Method not supported");
     }
@@ -72,7 +72,7 @@ class SessionClient extends \CNIC\IBS\Client
      * @return $this
      * @psalm-suppress PossiblyUnusedParam stub for future implementation
      */
-    public function reuseSession(&$session)
+    public function reuseSession(array &$session)
     {
         throw new \Exception("Method not supported");
     }

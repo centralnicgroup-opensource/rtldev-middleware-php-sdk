@@ -5,7 +5,10 @@ declare(strict_types=1);
 //declare(strict_types=1);
 namespace CNICTEST\CNR;
 
-final class RecordTest extends \PHPUnit\Framework\TestCase
+use CNIC\CNR\Record;
+use PHPUnit\Framework\TestCase;
+
+final class RecordTest extends TestCase
 {
     public function testGetData(): void
     {
@@ -15,13 +18,13 @@ final class RecordTest extends \PHPUnit\Framework\TestCase
             "RNDINT" => "321",
             "SUM"    => "1"
         ];
-        $rec = new \CNIC\CNR\Record($d);
+        $rec = new Record($d);
         $this->assertEquals($d, $rec->getData());
     }
 
     public function testGetDataByKey(): void
     {
-        $rec = new \CNIC\CNR\Record([
+        $rec = new Record([
             "DOMAIN" => "mydomain.com",
             "RATING" => "1",
             "RNDINT" => "321",

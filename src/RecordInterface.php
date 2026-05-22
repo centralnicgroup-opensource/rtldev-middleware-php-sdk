@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-#declare(strict_types=1);
 /**
  * CNIC
  * Copyright © CentralNic Group PLC
  */
+
 namespace CNIC;
 
 /**

@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-#declare(strict_types=1);
 /**
  * CNIC\IBS
  * Copyright © CentralNic Group PLC
  */
+
 namespace CNIC\IBS;
+
+use CNIC\CNR\Column as CNRColumn;
 
 /**
  * IBS Column
@@ -15,6 +17,6 @@ namespace CNIC\IBS;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Column extends \CNIC\CNR\Column // implements \CNIC\ColumnInterface
+class Column extends CNRColumn // implements \CNIC\ColumnInterface
 {
 }

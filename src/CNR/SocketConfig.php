@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types=1);
+declare(strict_types=1);
 
 /**
  * CNIC\CNR
@@ -18,45 +18,39 @@ class SocketConfig
 {
     /**
      * Parameter to trigger creation of a backend session
-     * @var bool
      */
-    private $persistent = false;
+    private bool $persistent = false;
 
     /**
      * account name
-     * @var string
      */
-    protected $login = "";
+    protected string $login = "";
 
     /**
      * account password
-     * @var string
      */
-    protected $pw = "";
+    protected string $pw = "";
 
     /**
      * remote ip address (ip filter)
-     * @var string
      */
-    protected $remoteaddr = "";
+    protected string $remoteaddr = "";
 
     /**
      * API session id
-     * @var string
      */
-    protected $session = "";
+    protected string $session = "";
 
     /**
      * subuser account name (subuser specific data view)
-     * @var string
      */
-    protected $user = "";
+    protected string $user = "";
 
     /**
      * list of http request parameters
      * @var array<string>
      */
-    protected $parameters;
+    protected array $parameters;
 
     /**
      * Constructor
@@ -73,7 +67,7 @@ class SocketConfig
      * @param bool $secured if password has to be returned "hidden"
      * @return array<string,string>
      */
-    protected function getPOSTDataParams($command, $secured)
+    protected function getPOSTDataParams(array $command, bool $secured): array
     {
         $params = [];
         if (strlen($this->login) !== 0) {
@@ -91,7 +85,7 @@ class SocketConfig
         if (strlen($this->user) && isset($this->parameters["subuser"])) {
             $params[$this->parameters["subuser"]] = $this->user;
         }
-        if (!empty($command) && isset($this->parameters["command"])) {
+        if ($command !== [] && isset($this->parameters["command"])) {
             $newcommand = "";
             foreach ($command as $key => $val) {
                 if (is_null($val)) {
@@ -114,7 +108,7 @@ class SocketConfig
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */
-    public function getPOSTData($command = [], $secured = false)
+    public function getPOSTData(array $command = [], bool $secured = false): string
     {
         $params = $this->getPOSTDataParams($command, $secured);
         if ($this->getPersistent()) {
@@ -129,30 +123,27 @@ class SocketConfig
     /**
      * Add persistent parameter to request (request API session)
      *
-     * @param bool $value
      * @return $this
      */
-    public function setPersistent($value = false)
+    public function setPersistent(bool $value = false)
     {
-        $this->persistent = ($value !== false);
+        $this->persistent = $value;
         return $this;
     }
 
     /**
      * Get persistent parameter returned
      *
-     * @return bool
      */
-    public function getPersistent()
+    public function getPersistent(): bool
     {
         return $this->persistent;
     }
 
     /**
      * Get API Session ID in use
-     * @return string
      */
-    public function getSession()
+    public function getSession(): string
     {
         return $this->session;
     }
@@ -162,7 +153,7 @@ class SocketConfig
      * @param string $value account name
      * @return $this
      */
-    public function setLogin($value)
+    public function setLogin(string $value)
     {
         $this->session = "";
         $this->login = $value;
@@ -182,7 +173,7 @@ class SocketConfig
      * @param string $value account password
      * @return $this
      */
-    public function setPassword($value)
+    public function setPassword(string $value)
     {
         $this->session = "";
         $this->pw = $value;
@@ -194,7 +185,7 @@ class SocketConfig
      * @param string $value remote ip address
      * @return $this
      */
-    public function setRemoteAddress($value)
+    public function setRemoteAddress(string $value)
     {
         $this->remoteaddr = $value;
         return $this;
@@ -206,7 +197,7 @@ class SocketConfig
      * @param string $value API Session ID
      * @return $this
      */
-    public function setSession($value)
+    public function setSession(string $value)
     {
         $this->session = $value;
         // $this->login = "";
@@ -219,7 +210,7 @@ class SocketConfig
      * @param string $value subuser account name
      * @return $this
      */
-    public function setUser($value)
+    public function setUser(string $value)
     {
         $this->user = $value;
         return $this;
