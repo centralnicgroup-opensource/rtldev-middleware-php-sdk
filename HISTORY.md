@@ -1,3 +1,10 @@
+## [14.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.0.0...v14.0.1) (2026-05-26)
+
+
+### Bug Fixes
+
+* **ResponseInterface:** patched docblock type for getColumnIndex ([e5d45db](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e5d45db39414de2847497251ac1f9e287f3ba2ca))
+
 # [14.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v13.1.6...v14.0.0) (2026-05-22)
 
 

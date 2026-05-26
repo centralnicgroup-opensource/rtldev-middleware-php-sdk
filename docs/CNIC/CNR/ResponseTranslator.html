@@ -108,7 +108,7 @@
                     static&nbsp;string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_translate">translate</a>(string $raw, string[] $cmd, string[] $ph = [])
+                    <a href="#method_translate">translate</a>(string $raw, array $cmd, array $ph = [])
         
                                             <p><p>translate a raw api response</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -118,7 +118,7 @@
                     static&nbsp;string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_replacePlaceholders">replacePlaceholders</a>(string $raw, string[] $ph)
+                    <a href="#method_replacePlaceholders">replacePlaceholders</a>(string $raw, array $ph)
         
                                             <p><p>Replace known placeholders in DESCRIPTION while preserving literal brace content.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -131,9 +131,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_translate">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/ResponseTranslator.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/ResponseTranslator.php#L46">at line 46</a></div>
         <code>        static            string
-    <strong>translate</strong>(string $raw, string[] $cmd, string[] $ph = [])
+    <strong>translate</strong>(string $raw, array $cmd, array $ph = [])
         </code>
     </h3>
     <div class="details">    
@@ -154,12 +154,12 @@
                 <td><p>API raw response</p></td>
             </tr>
                     <tr>
-                <td>string[]</td>
+                <td>array</td>
                 <td>$cmd</td>
                 <td><p>requested API command</p></td>
             </tr>
                     <tr>
-                <td>string[]</td>
+                <td>array</td>
                 <td>$ph</td>
                 <td><p>list of place holder vars</p></td>
             </tr>
@@ -184,9 +184,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_replacePlaceholders">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/ResponseTranslator.php#L157">at line 157</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/ResponseTranslator.php#L154">at line 154</a></div>
         <code>        static    protected        string
-    <strong>replacePlaceholders</strong>(string $raw, string[] $ph)
+    <strong>replacePlaceholders</strong>(string $raw, array $ph)
         </code>
     </h3>
     <div class="details">    
@@ -207,7 +207,7 @@
                 <td><p>input response</p></td>
             </tr>
                     <tr>
-                <td>string[]</td>
+                <td>array</td>
                 <td>$ph</td>
                 <td><p>placeholder key-value pairs</p></td>
             </tr>
