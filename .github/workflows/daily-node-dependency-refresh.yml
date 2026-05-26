@@ -1,6 +1,6 @@
 name: Daily Node dependency refresh
 
-on:
+"on":
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:
