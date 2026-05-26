@@ -152,6 +152,28 @@ setup_php_nodejs_dependencies() {
         log_detail "No package.json found, skipping Node.js dependencies"
     fi
 }
+# Function to install zsh-autosuggestions plugin
+setup_zsh_autosuggestions() {
+    log_info "Installing zsh-autosuggestions plugin..."
+    # Install zsh-autosuggestions for history-based inline completions.
+    # Suggestions are driven by $HISTFILE, so suggestions persist
+    # across container rebuilds automatically.
+    local plugin_dir="${ZSH_CUSTOM:-/home/vscode/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+    mkdir -p "$(dirname "$plugin_dir")"
+    if [[ -d "$plugin_dir/.git" ]]; then
+        execute_with_indent "git -C \"$plugin_dir\" pull --ff-only" "Updating zsh-autosuggestions"
+        log_success "zsh-autosuggestions updated"
+    else
+        # Remove a leftover/partial directory that isn't a valid git repo before cloning.
+        rm -rf "$plugin_dir"
+        if execute_with_indent "git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions \"$plugin_dir\"" "Cloning zsh-autosuggestions"; then
+            log_success "zsh-autosuggestions installed"
+        else
+            log_error "Failed to install zsh-autosuggestions"
+            return 1
+        fi
+    fi
+}
 # Function to setup symlinks for development files
 setup_dev_symlinks() {
     if [[ "${GITHUB_CLI:-false}" == "true" ]]; then
@@ -190,6 +212,8 @@ main() {
     setup_pnpm
     # install commitizen and cz-conventional-changelog globally
     setup_pnpm_global_packages
+    # install zsh-autosuggestions plugin
+    setup_zsh_autosuggestions
     # use gh CLI for git credentials (clear system-level VS Code helper first)
     git config --local --replace-all credential.helper ''
     git config --local --add credential.helper '!gh auth git-credential'
