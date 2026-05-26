@@ -190,8 +190,6 @@ main() {
     setup_pnpm
     # install commitizen and cz-conventional-changelog globally
     setup_pnpm_global_packages
-    # change github hooks directory to run scripts like pre-commit/pre-push
-    git config core.hooksPath $OLDPWD/.github/hooks
     # use gh CLI for git credentials (clear system-level VS Code helper first)
     git config --local --replace-all credential.helper ''
     git config --local --add credential.helper '!gh auth git-credential'

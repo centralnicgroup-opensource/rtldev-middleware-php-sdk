@@ -1,0 +1,7 @@
+vendor/
+node_modules/
+reports/
+docs/
+build/
+pnpm-lock.yaml
+*.php

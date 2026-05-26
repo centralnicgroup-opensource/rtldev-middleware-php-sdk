@@ -1,56 +1,54 @@
 {
-	"name": "dstack-phpsdk",
-	"build": {
-		"context": ".",
-		"dockerfile": "Dockerfile",
-		"args": {
-			"PHP_VERSION": "8.3"
-		}
-	},
-	"workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/rtldev-middleware-php-sdk,type=bind,consistency=cached",
-	"workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
-	"shutdownAction": "stopContainer",
-	"customizations": {
-	  "vscode": {
-		"extensions": [
-			"github.vscode-github-actions",
-			"gitHub.vscode-pull-request-github",
-			"ms-vscode-remote.remote-containers",
-			"bmewburn.vscode-intelephense-client",
-			"ms-azuretools.vscode-containers",
-			"xdebug.php-debug",
-			"neilbrayfield.php-docblocker",
-			"gitHub.copilot",
-			"ms-vscode.live-server",
-			"SanderRonde.phpstan-vscode",
-			"trunk.io",
-			"ms-vscode.vscode-chat-customizations-evaluations"
-		],
-		"settings": {
-		  "terminal.integrated.defaultProfile.linux": "zsh",
-			"terminal.integrated.profiles.linux": {
-				"zsh": {
-					"path": "/bin/zsh"
-				}
-			},
-			"php.validate.executablePath": "/usr/local/bin/php",
-			"php.executablePath": "/usr/local/bin/php",
-		    "php.suggest.basic": false
-		}
-	  }
-	},
-	"remoteUser": "vscode",
-	"features": {
-		"ghcr.io/devcontainers/features/node:2": {
-		  "version": "lts"
-		},
-		"ghcr.io/devcontainers/features/github-cli:1": {}
-	},
-	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly",
-        "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
-		"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/WSL_USER,type=bind,consistency=cached"
-	],
-	"postCreateCommand": "zsh /post-create.sh"
+  "name": "dstack-phpsdk",
+  "build": {
+    "context": ".",
+    "dockerfile": "Dockerfile",
+    "args": {
+      "PHP_VERSION": "8.3"
+    }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/rtldev-middleware-php-sdk,type=bind,consistency=cached",
+  "workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
+  "shutdownAction": "stopContainer",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "github.vscode-github-actions",
+        "gitHub.vscode-pull-request-github",
+        "ms-vscode-remote.remote-containers",
+        "bmewburn.vscode-intelephense-client",
+        "ms-azuretools.vscode-containers",
+        "xdebug.php-debug",
+        "neilbrayfield.php-docblocker",
+        "gitHub.copilot",
+        "ms-vscode.live-server",
+        "SanderRonde.phpstan-vscode",
+        "ms-vscode.vscode-chat-customizations-evaluations"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        },
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.executablePath": "/usr/local/bin/php",
+        "php.suggest.basic": false
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/WSL_USER,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "zsh /post-create.sh"
 }
-  
