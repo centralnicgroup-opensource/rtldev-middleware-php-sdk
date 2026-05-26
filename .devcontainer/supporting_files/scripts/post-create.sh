@@ -90,7 +90,7 @@ setup_pnpm_global_packages() {
         if [[ ! -f ~/.zshrc ]] || ! grep -q "pnpm" ~/.zshrc; then
             execute_with_indent "pnpm setup" "Setting up pnpm for current user"
         fi
-        [[ -f ~/.zshrc ]] && execute_with_indent "source ~/.zshrc" "Sourcing zsh configuration"
+        [[ -f ~/.zshrc ]] && ( set +u; source ~/.zshrc ) 2>/dev/null
     fi
 
     # Ensure pnpm global-bin-dir matches PNPM_HOME (avoids PATH mismatch)
@@ -201,10 +201,10 @@ main() {
 
     # install pnpm
     setup_pnpm
+    # install zsh-autosuggestions plugin (before sourcing .zshrc)
+    setup_zsh_autosuggestions
     # install commitizen and cz-conventional-changelog globally
     setup_pnpm_global_packages
-    # install zsh-autosuggestions plugin
-    setup_zsh_autosuggestions
     # use gh CLI for git credentials (clear system-level VS Code helper first)
     git config --local --replace-all credential.helper ''
     git config --local --add credential.helper '!gh auth git-credential'
