@@ -51,12 +51,5 @@ ARG USERHOME="/home/${USERNAME}"
 RUN set -eux; \
     usermod --shell /usr/bin/zsh -aG www-data ${USERNAME}
 
-# Clone the powerlevel10k theme for zsh and change owner
-# Clone the zsh-autosuggestions repository
-USER ${USERNAME}
-RUN set -eux; \
-    git clone --depth=1 --single-branch \
-        https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-USER root
 # copy zsh and commitizen configuration files
 COPY --chown=${USERNAME}:${USERNAME} ${CONFIGURATION_DIR_PATH}/home/ ${USERHOME}/
