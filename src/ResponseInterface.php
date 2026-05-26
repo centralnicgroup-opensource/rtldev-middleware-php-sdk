@@ -118,7 +118,7 @@ interface ResponseInterface
      * Get Data by Column Name and Index
      * @param string $colkey column name
      * @param int $index column data index
-     * @return mixed|null column data at index or null if not found
+     * @return mixed column data at index or null if not found
      */
     public function getColumnIndex(string $colkey, int $index): mixed;
 
