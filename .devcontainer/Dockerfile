@@ -1,5 +1,5 @@
 FROM composer:lts AS composer
-FROM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM mcr.microsoft.com/devcontainers/base:2-ubuntu-24.04
 
 ARG PHP_VERSION=8.3
 ENV PHP_VERSION=$PHP_VERSION
@@ -23,7 +23,6 @@ ARG SCRIPTS_DIR_PATH=supporting_files/scripts
 RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get -y install --no-install-recommends software-properties-common cron \
-    && LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php \
     && apt-get -y install --no-install-recommends postfix python3-setuptools wget jq git \
        php${PHP_VERSION} php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug \
        pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml \
@@ -46,14 +45,6 @@ COPY ${CONFIGURATION_DIR_PATH}/php/ /etc/php/${PHP_VERSION}/
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 ######################### DEVELOPMENT ENVIRONMENT ADDITIONS ###############################
-# install latest git & zsh
-# hadolint ignore=DL3008
-RUN add-apt-repository ppa:git-core/ppa \
-    && apt-get update \
-    && apt-get -y install --no-install-recommends git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && update-locale
 # zsh and commitizen (cz) configurations
 ARG USERNAME="vscode"
 ARG USERHOME="/home/${USERNAME}"
@@ -61,14 +52,11 @@ RUN set -eux; \
     usermod --shell /usr/bin/zsh -aG www-data ${USERNAME}
 
 # Clone the powerlevel10k theme for zsh and change owner
-# Clone the zsh-autosuggestions repository and change owner
-# Git operations - optimized with depth and single-branch
+# Clone the zsh-autosuggestions repository
 USER ${USERNAME}
 RUN set -eux; \
     git clone --depth=1 --single-branch \
-        https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k && \
-    git clone --depth=1 --single-branch \
         https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 USER root
-# copy zsh and committizen configuration file and zsh theme powerline10k
+# copy zsh and commitizen configuration files
 COPY --chown=${USERNAME}:${USERNAME} ${CONFIGURATION_DIR_PATH}/home/ ${USERHOME}/
