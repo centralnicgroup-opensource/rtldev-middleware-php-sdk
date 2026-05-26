@@ -4,6 +4,13 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  deployments: write
+  id-token: write
+
 jobs:
   release:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-release.yml@main

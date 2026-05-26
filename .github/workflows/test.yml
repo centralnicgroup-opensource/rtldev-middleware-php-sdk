@@ -5,7 +5,21 @@ on:
       - opened
       - synchronize
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-test.yml@main
     secrets: inherit
+
+  ci-success:
+    needs: tests
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [ "${{ needs.tests.result }}" != "success" ]; then
+            echo "Tests failed or were cancelled"
+            exit 1
+          fi
