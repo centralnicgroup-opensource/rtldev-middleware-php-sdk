@@ -77,6 +77,18 @@ To run the demo application, follow these steps:
    tests/MONIKER/app.php
    ```
 
+## CI / Testing
+
+CI is powered by [reusable GitHub Actions workflows](https://github.com/centralnicgroup-opensource/rtldev-middleware-shareable-workflows). The test matrix covers:
+
+| PHP Version | Status |
+|-------------|--------|
+| 8.3         | ✓      |
+| 8.4         | ✓      |
+| 8.5         | ✓      |
+
+The matrix is configured via the repository variable `RTLDEV_MW_CI_PHP_MATRIX`.
+
 ## Maintainers
 
 * **Kai Schwarz** - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
