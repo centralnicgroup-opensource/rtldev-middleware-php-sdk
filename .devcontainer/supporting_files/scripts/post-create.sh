@@ -80,26 +80,17 @@ setup_pnpm() {
 # Function to install global npm packages
 setup_pnpm_global_packages() {
     log_info "Installing global npm packages..."
-    if [[ "${GITHUB_CLI:-false}" == "true" ]]; then
-        # Export PNPM environment variables directly for current session
-        export PNPM_HOME="$HOME/.local/share/pnpm"
-        export PATH="$PNPM_HOME:$PATH"
-        # Create pnpm home directory if it doesn't exist
-        mkdir -p "$PNPM_HOME"
-    else
-        # Set Oh My Zsh cache directory to prevent errors
-        export ZSH_CACHE_DIR="$HOME/.cache/oh-my-zsh"
-        mkdir -p "$ZSH_CACHE_DIR"
+    
+    # Export PNPM environment variables directly for current session
+    export PNPM_HOME="$HOME/.local/share/pnpm"
+    export PATH="$PNPM_HOME:$PATH"
+    mkdir -p "$PNPM_HOME"
 
-        # Export PNPM environment variables for current session
-        export PNPM_HOME="$HOME/.local/share/pnpm"
-        export PATH="$PNPM_HOME:$PATH"
-        mkdir -p "$PNPM_HOME"
-
-        # Setup pnpm for current user
+    if [[ "${GITHUB_CLI:-false}" != "true" ]]; then
         if [[ ! -f ~/.zshrc ]] || ! grep -q "pnpm" ~/.zshrc; then
             execute_with_indent "pnpm setup" "Setting up pnpm for current user"
         fi
+        [[ -f ~/.zshrc ]] && execute_with_indent "source ~/.zshrc" "Sourcing zsh configuration"
     fi
 
     # Ensure pnpm global-bin-dir matches PNPM_HOME (avoids PATH mismatch)
