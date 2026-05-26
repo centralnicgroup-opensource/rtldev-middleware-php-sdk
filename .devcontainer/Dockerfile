@@ -19,11 +19,12 @@ ARG CONFIGURATION_DIR_PATH=supporting_files/configuration
 ARG SCRIPTS_DIR_PATH=supporting_files/scripts
 
 # Install packages
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get -y upgrade \
-    && apt-get -y install software-properties-common cron \
+    && apt-get -y install --no-install-recommends software-properties-common cron \
     && LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php \
-    && apt-get -y install postfix python3-setuptools wget jq sudo git \
+    && apt-get -y install --no-install-recommends postfix python3-setuptools wget jq git \
        php${PHP_VERSION} php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug \
        pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml \
        php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl \
@@ -46,6 +47,7 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 ######################### DEVELOPMENT ENVIRONMENT ADDITIONS ###############################
 # install latest git & zsh
+# hadolint ignore=DL3008
 RUN add-apt-repository ppa:git-core/ppa \
     && apt-get update \
     && apt-get -y install --no-install-recommends git \
@@ -61,10 +63,12 @@ RUN set -eux; \
 # Clone the powerlevel10k theme for zsh and change owner
 # Clone the zsh-autosuggestions repository and change owner
 # Git operations - optimized with depth and single-branch
+USER ${USERNAME}
 RUN set -eux; \
-    sudo -u ${USERNAME} git clone --depth=1 --single-branch \
+    git clone --depth=1 --single-branch \
         https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k && \
-    sudo -u ${USERNAME} git clone --depth=1 --single-branch \
+    git clone --depth=1 --single-branch \
         https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+USER root
 # copy zsh and committizen configuration file and zsh theme powerline10k
 COPY --chown=${USERNAME}:${USERNAME} ${CONFIGURATION_DIR_PATH}/home/ ${USERHOME}/
