@@ -29,8 +29,8 @@
             "path": "/bin/zsh"
           }
         },
-        "php.validate.executablePath": "/usr/local/bin/php",
-        "php.executablePath": "/usr/local/bin/php",
+        "php.validate.executablePath": "/usr/local/php/current/bin/php",
+        "php.executablePath": "/usr/local/php/current/bin/php",
         "php.suggest.basic": false
       }
     }
