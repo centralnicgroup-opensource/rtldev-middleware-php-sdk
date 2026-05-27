@@ -21,3 +21,6 @@ env.sh
 plantuml.jar
 uml.puml
 tools/
+
+# Claude Code — local user settings (personal overrides, MCP permissions)
+.claude/settings.local.json
