@@ -61,7 +61,8 @@
       "prettier --write --ignore-unknown"
     ],
     "*.php": [
-      "composer lint --"
+      "vendor/bin/phpcs --standard=.github/linters/phpcs.xml -q",
+      "vendor/bin/phpstan analyse -c .github/linters/phpstan.neon --no-progress"
     ]
   }
 }
