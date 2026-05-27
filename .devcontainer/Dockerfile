@@ -1,12 +1,4 @@
-FROM composer:lts AS composer
 FROM mcr.microsoft.com/devcontainers/base:2-ubuntu-24.04
-
-ARG PHP_VERSION=8.3
-ENV PHP_VERSION=$PHP_VERSION
-
-#Environment variables to configure php
-ENV PHP_UPLOAD_MAX_FILESIZE=10M
-ENV PHP_POST_MAX_SIZE=10M
 
 ENV DEBIAN_FRONTEND=noninteractive
 # Set a default value for ZSH_CUSTOM if it's not already set
@@ -18,16 +10,12 @@ ENV TZ=$TZ
 ARG CONFIGURATION_DIR_PATH=supporting_files/configuration
 ARG SCRIPTS_DIR_PATH=supporting_files/scripts
 
-# Install packages
+# Install non-PHP system packages
 # hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get -y upgrade \
-    && apt-get -y install --no-install-recommends software-properties-common cron \
-    && apt-get -y install --no-install-recommends postfix python3-setuptools wget jq git \
-       php${PHP_VERSION} php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug \
-       pwgen php${PHP_VERSION}-apcu php${PHP_VERSION}-gd php${PHP_VERSION}-xml \
-       php${PHP_VERSION}-mbstring zip unzip php${PHP_VERSION}-zip curl \
-       php${PHP_VERSION}-curl \
+    && apt-get -y install --no-install-recommends \
+       cron postfix wget jq git zip unzip curl \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
@@ -38,11 +26,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Copy shell scripts and config files
 COPY ${SCRIPTS_DIR_PATH}/ /usr/local/bin/
 COPY ${SCRIPTS_DIR_PATH}/post-create.sh /post-create.sh
-COPY ${CONFIGURATION_DIR_PATH}/php/ /etc/php/${PHP_VERSION}/
-
-# Composer 2.x Installation
-# Install Composer
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY ${CONFIGURATION_DIR_PATH}/php/ /opt/php-config/
 
 ######################### DEVELOPMENT ENVIRONMENT ADDITIONS ###############################
 # zsh and commitizen (cz) configurations
