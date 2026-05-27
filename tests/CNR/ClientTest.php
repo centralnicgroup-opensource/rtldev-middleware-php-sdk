@@ -658,10 +658,12 @@ final class ClientTest extends TestCase
 
     public function testRequestAllResponsePagesOk(): void
     {
+        self::$cl->setCredentials(self::$user, self::$pw)
+            ->useOTESystem();
         $pages = self::$cl->requestAllResponsePages([
             "COMMAND" => "QueryDomainList",
             "FIRST" => 0,
-            "LIMIT" => 10
+            "LIMIT" => 100
         ]);
         $this->assertGreaterThan(0, count($pages));
         foreach ($pages as &$p) {

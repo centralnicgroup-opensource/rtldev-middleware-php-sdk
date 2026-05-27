@@ -61,7 +61,7 @@
       "prettier --write --ignore-unknown"
     ],
     "*.php": [
-      "composer lint --",
+      "composer phpcs --",
       "composer phpstan --"
     ]
   }
