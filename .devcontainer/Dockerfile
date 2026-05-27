@@ -15,7 +15,7 @@ ARG SCRIPTS_DIR_PATH=supporting_files/scripts
 RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get -y install --no-install-recommends \
-       cron postfix wget jq git zip unzip curl \
+       wget jq git zip unzip curl \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
