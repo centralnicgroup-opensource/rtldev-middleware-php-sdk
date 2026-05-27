@@ -149,8 +149,8 @@ setup_php_config() {
     local php_scan_dir
     php_scan_dir="$(php --ini 2>/dev/null | grep -m1 'Scan for additional' | awk -F': ' '{print $2}')" || true
     if [[ -n "$php_scan_dir" && -d "$php_scan_dir" ]]; then
-        if [[ -f /opt/php-config/99-custom.ini ]]; then
-            sudo cp /opt/php-config/99-custom.ini "$php_scan_dir/99-custom.ini"
+        if [[ -f /opt/php-config/zz-custom.ini ]]; then
+            sudo cp /opt/php-config/zz-custom.ini "$php_scan_dir/zz-custom.ini"
             log_success "PHP custom config applied to $php_scan_dir"
         fi
     else
