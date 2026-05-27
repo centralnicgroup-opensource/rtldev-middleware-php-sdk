@@ -1,3 +1,10 @@
+# [14.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.0.1...v14.1.0) (2026-05-27)
+
+
+### Features
+
+* replace GitHub Copilot with Claude AI ([07f535b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/07f535b2cdb32fd7c626923ec3eac164cbe2490a))
+
 ## [14.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.0.0...v14.0.1) (2026-05-26)
 
 
