@@ -103,6 +103,7 @@ setup_pnpm_global_packages() {
 
     # Install global packages with error handling
     local packages=(
+        "@anthropic-ai/claude-code@latest"
         "commitizen@latest"
         "cz-conventional-changelog@latest"
         "semantic-release-cli@latest"
