@@ -69,8 +69,8 @@ final class ClientTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Add a 0.5s delay
-        usleep(500000); // ms
+        // Add a 1s delay between tests
+        sleep(1);
         parent::tearDown();
     }
 
