@@ -1,3 +1,10 @@
+## [14.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.1.0...v14.1.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **devcontainer:** remove unused packages and add .dockerignore ([ad4f8e7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ad4f8e7e9192f57455d8ddbd5158f264f9e9745f))
+
 # [14.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.0.1...v14.1.0) (2026-05-27)
 
 
