@@ -2,10 +2,7 @@
   "name": "dstack-phpsdk",
   "build": {
     "context": ".",
-    "dockerfile": "Dockerfile",
-    "args": {
-      "PHP_VERSION": "8.3"
-    }
+    "dockerfile": "Dockerfile"
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/rtldev-middleware-php-sdk,type=bind,consistency=cached",
   "workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
@@ -40,6 +37,11 @@
   },
   "remoteUser": "vscode",
   "features": {
+    "ghcr.io/devcontainers/features/php:1": {
+      "version": "8.3",
+      "installComposer": true,
+      "extensions": "intl, xdebug, apcu, gd, xml, mbstring, zip, curl"
+    },
     "ghcr.io/devcontainers/features/node:2": {
       "version": "lts"
     },

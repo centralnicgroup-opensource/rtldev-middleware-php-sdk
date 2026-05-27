@@ -143,6 +143,20 @@ setup_php_nodejs_dependencies() {
         log_detail "No package.json found, skipping Node.js dependencies"
     fi
 }
+# Function to apply custom PHP ini settings
+setup_php_config() {
+    log_info "Applying custom PHP configuration..."
+    local php_scan_dir
+    php_scan_dir="$(php -i 2>/dev/null | grep -oP '(?<=Scan this dir => ).*')"
+    if [[ -n "$php_scan_dir" && -d "$php_scan_dir" ]]; then
+        if [[ -f /opt/php-config/99-custom.ini ]]; then
+            sudo cp /opt/php-config/99-custom.ini "$php_scan_dir/99-custom.ini"
+            log_success "PHP custom config applied to $php_scan_dir"
+        fi
+    else
+        log_error "Could not determine PHP scan directory"
+    fi
+}
 # Function to install zsh-autosuggestions plugin
 setup_zsh_autosuggestions() {
     log_info "Installing zsh-autosuggestions plugin..."
@@ -205,6 +219,8 @@ main() {
     setup_zsh_autosuggestions
     # install commitizen and cz-conventional-changelog globally
     setup_pnpm_global_packages
+    # apply custom PHP ini settings
+    setup_php_config
     # use gh CLI for git credentials (clear system-level VS Code helper first)
     git config --local --replace-all credential.helper ''
     git config --local --add credential.helper '!gh auth git-credential'
