@@ -17,10 +17,9 @@
         "ms-azuretools.vscode-containers",
         "xdebug.php-debug",
         "neilbrayfield.php-docblocker",
-        "gitHub.copilot",
+        "anthropic.claude-vscode",
         "ms-vscode.live-server",
-        "SanderRonde.phpstan-vscode",
-        "ms-vscode.vscode-chat-customizations-evaluations"
+        "SanderRonde.phpstan-vscode"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
