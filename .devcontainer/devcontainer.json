@@ -19,7 +19,8 @@
         "neilbrayfield.php-docblocker",
         "anthropic.claude-vscode",
         "ms-vscode.live-server",
-        "SanderRonde.phpstan-vscode"
+        "SanderRonde.phpstan-vscode",
+        "anthropic.claude-code"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
@@ -44,7 +45,8 @@
     "ghcr.io/devcontainers/features/node:2": {
       "version": "lts"
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
   },
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly",
