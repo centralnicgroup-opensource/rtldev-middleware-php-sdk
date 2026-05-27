@@ -34,9 +34,11 @@ execute_with_indent() {
         if [[ -n "${output}" ]]; then
             if [[ "${strip_formatting}" == "true" ]]; then
                 # Strip ANSI escape sequences (including tput formatting) but keep indentation
+                # shellcheck disable=SC2001
                 echo "${output}" | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/\x1b\[[0-9]*[A-Za-z]//g' | sed 's/^/     /'
             else
                 # Add indentation normally
+                # shellcheck disable=SC2001
                 echo "${output}" | sed 's/^/     /'
             fi
         fi
@@ -46,8 +48,10 @@ execute_with_indent() {
         log_error "Command failed with exit code ${exit_code}"
         if [[ -n "${output}" ]]; then
             if [[ "${strip_formatting}" == "true" ]]; then
+                # shellcheck disable=SC2001
                 echo "${output}" | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/\x1b\[[0-9]*[A-Za-z]//g' | sed 's/^/     /' >&2
             else
+                # shellcheck disable=SC2001
                 echo "${output}" | sed 's/^/     /' >&2
             fi
         fi
@@ -90,6 +94,7 @@ setup_pnpm_global_packages() {
         if [[ ! -f ~/.zshrc ]] || ! grep -q "pnpm" ~/.zshrc; then
             execute_with_indent "pnpm setup" "Setting up pnpm for current user"
         fi
+        # shellcheck disable=SC1090
         [[ -f ~/.zshrc ]] && ( set +u; source ~/.zshrc ) 2>/dev/null
     fi
 
@@ -210,7 +215,8 @@ main() {
     # Store original working directory
     local original_dir
     original_dir=$(pwd)
-    # Ensure we return to original directory on exit
+    # Ensure we return to original directory on exit (early expansion intentional)
+    # shellcheck disable=SC2064
     trap "cd '${original_dir}'" EXIT
 
     # install pnpm
