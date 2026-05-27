@@ -1,1 +1,3 @@
+# Skip hooks in CI — semantic-release commits would otherwise trigger lint-staged
+[ "$CI" = "true" ] && exit 0
 pnpm exec lint-staged
