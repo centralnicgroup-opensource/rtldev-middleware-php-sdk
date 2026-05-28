@@ -1,5 +1,34 @@
 {
   "permissions": {
-    "allow": ["Bash(npm show *)"]
+    "allow": [
+      "Bash(composer test)",
+      "Bash(composer test *)",
+      "Bash(composer lint)",
+      "Bash(composer lint *)",
+      "Bash(composer codefix)",
+      "Bash(composer phpstan)",
+      "Bash(composer show *)",
+      "Bash(composer install)",
+      "Bash(composer phpcs)",
+      "Bash(composer psalm)",
+      "Bash(composer rector)",
+      "Bash(composer rector:fix)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr create *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh run view *)",
+      "Bash(gh run list *)",
+      "Bash(gh api *)",
+      "Bash(gh repo view *)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git branch *)",
+      "Bash(git show *)",
+      "Bash(git stash list *)"
+    ]
   }
 }
