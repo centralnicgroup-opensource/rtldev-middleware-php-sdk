@@ -158,8 +158,6 @@ class Client extends CNRClient
                 "Content-Length: " . strlen($data),
                 "Connection: keep-alive"
             ],
-            CURLOPT_SSL_VERIFYPEER => 0, // IBS / Moniker only
-            CURLOPT_SSL_VERIFYHOST => 0, // IBS / Moniker only
             CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 // IBS / Moniker only
         ] + $this->curlopts);
 
