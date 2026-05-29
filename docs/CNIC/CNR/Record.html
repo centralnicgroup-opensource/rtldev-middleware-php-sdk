@@ -86,7 +86,7 @@
 
     
     <p>        class
-    <strong>Record</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php">View source</a>)
+    <strong>Record</strong>        implements        <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php">View source</a>)
 </p>
 
         
@@ -142,7 +142,7 @@ e.g.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php#L46">at line 46</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php#L48">at line 48</a></div>
         <code>                    
     <strong>__construct</strong>(array $data)
         </code>
@@ -181,7 +181,7 @@ e.g.</p></p>                <p><pre><code>$data = [
             </div>
                     <div class="method-item">
                     <h3 id="method_getData">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php#L57">at line 57</a></div>
         <code>                    array
     <strong>getData</strong>()
         </code>
@@ -201,7 +201,7 @@ e.g.</p></p>                <p><pre><code>$data = [
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td></td>
+            <td><p>row data</p></td>
         </tr>
     </table>
 
@@ -214,7 +214,7 @@ e.g.</p></p>                <p><pre><code>$data = [
             </div>
                     <div class="method-item">
                     <h3 id="method_getDataByKey">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php#L64">at line 64</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Record.php#L67">at line 67</a></div>
         <code>                    mixed
     <strong>getDataByKey</strong>(string $key)
         </code>
@@ -244,7 +244,7 @@ e.g.</p></p>                <p><pre><code>$data = [
                     <table class="table table-condensed">
         <tr>
             <td>mixed</td>
-            <td></td>
+            <td><p>row data for given column or null if column does not exist</p></td>
         </tr>
     </table>
 

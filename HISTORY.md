@@ -1,3 +1,12 @@
+## [14.1.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.1.1...v14.1.2) (2026-05-29)
+
+
+### Bug Fixes
+
+* **devcontainer:** install PHP intl extension via system package ([e1cdde3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e1cdde374612c91a14bb8a798fd1e8783b538b06))
+* **lint:** add missing #[\Override] on interface-implementing methods ([ccc6b0f](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ccc6b0f75c97da945408906f0c57f1e221950e9e))
+* **security:** remove SSL verification bypass in IBS\Client ([3e4d7a5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/3e4d7a50ced046441fe70d2d073fbac73f121221))
+
 ## [14.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.1.0...v14.1.1) (2026-05-27)
 
 
