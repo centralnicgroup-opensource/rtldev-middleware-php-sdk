@@ -16,6 +16,7 @@ RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get -y install --no-install-recommends \
        wget jq git zip unzip curl \
+       php8.3-intl \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*

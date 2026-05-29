@@ -433,7 +433,7 @@ final class ClientTest extends TestCase
             //"نامه\u200Cای.de"           => "xn--mgba3gch31f.de"
         ];
         foreach ($idns as $idn => $ace) {
-            $tmp = idn_to_ascii(
+            $tmp = \idn_to_ascii(
                 $idn,
                 (bool)preg_match("/\.(art|be|ca|de|fr|pm|re|swiss|tf|wf|yt)\.?$/i", $idn) ?
                     IDNA_NONTRANSITIONAL_TO_ASCII :

@@ -40,7 +40,7 @@
     "ghcr.io/devcontainers/features/php:1": {
       "version": "8.3",
       "installComposer": true,
-      "extensions": "intl, xdebug, apcu, gd, xml, mbstring, zip, curl"
+      "extensions": "xdebug"
     },
     "ghcr.io/devcontainers/features/node:2": {
       "version": "lts"
