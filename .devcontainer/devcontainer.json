@@ -7,6 +7,7 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/rtldev-middleware-php-sdk,type=bind,consistency=cached",
   "workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
   "shutdownAction": "stopContainer",
+  "initializeCommand": "mkdir -p ${localEnv:HOME}/.claude",
   "customizations": {
     "vscode": {
       "extensions": [
