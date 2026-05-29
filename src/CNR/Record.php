@@ -9,13 +9,15 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
+use CNIC\RecordInterface;
+
 /**
  * CNR Record
  *
  * @psalm-api
  * @package CNIC\CNR
  */
-class Record // implements \CNIC\RecordInterface
+class Record implements RecordInterface
 {
     /**
      * row data container

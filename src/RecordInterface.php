@@ -27,14 +27,14 @@ interface RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @param array<string> $data data object
+     * @param array<string, mixed> $data data object
      */
     public function __construct(array $data);
 
     /**
      * Get row data
      *
-     * @return array<string> row data
+     * @return array<string, mixed> row data
      */
     public function getData(): array;
 
@@ -42,9 +42,9 @@ interface RecordInterface
      * Get row data for given column
      *
      * @param string $key column name
-     * @return string|null row data for given column or null if column does not exist
+     * @return mixed row data for given column or null if column does not exist
      */
-    public function getDataByKey(string $key): ?string;
+    public function getDataByKey(string $key): mixed;
 
     /**
      * Check if record has data for given column

@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
-use CNIC\CNR\Response;
 use CNIC\LoggerInterface;
+use CNIC\ResponseInterface;
 
 /**
  * CNR Logger
@@ -22,11 +22,11 @@ final class Logger implements LoggerInterface
     /**
      * output/log given data
      * @param string $post post request data in string format
-     * @param Response $r Response to log
+     * @param ResponseInterface $r Response to log
      * @param string|null $error error message (optional)
      */
     #[\Override]
-    public function log($post, Response $r, ?string $error = null): void
+    public function log(string $post, ResponseInterface $r, ?string $error = null): void
     {
          echo implode("\n", [
             print_r($r->getCommand(), true),

@@ -42,7 +42,7 @@ interface ColumnInterface
      *
      * @param int $idx data index
      */
-    public function getDataByIndex(int $idx): ?string;
+    public function getDataByIndex(int $idx): mixed;
 
     /**
      * Check if column has a given data index

@@ -17,6 +17,6 @@ use CNIC\CNR\Record as CNRRecord;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Record extends CNRRecord // implements \CNIC\RecordInterface
+class Record extends CNRRecord
 {
 }

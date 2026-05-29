@@ -57,7 +57,7 @@ interface ResponseInterface
 
     /**
      * Get API response as Hash
-     * @return array<string> API response hash
+     * @return array<string, mixed> API response hash
      */
     public function getHash(): array;
 
@@ -103,7 +103,7 @@ interface ResponseInterface
 
     /**
      * Add a record to the record list
-     * @param array<string> $h row hash data
+     * @param array<string, mixed> $h row hash data
      */
     public function addRecord(array $h): ResponseInterface;
 
@@ -172,7 +172,7 @@ interface ResponseInterface
 
     /**
      * Get Response as List Hash including useful meta data for tables
-     * @return array<string> hash including list meta data and array of rows in hash notation
+     * @return array<mixed> hash including list meta data and array of rows in hash notation
      */
     public function getListHash(): array;
 
@@ -196,7 +196,7 @@ interface ResponseInterface
 
     /**
      * Get object containing all paging data
-     * @return array<string> paginator data
+     * @return array<string, int|null> paginator data
      */
     public function getPagination(): array;
 
