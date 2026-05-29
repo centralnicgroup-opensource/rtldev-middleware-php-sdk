@@ -9,9 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Response;
-use CNIC\IBS\Response as IBSResponse;
 use CNIC\LoggerInterface;
+use CNIC\ResponseInterface;
 
 /**
  * IBS Logger
@@ -24,20 +23,15 @@ final class Logger implements LoggerInterface
      * Output/log given data
      *
      * @param string $post Post request data in string format
-     * @param Response $r Response to log
+     * @param ResponseInterface $r Response to log
      * @param string|null $error Error message (optional)
      */
     #[\Override]
-    public function log(string $post, Response $r, ?string $error = null): void
+    public function log(string $post, ResponseInterface $r, ?string $error = null): void
     {
-        $requestUrl = '';
-        if ($r instanceof IBSResponse) {
-            $requestUrl = $r->getRequestURL();
-        }
-
         echo (
             "R E Q U E S T\n" .
-            "\tAPI:  " . $requestUrl . "\n" .
+            "\tAPI:  " . $r->getRequestURL() . "\n" .
             "\tPOST: " . $post . "\n\n" .
             "R E S P O N S E\n" .
             ($error !== null && $error !== '' ? "\tHTTP communication failed: " . $error . "\n" : "") .

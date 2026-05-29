@@ -9,13 +9,15 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
+use CNIC\ColumnInterface;
+
 /**
  * CNR Column
  *
  * @psalm-api
  * @package CNIC\CNR
  */
-class Column // implements \CNIC\ColumnInterface
+class Column implements ColumnInterface
 {
     /**
      * count of column data entries

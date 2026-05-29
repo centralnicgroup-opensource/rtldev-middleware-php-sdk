@@ -22,7 +22,7 @@ use CNIC\IBS\ResponseTranslator as RT;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Response extends CNRResponse // implements \CNIC\ResponseInterface
+class Response extends CNRResponse
 {
     /**
      * Regex for pagination related column keys
@@ -203,7 +203,7 @@ class Response extends CNRResponse // implements \CNIC\ResponseInterface
      * @return $this
      */
     #[\Override]
-    public function addColumn(string $key, array $data)
+    public function addColumn(string $key, array $data): static
     {
         $col = new Column($key, $data);
         $this->columns[] = $col;
@@ -217,7 +217,7 @@ class Response extends CNRResponse // implements \CNIC\ResponseInterface
      * @return $this
      */
     #[\Override]
-    public function addRecord(array $h)
+    public function addRecord(array $h): static
     {
         $this->records[] = new Record($h);
         return $this;
@@ -511,7 +511,7 @@ class Response extends CNRResponse // implements \CNIC\ResponseInterface
      * @return $this
      */
     #[\Override]
-    public function rewindRecordList()
+    public function rewindRecordList(): static
     {
         $this->recordIndex = 0;
         return $this;

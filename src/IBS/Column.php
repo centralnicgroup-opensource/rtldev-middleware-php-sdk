@@ -17,6 +17,6 @@ use CNIC\CNR\Column as CNRColumn;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Column extends CNRColumn // implements \CNIC\ColumnInterface
+class Column extends CNRColumn
 {
 }

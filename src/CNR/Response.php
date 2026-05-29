@@ -13,6 +13,7 @@ use CNIC\CNR\Column;
 use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
 use CNIC\CommandFormatter;
+use CNIC\ResponseInterface;
 
 /**
  * CNR Response
@@ -20,7 +21,7 @@ use CNIC\CommandFormatter;
  * @psalm-api
  * @package CNIC\CNR
  */
-class Response // implements \CNIC\ResponseInterface
+class Response implements ResponseInterface
 {
     /**
      * The API Command used within this request
@@ -186,7 +187,7 @@ class Response // implements \CNIC\ResponseInterface
 
     /**
      * Get API response as Hash
-     * @return array<mixed>
+     * @return array<string, mixed>
      */
     public function getHash(): array
     {
@@ -245,7 +246,7 @@ class Response // implements \CNIC\ResponseInterface
      * @param string[] $data array of column data
      * @return $this
      */
-    public function addColumn(string $key, array $data)
+    public function addColumn(string $key, array $data): static
     {
         $col = new Column($key, $data);
         $this->columns[] = $col;
@@ -258,7 +259,7 @@ class Response // implements \CNIC\ResponseInterface
      * @param array<string,mixed> $h row hash data
      * @return $this
      */
-    public function addRecord(array $h)
+    public function addRecord(array $h): static
     {
         $this->records[] = new Record($h);
         return $this;
@@ -578,7 +579,7 @@ class Response // implements \CNIC\ResponseInterface
      * Reset index in record list back to zero
      * @return $this
      */
-    public function rewindRecordList()
+    public function rewindRecordList(): static
     {
         $this->recordIndex = 0;
         return $this;
