@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f474d5ba47b0e3a36aed9dd280e3edb8",
+    "content-hash": "a7e278f0644d30d9fe2fecff1c152593",
     "packages": [
         {
             "name": "centralnic-reseller/idn-converter",
@@ -5291,7 +5291,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.3.0"
+        "php": ">=8.3.0",
+        "ext-curl": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
