@@ -420,7 +420,7 @@ class Client
             CURLOPT_HTTPHEADER      => [
                 "Expect:",
                 "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
-                "Content-Length: " . strlen($data),
+                "Content-Length: " . (string)strlen($data),
                 "Connection: keep-alive"
             ]
         ] + $this->curlopts);

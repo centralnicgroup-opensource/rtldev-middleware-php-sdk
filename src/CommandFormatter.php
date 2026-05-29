@@ -47,7 +47,7 @@ final class CommandFormatter
                 $newKey = $toupper ? \strtoupper($key) : $key;
                 if (is_array($val)) {
                     foreach ($val as $idx => $v) {
-                        $newcmd[$newKey . $idx] = preg_replace("/\r|\n/", "", (string)$v) ?? (string)$v;
+                        $newcmd[$newKey . (string)$idx] = preg_replace("/\r|\n/", "", (string)$v) ?? (string)$v;
                     }
                 } else {
                     $newcmd[$newKey] = preg_replace("/\r|\n/", "", (string)$val) ?? (string)$val;

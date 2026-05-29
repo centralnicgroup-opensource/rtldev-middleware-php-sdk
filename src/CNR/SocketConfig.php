@@ -115,7 +115,7 @@ class SocketConfig
             $params["persistent"] = 1;
         }
         if (strlen($this->user) !== 0) {
-            $params[$this->parameters["command"]] .= "\nSUBUSER={$this->user}";
+            $params[$this->parameters["command"]] = (string)$params[$this->parameters["command"]] . "\nSUBUSER={$this->user}";
         }
         return http_build_query($params); // RFC1738 x-www-form-urlencoded as default
     }
