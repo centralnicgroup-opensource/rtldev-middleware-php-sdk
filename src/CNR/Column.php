@@ -51,6 +51,7 @@ class Column implements ColumnInterface
     /**
      * Get column name
      */
+    #[\Override]
     public function getKey(): string
     {
         return $this->key;
@@ -60,6 +61,7 @@ class Column implements ColumnInterface
      * Get column data
      * @return string[]
      */
+    #[\Override]
     public function getData(): array
     {
         return $this->data;
@@ -69,6 +71,7 @@ class Column implements ColumnInterface
      * Get column data at given index
      * @param integer $idx data index
      */
+    #[\Override]
     public function getDataByIndex(int $idx): mixed
     {
         return $this->hasDataIndex($idx) ? $this->data[$idx] : null;
