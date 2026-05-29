@@ -54,6 +54,7 @@ class Record implements RecordInterface
      * get row data
      * @return array<string,mixed>
      */
+    #[\Override]
     public function getData(): array
     {
         return $this->data;
@@ -63,6 +64,7 @@ class Record implements RecordInterface
      * get row data for given column
      * @param string $key column name
      */
+    #[\Override]
     public function getDataByKey(string $key): mixed
     {
         if ($this->hasData($key)) {

@@ -145,6 +145,7 @@ class Response implements ResponseInterface
     /**
      * Get Request URL
      */
+    #[\Override]
     public function getRequestURL(): string
     {
         return $this->requestUrl;
@@ -153,6 +154,7 @@ class Response implements ResponseInterface
     /**
      * Get API response code
      */
+    #[\Override]
     public function getCode(): int
     {
         return intval($this->hash["CODE"], 10);
@@ -161,6 +163,7 @@ class Response implements ResponseInterface
     /**
      * Get API response description
      */
+    #[\Override]
     public function getDescription(): string
     {
         return $this->hash["DESCRIPTION"];
@@ -169,6 +172,7 @@ class Response implements ResponseInterface
     /**
      * Get Plain API response
      */
+    #[\Override]
     public function getPlain(): string
     {
         return $this->raw;
@@ -177,6 +181,7 @@ class Response implements ResponseInterface
     /**
      * Get Queuetime of API response
      */
+    #[\Override]
     public function getQueuetime(): float
     {
         if (array_key_exists("QUEUETIME", $this->hash)) {
@@ -189,6 +194,7 @@ class Response implements ResponseInterface
      * Get API response as Hash
      * @return array<string, mixed>
      */
+    #[\Override]
     public function getHash(): array
     {
         return $this->hash;
@@ -197,6 +203,7 @@ class Response implements ResponseInterface
     /**
      * Get Runtime of API response
      */
+    #[\Override]
     public function getRuntime(): float
     {
         if (array_key_exists("RUNTIME", $this->hash)) {
@@ -209,6 +216,7 @@ class Response implements ResponseInterface
      * Check if current API response represents an error case
      * API response code is an 5xx code
      */
+    #[\Override]
     public function isError(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "5";
@@ -218,6 +226,7 @@ class Response implements ResponseInterface
      * Check if current API response represents a success case
      * API response code is an 2xx code
      */
+    #[\Override]
     public function isSuccess(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "2";
@@ -227,6 +236,7 @@ class Response implements ResponseInterface
      * Check if current API response represents a temporary error case
      * API response code is an 4xx code
      */
+    #[\Override]
     public function isTmpError(): bool
     {
         return substr($this->hash["CODE"], 0, 1) === "4";
@@ -235,6 +245,7 @@ class Response implements ResponseInterface
     /**
      * Check if current operation is returned as pending
      */
+    #[\Override]
     public function isPending(): bool
     {
         return isset($this->hash["PENDING"]) && $this->hash["PENDING"] === "1";
@@ -246,6 +257,7 @@ class Response implements ResponseInterface
      * @param string[] $data array of column data
      * @return $this
      */
+    #[\Override]
     public function addColumn(string $key, array $data): static
     {
         $col = new Column($key, $data);
@@ -259,6 +271,7 @@ class Response implements ResponseInterface
      * @param array<string,mixed> $h row hash data
      * @return $this
      */
+    #[\Override]
     public function addRecord(array $h): static
     {
         $this->records[] = new Record($h);
@@ -269,6 +282,7 @@ class Response implements ResponseInterface
      * Get column by column name
      * @param string $key column name
      */
+    #[\Override]
     public function getColumn(string $key): ?Column
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
@@ -279,6 +293,7 @@ class Response implements ResponseInterface
      * @param string $colkey column name
      * @param int $index column data index
      */
+    #[\Override]
     public function getColumnIndex(string $colkey, int $index): mixed
     {
         $col = $this->getColumn($colkey);
@@ -290,6 +305,7 @@ class Response implements ResponseInterface
      * @param bool $filterPaginationKeys strip pagination columns
      * @return string[]
      */
+    #[\Override]
     public function getColumnKeys(bool $filterPaginationKeys = false): array
     {
         if ($filterPaginationKeys) {
@@ -304,6 +320,7 @@ class Response implements ResponseInterface
      * Get List of Columns
      * @return Column[]
      */
+    #[\Override]
     public function getColumns(): array
     {
         return $this->columns;
@@ -313,6 +330,7 @@ class Response implements ResponseInterface
      * Get Command used in this request
      * @return array<string>
      */
+    #[\Override]
     public function getCommand(): array
     {
         return CommandFormatter::getSortedCommand($this->command);
@@ -321,6 +339,7 @@ class Response implements ResponseInterface
     /**
      * Get Command used in this request in plain text format
      */
+    #[\Override]
     public function getCommandPlain(): string
     {
         return CommandFormatter::formatCommand($this->getCommand());
@@ -329,6 +348,7 @@ class Response implements ResponseInterface
     /**
      * Get Page Number of current List Query
      */
+    #[\Override]
     public function getCurrentPageNumber(): ?int
     {
         $first = $this->getFirstRecordIndex();
@@ -342,6 +362,7 @@ class Response implements ResponseInterface
     /**
      * Get Record of current record index
      */
+    #[\Override]
     public function getCurrentRecord(): ?Record
     {
         return $this->hasCurrentRecord() ? $this->records[$this->recordIndex] : null;
@@ -350,6 +371,7 @@ class Response implements ResponseInterface
     /**
      * Get Index of first row in this response
      */
+    #[\Override]
     public function getFirstRecordIndex(): ?int
     {
         $col = $this->getColumn("FIRST");
@@ -366,6 +388,7 @@ class Response implements ResponseInterface
     /**
      * Get last record index of the current list query
      */
+    #[\Override]
     public function getLastRecordIndex(): ?int
     {
         $col = $this->getColumn("LAST");
@@ -386,6 +409,7 @@ class Response implements ResponseInterface
      * Get Response as List Hash including useful meta data for tables
      * @return array<mixed>
      */
+    #[\Override]
     public function getListHash(): array
     {
         $lh = [];
@@ -410,6 +434,7 @@ class Response implements ResponseInterface
     /**
      * Get next record in record list
      */
+    #[\Override]
     public function getNextRecord(): ?Record
     {
         if ($this->hasNextRecord()) {
@@ -421,6 +446,7 @@ class Response implements ResponseInterface
     /**
      * Get Page Number of next list query
      */
+    #[\Override]
     public function getNextPageNumber(): ?int
     {
         $cp = $this->getCurrentPageNumber();
@@ -435,6 +461,7 @@ class Response implements ResponseInterface
     /**
      * Get the number of pages available for this list query
      */
+    #[\Override]
     public function getNumberOfPages(): int
     {
         $t = $this->getRecordsTotalCount();
@@ -449,6 +476,7 @@ class Response implements ResponseInterface
      * Get object containing all paging data
      * @return array<string,int|null>
      */
+    #[\Override]
     public function getPagination(): array
     {
         return [
@@ -467,6 +495,7 @@ class Response implements ResponseInterface
     /**
      * Get Page Number of previous list query
      */
+    #[\Override]
     public function getPreviousPageNumber(): ?int
     {
         $cp = $this->getCurrentPageNumber();
@@ -483,6 +512,7 @@ class Response implements ResponseInterface
     /**
      * Get previous record in record list
      */
+    #[\Override]
     public function getPreviousRecord(): ?Record
     {
         if ($this->hasPreviousRecord()) {
@@ -495,6 +525,7 @@ class Response implements ResponseInterface
      * Get Record at given index
      * @param int $idx record index
      */
+    #[\Override]
     public function getRecord(int $idx): ?Record
     {
         if ($idx >= 0 && $this->getRecordsCount() > $idx) {
@@ -507,6 +538,7 @@ class Response implements ResponseInterface
      * Get all Records
      * @return Record[]
      */
+    #[\Override]
     public function getRecords(): array
     {
         return $this->records;
@@ -515,6 +547,7 @@ class Response implements ResponseInterface
     /**
      * Get count of rows in this response
      */
+    #[\Override]
     public function getRecordsCount(): int
     {
         return count($this->records);
@@ -523,6 +556,7 @@ class Response implements ResponseInterface
     /**
      * Get total count of records available for the list query
      */
+    #[\Override]
     public function getRecordsTotalCount(): int
     {
         $col = $this->getColumn("TOTAL");
@@ -539,6 +573,7 @@ class Response implements ResponseInterface
      * Get limit(ation) setting of the current list query
      * This is the count of requested rows
      */
+    #[\Override]
     public function getRecordsLimitation(): int
     {
         $col = $this->getColumn("LIMIT");
@@ -554,6 +589,7 @@ class Response implements ResponseInterface
     /**
      * Check if this list query has a next page
      */
+    #[\Override]
     public function hasNextPage(): bool
     {
         $cp = $this->getCurrentPageNumber();
@@ -566,6 +602,7 @@ class Response implements ResponseInterface
     /**
      * Check if this list query has a previous page
      */
+    #[\Override]
     public function hasPreviousPage(): bool
     {
         $cp = $this->getCurrentPageNumber();
@@ -579,6 +616,7 @@ class Response implements ResponseInterface
      * Reset index in record list back to zero
      * @return $this
      */
+    #[\Override]
     public function rewindRecordList(): static
     {
         $this->recordIndex = 0;
