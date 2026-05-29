@@ -29,21 +29,8 @@ class Client extends CNRClient
      */
     public function __construct(string $path = "")
     {
-        $contents = file_get_contents($path);
-        if ($contents === false) {
-            $contents = "";
-        }
-        $settings = json_decode($contents, true);
-        if (is_null($settings) || $settings === false || $settings === true) {
-            $settings = [];
-        }
-        $this->settings = $settings;
-        $this->socketURL = "";
-        $this->debugMode = false;
-        $this->ua = "";
-        $this->socketConfig = new SocketConfig($this->settings["parameters"]);
-        $this->useLIVESystem();
-        $this->setDefaultLogger();
+        parent::__construct($path);
+        $this->socketConfig = new SocketConfig($this->settings["parameters"] ?? []);
     }
 
     /**
