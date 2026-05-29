@@ -154,9 +154,14 @@ setup_php_config() {
     local php_scan_dir
     php_scan_dir="$(php --ini 2>/dev/null | grep -m1 'Scan for additional' | awk -F': ' '{print $2}')" || true
     if [[ -n "$php_scan_dir" && -d "$php_scan_dir" ]]; then
-        if [[ -f /opt/php-config/zz-custom.ini ]]; then
-            sudo cp /opt/php-config/zz-custom.ini "$php_scan_dir/zz-custom.ini"
-            log_success "PHP custom config applied to $php_scan_dir"
+        local copied=0
+        for ini_file in /opt/php-config/*.ini; do
+            [[ -f "$ini_file" ]] || continue
+            sudo cp "$ini_file" "$php_scan_dir/$(basename "$ini_file")"
+            (( copied++ )) || true
+        done
+        if (( copied > 0 )); then
+            log_success "PHP custom config applied to $php_scan_dir ($copied file(s))"
         fi
     else
         log_error "Could not determine PHP scan directory"
