@@ -15,7 +15,7 @@ namespace CNIC;
  *
  * @package CNIC
  */
-class HttpTransport
+final class HttpTransport
 {
     private ?\CurlHandle $handle = null;
 
@@ -67,9 +67,6 @@ class HttpTransport
      */
     public function close(): void
     {
-        if ($this->handle instanceof \CurlHandle) {
-            curl_close($this->handle);
-            $this->handle = null;
-        }
+        $this->handle = null; // CurlHandle freed automatically by GC (curl_close deprecated since PHP 8.5)
     }
 }
