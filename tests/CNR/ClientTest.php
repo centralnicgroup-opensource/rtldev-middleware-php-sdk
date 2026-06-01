@@ -138,7 +138,7 @@ final class ClientTest extends TestCase
     public function testGetUrl(): void
     {
         $url = self::$cl->getURL();
-        $this->assertEquals($url, self::$cl->settings["env"]["live"]["url"]);
+        $this->assertEquals($url, self::$cl->getSettings()["env"]["live"]["url"]);
     }
 
     public function testGetUserAgent(): void
@@ -236,16 +236,17 @@ final class ClientTest extends TestCase
 
     public function testSetRemoteIpAddressSetThrows(): void
     {
-        unset(self::$cl->settings["parameters"]["ipfilter"]);
+        $cl = new SessionClient(); // no config → no ipfilter in parameters → feature unsupported
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("Feature `IP Filter` not supported");
-        self::$cl->setRemoteIPAddress("10.10.10.10");
+        $cl->setRemoteIPAddress("10.10.10.10");
     }
 
     public function testSetRemoteIpAddressSet(): void
     {
+        $cl = new SessionClient(); // no config → no ipfilter in parameters → feature unsupported
         $this->expectException(\Exception::class);
-        self::$cl->setRemoteIPAddress("10.10.10.10");
+        $cl->setRemoteIPAddress("10.10.10.10");
     }
 
     public function testSetRemoteIpAddressReset(): void
@@ -350,9 +351,9 @@ final class ClientTest extends TestCase
 
     public function testRequestCurlExecFail2(): void
     {
-        self::$cl->settings["env"]["ote"]["url"] = "http://gregeragregaegaegag.com/geragaerg/call.cgi";
         self::$cl->setCredentials(self::$user, self::$pw)
-            ->useOTESystem();
+            ->useOTESystem()
+            ->setURL("http://gregeragregaegaegag.com/geragaerg/call.cgi");
         $r = self::$cl->request([
             "COMMAND" => "StatusAccount"
         ]);
@@ -364,16 +365,8 @@ final class ClientTest extends TestCase
 
     public function testRequestFlattenCommand(): void
     {
-        $cfgpath = implode(DIRECTORY_SEPARATOR, ["src", "CNR", "config.json"]);
-        $file = file_get_contents($cfgpath);
-        $this->assertNotEquals(false, $file);
-        // @phpstan-ignore-next-line
-        $orgsettings = json_decode($file, true);
-        // restore
-        self::$cl->settings["env"]["ote"]["url"] = $orgsettings["env"]["ote"]["url"];
-
         self::$cl->setCredentials(self::$user, self::$pw)
-            ->useOTESystem();
+            ->useOTESystem(); // re-reads the correct OTE URL from settings
         $r = self::$cl->request([
             "COMMAND" => "CheckDomains",
             "DOMAIN" => ["example.com", "example.net"]
