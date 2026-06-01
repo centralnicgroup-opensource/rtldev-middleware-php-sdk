@@ -64,6 +64,7 @@ abstract class AbstractClient
 
     /**
      * logger instance for debug mode
+     * @psalm-suppress PropertyNotSetInConstructor — set via abstract setDefaultLogger() called in __construct()
      */
     protected LoggerInterface $logger;
 
