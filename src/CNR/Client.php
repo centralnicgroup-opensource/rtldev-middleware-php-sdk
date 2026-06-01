@@ -33,7 +33,7 @@ class Client
      * registrar api settings
      * @var array<mixed>
      */
-    public array $settings;
+    protected array $settings;
 
     /**
      * API connection url
@@ -69,7 +69,7 @@ class Client
     /**
      * is connected to OT&E
      */
-    public bool $isOTE = false;
+    protected bool $isOTE = false;
 
     /**
      * curl handle cache
@@ -521,6 +521,23 @@ class Client
             $this->setURL($url);
         }
         return $this;
+    }
+
+    /**
+     * Get registrar API settings
+     * @return array<mixed>
+     */
+    public function getSettings(): array
+    {
+        return $this->settings;
+    }
+
+    /**
+     * Check whether the client is connected to the OT&E system
+     */
+    public function isOTE(): bool
+    {
+        return $this->isOTE;
     }
 
     /**
