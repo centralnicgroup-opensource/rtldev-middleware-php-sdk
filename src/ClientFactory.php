@@ -23,10 +23,10 @@ class ClientFactory
      * Returns Client Instance by configuration
      *
      * @param array<mixed> $params Configuration settings
-     * @param Logger|null $logger Logger Instance (optional)
+     * @param LoggerInterface|null $logger Logger Instance (optional)
      * @throws \Exception
      */
-    public static function getClient(array $params, ?Logger $logger = null): SessionClient|IBSSessionClient
+    public static function getClient(array $params, ?LoggerInterface $logger = null): SessionClient|IBSSessionClient
     {
         $cl = match (Registrar::tryFrom(strtoupper($params["registrar"]))) {
             Registrar::CNR, Registrar::CNIC       => new SessionClient(),
