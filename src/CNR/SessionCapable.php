@@ -52,7 +52,7 @@ trait SessionCapable
      * @param array<string,mixed> $session php session instance ($_SESSION)
      * @return $this
      */
-    public function saveSession(array &$session)
+    public function saveSession(array &$session): static
     {
         $session["socketcfg"] = [
             "login"   => $this->socketConfig->getLogin(),
@@ -67,7 +67,7 @@ trait SessionCapable
      * @param array<string,mixed> $session php session object ($_SESSION)
      * @return $this
      */
-    public function reuseSession(array &$session)
+    public function reuseSession(array &$session): static
     {
         if (isset($session["socketcfg"]["login"], $session["socketcfg"]["session"])) {
             $this->setCredentials($session["socketcfg"]["login"]);

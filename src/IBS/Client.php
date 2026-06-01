@@ -44,18 +44,6 @@ class Client extends AbstractClient
     }
 
     /**
-     * Serialize given command for POST request including connection configuration data
-     *
-     * @param array<string,mixed> $cmd API command to encode
-     * @param bool $secured secure password (when used for output)
-     */
-    #[\Override]
-    public function getPOSTData(array $cmd, bool $secured = false): string
-    {
-        return $this->socketConfig->getPOSTData($cmd, $secured);
-    }
-
-    /**
      * Get the API Session ID that is currently set
      * Note: not supported.
      *
