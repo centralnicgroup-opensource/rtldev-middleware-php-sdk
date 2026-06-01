@@ -384,25 +384,31 @@ class Client
      */
     public function request(array $cmd = []): Response
     {
-        // flatten nested api command bulk parameters and sort them
         $mycmd = CommandFormatter::flattenCommand($cmd);
-        // auto convert umlaut names to punycode
         $mycmd = $this->autoIDNConvert($mycmd);
-        // request command to API
-        $cfg = [
-            "CONNECTION_URL" => $this->socketURL
-        ];
+        $cfg = ["CONNECTION_URL" => $this->socketURL];
         $data = $this->getPOSTData($mycmd);
+        [$raw, $error] = $this->executeCurl($data, $cfg);
+        $response = new Response($raw, $mycmd, $cfg, $this->context);
+        if ($this->debugMode) {
+            $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
+        }
+        return $response;
+    }
 
+    /**
+     * Initialise the cURL handle if needed, configure options, execute and return the result.
+     * @param string $data serialized POST payload
+     * @param array<string> $cfg connection config (must contain CONNECTION_URL)
+     * @param array<int, mixed> $extraCurlOpts additional cURL options merged over the defaults
+     * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
+     */
+    protected function executeCurl(string $data, array $cfg, array $extraCurlOpts = []): array
+    {
         if (!$this->chandle instanceof \CurlHandle) {
             $tmp = curl_init();
             if ($tmp === false) {
-                $r = new Response("nocurl", $mycmd, $cfg, $this->context);
-                if ($this->debugMode) {
-                    $secured = $this->getPOSTData($mycmd, true);
-                    $this->logger->log($secured, $r, "CURL for PHP missing.");
-                }
-                return $r;
+                return ["nocurl", "CURL for PHP missing."];
             }
             $this->chandle = $tmp;
         }
@@ -423,21 +429,15 @@ class Client
                 "Content-Length: " . (string)strlen($data),
                 "Connection: keep-alive"
             ]
-        ] + $this->curlopts);
+        ] + $extraCurlOpts + $this->curlopts);
 
         $r = curl_exec($this->chandle);
         \assert(\is_string($r) || $r === false);
-        $error = null;
         if ($r === false) {
             $error = curl_error($this->chandle);
-            $r = "httperror|" . $error;
+            return ["httperror|" . $error, $error];
         }
-        $response = new Response($r, $mycmd, $cfg, $this->context);
-        if ($this->debugMode) {
-            $secured = $this->getPOSTData($mycmd, true);
-            $this->logger->log($secured, $response, $error);
-        }
-        return $response;
+        return [$r, null];
     }
 
     /**
