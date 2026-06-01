@@ -104,61 +104,16 @@ class Client extends CNRClient
      * @param string $path Path to the API endpoint
      */
     #[\Override]
-    public function request(array $cmd = [], $path = ""): Response
+    public function request(array $cmd = [], string $path = ""): Response
     {
-        // flatten nested api command bulk parameters and sort them
         $mycmd = CommandFormatter::flattenCommand($cmd + ["ResponseFormat" => "JSON"], false);
-        // auto convert umlaut names to punycode
         $mycmd = $this->autoIDNConvert($mycmd);
-        // request command to API
-        $cfg = [
-            "CONNECTION_URL" => $this->socketURL . $path
-        ];
+        $cfg = ["CONNECTION_URL" => $this->socketURL . $path];
         $data = $this->getPOSTData($mycmd);
-
-        if (!$this->chandle instanceof \CurlHandle) {
-            $tmp = curl_init();
-            if ($tmp === false) {
-                $r = new Response("nocurl", $mycmd, $cfg, $this->context);
-                if ($this->debugMode) {
-                    $secured = $this->getPOSTData($mycmd, true);
-                    $this->logger->log($secured, $r, "CURL for PHP missing.");
-                }
-                return $r;
-            }
-            $this->chandle = $tmp;
-        }
-
-        curl_setopt_array($this->chandle, [
-            // CURLOPT_VERBOSE         => $this->debugMode,
-            CURLOPT_URL             => $cfg["CONNECTION_URL"],
-            CURLOPT_CONNECTTIMEOUT  => 30, // 30s, 300s by default
-            CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
-            CURLOPT_POST            => 1,
-            CURLOPT_HEADER          => 0,
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_POSTFIELDS      => $data,
-            CURLOPT_USERAGENT       => $this->getUserAgent(),
-            CURLOPT_HTTPHEADER      => [
-                "Expect:",
-                "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
-                "Content-Length: " . (string)strlen($data),
-                "Connection: keep-alive"
-            ],
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 // IBS / Moniker only
-        ] + $this->curlopts);
-
-        $r = curl_exec($this->chandle);
-        \assert(\is_string($r) || $r === false);
-        $error = null;
-        if ($r === false) {
-            $error = curl_error($this->chandle);
-            $r = "httperror|" . $error;
-        }
-        $response = new Response($r, $mycmd, $cfg, $this->context);
+        [$raw, $error] = $this->executeCurl($data, $cfg, [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
+        $response = new Response($raw, $mycmd, $cfg, $this->context);
         if ($this->debugMode) {
-            $secured = $this->getPOSTData($mycmd, false);
-            $this->logger->log($secured, $response, $error);
+            $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
         }
         return $response;
     }
