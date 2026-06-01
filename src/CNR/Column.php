@@ -22,18 +22,7 @@ class Column implements ColumnInterface
     /**
      * count of column data entries
      */
-    public int $length;
-
-    /**
-     * column key name
-     */
-    private string $key;
-
-    /**
-     * column data container
-     * @var string[]
-     */
-    private array $data;
+    public readonly int $length;
 
     /**
      * Constructor
@@ -41,10 +30,10 @@ class Column implements ColumnInterface
      * @param string $key Column Name
      * @param string[] $data Column Data
      */
-    public function __construct(string $key, array $data)
-    {
-        $this->key = $key;
-        $this->data = $data;
+    public function __construct(
+        private readonly string $key,
+        private readonly array $data
+    ) {
         $this->length = count($data);
     }
 

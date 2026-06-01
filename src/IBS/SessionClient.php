@@ -33,47 +33,4 @@ class SessionClient extends Client
         $cfgpath = implode(DIRECTORY_SEPARATOR, [dirname($fname), "config.json"]);
         parent::__construct($cfgpath);
     }
-
-    /**
-     * Perform API login to start session-based communication
-     * @throws \Exception
-     */
-    public function login(): Response
-    {
-        throw new \Exception("Method not supported");
-    }
-
-    /**
-     * Perform API logout to close API session in use
-     * @throws \Exception
-     */
-    public function logout(): Response
-    {
-        throw new \Exception("Method not supported");
-    }
-
-    /**
-     * Apply session data (session id, login) to given php session object
-     * @param array<string,mixed> $session php session instance ($_SESSION)
-     * @throws \Exception
-     * @return $this
-     * @psalm-suppress PossiblyUnusedParam stub for future implementation
-     */
-    public function saveSession(array &$session)
-    {
-        throw new \Exception("Method not supported");
-    }
-
-    /**
-     * Use existing configuration out of php session object
-     * to rebuild and reuse connection settings
-     * @param array<string,mixed> $session php session object ($_SESSION)
-     * @throws \Exception
-     * @return $this
-     * @psalm-suppress PossiblyUnusedParam stub for future implementation
-     */
-    public function reuseSession(array &$session)
-    {
-        throw new \Exception("Method not supported");
-    }
 }

@@ -9,6 +9,7 @@ use CNIC\CNR\SessionClient;
 use CNIC\IBS\Logger as IBSLogger;
 use CNIC\IBS\SessionClient as IBSSessionClient;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
+use CNIC\Registrar;
 
 /**
  * ClientFactory
@@ -22,32 +23,18 @@ class ClientFactory
      * Returns Client Instance by configuration
      *
      * @param array<mixed> $params Configuration settings
-     * @param Logger|null $logger Logger Instance (optional)
+     * @param LoggerInterface|null $logger Logger Instance (optional)
      * @throws \Exception
      */
-    public static function getClient(array $params, ?Logger $logger = null): SessionClient|IBSSessionClient
+    public static function getClient(array $params, ?LoggerInterface $logger = null): SessionClient|IBSSessionClient
     {
-        // if we dynamically instantiate via string, phpStan starts complaining ...
-        switch (strtoupper($params["registrar"])) {
-            case "CNR":
-            case "CNIC":
-                $cl = new SessionClient();
-                $cl->setCustomLogger($logger ?? new Logger());
-                break;
-            case "IBS":
-                $cl = new IBSSessionClient();
-                $cl->setCustomLogger($logger ?? new IBSLogger());
-                break;
-            case "MONIKER":
-                $cl = new MONIKERSessionClient();
-                $cl->setCustomLogger($logger ?? new IBSLogger());
-                break;
-            case "HEXONET":
-            case "ISPAPI":
-                throw new \Exception("Registrar `" . $params["registrar"] . "` has seen EOL, use version 11 of this library.");
-            default:
-                throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
-        }
+        $cl = match (Registrar::tryFrom(strtoupper($params["registrar"]))) {
+            Registrar::CNR, Registrar::CNIC => new SessionClient(),
+            Registrar::IBS                  => new IBSSessionClient(),
+            Registrar::MONIKER              => new MONIKERSessionClient(),
+            null                            => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
+        };
+        $cl->setCustomLogger($logger ?? ($cl instanceof IBSSessionClient ? new IBSLogger() : new Logger()));
 
         if (!empty($params["sandbox"])) {
             $cl->useOTESystem();

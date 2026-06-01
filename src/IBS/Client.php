@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Client as CNRClient;
+use CNIC\AbstractClient;
+use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\CommandFormatter;
 use CNIC\IBS\Logger as L;
 use CNIC\IBS\Response;
@@ -20,29 +21,26 @@ use CNIC\IBS\SocketConfig;
  *
  * @package CNIC\IBS
  */
-class Client extends CNRClient
+class Client extends AbstractClient
 {
     /**
-     * Constructor
-     *
-     * @param string $path Path to the configuration file
+     * Instantiate IBS SocketConfig
      */
-    public function __construct(string $path = "")
+    #[\Override]
+    protected function newSocketConfig(): CNRSocketConfig
     {
-        parent::__construct($path);
-        $this->socketConfig = new SocketConfig($this->settings["parameters"] ?? []);
+        return new SocketConfig($this->settings["parameters"] ?? []);
     }
 
     /**
-     * Serialize given command for POST request including connection configuration data
-     *
-     * @param array<string,mixed> $cmd API command to encode
-     * @param bool $secured secure password (when used for output)
+     * Set default IBS logger
+     * @return $this
      */
     #[\Override]
-    public function getPOSTData(array $cmd, bool $secured = false): string
+    public function setDefaultLogger(): static
     {
-        return $this->socketConfig->getPOSTData($cmd, $secured);
+        $this->logger = new L();
+        return $this;
     }
 
     /**
@@ -64,28 +62,26 @@ class Client extends CNRClient
      * @throws \Exception
      */
     #[\Override]
-    public function setSession($value = "")
+    public function setSession(string $value = ""): static
     {
         throw new \Exception("Feature `API Session` not supported.");
     }
 
     /**
-     * Set Credentials to be used for API communication
+     * Set Role Credentials to be used for API communication
      * Note: not supported.
      *
-     * @param string $uid account name (optional, for reset)
-     * @param string $role role user id (optional, for reset)
-     * @param string $pw role user password (optional, for reset)
      * @throws \Exception
      */
     #[\Override]
-    public function setRoleCredentials($uid = "", $role = "", $pw = "")
+    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
     {
         throw new \Exception("Feature `User Role` not supported.");
     }
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
+     * Note: IBS handles IDN conversion server-side.
      *
      * @param array<string> $cmd API command
      * @return array<string>
@@ -93,7 +89,6 @@ class Client extends CNRClient
     #[\Override]
     protected function autoIDNConvert(array $cmd): array
     {
-        // no IDN conversion needed
         return $cmd;
     }
 
@@ -104,61 +99,16 @@ class Client extends CNRClient
      * @param string $path Path to the API endpoint
      */
     #[\Override]
-    public function request(array $cmd = [], $path = ""): Response
+    public function request(array $cmd = [], string $path = ""): Response
     {
-        // flatten nested api command bulk parameters and sort them
         $mycmd = CommandFormatter::flattenCommand($cmd + ["ResponseFormat" => "JSON"], false);
-        // auto convert umlaut names to punycode
         $mycmd = $this->autoIDNConvert($mycmd);
-        // request command to API
-        $cfg = [
-            "CONNECTION_URL" => $this->socketURL . $path
-        ];
+        $cfg = ["CONNECTION_URL" => $this->socketURL . $path];
         $data = $this->getPOSTData($mycmd);
-
-        if (!$this->chandle instanceof \CurlHandle) {
-            $tmp = curl_init();
-            if ($tmp === false) {
-                $r = new Response("nocurl", $mycmd, $cfg, $this->context);
-                if ($this->debugMode) {
-                    $secured = $this->getPOSTData($mycmd, true);
-                    $this->logger->log($secured, $r, "CURL for PHP missing.");
-                }
-                return $r;
-            }
-            $this->chandle = $tmp;
-        }
-
-        curl_setopt_array($this->chandle, [
-            // CURLOPT_VERBOSE         => $this->debugMode,
-            CURLOPT_URL             => $cfg["CONNECTION_URL"],
-            CURLOPT_CONNECTTIMEOUT  => 30, // 30s, 300s by default
-            CURLOPT_TIMEOUT         => $this->settings["socketTimeout"],
-            CURLOPT_POST            => 1,
-            CURLOPT_HEADER          => 0,
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_POSTFIELDS      => $data,
-            CURLOPT_USERAGENT       => $this->getUserAgent(),
-            CURLOPT_HTTPHEADER      => [
-                "Expect:",
-                "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
-                "Content-Length: " . (string)strlen($data),
-                "Connection: keep-alive"
-            ],
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 // IBS / Moniker only
-        ] + $this->curlopts);
-
-        $r = curl_exec($this->chandle);
-        \assert(\is_string($r) || $r === false);
-        $error = null;
-        if ($r === false) {
-            $error = curl_error($this->chandle);
-            $r = "httperror|" . $error;
-        }
-        $response = new Response($r, $mycmd, $cfg, $this->context);
+        [$raw, $error] = $this->executeCurl($data, $cfg, [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
+        $response = new Response($raw, $mycmd, $cfg, $this->context);
         if ($this->debugMode) {
-            $secured = $this->getPOSTData($mycmd, false);
-            $this->logger->log($secured, $response, $error);
+            $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
         }
         return $response;
     }
@@ -167,11 +117,10 @@ class Client extends CNRClient
      * Set a data view to a given subuser
      * Note: not supported.
      *
-     * @param string $uid subuser account name
      * @throws \Exception
      */
     #[\Override]
-    public function setUserView($uid = "")
+    public function setUserView(string $uid = ""): static
     {
         throw new \Exception("Feature `User View / Subresellersystem` not supported.");
     }
@@ -183,20 +132,8 @@ class Client extends CNRClient
      * @throws \Exception
      */
     #[\Override]
-    public function useHighPerformanceConnectionSetup()
+    public function useHighPerformanceConnectionSetup(): static
     {
         throw new \Exception("Feature `High Performance Connection Setup` not supported.");
-    }
-
-    /**
-     * Set default logger to use
-     *
-     * @return $this
-     */
-    #[\Override]
-    public function setDefaultLogger()
-    {
-        $this->logger = new L();
-        return $this;
     }
 }
