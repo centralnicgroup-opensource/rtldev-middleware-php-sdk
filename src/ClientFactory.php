@@ -27,27 +27,15 @@ class ClientFactory
      */
     public static function getClient(array $params, ?Logger $logger = null): SessionClient|IBSSessionClient
     {
-        // if we dynamically instantiate via string, phpStan starts complaining ...
-        switch (strtoupper($params["registrar"])) {
-            case "CNR":
-            case "CNIC":
-                $cl = new SessionClient();
-                $cl->setCustomLogger($logger ?? new Logger());
-                break;
-            case "IBS":
-                $cl = new IBSSessionClient();
-                $cl->setCustomLogger($logger ?? new IBSLogger());
-                break;
-            case "MONIKER":
-                $cl = new MONIKERSessionClient();
-                $cl->setCustomLogger($logger ?? new IBSLogger());
-                break;
-            case "HEXONET":
-            case "ISPAPI":
-                throw new \Exception("Registrar `" . $params["registrar"] . "` has seen EOL, use version 11 of this library.");
-            default:
-                throw new \Exception("Registrar `" . $params["registrar"] . "` not supported.");
-        }
+        $registrar = strtoupper($params["registrar"]);
+        $cl = match ($registrar) {
+            "CNR", "CNIC"       => new SessionClient(),
+            "IBS"               => new IBSSessionClient(),
+            "MONIKER"           => new MONIKERSessionClient(),
+            "HEXONET", "ISPAPI" => throw new \Exception("Registrar `{$params["registrar"]}` has seen EOL, use version 11 of this library."),
+            default             => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
+        };
+        $cl->setCustomLogger($logger ?? ($cl instanceof IBSSessionClient ? new IBSLogger() : new Logger()));
 
         if (!empty($params["sandbox"])) {
             $cl->useOTESystem();
