@@ -9,6 +9,7 @@ use CNIC\CNR\SessionClient;
 use CNIC\IBS\Logger as IBSLogger;
 use CNIC\IBS\SessionClient as IBSSessionClient;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
+use CNIC\Registrar;
 
 /**
  * ClientFactory
@@ -27,13 +28,12 @@ class ClientFactory
      */
     public static function getClient(array $params, ?Logger $logger = null): SessionClient|IBSSessionClient
     {
-        $registrar = strtoupper($params["registrar"]);
-        $cl = match ($registrar) {
-            "CNR", "CNIC"       => new SessionClient(),
-            "IBS"               => new IBSSessionClient(),
-            "MONIKER"           => new MONIKERSessionClient(),
-            "HEXONET", "ISPAPI" => throw new \Exception("Registrar `{$params["registrar"]}` has seen EOL, use version 11 of this library."),
-            default             => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
+        $cl = match (Registrar::tryFrom(strtoupper($params["registrar"]))) {
+            Registrar::CNR, Registrar::CNIC       => new SessionClient(),
+            Registrar::IBS                        => new IBSSessionClient(),
+            Registrar::MONIKER                    => new MONIKERSessionClient(),
+            Registrar::HEXONET, Registrar::ISPAPI => throw new \Exception("Registrar `{$params["registrar"]}` has seen EOL, use version 11 of this library."),
+            null                                  => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
         };
         $cl->setCustomLogger($logger ?? ($cl instanceof IBSSessionClient ? new IBSLogger() : new Logger()));
 
