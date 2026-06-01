@@ -29,11 +29,10 @@ class ClientFactory
     public static function getClient(array $params, ?LoggerInterface $logger = null): SessionClient|IBSSessionClient
     {
         $cl = match (Registrar::tryFrom(strtoupper($params["registrar"]))) {
-            Registrar::CNR, Registrar::CNIC       => new SessionClient(),
-            Registrar::IBS                        => new IBSSessionClient(),
-            Registrar::MONIKER                    => new MONIKERSessionClient(),
-            Registrar::HEXONET, Registrar::ISPAPI => throw new \Exception("Registrar `{$params["registrar"]}` has seen EOL, use version 11 of this library."),
-            null                                  => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
+            Registrar::CNR, Registrar::CNIC => new SessionClient(),
+            Registrar::IBS                  => new IBSSessionClient(),
+            Registrar::MONIKER              => new MONIKERSessionClient(),
+            null                            => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
         };
         $cl->setCustomLogger($logger ?? ($cl instanceof IBSSessionClient ? new IBSLogger() : new Logger()));
 

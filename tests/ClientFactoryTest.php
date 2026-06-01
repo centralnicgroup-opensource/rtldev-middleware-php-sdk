@@ -30,17 +30,6 @@ final class ClientFactoryTest extends TestCase
     }
 
     /**
-     * Basic test for getClient with legacy Registrar HEXONET
-     */
-    public function testHexonetClient(): void
-    {
-        $this->expectException(\Exception::class);
-        CF::getClient([
-            "registrar" => "HEXONET"
-        ]);
-    }
-
-    /**
      * Extended Basic test for getClient with Registrar CNR
      */
     public function testCNRClient1(): void
