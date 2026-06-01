@@ -20,20 +20,6 @@ use CNIC\RecordInterface;
 class Record implements RecordInterface
 {
     /**
-     * row data container
-     * e.g.
-     * <code>
-     * $data = [
-     *   "DOMAIN" => "mydomain.com",
-     *   "USER"   => "test.user",
-     *   // ... further column data ...
-     * ];
-     * </code>
-     * @var array<string,mixed>
-     */
-    private array $data;
-
-    /**
      * Constructor
      * e.g.
      * <code>
@@ -43,11 +29,10 @@ class Record implements RecordInterface
      *   // ... further column data ...
      * ];
      * </code>
-     * @param array<string,mixed> $data data object
+     * @param array<string,mixed> $data row data
      */
-    public function __construct(array $data)
+    public function __construct(private readonly array $data)
     {
-        $this->data = $data;
     }
 
     /**
