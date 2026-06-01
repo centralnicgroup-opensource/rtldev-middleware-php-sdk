@@ -220,9 +220,7 @@ final class ClientTest extends TestCase
         $session = [];
         self::$cl->setSession("12345678")
             ->saveSession($session);
-        $cl2 = CF::getClient([
-            "registrar" => "CNR"
-        ]);
+        $cl2 = new SessionClient();
         $cl2->reuseSession($session);
         $tmp = $cl2->getPOSTData([
             "COMMAND" => "StatusAccount"

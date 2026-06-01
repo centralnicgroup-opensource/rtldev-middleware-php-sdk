@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
-use CNIC\CNR\Column;
-use CNIC\CNR\Response;
-
 /**
  * CNR Session API Client
  *
@@ -20,6 +17,8 @@ use CNIC\CNR\Response;
  */
 class SessionClient extends Client
 {
+    use SessionCapable;
+
     /**
      * Constructor
      * @throws \Exception
@@ -33,65 +32,5 @@ class SessionClient extends Client
         }
         $cfgpath = implode(DIRECTORY_SEPARATOR, [dirname($fname), "config.json"]);
         parent::__construct($cfgpath);
-    }
-
-    /**
-     * Perform API login to start session-based communication
-     */
-    public function login(): Response
-    {
-        $this->socketConfig->setPersistent(true);
-        $rr = $this->request();
-        if ($rr->isSuccess()) {
-            $col = $rr->getColumn("SESSIONID");
-            $this->setSession($col instanceof Column ? $col->getData()[0] : "");
-        }
-        $this->socketConfig->setPersistent(false);
-        return $rr;
-    }
-
-    /**
-     * Perform API logout to close API session in use
-     *
-     */
-    public function logout(): Response
-    {
-        $rr = $this->request(["COMMAND" => "StopSession"]);
-        if ($rr->isSuccess()) {
-            $this->setSession();
-        }
-        $this->close();
-        return $rr;
-    }
-
-    /**
-     * Apply session data (session id, login) to given php session object
-     *
-     * @param array<string,mixed> $session php session instance ($_SESSION)
-     * @return $this
-     */
-    public function saveSession(array &$session)
-    {
-        $session["socketcfg"] = [
-            "login" => $this->socketConfig->getLogin(),
-            "session" => $this->socketConfig->getSession()
-        ];
-        return $this;
-    }
-
-    /**
-     * Use existing configuration out of php session object
-     * to rebuild and reuse connection settings
-     *
-     * @param array<string,mixed> $session php session object ($_SESSION)
-     * @return $this
-     */
-    public function reuseSession(array &$session)
-    {
-        if (isset($session["socketcfg"]["login"], $session["socketcfg"]["session"])) {
-            $this->setCredentials($session["socketcfg"]["login"]);
-            $this->setSession($session["socketcfg"]["session"]);
-        }
-        return $this;
     }
 }
