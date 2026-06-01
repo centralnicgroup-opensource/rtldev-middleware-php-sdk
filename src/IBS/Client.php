@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Client as CNRClient;
+use CNIC\AbstractClient;
+use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\CommandFormatter;
 use CNIC\IBS\Logger as L;
 use CNIC\IBS\Response;
@@ -20,17 +21,26 @@ use CNIC\IBS\SocketConfig;
  *
  * @package CNIC\IBS
  */
-class Client extends CNRClient
+class Client extends AbstractClient
 {
     /**
-     * Constructor
-     *
-     * @param string $path Path to the configuration file
+     * Instantiate IBS SocketConfig
      */
-    public function __construct(string $path = "")
+    #[\Override]
+    protected function newSocketConfig(): CNRSocketConfig
     {
-        parent::__construct($path);
-        $this->socketConfig = new SocketConfig($this->settings["parameters"] ?? []);
+        return new SocketConfig($this->settings["parameters"] ?? []);
+    }
+
+    /**
+     * Set default IBS logger
+     * @return $this
+     */
+    #[\Override]
+    public function setDefaultLogger(): static
+    {
+        $this->logger = new L();
+        return $this;
     }
 
     /**
@@ -64,28 +74,26 @@ class Client extends CNRClient
      * @throws \Exception
      */
     #[\Override]
-    public function setSession($value = "")
+    public function setSession(string $value = ""): static
     {
         throw new \Exception("Feature `API Session` not supported.");
     }
 
     /**
-     * Set Credentials to be used for API communication
+     * Set Role Credentials to be used for API communication
      * Note: not supported.
      *
-     * @param string $uid account name (optional, for reset)
-     * @param string $role role user id (optional, for reset)
-     * @param string $pw role user password (optional, for reset)
      * @throws \Exception
      */
     #[\Override]
-    public function setRoleCredentials($uid = "", $role = "", $pw = "")
+    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
     {
         throw new \Exception("Feature `User Role` not supported.");
     }
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
+     * Note: IBS handles IDN conversion server-side.
      *
      * @param array<string> $cmd API command
      * @return array<string>
@@ -93,7 +101,6 @@ class Client extends CNRClient
     #[\Override]
     protected function autoIDNConvert(array $cmd): array
     {
-        // no IDN conversion needed
         return $cmd;
     }
 
@@ -122,11 +129,10 @@ class Client extends CNRClient
      * Set a data view to a given subuser
      * Note: not supported.
      *
-     * @param string $uid subuser account name
      * @throws \Exception
      */
     #[\Override]
-    public function setUserView($uid = "")
+    public function setUserView(string $uid = ""): static
     {
         throw new \Exception("Feature `User View / Subresellersystem` not supported.");
     }
@@ -138,20 +144,8 @@ class Client extends CNRClient
      * @throws \Exception
      */
     #[\Override]
-    public function useHighPerformanceConnectionSetup()
+    public function useHighPerformanceConnectionSetup(): static
     {
         throw new \Exception("Feature `High Performance Connection Setup` not supported.");
-    }
-
-    /**
-     * Set default logger to use
-     *
-     * @return $this
-     */
-    #[\Override]
-    public function setDefaultLogger()
-    {
-        $this->logger = new L();
-        return $this;
     }
 }
