@@ -1,41 +1,39 @@
 {
-    "ci": false,
-    "plugins": [
-        "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
-        [
-            "@semantic-release/changelog",
-            {
-                "changelogFile": "HISTORY.md"
-            }
-        ],
-        [
-            "semantic-release-replace-plugin",
-            {
-                "replacements": [
-                    {
-                        "files": [
-                            "src/CNR/Client.php"
-                        ],
-                        "from": "\"\\d+\\.\\d+\\.\\d+\"",
-                        "to": "\"${nextRelease.version}\"",
-                        "countMatches": true
-                    }
-                ]
-            }
-        ],
-        [
-            "@semantic-release/git",
-            {
-                "assets": [
-                    "HISTORY.md",
-                    "@(package?(-lock)|composer).json",
-                    "docs",
-                    "src/CNR/Client.php"
-                ]
-            }
-        ],
-        "semantic-release-teams-notify-plugin",
-        "@semantic-release/github"
-    ]
+  "ci": false,
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "HISTORY.md"
+      }
+    ],
+    [
+      "semantic-release-replace-plugin",
+      {
+        "replacements": [
+          {
+            "files": ["src/AbstractClient.php"],
+            "from": "\"\\d+\\.\\d+\\.\\d+\"",
+            "to": "\"${nextRelease.version}\"",
+            "countMatches": true
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "HISTORY.md",
+          "@(package?(-lock)|composer).json",
+          "docs",
+          "src/AbstractClient.php"
+        ]
+      }
+    ],
+    "semantic-release-teams-notify-plugin",
+    "@semantic-release/github"
+  ]
 }
