@@ -82,7 +82,7 @@
                                                 <li class="disabled"><a href="#letterB">B</a></li>
                                                 <li><a href="#letterC">C</a></li>
                                                 <li><a href="#letterD">D</a></li>
-                                                <li class="disabled"><a href="#letterE">E</a></li>
+                                                <li><a href="#letterE">E</a></li>
                                                 <li><a href="#letterF">F</a></li>
                                                 <li><a href="#letterG">G</a></li>
                                                 <li><a href="#letterH">H</a></li>
@@ -91,7 +91,7 @@
                                                 <li class="disabled"><a href="#letterK">K</a></li>
                                                 <li><a href="#letterL">L</a></li>
                                                 <li class="disabled"><a href="#letterM">M</a></li>
-                                                <li class="disabled"><a href="#letterN">N</a></li>
+                                                <li><a href="#letterN">N</a></li>
                                                 <li class="disabled"><a href="#letterO">O</a></li>
                                                 <li><a href="#letterP">P</a></li>
                                                 <li class="disabled"><a href="#letterQ">Q</a></li>
@@ -107,8 +107,9 @@
                         </ul>
 
     <h2 id="letterA">A</h2>
-        <dl id="indexA"><dt><a href="CNIC/CNR/Client.html#method_autoIDNConvert">
-<abbr title="CNIC\CNR\Client">Client</abbr>::autoIDNConvert</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
+        <dl id="indexA"><dt><a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
+                    <dd><p>Shared foundation for all registrar API clients.</p></dd><dt><a href="CNIC/AbstractClient.html#method_autoIDNConvert">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::autoIDNConvert</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>Auto convert API command parameters to punycode, if necessary.</p></dd><dt><a href="CNIC/CNR/Response.html#method_addColumn">
 <abbr title="CNIC\CNR\Response">Response</abbr>::addColumn</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>Add a column to the column list</p></dd><dt><a href="CNIC/CNR/Response.html#method_addRecord">
@@ -128,16 +129,14 @@
                     <dd><p>Add a column to the column list</p></dd><dt><a href="CNIC/ResponseInterface.html#method_addRecord">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::addRecord</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Add a record to the record list</p></dd>        </dl><h2 id="letterC">C</h2>
-        <dl id="indexC"><dt><a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
-                    <dd><p>CNR API Client</p></dd><dt>$<a href="CNIC/CNR/Client.html#property_context">
-<abbr title="CNIC\CNR\Client">Client</abbr>#context</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>context data for the client</p></dd><dt>$<a href="CNIC/CNR/Client.html#property_curlopts">
-<abbr title="CNIC\CNR\Client">Client</abbr>#curlopts</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>additional curl options to use</p></dd><dt>$<a href="CNIC/CNR/Client.html#property_chandle">
-<abbr title="CNIC\CNR\Client">Client</abbr>#chandle</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>curl handle cache</p></dd><dt><a href="CNIC/CNR/Client.html#method_close">
-<abbr title="CNIC\CNR\Client">Client</abbr>::close</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Close all curl handles</p></dd><dt><a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
+        <dl id="indexC"><dt>$<a href="CNIC/AbstractClient.html#property_context">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#context</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>context data for the client</p></dd><dt>$<a href="CNIC/AbstractClient.html#property_curlopts">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#curlopts</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>additional curl options to use</p></dd><dt><a href="CNIC/AbstractClient.html#method_close">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::close</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Close all cURL connections</p></dd><dt><a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
+                    <dd><p>CNR API Client</p></dd><dt><a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR Column</p></dd><dt>$<a href="CNIC/CNR/Response.html#property_command">
 <abbr title="CNIC\CNR\Response">Response</abbr>#command</a> &mdash; <em>Property in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>The API Command used within this request</p></dd><dt>$<a href="CNIC/CNR/Response.html#property_columnkeys">
@@ -149,39 +148,45 @@
                     <dd><p>Context data for the response</p></dd><dt><a href="CNIC/ClientFactory.html"><abbr title="CNIC\ClientFactory">ClientFactory</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd>ClientFactory</dd><dt><a href="CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Column Interface</p></dd><dt><a href="CNIC/CommandFormatter.html"><abbr title="CNIC\CommandFormatter">CommandFormatter</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
-                    <dd>CommandFormatter</dd><dt><a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
+                    <dd>CommandFormatter</dd><dt><a href="CNIC/HttpTransport.html#method_close">
+<abbr title="CNIC\HttpTransport">HttpTransport</abbr>::close</a>() &mdash; <em>Method in class <a href="CNIC/HttpTransport.html"><abbr title="CNIC\HttpTransport">HttpTransport</abbr></a></em></dt>
+                    <dd><p>Close and reset the cURL handle.</p></dd><dt><a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS API Client</p></dd><dt><a href="CNIC/IBS/Column.html"><abbr title="CNIC\IBS\Column">Column</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS Column</p></dd><dt>$<a href="CNIC/IBS/Response.html#property_context">
 <abbr title="CNIC\IBS\Response">Response</abbr>#context</a> &mdash; <em>Property in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd><p>Context data for the response</p></dd>        </dl><h2 id="letterD">D</h2>
-        <dl id="indexD"><dt>$<a href="CNIC/CNR/Client.html#property_debugMode">
-<abbr title="CNIC\CNR\Client">Client</abbr>#debugMode</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>activity flag for debug mode</p></dd><dt><a href="CNIC/CNR/Client.html#method_disableDebugMode">
-<abbr title="CNIC\CNR\Client">Client</abbr>::disableDebugMode</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Disable Debug Output</p></dd>        </dl><h2 id="letterE">E</h2>
-        <dl id="indexE"><dt><a href="CNIC/CNR/Client.html#method_enableDebugMode">
-<abbr title="CNIC\CNR\Client">Client</abbr>::enableDebugMode</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Enable Debug Output to STDOUT</p></dd>        </dl><h2 id="letterF">F</h2>
+        <dl id="indexD"><dt>$<a href="CNIC/AbstractClient.html#property_debugMode">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#debugMode</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>activity flag for debug mode</p></dd><dt><a href="CNIC/AbstractClient.html#method_disableDebugMode">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::disableDebugMode</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Disable debug output</p></dd>        </dl><h2 id="letterE">E</h2>
+        <dl id="indexE"><dt><a href="CNIC/AbstractClient.html#method_enableDebugMode">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::enableDebugMode</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Enable debug output to STDOUT</p></dd><dt><a href="CNIC/AbstractClient.html#method_executeCurl">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::executeCurl</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Delegate cURL execution to the transport layer.</p></dd>        </dl><h2 id="letterF">F</h2>
         <dl id="indexF"><dt><a href="CNIC/CommandFormatter.html#method_flattenCommand">
 <abbr title="CNIC\CommandFormatter">CommandFormatter</abbr>::flattenCommand</a>() &mdash; <em>Method in class <a href="CNIC/CommandFormatter.html"><abbr title="CNIC\CommandFormatter">CommandFormatter</abbr></a></em></dt>
                     <dd><p>Flatten API command's nested arrays for easier handling</p></dd><dt><a href="CNIC/CommandFormatter.html#method_formatCommand">
 <abbr title="CNIC\CommandFormatter">CommandFormatter</abbr>::formatCommand</a>() &mdash; <em>Method in class <a href="CNIC/CommandFormatter.html"><abbr title="CNIC\CommandFormatter">CommandFormatter</abbr></a></em></dt>
                     <dd><p>Format the command array into a plain text string</p></dd>        </dl><h2 id="letterG">G</h2>
-        <dl id="indexG"><dt><a href="CNIC/CNR/Client.html#method_getPOSTData">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Serialize given command for POST request including connection configuration data</p></dd><dt><a href="CNIC/CNR/Client.html#method_getSession">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Get the API Session ID that is currently set</p></dd><dt><a href="CNIC/CNR/Client.html#method_getURL">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getURL</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Get the API connection url that is currently set</p></dd><dt><a href="CNIC/CNR/Client.html#method_getUserAgent">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getUserAgent</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Get the user agent string</p></dd><dt><a href="CNIC/CNR/Client.html#method_getProxy">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getProxy</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Get proxy configuration for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_getReferer">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getReferer</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Get Referer configuration for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_getVersion">
-<abbr title="CNIC\CNR\Client">Client</abbr>::getVersion</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Get the current module version</p></dd><dt><a href="CNIC/CNR/Column.html#method_getKey">
+        <dl id="indexG"><dt><a href="CNIC/AbstractClient.html#method_getPOSTData">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Serialize given command for POST request including connection configuration data</p></dd><dt><a href="CNIC/AbstractClient.html#method_getSession">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getSession</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get the API Session ID that is currently set</p></dd><dt><a href="CNIC/AbstractClient.html#method_getURL">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getURL</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get the API connection url that is currently set</p></dd><dt><a href="CNIC/AbstractClient.html#method_getUserAgent">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getUserAgent</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get the user agent string</p></dd><dt><a href="CNIC/AbstractClient.html#method_getProxy">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getProxy</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get proxy configuration for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_getReferer">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getReferer</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get Referer configuration for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_getVersion">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getVersion</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get the current module version</p></dd><dt><a href="CNIC/AbstractClient.html#method_getSettings">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getSettings</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get registrar API settings</p></dd><dt><a href="CNIC/CNR/Column.html#method_getKey">
 <abbr title="CNIC\CNR\Column">Column</abbr>::getKey</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
                     <dd><p>Get column name</p></dd><dt><a href="CNIC/CNR/Column.html#method_getData">
 <abbr title="CNIC\CNR\Column">Column</abbr>::getData</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
@@ -278,9 +283,7 @@ This is the count of requested rows</p></dd><dt><a href="CNIC/CNR/ResponseTempla
 <abbr title="CNIC\ColumnInterface">ColumnInterface</abbr>::getDataByIndex</a>() &mdash; <em>Method in class <a href="CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a></em></dt>
                     <dd><p>Get column data at given index</p></dd><dt><a href="CNIC/CommandFormatter.html#method_getSortedCommand">
 <abbr title="CNIC\CommandFormatter">CommandFormatter</abbr>::getSortedCommand</a>() &mdash; <em>Method in class <a href="CNIC/CommandFormatter.html"><abbr title="CNIC\CommandFormatter">CommandFormatter</abbr></a></em></dt>
-                    <dd><p>Get the sorted command array based on priority</p></dd><dt><a href="CNIC/IBS/Client.html#method_getPOSTData">
-<abbr title="CNIC\IBS\Client">Client</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
-                    <dd><p>Serialize given command for POST request including connection configuration data</p></dd><dt><a href="CNIC/IBS/Client.html#method_getSession">
+                    <dd><p>Get the sorted command array based on priority</p></dd><dt><a href="CNIC/IBS/Client.html#method_getSession">
 <abbr title="CNIC\IBS\Client">Client</abbr>::getSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Get the API Session ID that is currently set
 Note: not supported.</p></dd><dt><a href="CNIC/IBS/Response.html#method_getCode">
@@ -384,7 +387,9 @@ This is the count of requested rows</p></dd><dt><a href="CNIC/IBS/ResponseTempla
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getCommand</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Get Command used in this request</p></dd><dt><a href="CNIC/ResponseInterface.html#method_getCommandPlain">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getCommandPlain</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
-                    <dd><p>Get Command used in this request in plain text format</p></dd><dt><a href="CNIC/ResponseInterface.html#method_getCurrentPageNumber">
+                    <dd><p>Get Command used in this request in plain text format</p></dd><dt><a href="CNIC/ResponseInterface.html#method_getContext">
+<abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getContext</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
+                    <dd><p>Get context data for the response</p></dd><dt><a href="CNIC/ResponseInterface.html#method_getCurrentPageNumber">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getCurrentPageNumber</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Get Page Number of current List Query</p></dd><dt><a href="CNIC/ResponseInterface.html#method_getCurrentRecord">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::getCurrentRecord</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
@@ -426,7 +431,8 @@ This is the count of requested rows</p></dd>        </dl><h2 id="letterH">H</h2>
 <abbr title="CNIC\CNR\Response">Response</abbr>::hasPreviousPage</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>Check if this list query has a previous page</p></dd><dt><a href="CNIC/CNR/ResponseTemplateManager.html#method_hasTemplate">
 <abbr title="CNIC\CNR\ResponseTemplateManager">ResponseTemplateManager</abbr>::hasTemplate</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseTemplateManager.html"><abbr title="CNIC\CNR\ResponseTemplateManager">ResponseTemplateManager</abbr></a></em></dt>
-                    <dd><p>Check if given template exists in template container</p></dd><dt><a href="CNIC/IBS/Response.html#method_hasNextPage">
+                    <dd><p>Check if given template exists in template container</p></dd><dt><a href="CNIC/HttpTransport.html"><abbr title="CNIC\HttpTransport">HttpTransport</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
+                    <dd><p>Low-level HTTP transport over cURL.</p></dd><dt><a href="CNIC/IBS/Response.html#method_hasNextPage">
 <abbr title="CNIC\IBS\Response">Response</abbr>::hasNextPage</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd><p>Check if this list query has a next page</p></dd><dt><a href="CNIC/IBS/Response.html#method_hasPreviousPage">
 <abbr title="CNIC\IBS\Response">Response</abbr>::hasPreviousPage</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
@@ -437,11 +443,13 @@ This is the count of requested rows</p></dd>        </dl><h2 id="letterH">H</h2>
                     <dd><p>Check if this list query has a next page</p></dd><dt><a href="CNIC/ResponseInterface.html#method_hasPreviousPage">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::hasPreviousPage</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Check if this list query has a previous page</p></dd>        </dl><h2 id="letterI">I</h2>
-        <dl id="indexI"><dt>$<a href="CNIC/CNR/Client.html#property_isOTE">
-<abbr title="CNIC\CNR\Client">Client</abbr>#isOTE</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>is connected to OT&amp;E</p></dd><dt><a href="CNIC/CNR/Client.html#method_IDNConvert">
-<abbr title="CNIC\CNR\Client">Client</abbr>::IDNConvert</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Convert domain names to idn + punycode if necessary</p></dd><dt><a href="CNIC/CNR/Response.html#method_isError">
+        <dl id="indexI"><dt>$<a href="CNIC/AbstractClient.html#property_isOTE">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#isOTE</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>is connected to OT&amp;E</p></dd><dt><a href="CNIC/AbstractClient.html#method_IDNConvert">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::IDNConvert</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Convert domain names to idn + punycode if necessary</p></dd><dt><a href="CNIC/AbstractClient.html#method_isOTE">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::isOTE</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Check whether the client is connected to the OT&amp;E system</p></dd><dt><a href="CNIC/CNR/Response.html#method_isError">
 <abbr title="CNIC\CNR\Response">Response</abbr>::isError</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>Check if current API response represents an error case
 API response code is an 5xx code</p></dd><dt><a href="CNIC/CNR/Response.html#method_isSuccess">
@@ -482,32 +490,35 @@ API response code is an 2xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
 API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.html#method_isPending">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::isPending</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Check if current operation is returned as pending</p></dd>        </dl><h2 id="letterL">L</h2>
-        <dl id="indexL"><dt>$<a href="CNIC/CNR/Client.html#property_logger">
-<abbr title="CNIC\CNR\Client">Client</abbr>#logger</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>logger function name for debug mode</p></dd><dt>$<a href="CNIC/CNR/Column.html#property_length">
+        <dl id="indexL"><dt>$<a href="CNIC/AbstractClient.html#property_logger">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#logger</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>logger instance for debug mode</p></dd><dt>$<a href="CNIC/CNR/Column.html#property_length">
 <abbr title="CNIC\CNR\Column">Column</abbr>#length</a> &mdash; <em>Property in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
                     <dd><p>count of column data entries</p></dd><dt><a href="CNIC/CNR/Logger.html"><abbr title="CNIC\CNR\Logger">Logger</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR Logger</p></dd><dt><a href="CNIC/CNR/Logger.html#method_log">
 <abbr title="CNIC\CNR\Logger">Logger</abbr>::log</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Logger.html"><abbr title="CNIC\CNR\Logger">Logger</abbr></a></em></dt>
-                    <dd><p>output/log given data</p></dd><dt><a href="CNIC/CNR/SessionClient.html#method_login">
-<abbr title="CNIC\CNR\SessionClient">SessionClient</abbr>::login</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Perform API login to start session-based communication</p></dd><dt><a href="CNIC/CNR/SessionClient.html#method_logout">
-<abbr title="CNIC\CNR\SessionClient">SessionClient</abbr>::logout</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a></em></dt>
+                    <dd><p>output/log given data</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_login">
+<abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::login</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
+                    <dd><p>Perform API login to start session-based communication</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_logout">
+<abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::logout</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
                     <dd><p>Perform API logout to close API session in use</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_login">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#login</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>account name</p></dd><dt><a href="CNIC/IBS/Logger.html"><abbr title="CNIC\IBS\Logger">Logger</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS Logger</p></dd><dt><a href="CNIC/IBS/Logger.html#method_log">
 <abbr title="CNIC\IBS\Logger">Logger</abbr>::log</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Logger.html"><abbr title="CNIC\IBS\Logger">Logger</abbr></a></em></dt>
-                    <dd><p>Output/log given data</p></dd><dt><a href="CNIC/IBS/SessionClient.html#method_login">
-<abbr title="CNIC\IBS\SessionClient">SessionClient</abbr>::login</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Perform API login to start session-based communication</p></dd><dt><a href="CNIC/IBS/SessionClient.html#method_logout">
-<abbr title="CNIC\IBS\SessionClient">SessionClient</abbr>::logout</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Perform API logout to close API session in use</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_login">
+                    <dd><p>Output/log given data</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_login">
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#login</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>account name</p></dd><dt><a href="CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Logger Interface</p></dd><dt><a href="CNIC/LoggerInterface.html#method_log">
 <abbr title="CNIC\LoggerInterface">LoggerInterface</abbr>::log</a>() &mdash; <em>Method in class <a href="CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></em></dt>
-                    <dd><p>Output/log given data</p></dd>        </dl><h2 id="letterP">P</h2>
+                    <dd><p>Output/log given data</p></dd>        </dl><h2 id="letterN">N</h2>
+        <dl id="indexN"><dt><a href="CNIC/AbstractClient.html#method_newSocketConfig">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Instantiate the SocketConfig for this client.</p></dd><dt><a href="CNIC/CNR/Client.html#method_newSocketConfig">
+<abbr title="CNIC\CNR\Client">Client</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
+                    <dd><p>Instantiate CNR SocketConfig</p></dd><dt><a href="CNIC/IBS/Client.html#method_newSocketConfig">
+<abbr title="CNIC\IBS\Client">Client</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
+                    <dd><p>Instantiate IBS SocketConfig</p></dd>        </dl><h2 id="letterP">P</h2>
         <dl id="indexP"><dt>$<a href="CNIC/CNR/Response.html#property_paginationkeys">
 <abbr title="CNIC\CNR\Response">Response</abbr>#paginationkeys</a> &mdash; <em>Property in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>Regex for pagination related column keys</p></dd><dt><a href="CNIC/CNR/ResponseParser.html#method_parse">
@@ -516,7 +527,9 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#pw</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>account password</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_parameters">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#parameters</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>list of http request parameters</p></dd><dt>$<a href="CNIC/IBS/Response.html#property_paginationkeys">
+                    <dd><p>list of http request parameters</p></dd><dt><a href="CNIC/HttpTransport.html#method_post">
+<abbr title="CNIC\HttpTransport">HttpTransport</abbr>::post</a>() &mdash; <em>Method in class <a href="CNIC/HttpTransport.html"><abbr title="CNIC\HttpTransport">HttpTransport</abbr></a></em></dt>
+                    <dd><p>Execute a POST request and return the raw response.</p></dd><dt>$<a href="CNIC/IBS/Response.html#property_paginationkeys">
 <abbr title="CNIC\IBS\Response">Response</abbr>#paginationkeys</a> &mdash; <em>Property in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd><p>Regex for pagination related column keys</p></dd><dt><a href="CNIC/IBS/ResponseParser.html#method_parse">
 <abbr title="CNIC\IBS\ResponseParser">ResponseParser</abbr>::parse</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseParser.html"><abbr title="CNIC\IBS\ResponseParser">ResponseParser</abbr></a></em></dt>
@@ -525,12 +538,13 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
                     <dd><p>account password</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_parameters">
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#parameters</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>list of http request parameters</p></dd>        </dl><h2 id="letterR">R</h2>
-        <dl id="indexR"><dt><a href="CNIC/CNR/Client.html#method_request">
+        <dl id="indexR"><dt><a href="CNIC/AbstractClient.html#method_request">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::request</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Perform API request using the given command.</p></dd><dt><a href="CNIC/CNR/Client.html#method_request">
 <abbr title="CNIC\CNR\Client">Client</abbr>::request</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
                     <dd><p>Perform API request using the given command</p></dd><dt><a href="CNIC/CNR/Client.html#method_requestNextResponsePage">
 <abbr title="CNIC\CNR\Client">Client</abbr>::requestNextResponsePage</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Request the next page of list entries for the current list query
-Useful for tables</p></dd><dt><a href="CNIC/CNR/Client.html#method_requestAllResponsePages">
+                    <dd><p>Request the next page of list entries for the current list query</p></dd><dt><a href="CNIC/CNR/Client.html#method_requestAllResponsePages">
 <abbr title="CNIC\CNR\Client">Client</abbr>::requestAllResponsePages</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
                     <dd><p>Request all pages/entries for the given query command</p></dd><dt><a href="CNIC/CNR/Record.html"><abbr title="CNIC\CNR\Record">Record</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR Record</p></dd><dt><a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
@@ -549,10 +563,9 @@ Useful for tables</p></dd><dt><a href="CNIC/CNR/Client.html#method_requestAllRes
                     <dd><p>CNR ResponseTemplateManager</p></dd><dt><a href="CNIC/CNR/ResponseTranslator.html"><abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR ResponseTranslator</p></dd><dt><a href="CNIC/CNR/ResponseTranslator.html#method_replacePlaceholders">
 <abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr>::replacePlaceholders</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseTranslator.html"><abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
-                    <dd><p>Replace known placeholders in DESCRIPTION while preserving literal brace content.</p></dd><dt><a href="CNIC/CNR/SessionClient.html#method_reuseSession">
-<abbr title="CNIC\CNR\SessionClient">SessionClient</abbr>::reuseSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Use existing configuration out of php session object
-to rebuild and reuse connection settings</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_remoteaddr">
+                    <dd><p>Replace known placeholders in DESCRIPTION while preserving literal brace content.</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_reuseSession">
+<abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::reuseSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
+                    <dd><p>Rebuild connection settings from a PHP session object</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_remoteaddr">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#remoteaddr</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>remote ip address (ip filter)</p></dd><dt><a href="CNIC/IBS/Client.html#method_request">
 <abbr title="CNIC\IBS\Client">Client</abbr>::request</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
@@ -565,53 +578,50 @@ to rebuild and reuse connection settings</p></dd><dt>$<a href="CNIC/CNR/SocketCo
                     <dd><p>IBS ResponseTemplateManager</p></dd><dt><a href="CNIC/IBS/ResponseTranslator.html"><abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS ResponseTranslator</p></dd><dt><a href="CNIC/IBS/ResponseTranslator.html#method_replacePlaceholders">
 <abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr>::replacePlaceholders</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseTranslator.html"><abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
-                    <dd><p>Replace placeholder vars like {CONNECTION_URL} in a string</p></dd><dt><a href="CNIC/IBS/SessionClient.html#method_reuseSession">
-<abbr title="CNIC\IBS\SessionClient">SessionClient</abbr>::reuseSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Use existing configuration out of php session object
-to rebuild and reuse connection settings</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_remoteaddr">
+                    <dd><p>Replace placeholder vars like {CONNECTION_URL} in a string</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_remoteaddr">
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#remoteaddr</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>remote ip address (ip filter)</p></dd><dt><a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Record Interface</p></dd><dt><a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Response Interface</p></dd><dt><a href="CNIC/ResponseInterface.html#method_rewindRecordList">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::rewindRecordList</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Reset index in record list back to zero</p></dd>        </dl><h2 id="letterS">S</h2>
-        <dl id="indexS"><dt>$<a href="CNIC/CNR/Client.html#property_settings">
-<abbr title="CNIC\CNR\Client">Client</abbr>#settings</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>registrar api settings</p></dd><dt>$<a href="CNIC/CNR/Client.html#property_socketURL">
-<abbr title="CNIC\CNR\Client">Client</abbr>#socketURL</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>API connection url</p></dd><dt>$<a href="CNIC/CNR/Client.html#property_socketConfig">
-<abbr title="CNIC\CNR\Client">Client</abbr>#socketConfig</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Object covering API connection data</p></dd><dt><a href="CNIC/CNR/Client.html#method_setCustomLogger">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setCustomLogger</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>set custom logger to use instead of default one
-create your own class implementing \CNIC\LoggerInterface</p></dd><dt><a href="CNIC/CNR/Client.html#method_setDefaultLogger">
+        <dl id="indexS"><dt>$<a href="CNIC/AbstractClient.html#property_settings">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#settings</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>registrar api settings</p></dd><dt>$<a href="CNIC/AbstractClient.html#property_socketURL">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#socketURL</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>API connection url</p></dd><dt>$<a href="CNIC/AbstractClient.html#property_socketConfig">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#socketConfig</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Object covering API connection data</p></dd><dt><a href="CNIC/AbstractClient.html#method_setDefaultLogger">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setDefaultLogger</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set the default logger for this client.</p></dd><dt><a href="CNIC/AbstractClient.html#method_setCustomLogger">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setCustomLogger</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set custom logger to use instead of the default one.</p></dd><dt><a href="CNIC/AbstractClient.html#method_setUserAgent">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setUserAgent</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set a custom user agent (for platforms that use this SDK)</p></dd><dt><a href="CNIC/AbstractClient.html#method_setProxy">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setProxy</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set proxy to use for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setReferer">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setReferer</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set Referer to use for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setURL">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setURL</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set another connection url to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setSession">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setRemoteIPAddress">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setRemoteIPAddress</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set a Remote IP Address to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setCredentials">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setCredentials</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set Credentials to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setRoleCredentials">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setRoleCredentials</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set Role Credentials to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setUserView">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setUserView</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set a data view to a given subuser</p></dd><dt><a href="CNIC/AbstractClient.html#method_setContext">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setContext</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set context data for the client</p></dd><dt><a href="CNIC/CNR/Client.html#method_setDefaultLogger">
 <abbr title="CNIC\CNR\Client">Client</abbr>::setDefaultLogger</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>set default logger to use</p></dd><dt><a href="CNIC/CNR/Client.html#method_setUserAgent">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setUserAgent</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set a custom user agent (for platforms that use this SDK)</p></dd><dt><a href="CNIC/CNR/Client.html#method_setProxy">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setProxy</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set proxy to use for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_setReferer">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setReferer</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set Referer to use for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_setURL">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setURL</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set another connection url to be used for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_setSession">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_setRemoteIPAddress">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setRemoteIPAddress</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set an Remote IP Address to be used for API communication
-To be used in case you have an active ip filter setting.</p></dd><dt><a href="CNIC/CNR/Client.html#method_setCredentials">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setCredentials</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set Credentials to be used for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_setRoleCredentials">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setRoleCredentials</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set Credentials to be used for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_setUserView">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setUserView</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set a data view to a given subuser</p></dd><dt><a href="CNIC/CNR/Client.html#method_setContext">
-<abbr title="CNIC\CNR\Client">Client</abbr>::setContext</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set context data for the client (to be used in a custom logger to access additional data at logging time again)
-The use of this context data is optional and has no impact on the SDK behaviour itself.</p></dd><dt><a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
-                    <dd><p>CNR Session API Client</p></dd><dt><a href="CNIC/CNR/SessionClient.html#method_saveSession">
-<abbr title="CNIC\CNR\SessionClient">SessionClient</abbr>::saveSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Apply session data (session id, login) to given php session object</p></dd><dt><a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
+                    <dd><p>Set default CNR logger</p></dd><dt><a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
+                    <dd><p>Provides session-based API communication methods.</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_saveSession">
+<abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::saveSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
+                    <dd><p>Apply session data to a PHP session object</p></dd><dt><a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
+                    <dd><p>CNR Session API Client</p></dd><dt><a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR SocketConfig</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_session">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#session</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>API session id</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setPersistent">
@@ -626,20 +636,18 @@ The use of this context data is optional and has no impact on the SDK behaviour 
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Set API Session ID to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setUser">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setUser</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set subuser account name (for subuser data view)</p></dd><dt><a href="CNIC/IBS/Client.html#method_setSession">
+                    <dd><p>Set subuser account name (for subuser data view)</p></dd><dt><a href="CNIC/IBS/Client.html#method_setDefaultLogger">
+<abbr title="CNIC\IBS\Client">Client</abbr>::setDefaultLogger</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
+                    <dd><p>Set default IBS logger</p></dd><dt><a href="CNIC/IBS/Client.html#method_setSession">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/IBS/Client.html#method_setRoleCredentials">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setRoleCredentials</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set Credentials to be used for API communication
+                    <dd><p>Set Role Credentials to be used for API communication
 Note: not supported.</p></dd><dt><a href="CNIC/IBS/Client.html#method_setUserView">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setUserView</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Set a data view to a given subuser
-Note: not supported.</p></dd><dt><a href="CNIC/IBS/Client.html#method_setDefaultLogger">
-<abbr title="CNIC\IBS\Client">Client</abbr>::setDefaultLogger</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set default logger to use</p></dd><dt><a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
-                    <dd><p>IBS API Client</p></dd><dt><a href="CNIC/IBS/SessionClient.html#method_saveSession">
-<abbr title="CNIC\IBS\SessionClient">SessionClient</abbr>::saveSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd><p>Apply session data (session id, login) to given php session object</p></dd><dt><a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
+Note: not supported.</p></dd><dt><a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
+                    <dd><p>IBS API Client</p></dd><dt><a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS SocketConfig</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_setLogin">
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::setLogin</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Set account name to use</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_setPassword">
@@ -648,7 +656,9 @@ Note: not supported.</p></dd><dt><a href="CNIC/IBS/Client.html#method_setDefault
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::setRemoteAddress</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Set Remote IP Address to use</p></dd><dt><a href="CNIC/MONIKER/SessionClient.html"><abbr title="CNIC\MONIKER\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/MONIKER.html">CNIC\MONIKER</a></em></dt>
                     <dd><p>MONIKER API Client</p></dd>        </dl><h2 id="letterT">T</h2>
-        <dl id="indexT"><dt>$<a href="CNIC/CNR/ResponseTemplateManager.html#property_templates">
+        <dl id="indexT"><dt>$<a href="CNIC/AbstractClient.html#property_transport">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#transport</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>HTTP transport layer</p></dd><dt>$<a href="CNIC/CNR/ResponseTemplateManager.html#property_templates">
 <abbr title="CNIC\CNR\ResponseTemplateManager">ResponseTemplateManager</abbr>#templates</a> &mdash; <em>Property in class <a href="CNIC/CNR/ResponseTemplateManager.html"><abbr title="CNIC\CNR\ResponseTemplateManager">ResponseTemplateManager</abbr></a></em></dt>
                     <dd><p>Template container</p></dd><dt><a href="CNIC/CNR/ResponseTranslator.html#method_translate">
 <abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr>::translate</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseTranslator.html"><abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
@@ -657,22 +667,22 @@ Note: not supported.</p></dd><dt><a href="CNIC/IBS/Client.html#method_setDefault
                     <dd><p>template container</p></dd><dt><a href="CNIC/IBS/ResponseTranslator.html#method_translate">
 <abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr>::translate</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseTranslator.html"><abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
                     <dd><p>translate a raw api response</p></dd>        </dl><h2 id="letterU">U</h2>
-        <dl id="indexU"><dt>$<a href="CNIC/CNR/Client.html#property_ua">
-<abbr title="CNIC\CNR\Client">Client</abbr>#ua</a> &mdash; <em>Property in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>user agent</p></dd><dt><a href="CNIC/CNR/Client.html#method_useHighPerformanceConnectionSetup">
-<abbr title="CNIC\CNR\Client">Client</abbr>::useHighPerformanceConnectionSetup</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Activate High Performance Setup</p></dd><dt><a href="CNIC/CNR/Client.html#method_useOTESystem">
-<abbr title="CNIC\CNR\Client">Client</abbr>::useOTESystem</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set OT&amp;E System for API communication</p></dd><dt><a href="CNIC/CNR/Client.html#method_useLIVESystem">
-<abbr title="CNIC\CNR\Client">Client</abbr>::useLIVESystem</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
+        <dl id="indexU"><dt>$<a href="CNIC/AbstractClient.html#property_ua">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#ua</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>user agent</p></dd><dt><a href="CNIC/AbstractClient.html#method_useHighPerformanceConnectionSetup">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::useHighPerformanceConnectionSetup</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Activate High Performance Setup</p></dd><dt><a href="CNIC/AbstractClient.html#method_useOTESystem">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::useOTESystem</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Set OT&amp;E System for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_useLIVESystem">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::useLIVESystem</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>Set LIVE System for API communication (this is the default setting)</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_user">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#user</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>subuser account name (subuser specific data view)</p></dd><dt><a href="CNIC/IBS/Client.html#method_useHighPerformanceConnectionSetup">
 <abbr title="CNIC\IBS\Client">Client</abbr>::useHighPerformanceConnectionSetup</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Activate High Performance Setup
 Note: not supported.</p></dd>        </dl><h2 id="letter_">_</h2>
-        <dl id="index_"><dt><a href="CNIC/CNR/Client.html#method___construct">
-<abbr title="CNIC\CNR\Client">Client</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
+        <dl id="index_"><dt><a href="CNIC/AbstractClient.html#method___construct">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/CNR/Column.html#method___construct">
 <abbr title="CNIC\CNR\Column">Column</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/CNR/Record.html#method___construct">
@@ -686,8 +696,6 @@ e.g.</p></dd><dt><a href="CNIC/CNR/Response.html#method___construct">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/ColumnInterface.html#method___construct">
 <abbr title="CNIC\ColumnInterface">ColumnInterface</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/IBS/Client.html#method___construct">
-<abbr title="CNIC\IBS\Client">Client</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/IBS/Response.html#method___construct">
 <abbr title="CNIC\IBS\Response">Response</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/IBS/SessionClient.html#method___construct">

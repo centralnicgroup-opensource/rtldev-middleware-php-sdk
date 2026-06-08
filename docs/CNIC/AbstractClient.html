@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>CNIC\CNR\Client | PHP SDK by CNIC</title>
+    <title>CNIC\AbstractClient | PHP SDK by CNIC</title>
 
-            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
-        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
-        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
-        <script async defer src="../../doctum.js"></script>
-        <script async defer src="../../js/bootstrap.min.js"></script>
-        <script async defer src="../../js/autocomplete.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../fonts/doctum-font.css">
+        <script src="../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../doctum.js"></script>
+        <script async defer src="../js/bootstrap.min.js"></script>
+        <script async defer src="../js/autocomplete.min.js"></script>
         <meta name="MobileOptimized" content="width">
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
     </head>
 
-    <body id="class" data-name="class:CNIC_CNR_Client" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+    <body id="class" data-name="class:CNIC_AbstractClient" data-root-path="../" data-search-index-url="../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -29,7 +29,7 @@
                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
             </div>
         </div>
-        <form id="search-form" action="../../search.html">
+        <form id="search-form" action="../search.html">
             <span class="icon icon-search"></span>
             <input name="search"
                    id="doctum-search-auto-complete"
@@ -57,16 +57,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../index.html">PHP SDK by CNIC</a>
+                <a class="navbar-brand" href="../index.html">PHP SDK by CNIC</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
-                    <li><a href="../../classes.html">Classes</a></li>
-                    <li><a href="../../namespaces.html">Namespaces</a></li>
-                    <li><a href="../../interfaces.html">Interfaces</a></li>
-                    <li><a href="../../traits.html">Traits</a></li>
-                    <li><a href="../../doc-index.html">Index</a></li>
-                    <li><a href="../../search.html">Search</a></li>
+                    <li><a href="../classes.html">Classes</a></li>
+                    <li><a href="../namespaces.html">Namespaces</a></li>
+                    <li><a href="../interfaces.html">Interfaces</a></li>
+                    <li><a href="../traits.html">Traits</a></li>
+                    <li><a href="../doc-index.html">Index</a></li>
+                    <li><a href="../search.html">Search</a></li>
                 </ul>
             </div>
         </div>
@@ -75,18 +75,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/CNR.html">CNR</a></li><li class="backslash">\</li><li>Client</li>
+                        <li><a href="../CNIC.html">CNIC</a></li><li class="backslash">\</li><li>AbstractClient</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>Client    
+        <h1>AbstractClient    
             </h1>
     </div>
 
     
-    <p>        class
-    <strong>Client</strong>        extends <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Client.php">View source</a>)
+    <p>    abstract     class
+    <strong>AbstractClient</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php">View source</a>)
 </p>
 
         
@@ -95,7 +95,8 @@
         
 
             <div class="description">
-            <p><p>CNR API Client</p></p>                    </div>
+            <p><p>Shared foundation for all registrar API clients.</p></p>            <p><p>Concrete subclasses provide the request() implementation, the default
+logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             
         
     
@@ -109,8 +110,7 @@
                                     </td>
                 <td>$context</td>
                 <td class="last"><p>context data for the client</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_context">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_settings">
@@ -119,8 +119,7 @@
                                     </td>
                 <td>$settings</td>
                 <td class="last"><p>registrar api settings</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_settings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_socketURL">
@@ -129,18 +128,16 @@
                                     </td>
                 <td>$socketURL</td>
                 <td class="last"><p>API connection url</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_socketURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_socketConfig">
-                                        protected                                        <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+                                        protected                                        <a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
                                                                                 
                                     </td>
                 <td>$socketConfig</td>
                 <td class="last"><p>Object covering API connection data</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_socketConfig">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_debugMode">
@@ -149,8 +146,7 @@
                                     </td>
                 <td>$debugMode</td>
                 <td class="last"><p>activity flag for debug mode</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_debugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_ua">
@@ -159,8 +155,7 @@
                                     </td>
                 <td>$ua</td>
                 <td class="last"><p>user agent</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_ua">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_curlopts">
@@ -169,18 +164,16 @@
                                     </td>
                 <td>$curlopts</td>
                 <td class="last"><p>additional curl options to use</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_curlopts">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_logger">
-                                        protected                                        <a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+                                        protected                                        <a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
                                                                                 
                                     </td>
                 <td>$logger</td>
                 <td class="last"><p>logger instance for debug mode</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_logger">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_isOTE">
@@ -189,18 +182,16 @@
                                     </td>
                 <td>$isOTE</td>
                 <td class="last"><p>is connected to OT&amp;E</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_isOTE">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type" id="property_transport">
-                                        protected                                        <a href="../../CNIC/HttpTransport.html"><abbr title="CNIC\HttpTransport">HttpTransport</abbr></a>
+                                        protected                                        <a href="../CNIC/HttpTransport.html"><abbr title="CNIC\HttpTransport">HttpTransport</abbr></a>
                                                                                 
                                     </td>
                 <td>$transport</td>
                 <td class="last"><p>HTTP transport layer</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_transport">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
+                <td></td>
             </tr>
             </table>
 
@@ -216,71 +207,67 @@
                     <a href="#method___construct">__construct</a>(string $path = &quot;&quot;)
         
                                             <p>Constructor</p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method___construct">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_request">request</a>(array $cmd = [])
         
-                                            <p><p>Perform API request using the given command</p></p>                </div>
+                                            <p><p>Perform API request using the given command.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+                    <a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_newSocketConfig">newSocketConfig</a>()
         
-                                            <p><p>Instantiate CNR SocketConfig</p></p>                </div>
+                                            <p><p>Instantiate the SocketConfig for this client.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setDefaultLogger">setDefaultLogger</a>()
         
-                                            <p><p>Set default CNR logger</p></p>                </div>
+                                            <p><p>Set the default logger for this client.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_setCustomLogger">setCustomLogger</a>(<a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
+                    <a href="#method_setCustomLogger">setCustomLogger</a>(<a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
         
                                             <p><p>Set custom logger to use instead of the default one.</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setCustomLogger">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_enableDebugMode">enableDebugMode</a>()
         
                                             <p><p>Enable debug output to STDOUT</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_enableDebugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_disableDebugMode">disableDebugMode</a>()
         
                                             <p><p>Disable debug output</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_disableDebugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -290,8 +277,7 @@
                     <a href="#method_getPOSTData">getPOSTData</a>(array $cmd, bool $secured = false)
         
                                             <p><p>Serialize given command for POST request including connection configuration data</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getPOSTData">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -301,8 +287,7 @@
                     <a href="#method_getSession">getSession</a>()
         
                                             <p><p>Get the API Session ID that is currently set</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getSession">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -312,19 +297,17 @@
                     <a href="#method_getURL">getURL</a>()
         
                                             <p><p>Get the API connection url that is currently set</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setUserAgent">setUserAgent</a>(string $str, string $rv, array $modules = [])
         
                                             <p><p>Set a custom user agent (for platforms that use this SDK)</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setUserAgent">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -334,19 +317,17 @@
                     <a href="#method_getUserAgent">getUserAgent</a>()
         
                                             <p><p>Get the user agent string</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getUserAgent">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setProxy">setProxy</a>(string $proxy = &quot;&quot;)
         
                                             <p><p>Set proxy to use for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setProxy">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -356,19 +337,17 @@
                     <a href="#method_getProxy">getProxy</a>()
         
                                             <p><p>Get proxy configuration for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getProxy">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setReferer">setReferer</a>(string $referer = &quot;&quot;)
         
                                             <p><p>Set Referer to use for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setReferer">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -378,8 +357,7 @@
                     <a href="#method_getReferer">getReferer</a>()
         
                                             <p><p>Get Referer configuration for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getReferer">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -389,85 +367,77 @@
                     <a href="#method_getVersion">getVersion</a>()
         
                                             <p><p>Get the current module version</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getVersion">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setURL">setURL</a>(string $value)
         
                                             <p><p>Set another connection url to be used for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setSession">setSession</a>(string $value = &quot;&quot;)
         
                                             <p><p>Set an API session id to be used for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setSession">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setRemoteIPAddress">setRemoteIPAddress</a>(string $value = &quot;&quot;)
         
                                             <p><p>Set a Remote IP Address to be used for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setRemoteIPAddress">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setCredentials">setCredentials</a>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
         
                                             <p><p>Set Credentials to be used for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setCredentials">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setRoleCredentials">setRoleCredentials</a>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
         
                                             <p><p>Set Role Credentials to be used for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setRoleCredentials">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setUserView">setUserView</a>(string $uid = &quot;&quot;)
         
                                             <p><p>Set a data view to a given subuser</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setUserView">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup</a>()
         
                                             <p><p>Activate High Performance Setup</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_useHighPerformanceConnectionSetup">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -477,8 +447,7 @@
                     <a href="#method_IDNConvert">IDNConvert</a>(array $domains)
         
                                             <p><p>Convert domain names to idn + punycode if necessary</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_IDNConvert">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -488,8 +457,7 @@
                     <a href="#method_autoIDNConvert">autoIDNConvert</a>(array $cmd)
         
                                             <p><p>Auto convert API command parameters to punycode, if necessary.</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_autoIDNConvert">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -499,8 +467,7 @@
                     <a href="#method_executeCurl">executeCurl</a>(string $data, array $cfg, array $extraCurlOpts = [])
         
                                             <p><p>Delegate cURL execution to the transport layer.</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_executeCurl">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -510,8 +477,7 @@
                     <a href="#method_close">close</a>()
         
                                             <p><p>Close all cURL connections</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_close">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -521,8 +487,7 @@
                     <a href="#method_getSettings">getSettings</a>()
         
                                             <p><p>Get registrar API settings</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getSettings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -532,60 +497,36 @@
                     <a href="#method_isOTE">isOTE</a>()
         
                                             <p><p>Check whether the client is connected to the OT&amp;E system</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_isOTE">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_useOTESystem">useOTESystem</a>()
         
                                             <p><p>Set OT&amp;E System for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_useOTESystem">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_useLIVESystem">useLIVESystem</a>()
         
                                             <p><p>Set LIVE System for API communication (this is the default setting)</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_useLIVESystem">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_setContext">setContext</a>(array $context)
         
                                             <p><p>Set context data for the client</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setContext">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_requestNextResponsePage">requestNextResponsePage</a>(<a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $rr)
-        
-                                            <p><p>Request the next page of list entries for the current list query</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_requestAllResponsePages">requestAllResponsePages</a>(array $cmd)
-        
-                                            <p><p>Request all pages/entries for the given query command</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -596,8 +537,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method___construct">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L86">at line 86</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L86">at line 86</a></div>
         <code>                    
     <strong>__construct</strong>(string $path = &quot;&quot;)
         </code>
@@ -631,8 +571,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_request">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Client.php#L50">at line 50</a></div>
-        <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L111">at line 111</a></div>
+        <code>    abstract                <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>request</strong>(array $cmd = [])
         </code>
     </h3>
@@ -642,7 +582,7 @@
             
 
         <div class="method-description">
-                            <p><p>Perform API request using the given command</p></p>                        
+                            <p><p>Perform API request using the given command.</p></p>                <p><p>Each client implements its own command serialisation and response type.</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -660,7 +600,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td><a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -674,8 +614,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_newSocketConfig">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Client.php#L29">at line 29</a></div>
-        <code>            protected        <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L117">at line 117</a></div>
+        <code>    abstract        protected        <a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
     <strong>newSocketConfig</strong>()
         </code>
     </h3>
@@ -685,7 +625,7 @@
             
 
         <div class="method-description">
-                            <p><p>Instantiate CNR SocketConfig</p></p>                        
+                            <p><p>Instantiate the SocketConfig for this client.</p></p>                <p><p>Subclasses return their own SocketConfig subtype.</p></p>        
         </div>
         <div class="tags">
             
@@ -693,7 +633,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></td>
+            <td><a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -707,8 +647,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setDefaultLogger">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Client.php#L39">at line 39</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L124">at line 124</a></div>
+        <code>    abstract                <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setDefaultLogger</strong>()
         </code>
     </h3>
@@ -718,7 +658,7 @@
             
 
         <div class="method-description">
-                            <p><p>Set default CNR logger</p></p>                        
+                            <p><p>Set the default logger for this client.</p></p>                <p><p>Subclasses instantiate the appropriate Logger implementation.</p></p>        
         </div>
         <div class="tags">
             
@@ -726,7 +666,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -740,10 +680,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setCustomLogger">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setCustomLogger">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L131">at line 131</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-    <strong>setCustomLogger</strong>(<a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L131">at line 131</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setCustomLogger</strong>(<a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
         </code>
     </h3>
     <div class="details">    
@@ -759,7 +698,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></td>
+                <td><a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></td>
                 <td>$customLogger</td>
                 <td></td>
             </tr>
@@ -770,7 +709,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -784,9 +723,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_enableDebugMode">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_enableDebugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L141">at line 141</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L141">at line 141</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>enableDebugMode</strong>()
         </code>
     </h3>
@@ -804,7 +742,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -818,9 +756,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_disableDebugMode">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_disableDebugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L151">at line 151</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L151">at line 151</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>disableDebugMode</strong>()
         </code>
     </h3>
@@ -838,7 +775,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -852,8 +789,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPOSTData">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getPOSTData">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
         <code>                    string
     <strong>getPOSTData</strong>(array $cmd, bool $secured = false)
         </code>
@@ -901,8 +837,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getSession">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getSession">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L170">at line 170</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L170">at line 170</a></div>
         <code>                    string|null
     <strong>getSession</strong>()
         </code>
@@ -935,8 +870,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getURL">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L179">at line 179</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L179">at line 179</a></div>
         <code>                    string
     <strong>getURL</strong>()
         </code>
@@ -969,9 +903,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setUserAgent">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setUserAgent">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L191">at line 191</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L191">at line 191</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setUserAgent</strong>(string $str, string $rv, array $modules = [])
         </code>
     </h3>
@@ -1009,7 +942,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1023,8 +956,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserAgent">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getUserAgent">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L201">at line 201</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L201">at line 201</a></div>
         <code>                    string
     <strong>getUserAgent</strong>()
         </code>
@@ -1057,9 +989,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setProxy">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setProxy">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L214">at line 214</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L214">at line 214</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setProxy</strong>(string $proxy = &quot;&quot;)
         </code>
     </h3>
@@ -1087,7 +1018,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1101,8 +1032,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getProxy">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getProxy">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L227">at line 227</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L227">at line 227</a></div>
         <code>                    string|null
     <strong>getProxy</strong>()
         </code>
@@ -1135,9 +1065,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setReferer">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setReferer">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L240">at line 240</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L240">at line 240</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setReferer</strong>(string $referer = &quot;&quot;)
         </code>
     </h3>
@@ -1165,7 +1094,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1179,8 +1108,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getReferer">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getReferer">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L253">at line 253</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L253">at line 253</a></div>
         <code>                    string|null
     <strong>getReferer</strong>()
         </code>
@@ -1213,8 +1141,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getVersion">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getVersion">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L264">at line 264</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L264">at line 264</a></div>
         <code>                    string
     <strong>getVersion</strong>()
         </code>
@@ -1247,9 +1174,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setURL">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L274">at line 274</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L274">at line 274</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setURL</strong>(string $value)
         </code>
     </h3>
@@ -1277,7 +1203,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1291,9 +1217,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setSession">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setSession">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L285">at line 285</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L285">at line 285</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setSession</strong>(string $value = &quot;&quot;)
         </code>
     </h3>
@@ -1321,7 +1246,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1335,9 +1260,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setRemoteIPAddress">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setRemoteIPAddress">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L297">at line 297</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L297">at line 297</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setRemoteIPAddress</strong>(string $value = &quot;&quot;)
         </code>
     </h3>
@@ -1365,7 +1289,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1388,9 +1312,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setCredentials">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setCredentials">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L312">at line 312</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L312">at line 312</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setCredentials</strong>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
         </code>
     </h3>
@@ -1423,7 +1346,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1437,9 +1360,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setRoleCredentials">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setRoleCredentials">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L326">at line 326</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L326">at line 326</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setRoleCredentials</strong>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
         </code>
     </h3>
@@ -1477,7 +1399,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1491,9 +1413,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setUserView">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setUserView">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L340">at line 340</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L340">at line 340</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setUserView</strong>(string $uid = &quot;&quot;)
         </code>
     </h3>
@@ -1521,7 +1442,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1535,9 +1456,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_useHighPerformanceConnectionSetup">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_useHighPerformanceConnectionSetup">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L350">at line 350</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L350">at line 350</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useHighPerformanceConnectionSetup</strong>()
         </code>
     </h3>
@@ -1555,7 +1475,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1569,8 +1489,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_IDNConvert">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_IDNConvert">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L367">at line 367</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L367">at line 367</a></div>
         <code>                    array
     <strong>IDNConvert</strong>(array $domains)
         </code>
@@ -1613,8 +1532,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_autoIDNConvert">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_autoIDNConvert">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L377">at line 377</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L377">at line 377</a></div>
         <code>            protected        array
     <strong>autoIDNConvert</strong>(array $cmd)
         </code>
@@ -1657,8 +1575,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_executeCurl">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_executeCurl">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L424">at line 424</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L424">at line 424</a></div>
         <code>            protected        array
     <strong>executeCurl</strong>(string $data, array $cfg, array $extraCurlOpts = [])
         </code>
@@ -1711,8 +1628,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_close">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_close">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L438">at line 438</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L438">at line 438</a></div>
         <code>                    void
     <strong>close</strong>()
         </code>
@@ -1745,8 +1661,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getSettings">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getSettings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L447">at line 447</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L447">at line 447</a></div>
         <code>                    array
     <strong>getSettings</strong>()
         </code>
@@ -1779,8 +1694,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isOTE">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_isOTE">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L455">at line 455</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L455">at line 455</a></div>
         <code>                    bool
     <strong>isOTE</strong>()
         </code>
@@ -1813,9 +1727,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_useOTESystem">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_useOTESystem">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L464">at line 464</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L464">at line 464</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useOTESystem</strong>()
         </code>
     </h3>
@@ -1833,7 +1746,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1847,9 +1760,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_useLIVESystem">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_useLIVESystem">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L474">at line 474</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L474">at line 474</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useLIVESystem</strong>()
         </code>
     </h3>
@@ -1867,7 +1779,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1881,9 +1793,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setContext">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setContext">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L485">at line 485</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L485">at line 485</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setContext</strong>(array $context)
         </code>
     </h3>
@@ -1911,102 +1822,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_requestNextResponsePage">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Client.php#L70">at line 70</a></div>
-        <code>                    <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>|null
-    <strong>requestNextResponsePage</strong>(<a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a> $rr)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Request the next page of list entries for the current list query</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></td>
-                <td>$rr</td>
-                <td><p>API Response of current page</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>|null</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_requestAllResponsePages">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Client.php#L96">at line 96</a></div>
-        <code>                    array
-    <strong>requestAllResponsePages</strong>(array $cmd)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Request all pages/entries for the given query command</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>array</td>
-                <td>$cmd</td>
-                <td><p>API list command to use</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
             <td></td>
         </tr>
     </table>

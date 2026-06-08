@@ -1,3 +1,37 @@
+# [15.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.1.2...v15.0.0) (2026-06-08)
+
+
+### Bug Fixes
+
+* **domain registrar enum:** cleanup the last relicts of HEXONET / ISPAPI now after system shutdown ([be4e408](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/be4e408e802d68dd0cdc9f9bd36df6f673a3b62b))
+* **psalm:** suppress PropertyNotSetInConstructor on \$logger; make HttpTransport final; drop curl_close ([ec9b961](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ec9b96178c522374d91e6ab4a5f1185dc83cd7b7))
+* **review:** address code review findings ([a5612e5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a5612e55ddf2ff4ae3610b2dc72c243e6cc1b69b))
+
+
+### Code Refactoring
+
+* **logger:** require ResponseInterface in logger contract ([8ddfe29](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8ddfe2959b557ff4e75e80148c578d84f1334ee0))
+
+
+### Features
+
+* **factory:** introduce Registrar enum; replace magic strings in ClientFactory ([01f4c78](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/01f4c784217cfe926713f6b329d1c31ed5db5a05))
+
+
+### BREAKING CHANGES
+
+* **logger:** Custom logger implementations must type the response argument as CNIC\ResponseInterface instead of CNIC\CNR\Response.
+ResponseInterface now exposes getContext(), so consumers can access logger context through the shared response contract without relying on concrete response classes or method_exists() fallbacks.
+Update custom loggers, including WHMCS cnic/ibs loggers, to use: public function log(string $post, CNIC\ResponseInterface $r, ?string $error = null): void
+* **review:** IBS\SessionClient no longer defines login(), logout(),
+saveSession(), or reuseSession(). Previously these methods threw
+\Exception("Method not supported") — callers handling the unsupported
+case via try/catch will now receive a fatal "Call to undefined method"
+Error instead. Guard with instanceof CNR\SessionClient before calling
+session methods if your code supports multiple registrar types.
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
 ## [14.1.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.1.1...v14.1.2) (2026-05-29)
 
 

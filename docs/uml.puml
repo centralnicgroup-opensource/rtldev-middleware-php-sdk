@@ -1,0 +1,471 @@
+@startuml class-diagram
+  enum "Registrar\n<b>Supported registrar identifiers.</b>" as Registrar {
+  }
+  class "ClientFactory\n<b>ClientFactory</b>" as ClientFactory {
+    {static} +getClient(params, logger)
+  }
+  interface "ColumnInterface\n<b>Common Column Interface</b>" as ColumnInterface {
+    +__construct(key, data)
+    +getKey()
+    +getData()
+    +getDataByIndex(idx)
+  }
+  interface "RecordInterface\n<b>Common Record Interface</b>" as RecordInterface {
+    +__construct(data)
+    +getData()
+    +getDataByKey(key)
+  }
+  class "HttpTransport\n<b>Low-level HTTP transport over cURL.</b>" as HttpTransport {
+    -handle : ?CurlHandle
+    +post(url, data, timeout, userAgent, options)
+    +close()
+  }
+  interface "ResponseInterface\n<b>Common Response Interface</b>" as ResponseInterface {
+    +__construct(raw, cmd, ph)
+    +getCode()
+    +getDescription()
+    +getRequestURL()
+    +getPlain()
+    +getQueuetime()
+    +getHash()
+    +getRuntime()
+    +isError()
+    +isSuccess()
+    +isTmpError()
+    +isPending()
+    +addColumn(key, data)
+    +addRecord(h)
+    +getColumn(key)
+    +getColumnIndex(colkey, index)
+    +getColumnKeys()
+    +getColumns()
+    +getCommand()
+    +getCommandPlain()
+    +getContext()
+    +getCurrentPageNumber()
+    +getCurrentRecord()
+    +getFirstRecordIndex()
+    +getLastRecordIndex()
+    +getListHash()
+    +getNextRecord()
+    +getNextPageNumber()
+    +getNumberOfPages()
+    +getPagination()
+    +getPreviousPageNumber()
+    +getPreviousRecord()
+    +getRecord(idx)
+    +getRecords()
+    +getRecordsCount()
+    +getRecordsTotalCount()
+    +getRecordsLimitation()
+    +hasNextPage()
+    +hasPreviousPage()
+    +rewindRecordList()
+  }
+  interface "LoggerInterface\n<b>Common Logger Interface</b>" as LoggerInterface {
+    +log(post, r, error)
+  }
+  class "CommandFormatter\n<b>CommandFormatter</b>" as CommandFormatter {
+    {static} +getSortedCommand(command)
+    {static} +flattenCommand(cmd, toupper)
+    {static} +formatCommand(command)
+    {static} -getPropertiesContactFieldsWithPriority()
+    {static} -getPropertiesPriority()
+    {static} -findPriority(key, priority)
+  }
+  class "AbstractClient\n<b>Shared foundation for all registrar API clients.</b>" as AbstractClient {
+    #context : array<string, mixed>
+    #settings : array<mixed>
+    #socketURL : string
+    #socketConfig : SocketConfig
+    #debugMode : bool
+    #ua : string
+    #curlopts : array<int, mixed>
+    #logger : LoggerInterface
+    #isOTE : bool
+    #transport : HttpTransport
+    +__construct(path)
+    {abstract} +request(cmd)
+    {abstract} #newSocketConfig()
+    {abstract} +setDefaultLogger()
+    +setCustomLogger(customLogger)
+    +enableDebugMode()
+    +disableDebugMode()
+    +getPOSTData(cmd, secured)
+    +getSession()
+    +getURL()
+    +setUserAgent(str, rv, modules)
+    +getUserAgent()
+    +setProxy(proxy)
+    +getProxy()
+    +setReferer(referer)
+    +getReferer()
+    +getVersion()
+    +setURL(value)
+    +setSession(value)
+    +setRemoteIPAddress(value)
+    +setCredentials(uid, pw)
+    +setRoleCredentials(uid, role, pw)
+    +setUserView(uid)
+    +useHighPerformanceConnectionSetup()
+    +IDNConvert(domains)
+    #autoIDNConvert(cmd)
+    #executeCurl(data, cfg, extraCurlOpts)
+    +close()
+    +getSettings()
+    +isOTE()
+    +useOTESystem()
+    +useLIVESystem()
+    +setContext(context)
+  }
+  package MONIKER as MONIKER {
+    class "SessionClient\n<b>MONIKER API Client</b>" as MONIKER_SessionClient {
+    }
+  }
+  package IBS as IBS {
+    class "Client\n<b>IBS API Client</b>" as IBS_Client {
+      #newSocketConfig()
+      +setDefaultLogger()
+      +getSession()
+      +setSession(value)
+      +setRoleCredentials(uid, role, pw)
+      #autoIDNConvert(cmd)
+      +request(cmd, path)
+      +setUserView(uid)
+      +useHighPerformanceConnectionSetup()
+    }
+    class "Column\n<b>IBS Column</b>" as IBS_Column {
+    }
+    class "Record\n<b>IBS Record</b>" as IBS_Record {
+    }
+    class "ResponseParser\n<b>IBS ResponseParser</b>" as IBS_ResponseParser {
+      {static} +parse(raw, cmd)
+    }
+    class "SessionClient\n<b>IBS API Client</b>" as IBS_SessionClient {
+      +__construct()
+    }
+    class "ResponseTranslator\n<b>IBS ResponseTranslator</b>" as IBS_ResponseTranslator {
+      -descriptionRegexMap : array<mixed>
+      {static} +translate(raw, cmd, ph)
+      {static} -findMatch(regex, newraw, val)
+      {static} #replacePlaceholders(raw, ph)
+    }
+    class "ResponseTemplateManager\n<b>IBS ResponseTemplateManager</b>" as IBS_ResponseTemplateManager {
+      +templates : array<string>
+      {static} +generateTemplate(status, description)
+      {static} +addTemplate(id, plain, descr)
+      {static} +getTemplate(id)
+      {static} +getTemplates()
+      {static} +hasTemplate(id)
+      {static} +isTemplateMatchHash(tpl, id)
+      {static} +isTemplateMatchPlain(plain, id)
+    }
+    class "SocketConfig\n<b>IBS SocketConfig</b>" as IBS_SocketConfig {
+      #login : string
+      #pw : string
+      #remoteaddr : string
+      #parameters : array<string>
+      +__construct(parameters)
+      #getPOSTDataParams(command, secured)
+      +getPOSTData(command, secured)
+      +setLogin(value)
+      +getLogin()
+      +setPassword(value)
+      +setRemoteAddress(value)
+    }
+    class "Logger\n<b>IBS Logger</b>" as IBS_Logger {
+      +log(post, r, error)
+    }
+    class "Response\n<b>IBS Response</b>" as IBS_Response {
+      #paginationkeys : non-empty-string
+      #context : array<string, mixed>
+      +__construct(raw, cmd, ph, context)
+      +getCode()
+      +getStatus()
+      +getDescription()
+      +getPlain()
+      +getQueuetime()
+      +getHash()
+      +getRuntime()
+      +isError()
+      +isSuccess()
+      +isTmpError()
+      +isPending()
+      +addColumn(key, data)
+      +addRecord(h)
+      +getColumn(key)
+      +getColumnIndex(colkey, index)
+      +getColumnKeys(filterPaginationKeys)
+      +getColumns()
+      +getCommand()
+      +getCommandPlain()
+      +getCurrentPageNumber()
+      +getCurrentRecord()
+      +getFirstRecordIndex()
+      +getLastRecordIndex()
+      +getListHash()
+      +getNextRecord()
+      +getNextPageNumber()
+      +getNumberOfPages()
+      +getPagination()
+      +getPreviousPageNumber()
+      +getPreviousRecord()
+      +getRecord(idx)
+      +getRecords()
+      +getRecordsCount()
+      +getRecordsTotalCount()
+      +getRecordsLimitation()
+      +hasNextPage()
+      +hasPreviousPage()
+      +rewindRecordList()
+      -hasColumn(key)
+      -hasCurrentRecord()
+      -hasNextRecord()
+      -hasPreviousRecord()
+    }
+  }
+  package CNR as CNR {
+    class "Client\n<b>CNR API Client</b>" as CNR_Client {
+      #newSocketConfig()
+      +setDefaultLogger()
+      +request(cmd)
+      +requestNextResponsePage(rr)
+      +requestAllResponsePages(cmd)
+    }
+    class "Column\n<b>CNR Column</b>" as CNR_Column {
+      +length : int
+      -key : string
+      -data : array
+      +__construct(key, data)
+      +getKey()
+      +getData()
+      +getDataByIndex(idx)
+      -hasDataIndex(idx)
+    }
+    class "Record\n<b>CNR Record</b>" as CNR_Record {
+      -data : array<string, mixed>
+      +__construct(data)
+      +getData()
+      +getDataByKey(key)
+      -hasData(key)
+    }
+    class "ResponseParser\n<b>CNR ResponseParser</b>" as CNR_ResponseParser {
+      {static} +parse(raw)
+    }
+    class "SessionClient\n<b>CNR Session API Client</b>" as CNR_SessionClient {
+      +__construct()
+    }
+    class "ResponseTranslator\n<b>CNR ResponseTranslator</b>" as CNR_ResponseTranslator {
+      -descriptionRegexMap : array<mixed>
+      {static} +translate(raw, cmd, ph)
+      {static} -findMatch(regex, newraw, val, cmd)
+      {static} #replacePlaceholders(raw, ph)
+    }
+    class "SessionCapable\n<b>Provides session-based API communication methods.</b>" as CNR_SessionCapable {
+      +login()
+      +logout()
+      +saveSession(session)
+      +reuseSession(session)
+    }
+    class "ResponseTemplateManager\n<b>CNR ResponseTemplateManager</b>" as CNR_ResponseTemplateManager {
+      +templates : array<string>
+      {static} +generateTemplate(code, description)
+      {static} +addTemplate(id, plain, descr)
+      {static} +getTemplate(id)
+      {static} +getTemplates()
+      {static} +hasTemplate(id)
+      {static} +isTemplateMatchHash(tpl, id)
+      {static} +isTemplateMatchPlain(plain, id)
+    }
+    class "SocketConfig\n<b>CNR SocketConfig</b>" as CNR_SocketConfig {
+      -persistent : bool
+      #login : string
+      #pw : string
+      #remoteaddr : string
+      #session : string
+      #user : string
+      #parameters : array<string>
+      +__construct(parameters)
+      #getPOSTDataParams(command, secured)
+      +getPOSTData(command, secured)
+      +setPersistent(value)
+      +getPersistent()
+      +getSession()
+      +setLogin(value)
+      +getLogin()
+      +setPassword(value)
+      +setRemoteAddress(value)
+      +setSession(value)
+      +setUser(value)
+    }
+    class "Logger\n<b>CNR Logger</b>" as CNR_Logger {
+      +log(post, r, error)
+    }
+    class "Response\n<b>CNR Response</b>" as CNR_Response {
+      #command : array<string>
+      #raw : string
+      #hash : array<string, mixed>
+      #paginationkeys : non-empty-string
+      #columnkeys : string[]
+      #columns : Column[]
+      #recordIndex : int
+      #records : Record[]
+      #context : array<string, mixed>
+      #requestUrl : string
+      +__construct(raw, cmd, ph, context)
+      +getContext()
+      +getRequestURL()
+      +getCode()
+      +getDescription()
+      +getPlain()
+      +getQueuetime()
+      +getHash()
+      +getRuntime()
+      +isError()
+      +isSuccess()
+      +isTmpError()
+      +isPending()
+      +addColumn(key, data)
+      +addRecord(h)
+      +getColumn(key)
+      +getColumnIndex(colkey, index)
+      +getColumnKeys(filterPaginationKeys)
+      +getColumns()
+      +getCommand()
+      +getCommandPlain()
+      +getCurrentPageNumber()
+      +getCurrentRecord()
+      +getFirstRecordIndex()
+      +getLastRecordIndex()
+      +getListHash()
+      +getNextRecord()
+      +getNextPageNumber()
+      +getNumberOfPages()
+      +getPagination()
+      +getPreviousPageNumber()
+      +getPreviousRecord()
+      +getRecord(idx)
+      +getRecords()
+      +getRecordsCount()
+      +getRecordsTotalCount()
+      +getRecordsLimitation()
+      +hasNextPage()
+      +hasPreviousPage()
+      +rewindRecordList()
+      -hasColumn(key)
+      -hasCurrentRecord()
+      -hasNextRecord()
+      -hasPreviousRecord()
+    }
+  }
+  AbstractClient ..> CNR_SocketConfig
+  AbstractClient ..> HttpTransport
+  AbstractClient ..> LoggerInterface
+  AbstractClient ..> ResponseInterface
+  AbstractClient <|-- CNR_Client
+  AbstractClient <|-- IBS_Client
+  CNR_Client "1" ..> "*" CNR_Response
+  CNR_Client ..> CNR_Logger
+  CNR_Client ..> CNR_Response
+  CNR_Client ..> CNR_SocketConfig
+  CNR_Client ..> CommandFormatter
+  CNR_Client <|-- CNR_SessionClient
+  CNR_Column <|-- IBS_Column
+  CNR_Logger ..> ResponseInterface
+  CNR_Record <|-- IBS_Record
+  CNR_Response "1" ..> "*" CNR_Column
+  CNR_Response "1" ..> "*" CNR_Record
+  CNR_Response ..> CNR_Column
+  CNR_Response ..> CNR_Record
+  CNR_Response ..> CNR_ResponseParser
+  CNR_Response ..> CNR_ResponseTranslator
+  CNR_Response ..> CommandFormatter
+  CNR_Response <|-- IBS_Response
+  CNR_ResponseTemplateManager ..> CNR_Response
+  CNR_ResponseTemplateManager ..> CNR_ResponseParser
+  CNR_ResponseTranslator ..> CNR_ResponseTemplateManager
+  CNR_SessionCapable ..> CNR_Column
+  CNR_SessionCapable ..> CNR_Response
+  CNR_SocketConfig <|-- IBS_SocketConfig
+  ClientFactory ..> CNR_Logger
+  ClientFactory ..> CNR_SessionClient
+  ClientFactory ..> IBS_Logger
+  ClientFactory ..> IBS_SessionClient
+  ClientFactory ..> LoggerInterface
+  ClientFactory ..> MONIKER_SessionClient
+  ClientFactory ..> Registrar
+  ColumnInterface <|-- CNR_Column
+  IBS_Client ..> CNR_SocketConfig
+  IBS_Client ..> CommandFormatter
+  IBS_Client ..> IBS_Logger
+  IBS_Client ..> IBS_Response
+  IBS_Client ..> IBS_SocketConfig
+  IBS_Client <|-- IBS_SessionClient
+  IBS_Logger ..> ResponseInterface
+  IBS_Response "1" ..> "*" CNR_Column
+  IBS_Response "1" ..> "*" CNR_Record
+  IBS_Response ..> CNR_Column
+  IBS_Response ..> CNR_Record
+  IBS_Response ..> CommandFormatter
+  IBS_Response ..> IBS_ResponseParser
+  IBS_Response ..> IBS_ResponseTranslator
+  IBS_ResponseTemplateManager ..> IBS_Response
+  IBS_ResponseTemplateManager ..> IBS_ResponseParser
+  IBS_ResponseTranslator ..> IBS_ResponseTemplateManager
+  IBS_SessionClient <|-- MONIKER_SessionClient
+  LoggerInterface ..> ResponseInterface
+  LoggerInterface <|-- CNR_Logger
+  LoggerInterface <|-- IBS_Logger
+  RecordInterface <|-- CNR_Record
+  ResponseInterface "1" ..> "*" ColumnInterface
+  ResponseInterface "1" ..> "*" RecordInterface
+  ResponseInterface ..> ColumnInterface
+  ResponseInterface ..> RecordInterface
+  ResponseInterface ..> ResponseInterface
+  ResponseInterface <|-- CNR_Response
+@enduml
+@startuml package-related-diagram
+  package CNIC as CNIC {
+    package MONIKER {
+    }
+    package IBS {
+    }
+    package CNR {
+    }
+  }
+  package CNIC #DDDDDD {
+    package IDNA #DDDDDD {
+      package Factory #DDDDDD {
+      }
+    }
+  }
+  CNIC <-[#red,plain,thickness=4]-> CNR
+  CNIC <-[#red,plain,thickness=4]-> IBS
+  CNIC --> MONIKER
+  CNIC --> CNIC
+  CNIC --> Factory
+  MONIKER --> IBS
+  IBS --> CNR
+  IBS --> IBS
+  CNR --> CNR
+@enduml
+@startuml division-diagram
+  card Registrar #ccffcc [
+    Registrar
+    <b>Supported registrar identifiers.</b>
+    ====
+    CNR
+    ----
+    CNIC
+    ----
+    IBS
+    ----
+    MONIKER
+  ]
+  package MONIKER as MONIKER {
+  }
+  package IBS as IBS {
+  }
+  package CNR as CNR {
+  }
+@enduml
