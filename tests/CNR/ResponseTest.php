@@ -45,6 +45,13 @@ final class ResponseTest extends TestCase
         $this->assertEquals($expected, $r->getCommandPlain());
     }
 
+    public function testGetContext(): void
+    {
+        $context = ["traceId" => "abc123", "attempt" => 1];
+        $r = new R("OK", [], [], $context);
+        $this->assertSame($context, $r->getContext());
+    }
+
     public function testGetCurrentPageNumberEntries(): void
     {
         $r = new R("listP0");

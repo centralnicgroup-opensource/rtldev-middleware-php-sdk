@@ -137,6 +137,7 @@ class Response implements ResponseInterface
      * Get context data for the response
      * @return array<string,mixed>
      */
+    #[\Override]
     public function getContext(): array
     {
         return $this->context;
