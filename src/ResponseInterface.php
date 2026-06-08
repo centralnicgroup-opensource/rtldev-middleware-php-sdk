@@ -147,6 +147,12 @@ interface ResponseInterface
     public function getCommandPlain(): string;
 
     /**
+     * Get context data for the response
+     * @return array<string,mixed> context data
+     */
+    public function getContext(): array;
+
+    /**
      * Get Page Number of current List Query
      * @return int|null page number or null in case of a non-list response
      */
