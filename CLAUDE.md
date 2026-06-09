@@ -9,7 +9,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 - **Namespace root:** `CNIC\` mapped to `src/` (PSR-4)
 - **Inheritance chain:** `CNR\Client` → `CNR\SessionClient` → `IBS\Client` → `IBS\SessionClient` → `MONIKER\SessionClient`
 - **Config-driven:** Each sub-namespace has a `config.json` with API URLs, parameter mappings, and feature flags
-- **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` define contracts (implementations don't formally `implements` them yet)
+- **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` define contracts; all concrete classes formally declare `implements`
 - **Factory pattern:** `ClientFactory::getClient()` for instantiation
 
 ## Coding Standards
@@ -79,14 +79,14 @@ composer phpstan       # Static analysis
 
 ## Important Files
 
-| Path | Purpose |
-|------|---------|
-| `src/CNR/config.json` | CNR API endpoints and settings |
-| `src/IBS/config.json` | IBS API endpoints and settings |
-| `src/MONIKER/config.json` | Moniker API endpoints and settings |
-| `.github/linters/phpcs.xml` | CodeSniffer PSR-12 config |
-| `.github/linters/phpstan.neon` | PHPStan level 8 config |
-| `phpunit.xml` | PHPUnit configuration |
+| Path                           | Purpose                            |
+| ------------------------------ | ---------------------------------- |
+| `src/CNR/config.json`          | CNR API endpoints and settings     |
+| `src/IBS/config.json`          | IBS API endpoints and settings     |
+| `src/MONIKER/config.json`      | Moniker API endpoints and settings |
+| `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config          |
+| `.github/linters/phpstan.neon` | PHPStan level 8 config             |
+| `phpunit.xml`                  | PHPUnit configuration              |
 
 ## Atlassian / JIRA
 
