@@ -7,7 +7,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 ## Architecture
 
 - **Namespace root:** `CNIC\` mapped to `src/` (PSR-4)
-- **Inheritance chain:** `CNR\Client` → `CNR\SessionClient` → `IBS\Client` → `IBS\SessionClient` → `MONIKER\SessionClient`
+- **Inheritance chain:** Each brand's `Client` and `SessionClient` extend `CNIC\AbstractClient` directly — no cross-namespace inheritance. `CNR\SessionClient` uses the `SessionCapable` trait for login/logout; `IBS\SessionClient` and `MONIKER\SessionClient` are session-less.
 - **Config-driven:** Each sub-namespace has a `config.json` with API URLs, parameter mappings, and feature flags
 - **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` define contracts; all concrete classes formally declare `implements`
 - **Factory pattern:** `ClientFactory::getClient()` for instantiation

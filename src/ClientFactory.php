@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CNIC;
 
-use CNIC\CNR\Logger;
 use CNIC\CNR\SessionClient;
-use CNIC\IBS\Logger as IBSLogger;
 use CNIC\IBS\SessionClient as IBSSessionClient;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
 use CNIC\Registrar;
@@ -26,7 +24,7 @@ class ClientFactory
      * @param LoggerInterface|null $logger Logger Instance (optional)
      * @throws \Exception
      */
-    public static function getClient(array $params, ?LoggerInterface $logger = null): SessionClient|IBSSessionClient
+    public static function getClient(array $params, ?LoggerInterface $logger = null): SessionClient|IBSSessionClient|MONIKERSessionClient
     {
         $cl = match (Registrar::tryFrom(strtoupper($params["registrar"]))) {
             Registrar::CNR, Registrar::CNIC => new SessionClient(),
@@ -34,7 +32,9 @@ class ClientFactory
             Registrar::MONIKER              => new MONIKERSessionClient(),
             null                            => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
         };
-        $cl->setCustomLogger($logger ?? ($cl instanceof IBSSessionClient ? new IBSLogger() : new Logger()));
+        if ($logger !== null) {
+            $cl->setCustomLogger($logger);
+        }
 
         if (!empty($params["sandbox"])) {
             $cl->useOTESystem();
