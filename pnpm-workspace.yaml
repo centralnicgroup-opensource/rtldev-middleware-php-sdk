@@ -1,2 +1,5 @@
+minimumReleaseAgeExclude:
+  - prettier@3.8.4
+  - semantic-release@25.0.5
 overrides:
   brace-expansion: ">=5.0.6"
