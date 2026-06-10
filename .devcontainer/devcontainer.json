@@ -34,7 +34,7 @@
         "php.executablePath": "/usr/local/php/current/bin/php",
         "php.suggest.basic": false,
         "phpunit.config": ".github/phpunit.xml",
-        "phpunit.command": "\"${php}\" ${phpargs} -d xdebug.mode=coverage \"${phpunit}\" ${phpunitargs}"
+        "phpunit.command": "zsh /usr/share/rtldev-middleware-php-sdk/.devcontainer/supporting_files/scripts/phpunit-wrapper.sh \"${php}\" ${phpargs} -d xdebug.mode=coverage \"${phpunit}\" ${phpunitargs}"
       }
     }
   },
@@ -57,5 +57,6 @@
     "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/WSL_USER,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind,consistency=cached"
   ],
-  "postCreateCommand": "zsh /post-create.sh"
+  "postCreateCommand": "zsh /post-create.sh",
+  "postAttachCommand": "zsh /usr/share/rtldev-middleware-php-sdk/.devcontainer/supporting_files/scripts/post-attach.sh"
 }
