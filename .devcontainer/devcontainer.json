@@ -15,6 +15,7 @@
         "gitHub.vscode-pull-request-github",
         "ms-vscode-remote.remote-containers",
         "bmewburn.vscode-intelephense-client",
+        "devsense.phptools-vscode",
         "ms-azuretools.vscode-containers",
         "xdebug.php-debug",
         "neilbrayfield.php-docblocker",
@@ -32,7 +33,9 @@
         },
         "php.validate.executablePath": "/usr/local/php/current/bin/php",
         "php.executablePath": "/usr/local/php/current/bin/php",
-        "php.suggest.basic": false
+        "php.suggest.basic": false,
+        "phpunit.config": ".github/phpunit.xml",
+        "phpunit.command": "\"${php}\" ${phpargs} -d xdebug.mode=coverage \"${phpunit}\" ${phpunitargs}"
       }
     }
   },
