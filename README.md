@@ -11,59 +11,69 @@ This module is a connector library for the insanely fast CNIC Backend APIs (Cent
 
 ## Resources
 
-* Documentation Links (PHP-SDK internal registrar id available in round brackets):
-    * [CentralNic Reseller (CNR)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
-    * [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
-    * [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
-* [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
+- Documentation Links (PHP-SDK internal registrar id available in round brackets):
+  - [CentralNic Reseller (CNR)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
+  - [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
+  - [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
+- [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
 
 ## Usage
 
-```composer require centralnic-reseller/php-sdk```
+`composer require centralnic-reseller/php-sdk`
 
 Find a demo app for the Brand of choice in the tests folder that should help you with getting started.
 
 e.g. `tests/CNR/app.php` etc.
 
 ## Dev Container
+
 If you want to contribute, we recommend using Visual Studio Code and to follow the below setup instructions:
 
-* Add an entry in your hosts file: ```127.0.0.1         devsdk.centralnicreseller.net```
+- Add an entry in your hosts file: `127.0.0.1         devsdk.centralnicreseller.net`
 
-PHP SDK Data can be accessed via apache server at this url: ```http://devsdk.centralnicreseller.net```
+PHP SDK Data can be accessed via apache server at this url: `http://devsdk.centralnicreseller.net`
+
+### Environment variables (`env.sh`)
+
+The devcontainer looks for an `env.sh` file in the workspace root and **automatically sources it** in two places:
+
+1. **Every new integrated-terminal session** — the file is sourced via `~/.zshenv` so credentials are available as soon as you open a terminal, without a manual `source env.sh`.
+2. **PHPUnit runs triggered from the VSCode UI** — the PHPUnit wrapper script sources `env.sh` before invoking PHP, so IDE-triggered tests see the same variables as `composer test` does from the terminal.
+
+`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need, for example:
+
+```sh
+export RTLDEV_MW_CI_USER_CNR=<your-username>
+export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
+export RTLDEV_MW_CI_USER_IBS=<your-username>
+export RTLDEV_MW_CI_USERPASSWORD_IBS=<your-password>
+export RTLDEV_MW_CI_USER_MONIKER=<your-username>
+export RTLDEV_MW_CI_USERPASSWORD_MONIKER=<your-password>
+```
+
+> [!NOTE]
+> The auto-loading takes effect for **new** terminal sessions. If your terminal was already open when you created or updated `env.sh`, run `source env.sh` once in that session or open a new terminal.
 
 ## Running the Demo Application
 
 To run the demo application, follow these steps:
 
 1. **Set Your Credentials**:
-   You need to ensure your credentials are available. You can do this in two ways:
-   - Directly replace the credentials within the application file.
-   - Alternatively, set the environment variables required for the CNR test app:
-     ```sh
-     # CentralNic Reseller
-     export RTLDEV_MW_CI_USER_CNR=<your-username>
-     export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
-     # internet.bs
-     export RTLDEV_MW_CI_USER_IBS=<your-username>
-     export RTLDEV_MW_CI_USERPASSWORD_IBS=<your-password>
-     # moniker
-     export RTLDEV_MW_CI_USER_MONIKER=<your-username>
-     export RTLDEV_MW_CI_USERPASSWORD_MONIKER=<your-password>
-     ```
+   You need to ensure your credentials are available. The recommended approach inside the devcontainer is to create an `env.sh` file in the workspace root — see [Environment variables (`env.sh`)](#environment-variables-envsh) for details.
+   Alternatively, you can directly replace the credential placeholders inside the demo application file.
 
 2. **Execute the Demo**: Once the credentials are configured, run the appropriate demo command:
 
-    Run the below npm scripts (or execute the related commands covered in package.json):
+   Run the below npm scripts (or execute the related commands covered in package.json):
 
-    ```sh
-    # CentralNic Reseller
-    npm run test-demo-cnr
-    # internet.bs
-    npm run test-demo-ibs
-    # Moniker
-    npm run test-demo-moniker
-    ```
+   ```sh
+   # CentralNic Reseller
+   npm run test-demo-cnr
+   # internet.bs
+   npm run test-demo-ibs
+   # Moniker
+   npm run test-demo-moniker
+   ```
 
 3. **Update Demo Contents**:
    If you need to modify the demo contents, the relevant files are located at:
@@ -82,7 +92,7 @@ To run the demo application, follow these steps:
 CI is powered by [reusable GitHub Actions workflows](https://github.com/centralnicgroup-opensource/rtldev-middleware-shareable-workflows). The test matrix covers:
 
 | PHP Version | Status |
-|-------------|--------|
+| ----------- | ------ |
 | 8.3         | ✓      |
 | 8.4         | ✓      |
 | 8.5         | ✓      |
@@ -91,8 +101,8 @@ The matrix is configured via the repository variable `RTLDEV_MW_CI_PHP_MATRIX`.
 
 ## Maintainers
 
-* **Kai Schwarz** - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
-* **Asif Nawaz**  - [KaiSchwarz-cnic](https://github.com/AsifNawaz-cnic)
+- **Kai Schwarz** - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
+- **Asif Nawaz** - [KaiSchwarz-cnic](https://github.com/AsifNawaz-cnic)
 
 ## License
 
