@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# shellcheck shell=bash
 # Appends a source line for env.sh to ~/.zshenv (once) so that every new
 # integrated-terminal session inherits the workspace environment variables
 # without requiring a manual `source env.sh`.
