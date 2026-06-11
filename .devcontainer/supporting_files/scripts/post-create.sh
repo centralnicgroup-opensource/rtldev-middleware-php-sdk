@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env zsh
+# shellcheck shell=bash
 set -euo pipefail  # Exit on error, undefined vars, pipe failures
 
 # Environment setup
