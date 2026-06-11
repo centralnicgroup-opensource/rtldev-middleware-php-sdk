@@ -69,7 +69,7 @@ final class ClientTest extends TestCase
 
     protected function tearDown(): void
     {
-        sleep(1);
+        sleep(2);
         parent::tearDown();
     }
 
