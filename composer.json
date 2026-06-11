@@ -69,7 +69,7 @@
       "@shellcheck"
     ],
     "test": "XDEBUG_MODE=coverage phpunit --configuration .github/phpunit.xml",
-    "shellcheck": "find . -name '*.sh' -not -path '*/vendor/*' | xargs shellcheck",
+    "shellcheck": "find . -name '*.sh' -not -path '*/vendor/*' -not -path '*/node_modules/*' -not -path '*/.husky/_/*' | xargs shellcheck",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon",
     "psalm": "psalm --config=.github/linters/psalm.xml --no-cache --threads=1 --monochrome --show-info=true",
     "psalm:colored": "psalm --config=.github/linters/psalm.xml --no-cache --threads=1 --show-info=true",
