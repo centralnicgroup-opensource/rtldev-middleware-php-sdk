@@ -34,7 +34,11 @@
         "php.executablePath": "/usr/local/php/current/bin/php",
         "php.suggest.basic": false,
         "phpunit.config": ".github/phpunit.xml",
-        "phpunit.command": "zsh /usr/share/rtldev-middleware-php-sdk/.devcontainer/supporting_files/scripts/phpunit-wrapper.sh \"${php}\" ${phpargs} -d xdebug.mode=coverage \"${phpunit}\" ${phpunitargs}"
+        "phpunit.command": "zsh /usr/share/rtldev-middleware-php-sdk/.devcontainer/supporting_files/scripts/phpunit-wrapper.sh \"${php}\" ${phpargs} -d xdebug.mode=coverage \"${phpunit}\" ${phpunitargs}",
+        "php.problems.exclude": {
+          "**/vendor/**": true,
+          "**/node_modules/**": true
+        }
       }
     }
   },
