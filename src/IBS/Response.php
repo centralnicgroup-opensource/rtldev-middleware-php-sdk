@@ -173,7 +173,7 @@ class Response extends CNRResponse
     #[\Override]
     public function isSuccess(): bool
     {
-        return $this->hash["status"] === "SUCCESS";
+        return ($this->hash["status"] === "SUCCESS" || !$this->isError());
     }
 
     /**
