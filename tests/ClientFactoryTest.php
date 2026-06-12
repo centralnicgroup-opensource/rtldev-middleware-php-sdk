@@ -32,7 +32,7 @@ final class ClientFactoryTest extends TestCase
     /**
      * Extended Basic test for getClient with Registrar CNR
      */
-    public function testCNRClient1(): void
+    public function testCnrClient1(): void
     {
         $cl = CF::getClient([
             "registrar" => "CNR",
@@ -56,7 +56,7 @@ final class ClientFactoryTest extends TestCase
     /**
      * Basic test for getClient with Registrar CNR
      */
-    public function testCNRClient2(): void
+    public function testCnrClient2(): void
     {
         $cl = CF::getClient([
             "registrar" => "CNR"
