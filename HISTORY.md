@@ -1,3 +1,21 @@
+# [15.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.0.0...v15.1.0) (2026-06-12)
+
+
+### Bug Fixes
+
+* **devcontainer:** add shellcheck shell=bash directive to zsh scripts ([ab4dabb](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ab4dabbbfdb591bec1d5ebb9752d1e61d55fde80))
+* **devcontainer:** ensure xdebug coverage mode for PHPUnit in VSCode ([defcce9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/defcce9d3c8598470f4268af169c8fd7f59719ee))
+* **examples:** correct autoload path after moving scripts to examples/ ([0a68c11](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/0a68c116aaffb264961ba43c1ab204a671ec1f23))
+* **ibs:** correct isSuccess() to accept non-error responses ([34996e9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/34996e93e4b93c4b642a489838100f73cffe6724))
+* **lint:** exclude node_modules and .husky/_/ from shellcheck scan ([09cd4c0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/09cd4c01c69f607ab20d377801a42055a21a7a13))
+* **moniker:** eliminate cross-namespace inheritance for MONIKER ([00a8219](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/00a82196aac78e42cce22494a74fbefdfb8a4d11))
+
+
+### Features
+
+* **devcontainer:** add shellcheck to Dockerfile and composer lint ([fdc9de1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/fdc9de1a48fae2ed85fbc40f3e89e5e60d547d11))
+* **devcontainer:** auto-load env.sh for terminal sessions and PHPUnit runs ([978cbc7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/978cbc7be24211504750b040f103b687ee8acafe))
+
 # [15.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v14.1.2...v15.0.0) (2026-06-08)
 
 

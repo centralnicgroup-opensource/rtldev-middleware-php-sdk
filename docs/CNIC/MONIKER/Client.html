@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>CNIC\MONIKER\SessionClient | PHP SDK by CNIC</title>
+    <title>CNIC\MONIKER\Client | PHP SDK by CNIC</title>
 
             <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
 
     </head>
 
-    <body id="class" data-name="class:CNIC_MONIKER_SessionClient" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+    <body id="class" data-name="class:CNIC_MONIKER_Client" data-root-path="../../" data-search-index-url="../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -75,18 +75,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/MONIKER.html">MONIKER</a></li><li class="backslash">\</li><li>SessionClient</li>
+                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/MONIKER.html">MONIKER</a></li><li class="backslash">\</li><li>Client</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>SessionClient    
+        <h1>Client    
             </h1>
     </div>
 
     
-    <p>final         class
-    <strong>SessionClient</strong>        extends <a href="../../CNIC/MONIKER/Client.html"><abbr title="CNIC\MONIKER\Client">Client</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/MONIKER/SessionClient.php">View source</a>)
+    <p>        class
+    <strong>Client</strong>        extends <a href="../../CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/MONIKER/Client.php">View source</a>)
 </p>
 
         
@@ -95,7 +95,7 @@
         
 
             <div class="description">
-            <p><p>Moniker API Client</p></p>                    </div>
+            <p><p>Moniker API Client — same platform as IBS; config.json provides Moniker-specific endpoints.</p></p>                    </div>
             
         
     
@@ -213,10 +213,11 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>()
+                    <a href="#method___construct">__construct</a>(string $path = &quot;&quot;)
         
                                             <p>Constructor</p>                </div>
-                <div class="col-md-2"></div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method___construct">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -582,9 +583,10 @@ Note: not supported.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/MONIKER/SessionClient.php#L24">at line 24</a></div>
+        <div class="location">in <a href="../../CNIC/AbstractClient.html#method___construct">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L86">at line 86</a></div>
         <code>                    
-    <strong>__construct</strong>()
+    <strong>__construct</strong>(string $path = &quot;&quot;)
         </code>
     </h3>
     <div class="details">    
@@ -596,17 +598,18 @@ Note: not supported.</p></p>                </div>
                             <p>Constructor</p>                        
         </div>
         <div class="tags">
-            
-            
-                            <h4>Exceptions</h4>
+                            <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
-                <td></td>
+                <td>string</td>
+                <td>$path</td>
+                <td><p>Path to the configuration file</p></td>
             </tr>
             </table>
 
+            
+            
             
             
                     </div>
