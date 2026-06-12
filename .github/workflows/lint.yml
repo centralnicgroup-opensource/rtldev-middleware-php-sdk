@@ -23,9 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: ludeeus/action-shellcheck@master
+      - uses: shivammathur/setup-php@v2
         with:
-          scandir: ".devcontainer/supporting_files/scripts"
+          php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: ShellCheck
+        run: composer shellcheck
 
   hadolint:
     name: Lint Dockerfile
@@ -54,9 +59,51 @@ jobs:
       - uses: actions/checkout@v6
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
           coverage: none
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
       - name: Audit PHP dependencies
         run: composer audit --no-dev
+
+  phpcs:
+    name: PHP CodeSniffer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: PHP CodeSniffer
+        run: composer phpcs
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: PHPStan
+        run: composer phpstan
+
+  psalm:
+    name: Psalm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ vars.RTLDEV_MW_CI_PHP_VERSION }}
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Psalm
+        run: composer psalm
