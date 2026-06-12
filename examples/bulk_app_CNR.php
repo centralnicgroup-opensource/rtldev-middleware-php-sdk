@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use CNIC\ClientFactory;
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $user = getenv('RTLDEV_MW_CI_USER_CNR');
 $rolepassword = getenv('RTLDEV_MW_CI_ROLEPASSWORD_CNR');
