@@ -45,6 +45,8 @@ The devcontainer looks for an `env.sh` file in the workspace root and **automati
 ```sh
 export RTLDEV_MW_CI_USER_CNR=<your-username>
 export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
+export RTLDEV_MW_CI_ROLE_CNR=<your-user-role-name>
+export RTLDEV_MW_CI_ROLEPASSWORD_CNR=<your-user-role-password>
 export RTLDEV_MW_CI_USER_IBS=<your-username>
 export RTLDEV_MW_CI_USERPASSWORD_IBS=<your-password>
 export RTLDEV_MW_CI_USER_MONIKER=<your-username>
