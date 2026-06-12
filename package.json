@@ -61,7 +61,9 @@
       "prettier --write --ignore-unknown"
     ],
     "*.php": [
-      "vendor/bin/phpcs --standard=.github/linters/phpcs.xml -q",
+      "vendor/bin/phpcs --standard=.github/linters/phpcs.xml -q"
+    ],
+    "{src,tests}/**/*.php": [
       "vendor/bin/phpstan analyse -c .github/linters/phpstan.neon --no-progress"
     ]
   }
