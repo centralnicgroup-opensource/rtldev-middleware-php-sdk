@@ -23,6 +23,17 @@ jobs:
       - name: Audit PHP dependencies
         run: composer audit --no-dev
 
+  trufflehog:
+    name: "Audit: Secret Scanning"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
   actionlint:
     name: Lint GitHub Actions
     runs-on: ubuntu-latest
@@ -31,6 +42,15 @@ jobs:
       - uses: reviewdog/action-actionlint@v1
         with:
           reporter: github-pr-review
+
+  hadolint:
+    name: Lint Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: .devcontainer/Dockerfile
 
   shellcheck:
     name: ShellCheck
@@ -45,26 +65,6 @@ jobs:
         run: composer install --no-interaction --prefer-dist --no-progress
       - name: ShellCheck
         run: composer shellcheck
-
-  hadolint:
-    name: Lint Dockerfile
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: hadolint/hadolint-action@v3.3.0
-        with:
-          dockerfile: .devcontainer/Dockerfile
-
-  trufflehog:
-    name: Secret Scanning
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: trufflesecurity/trufflehog@main
-        with:
-          extra_args: --only-verified
 
   phpcs:
     name: PHP CodeSniffer
