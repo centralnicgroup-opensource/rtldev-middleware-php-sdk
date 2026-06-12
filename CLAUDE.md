@@ -69,6 +69,7 @@ composer test          # PHPUnit with coverage
 composer lint          # PHP CodeSniffer
 composer codefix       # Auto-fix coding standard violations
 composer phpstan       # Static analysis
+composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 ```
 
 ## Git Conventions
