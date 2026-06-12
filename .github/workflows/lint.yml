@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   composer-audit:
-    name: PHP Dependency Audit
+    name: "Audit: PHP Dependencies"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
