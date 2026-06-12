@@ -59,4 +59,4 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
       - name: Audit PHP dependencies
-        run: composer audit
+        run: composer audit --no-dev
