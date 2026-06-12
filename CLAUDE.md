@@ -102,7 +102,7 @@ composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 - **Business Unit field:** `customfield_10027` (required, type: multi-checkbox)
   - `10187` = CentralNic Reseller (default for this SDK)
 - **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
-- **Workflow transitions:** To Do (`11`), In Progress (`21`), In Review (`41`), QA (`61`), Ready for Deployment (`51`), Done (`31`), Cancelled (`91`)
+- **Workflow transitions:** To Do (`11`), In Progress (`21`), In Review (`41`), QA (`61`), Ready for Deployment (`51`), Done (`31`), Stand-by (`71`), Cancelled (`91`)
 
 ## Do NOT
 
