@@ -35,7 +35,7 @@ jobs:
           extra_args: --only-verified
 
   actionlint:
-    name: Lint GitHub Actions
+    name: "Lint: GitHub Actions"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -44,7 +44,7 @@ jobs:
           reporter: github-pr-review
 
   hadolint:
-    name: Lint Dockerfile
+    name: "Lint: Dockerfile"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -53,7 +53,7 @@ jobs:
           dockerfile: .devcontainer/Dockerfile
 
   shellcheck:
-    name: ShellCheck
+    name: "Lint: ShellCheck"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -67,7 +67,7 @@ jobs:
         run: composer shellcheck
 
   phpcs:
-    name: PHP CodeSniffer
+    name: "Lint: PHP CodeSniffer"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -81,7 +81,7 @@ jobs:
         run: composer phpcs
 
   phpstan:
-    name: PHPStan
+    name: "Lint: PHPStan"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -95,7 +95,7 @@ jobs:
         run: composer phpstan
 
   psalm:
-    name: Psalm
+    name: "Lint: PHP Psalm"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
