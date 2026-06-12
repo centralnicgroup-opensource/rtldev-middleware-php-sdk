@@ -3,7 +3,6 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
          bootstrap="../vendor/autoload.php"
          colors="true"
-         testdox="true"
          displayDetailsOnIncompleteTests="true"
          displayDetailsOnSkippedTests="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
@@ -11,7 +10,11 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
          stopOnDefect="true">
-    
+
+    <extensions>
+        <bootstrap class="RobinIngelbrecht\PHPUnitPrettyPrint\PhpUnitExtension"/>
+    </extensions>
+
     <testsuites>
         <testsuite name="Unit Tests">
             <directory suffix="Test.php">../tests</directory>
@@ -31,8 +34,5 @@
         </report>
     </coverage>
 
-    <logging>
-        <testdoxText outputFile="php://stdout"/>
-    </logging>
 
 </phpunit>
