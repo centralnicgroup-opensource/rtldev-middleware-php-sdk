@@ -1,10 +1,9 @@
 name: Dependabot auto-merge & tests
 "on":
-  workflow_run:
-    workflows:
-      - Lint & Security
+  pull_request:
     types:
-      - completed
+      - opened
+      - synchronize
 
 permissions:
   contents: write
@@ -12,10 +11,7 @@ permissions:
 
 jobs:
   tests:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-test.yml@main
-    with:
-      ref: ${{ github.event.workflow_run.head_sha }}
     secrets: inherit
 
   ci-success:
