@@ -10,7 +10,26 @@ permissions:
   pull-requests: write
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      relevant: ${{ steps.filter.outputs.relevant }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            relevant:
+              - 'src/**'
+              - 'tests/**'
+              - 'phpunit.xml'
+              - 'composer.json'
+              - 'composer.lock'
+
   tests:
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-test.yml@main
     secrets: inherit
 
@@ -20,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          if [ "${{ needs.tests.result }}" != "success" ]; then
+          if [ "${{ needs.tests.result }}" != "success" ] && [ "${{ needs.tests.result }}" != "skipped" ]; then
             echo "Tests failed or were cancelled"
             exit 1
           fi
