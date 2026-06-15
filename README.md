@@ -40,18 +40,7 @@ The devcontainer looks for an `env.sh` file in the workspace root and **automati
 1. **Every new integrated-terminal session** — the file is sourced via `~/.zshenv` so credentials are available as soon as you open a terminal, without a manual `source env.sh`.
 2. **PHPUnit runs triggered from the VSCode UI** — the PHPUnit wrapper script sources `env.sh` before invoking PHP, so IDE-triggered tests see the same variables as `composer test` does from the terminal.
 
-`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need, for example:
-
-```sh
-export RTLDEV_MW_CI_USER_CNR=<your-username>
-export RTLDEV_MW_CI_USERPASSWORD_CNR=<your-password>
-export RTLDEV_MW_CI_ROLE_CNR=<your-user-role-name>
-export RTLDEV_MW_CI_ROLEPASSWORD_CNR=<your-user-role-password>
-export RTLDEV_MW_CI_USER_IBS=<your-username>
-export RTLDEV_MW_CI_USERPASSWORD_IBS=<your-password>
-export RTLDEV_MW_CI_USER_MONIKER=<your-username>
-export RTLDEV_MW_CI_USERPASSWORD_MONIKER=<your-password>
-```
+`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need — copy [`env.example.sh`](env.example.sh) as a starting point.
 
 > [!NOTE]
 > The auto-loading takes effect for **new** terminal sessions. If your terminal was already open when you created or updated `env.sh`, run `source env.sh` once in that session or open a new terminal.
