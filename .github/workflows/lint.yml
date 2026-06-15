@@ -13,3 +13,15 @@ jobs:
   lint:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-lint.yml@main
     secrets: inherit
+
+  ci-success:
+    name: "Lint: completed"
+    needs: lint
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check result
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ]; then
+            exit 1
+          fi
