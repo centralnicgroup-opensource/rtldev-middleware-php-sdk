@@ -1,3 +1,10 @@
+# [15.2.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.1.1...v15.2.0) (2026-06-15)
+
+
+### Features
+
+* **ci:** integrate Codecov coverage reporting ([673ebc7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/673ebc72760a88dc03fca8c6cb9de61549d4e84a))
+
 ## [15.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.1.0...v15.1.1) (2026-06-15)
 
 
