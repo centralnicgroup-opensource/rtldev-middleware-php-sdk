@@ -81,14 +81,15 @@ composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 
 ## Important Files
 
-| Path                           | Purpose                            |
-| ------------------------------ | ---------------------------------- |
-| `src/CNR/config.json`          | CNR API endpoints and settings     |
-| `src/IBS/config.json`          | IBS API endpoints and settings     |
-| `src/MONIKER/config.json`      | Moniker API endpoints and settings |
-| `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config          |
-| `.github/linters/phpstan.neon` | PHPStan level 8 config             |
-| `phpunit.xml`                  | PHPUnit configuration              |
+| Path                           | Purpose                                                |
+| ------------------------------ | ------------------------------------------------------ |
+| `src/CNR/config.json`          | CNR API endpoints and settings                         |
+| `src/IBS/config.json`          | IBS API endpoints and settings                         |
+| `src/MONIKER/config.json`      | Moniker API endpoints and settings                     |
+| `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config                              |
+| `.github/linters/phpstan.neon` | PHPStan level 8 config                                 |
+| `phpunit.xml`                  | PHPUnit configuration                                  |
+| `env.example.sh`               | Template for required env variables (copy to `env.sh`) |
 
 ## Atlassian / JIRA
 
