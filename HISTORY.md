@@ -1,3 +1,10 @@
+## [15.1.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.1.0...v15.1.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* **env:** quote placeholders and add shebang to pass shellcheck ([c28a2e4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/c28a2e468f407bdde8f8ea26bc4cbdd7d642218a))
+
 # [15.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.0.0...v15.1.0) (2026-06-12)
 
 
