@@ -61,6 +61,7 @@ namespace CNIC\<SubNamespace>;
 - **Mocking:** Use `ResponseTemplateManager::addTemplate()` to register mock API responses — do NOT use Mockery or Prophecy
 - **Shared state:** Use `static` properties and `setUpBeforeClass()` for one-time client setup
 - **No real API calls in unit tests** — all API responses are template-driven
+- **MONIKER test files may mirror IBS test files and import IBS classes directly** — this is intentional. MONIKER and IBS share the same API platform and data format; only the brand URL and credentials differ. Do not flag this duplication as a coverage gap or suggest MONIKER-specific response/parser tests.
 
 ### Running Tests
 
