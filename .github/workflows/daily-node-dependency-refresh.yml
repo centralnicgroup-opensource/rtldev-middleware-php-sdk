@@ -1,4 +1,20 @@
 name: Daily Node dependency refresh
+# Why this workflow exists instead of a Dependabot npm entry:
+#
+# Dependabot version updates only touch direct dependencies, leaving transitive
+# deps untouched. This regularly causes false-positive vulnerability alerts for
+# package-lock.json entries that Dependabot itself cannot resolve.
+#
+# This workflow runs `npm update` across the full dependency tree every day,
+# keeping package-lock.json completely current including transitive packages.
+#
+# Trade-off: there is no immediate Dependabot security PR when a CVE drops for
+# a transitive npm package — the fix arrives on the next daily run (~24 h).
+# This is a deliberate choice to avoid the duplicate-PR and false-positive noise
+# that adding an npm ecosystem to dependabot.yml would reintroduce.
+#
+# Dependabot security alerts (GitHub Advisory Database scanning) remain active
+# independently of dependabot.yml and are not affected by this decision.
 
 on:
   schedule:
