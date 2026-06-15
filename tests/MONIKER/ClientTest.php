@@ -23,14 +23,9 @@ final class ClientTest extends TestCase
         self::$cl = $cl;
 
         self::$user = getenv("RTLDEV_MW_CI_USER_MONIKER") ?: "";
-        if (self::$user === "") {
-            echo "Please provide environment variable RTLDEV_MW_CI_USER_MONIKER.\n";
-            exit(1);
-        }
         self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_MONIKER") ?: "";
-        if (self::$pw === "") {
-            echo "Please provide environment variable RTLDEV_MW_CI_USERPASSWORD_MONIKER.\n";
-            exit(1);
+        if (self::$user === "" || self::$pw === "") {
+            self::markTestSkipped("Moniker credentials not set (RTLDEV_MW_CI_USER_MONIKER / RTLDEV_MW_CI_USERPASSWORD_MONIKER).");
         }
     }
 
@@ -209,5 +204,11 @@ final class ClientTest extends TestCase
         $r = self::$cl->request(["tld" => "nl"], "Domain/Tldinfo");
         $this->assertInstanceOf(R::class, $r);
         $this->assertTrue($r->isSuccess(), $r->getDescription());
+    }
+
+    public function testDefaultUrlIsMonikerDomain(): void
+    {
+        // MONIKER\SessionClient must load its own config.json, not the IBS one
+        $this->assertStringContainsString("moniker.com", self::$cl->getURL());
     }
 }

@@ -23,14 +23,9 @@ final class ClientTest extends TestCase
         self::$cl = $cl;
 
         self::$user = getenv("RTLDEV_MW_CI_USER_IBS") ?: "";
-        if (self::$user === "") {
-            echo "Please provide environment variable RTLDEV_MW_CI_USER_IBS.\n";
-            exit(1);
-        }
         self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_IBS") ?: "";
-        if (self::$pw === "") {
-            echo "Please provide environment variable RTLDEV_MW_CI_USERPASSWORD_IBS.\n";
-            exit(1);
+        if (self::$user === "" || self::$pw === "") {
+            self::markTestSkipped("IBS credentials not set (RTLDEV_MW_CI_USER_IBS / RTLDEV_MW_CI_USERPASSWORD_IBS).");
         }
     }
 
@@ -209,5 +204,16 @@ final class ClientTest extends TestCase
         $r = self::$cl->request(["domain" => "tronexats.com"], "Domain/Check");
         $this->assertInstanceOf(R::class, $r);
         $this->assertTrue($r->isSuccess(), $r->getDescription());
+    }
+
+    public function testAutoIDNConvertReturnsCommandUnchanged(): void
+    {
+        // IBS handles IDN conversion server-side — the SDK must not alter command params
+        $cmd = ["domain" => "dömäin.com", "ResponseFormat" => "JSON"];
+        $method = (new \ReflectionClass(self::$cl))->getMethod("autoIDNConvert");
+        $method->setAccessible(true);
+        /** @var array<string> $result */
+        $result = $method->invoke(self::$cl, $cmd);
+        $this->assertSame($cmd, $result);
     }
 }
