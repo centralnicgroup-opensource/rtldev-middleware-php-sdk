@@ -86,7 +86,7 @@
 
     
     <p>        class
-    <strong>Response</strong>        extends <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php">View source</a>)
+    <strong>Response</strong>        extends <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>        implements        <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php">View source</a>)
 </p>
 
         
@@ -629,7 +629,7 @@ This is the count of requested rows</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L46">at line 46</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L47">at line 47</a></div>
         <code>                    
     <strong>__construct</strong>(string $raw, array $cmd = [], array $ph = [], array $context = [])
         </code>
@@ -746,7 +746,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCode">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L92">at line 92</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L93">at line 93</a></div>
         <code>                    int
     <strong>getCode</strong>()
         </code>
@@ -779,7 +779,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDescription">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L114">at line 114</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L115">at line 115</a></div>
         <code>                    string
     <strong>getDescription</strong>()
         </code>
@@ -812,7 +812,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPlain">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L123">at line 123</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L124">at line 124</a></div>
         <code>                    string
     <strong>getPlain</strong>()
         </code>
@@ -845,7 +845,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getQueuetime">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L133">at line 133</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L134">at line 134</a></div>
         <code>                    float
     <strong>getQueuetime</strong>()
         </code>
@@ -887,7 +887,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getHash">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L143">at line 143</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L144">at line 144</a></div>
         <code>                    array
     <strong>getHash</strong>()
         </code>
@@ -920,7 +920,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRuntime">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L153">at line 153</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L154">at line 154</a></div>
         <code>                    float
     <strong>getRuntime</strong>()
         </code>
@@ -962,7 +962,7 @@ This is the count of requested rows</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_isError">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L163">at line 163</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L164">at line 164</a></div>
         <code>                    bool
     <strong>isError</strong>()
         </code>
@@ -996,7 +996,7 @@ API response code is an 5xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isSuccess">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L173">at line 173</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L174">at line 174</a></div>
         <code>                    bool
     <strong>isSuccess</strong>()
         </code>
@@ -1030,7 +1030,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isTmpError">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L183">at line 183</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L184">at line 184</a></div>
         <code>                    bool
     <strong>isTmpError</strong>()
         </code>
@@ -1072,7 +1072,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isPending">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L193">at line 193</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L194">at line 194</a></div>
         <code>                    bool
     <strong>isPending</strong>()
         </code>
@@ -1114,7 +1114,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_addColumn">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L205">at line 205</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L206">at line 206</a></div>
         <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>addColumn</strong>(string $key, array $data)
         </code>
@@ -1162,7 +1162,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L219">at line 219</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L220">at line 220</a></div>
         <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>addRecord</strong>(array $h)
         </code>
@@ -1205,7 +1205,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumn">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L230">at line 230</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L231">at line 231</a></div>
         <code>                    <a href="../../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
     <strong>getColumn</strong>(string $key)
         </code>
@@ -1248,7 +1248,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumnIndex">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L241">at line 241</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L242">at line 242</a></div>
         <code>                    mixed
     <strong>getColumnIndex</strong>(string $colkey, int $index)
         </code>
@@ -1296,7 +1296,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumnKeys">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L253">at line 253</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L254">at line 254</a></div>
         <code>                    array
     <strong>getColumnKeys</strong>(bool $filterPaginationKeys = false)
         </code>
@@ -1339,7 +1339,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getColumns">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L268">at line 268</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L269">at line 269</a></div>
         <code>                    array
     <strong>getColumns</strong>()
         </code>
@@ -1372,7 +1372,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommand">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L278">at line 278</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L279">at line 279</a></div>
         <code>                    array
     <strong>getCommand</strong>()
         </code>
@@ -1405,7 +1405,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommandPlain">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L287">at line 287</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L288">at line 288</a></div>
         <code>                    string
     <strong>getCommandPlain</strong>()
         </code>
@@ -1438,7 +1438,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCurrentPageNumber">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L296">at line 296</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L297">at line 297</a></div>
         <code>                    int|null
     <strong>getCurrentPageNumber</strong>()
         </code>
@@ -1471,7 +1471,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCurrentRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L305">at line 305</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L306">at line 306</a></div>
         <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getCurrentRecord</strong>()
         </code>
@@ -1504,7 +1504,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFirstRecordIndex">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L314">at line 314</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L315">at line 315</a></div>
         <code>                    int|null
     <strong>getFirstRecordIndex</strong>()
         </code>
@@ -1537,7 +1537,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getLastRecordIndex">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L323">at line 323</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L324">at line 324</a></div>
         <code>                    int|null
     <strong>getLastRecordIndex</strong>()
         </code>
@@ -1570,7 +1570,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getListHash">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L344">at line 344</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L345">at line 345</a></div>
         <code>                    array
     <strong>getListHash</strong>()
         </code>
@@ -1612,7 +1612,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getNextRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L353">at line 353</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L354">at line 354</a></div>
         <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getNextRecord</strong>()
         </code>
@@ -1645,7 +1645,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getNextPageNumber">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L365">at line 365</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L366">at line 366</a></div>
         <code>                    int|null
     <strong>getNextPageNumber</strong>()
         </code>
@@ -1678,7 +1678,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getNumberOfPages">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L380">at line 380</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L381">at line 381</a></div>
         <code>                    int
     <strong>getNumberOfPages</strong>()
         </code>
@@ -1711,7 +1711,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPagination">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L395">at line 395</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L396">at line 396</a></div>
         <code>                    array
     <strong>getPagination</strong>()
         </code>
@@ -1744,7 +1744,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPreviousPageNumber">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L414">at line 414</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L415">at line 415</a></div>
         <code>                    int|null
     <strong>getPreviousPageNumber</strong>()
         </code>
@@ -1777,7 +1777,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPreviousRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L431">at line 431</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L432">at line 432</a></div>
         <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getPreviousRecord</strong>()
         </code>
@@ -1810,7 +1810,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecord">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L444">at line 444</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L445">at line 445</a></div>
         <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
     <strong>getRecord</strong>(int $idx)
         </code>
@@ -1853,7 +1853,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecords">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L457">at line 457</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L458">at line 458</a></div>
         <code>                    array
     <strong>getRecords</strong>()
         </code>
@@ -1886,7 +1886,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsCount">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L466">at line 466</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L467">at line 467</a></div>
         <code>                    int
     <strong>getRecordsCount</strong>()
         </code>
@@ -1919,7 +1919,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsTotalCount">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L475">at line 475</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L476">at line 476</a></div>
         <code>                    int
     <strong>getRecordsTotalCount</strong>()
         </code>
@@ -1952,7 +1952,7 @@ API response code is an 2xx code</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsLimitation">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L485">at line 485</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L486">at line 486</a></div>
         <code>                    int
     <strong>getRecordsLimitation</strong>()
         </code>
@@ -1986,7 +1986,7 @@ This is the count of requested rows</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasNextPage">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L494">at line 494</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L495">at line 495</a></div>
         <code>                    bool
     <strong>hasNextPage</strong>()
         </code>
@@ -2019,7 +2019,7 @@ This is the count of requested rows</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasPreviousPage">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L503">at line 503</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L504">at line 504</a></div>
         <code>                    bool
     <strong>hasPreviousPage</strong>()
         </code>
@@ -2052,7 +2052,7 @@ This is the count of requested rows</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_rewindRecordList">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L513">at line 513</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L514">at line 514</a></div>
         <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>rewindRecordList</strong>()
         </code>
@@ -2085,7 +2085,7 @@ This is the count of requested rows</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getStatus">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L106">at line 106</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L107">at line 107</a></div>
         <code>                    string
     <strong>getStatus</strong>()
         </code>

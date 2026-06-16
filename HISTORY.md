@@ -1,3 +1,10 @@
+# [15.3.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.2.0...v15.3.0) (2026-06-16)
+
+
+### Features
+
+* **ibs:** formally implement interfaces and update CLAUDE.md ([04c9846](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/04c9846ae6f53eed4c138a36c2ec3b69a2dba025))
+
 # [15.2.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.1.1...v15.2.0) (2026-06-15)
 
 

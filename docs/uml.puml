@@ -396,6 +396,7 @@
   ClientFactory ..> MONIKER_SessionClient
   ClientFactory ..> Registrar
   ColumnInterface <|-- CNR_Column
+  ColumnInterface <|-- IBS_Column
   IBS_Client ..> CNR_SocketConfig
   IBS_Client ..> CommandFormatter
   IBS_Client ..> IBS_Logger
@@ -419,12 +420,14 @@
   LoggerInterface <|-- IBS_Logger
   MONIKER_Client <|-- MONIKER_SessionClient
   RecordInterface <|-- CNR_Record
+  RecordInterface <|-- IBS_Record
   ResponseInterface "1" ..> "*" ColumnInterface
   ResponseInterface "1" ..> "*" RecordInterface
   ResponseInterface ..> ColumnInterface
   ResponseInterface ..> RecordInterface
   ResponseInterface ..> ResponseInterface
   ResponseInterface <|-- CNR_Response
+  ResponseInterface <|-- IBS_Response
 @enduml
 @startuml package-related-diagram
   package CNIC as CNIC {
