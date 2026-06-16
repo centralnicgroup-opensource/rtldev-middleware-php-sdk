@@ -78,6 +78,14 @@ composer phpstan       # Static analysis
 composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 ```
 
+## Codebase Modernization (Rector)
+
+Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `CODE_QUALITY`, `DEAD_CODE`, and `PHP_83` rulesets.
+
+- **CI (lint workflow):** runs in dry-run mode (`composer rector`) — detects issues only, never writes.
+- **Automated apply:** `.github/workflows/rector.yml` runs `composer rector:fix` on the first of each month and opens a PR (`chore/rector-modernization`) with commit message `chore(rector): apply automated modernization fixes`. Can also be triggered manually via `workflow_dispatch`.
+- **Manual apply:** run `composer rector:fix` locally and open a PR with the same commit prefix.
+
 ## Git Conventions
 
 - **Commit messages:** Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`)

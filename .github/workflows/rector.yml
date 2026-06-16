@@ -1,0 +1,47 @@
+name: Monthly Rector modernization
+
+on:
+  schedule:
+    - cron: "0 8 1 * *" # First of each month at 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: rector-modernization
+  cancel-in-progress: false
+
+jobs:
+  rector:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run Rector
+        run: composer rector:fix
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(rector): apply automated modernization fixes"
+          branch: chore/rector-modernization
+          delete-branch: true
+          title: "chore(rector): apply automated modernization fixes"
+          body: |
+            Automated Rector run applying PHP 8.3 modernization fixes.
+
+            **Rulesets applied:** `CODE_QUALITY`, `DEAD_CODE`, `PHP_83`
+
+            Triggered by: ${{ github.event_name }}
+          base: master
