@@ -20,7 +20,7 @@ class ClientFactory
     /**
      * Returns Client Instance by configuration
      *
-     * @param array<mixed> $params Configuration settings
+     * @param array{registrar: string, username?: string, password?: string, sandbox?: bool, referer?: string, ua?: array{name: string, version: string, modules: string[]}, logging?: bool, proxyserver?: string} $params Configuration settings
      * @param LoggerInterface|null $logger Logger Instance (optional)
      * @throws \Exception
      */
