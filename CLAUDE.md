@@ -106,6 +106,16 @@ composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 - **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
 - **Workflow transitions:** To Do (`11`), In Progress (`21`), In Review (`41`), QA (`61`), Ready for Deployment (`51`), Done (`31`), Stand-by (`71`), Cancelled (`91`)
 
+## Claude Code Allowlist (`.claude/settings.json`)
+
+The Bash allowlist is intentionally scoped to known-safe, non-destructive commands only. The guiding rules:
+
+- **Composer:** explicit script names only (`test`, `lint`, `codefix`, `phpstan`, `install`, …). Destructive subcommands (`require`, `update`, `remove`, `create-project`) are not allowed and will always prompt.
+- **gh CLI:** read-only subcommands (`pr view/list/checks/create`, `issue view/list`, `run view/list`, `repo view`). `gh api` is intentionally omitted — it cannot be narrowed to safe endpoints without allowing arbitrary REST mutations.
+- **git:** read-only operations only. `git branch` is limited to explicit list flags (`-a`, `-r`, `-v`, `-vv`, `--list`, `--show-current`); destructive flags (`-d`, `-D`, `-m`) will always prompt.
+
+When adding new entries to the allowlist, confirm the command is strictly read-only or a known-safe project script before allowing it without a prompt.
+
 ## Do NOT
 
 - Read, display, or expose the contents of `env.sh` — it contains secrets
