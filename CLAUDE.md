@@ -118,6 +118,7 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
   - `10187` = CentralNic Reseller (default for this SDK)
 - **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
 - **Workflow transitions:** To Do (`11`), In Progress (`21`), In Review (`41`), QA (`61`), Ready for Deployment (`51`), Done (`31`), Stand-by (`71`), Cancelled (`91`)
+- **Known account IDs:** Kai Schwarz `61358848ee2fd0006aac7b4f`, Asif Nawaz `62a84362bf7afc006f3b15e5`
 
 ## Claude Code Allowlist (`.claude/settings.json`)
 
