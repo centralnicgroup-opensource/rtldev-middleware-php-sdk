@@ -22,7 +22,7 @@ final class CommandFormatter
         $priority = self::getPropertiesPriority();
 
         // Sort the command array based on priority
-        uksort($command, function ($a, $b) use ($priority) {
+        uksort($command, function (string $a, string $b) use ($priority) {
             $priorityA = self::findPriority($a, $priority);
             $priorityB = self::findPriority($b, $priority);
 

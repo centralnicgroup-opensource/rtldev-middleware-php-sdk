@@ -28,7 +28,7 @@ final class ResponseTranslator
      * translate a raw api response
      * @param string $raw API raw response
      * @param array<string> $cmd requested API command
-     * @param array<string> $ph list of place holder vars
+     * @param array{CONNECTION_URL?: string} $ph list of place holder vars
      * @psalm-suppress UnusedParam $cmd kept for API consistency with CNR\ResponseTranslator
      */
     public static function translate(string $raw, array $cmd, array $ph = []): string
@@ -136,7 +136,7 @@ final class ResponseTranslator
     /**
      * Replace placeholder vars like {CONNECTION_URL} in a string
      * @param string $raw input string
-     * @param array<string> $ph placeholder key-value pairs
+     * @param array{CONNECTION_URL?: string} $ph placeholder key-value pairs
      */
     protected static function replacePlaceholders(string $raw, array $ph): string
     {

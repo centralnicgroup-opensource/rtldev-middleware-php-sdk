@@ -23,8 +23,6 @@ final class ResponseTranslator
      * @var array<mixed>
      */
     private static array $descriptionRegexMap = [
-        // HX - just for future reference, can be cleaned up if we have something similar in place for CNR
-        "Authorization failed; Operation forbidden by ACL" => "Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List",
         // CNR
         "Missing required attribute; premium domain name. please provide required parameters" => "Confirm the Premium pricing by providing the necessary premium domain price data.",
         "SkipPregQuote" => [
@@ -41,7 +39,7 @@ final class ResponseTranslator
      * translate a raw api response
      * @param string $raw API raw response
      * @param array<string> $cmd requested API command
-     * @param array<string> $ph list of place holder vars
+     * @param array{CONNECTION_URL?: string} $ph list of place holder vars
      */
     public static function translate(string $raw, array $cmd, array $ph = []): string
     {
@@ -96,7 +94,7 @@ final class ResponseTranslator
             } else {
                 // Escape the pattern and attempt to find a match
                 // for the given pattern ($regex)
-                $escapedRegex = preg_quote($regex, "/");
+                $escapedRegex = preg_quote((string)$regex, "/");
                 $data = self::findMatch($escapedRegex, $newraw, $val, $cmd);
             }
 
@@ -149,7 +147,7 @@ final class ResponseTranslator
      * Replace known placeholders in DESCRIPTION while preserving literal brace content.
      *
      * @param string $raw input response
-     * @param array<string> $ph placeholder key-value pairs
+     * @param array{CONNECTION_URL?: string} $ph placeholder key-value pairs
      */
     protected static function replacePlaceholders(string $raw, array $ph): string
     {

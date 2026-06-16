@@ -84,7 +84,7 @@ class Response implements ResponseInterface
      * Constructor
      * @param string $raw API plain response
      * @param array<string> $cmd API command used within this request
-     * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
+     * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      */
     public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
@@ -220,7 +220,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function isError(): bool
     {
-        return substr($this->hash["CODE"], 0, 1) === "5";
+        return substr((string)$this->hash["CODE"], 0, 1) === "5";
     }
 
     /**

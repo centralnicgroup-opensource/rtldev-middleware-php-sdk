@@ -90,7 +90,7 @@ abstract class AbstractClient
             $contents = "";
         }
         $settings = json_decode($contents, true);
-        if (is_null($settings) || $settings === false || $settings === true) {
+        if (!is_array($settings)) {
             $settings = [];
         }
         $this->settings = $settings;
@@ -327,7 +327,7 @@ abstract class AbstractClient
     {
         $login = $uid;
         if ($role !== '' && $role !== '0') {
-            $login .= $this->settings["roleSeparator"] . $role;
+            $login .= (string)$this->settings["roleSeparator"] . $role;
         }
         return $this->setCredentials($login, $pw);
     }
@@ -417,7 +417,7 @@ abstract class AbstractClient
     /**
      * Delegate cURL execution to the transport layer.
      * @param string $data serialized POST payload
-     * @param array<string> $cfg connection config (must contain CONNECTION_URL)
+     * @param array{CONNECTION_URL: string} $cfg connection config
      * @param array<int, mixed> $extraCurlOpts additional cURL options merged over the defaults
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
      */

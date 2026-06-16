@@ -27,6 +27,7 @@ final class ResponseParser
     {
         $isJson = $cmd === [] || (isset($cmd["ResponseFormat"]) && strtoupper($cmd["ResponseFormat"]) === "JSON");
 
+        /** @var array<string, mixed>|null $result */
         $result = $isJson ? json_decode($raw, true) : null;
 
         // Plain text key=value format (templates and non-JSON responses)
