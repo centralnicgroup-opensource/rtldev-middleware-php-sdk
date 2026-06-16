@@ -15,6 +15,7 @@ use CNIC\CNR\Response as CNRResponse;
 use CNIC\CommandFormatter;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
+use CNIC\ResponseInterface;
 
 /**
  * IBS Response
@@ -22,7 +23,7 @@ use CNIC\IBS\ResponseTranslator as RT;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Response extends CNRResponse
+class Response extends CNRResponse implements ResponseInterface
 {
     /**
      * Regex for pagination related column keys
