@@ -9,7 +9,12 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 - **Namespace root:** `CNIC\` mapped to `src/` (PSR-4)
 - **Inheritance chain:** `CNR\Client` and `IBS\Client` extend `CNIC\AbstractClient` directly. `MONIKER\Client` extends `IBS\Client` — Moniker and IBS share the same API platform; only their `config.json` (endpoints/credentials) differs. `CNR\SessionClient` uses the `SessionCapable` trait for login/logout; `IBS\SessionClient` and `MONIKER\SessionClient` are session-less.
 - **Config-driven:** Each sub-namespace has a `config.json` with API URLs, parameter mappings, and feature flags
-- **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` define contracts; all concrete classes formally declare `implements`
+- **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` (all in `CNIC\`) define contracts. All concrete classes formally declare `implements`:
+  - `CNR\Column`, `IBS\Column` → `ColumnInterface`
+  - `CNR\Record`, `IBS\Record` → `RecordInterface`
+  - `CNR\Response`, `IBS\Response` → `ResponseInterface`
+  - `CNR\Logger`, `IBS\Logger` → `LoggerInterface`
+  - Type-hint against the interface rather than the concrete class (e.g. `LoggerInterface` not `Logger`, `ResponseInterface` not `Response`)
 - **Factory pattern:** `ClientFactory::getClient()` for instantiation
 
 ## Coding Standards

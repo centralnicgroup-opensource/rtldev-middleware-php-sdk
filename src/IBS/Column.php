@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace CNIC\IBS;
 
 use CNIC\CNR\Column as CNRColumn;
+use CNIC\ColumnInterface;
 
 /**
  * IBS Column
@@ -17,6 +18,6 @@ use CNIC\CNR\Column as CNRColumn;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Column extends CNRColumn
+class Column extends CNRColumn implements ColumnInterface
 {
 }
