@@ -1,3 +1,10 @@
+# [15.4.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.3.0...v15.4.0) (2026-06-16)
+
+
+### Features
+
+* **ci:** add monthly Rector modernization workflow ([4cef1b3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/4cef1b30e4d3ecae4410fb5e0139c8026d79c29a))
+
 # [15.3.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.2.0...v15.3.0) (2026-06-16)
 
 
