@@ -25,7 +25,7 @@ class Response implements ResponseInterface
 {
     /**
      * The API Command used within this request
-     * @var array<string>
+     * @var array<string, string>
      */
     protected array $command;
 
@@ -83,7 +83,7 @@ class Response implements ResponseInterface
     /**
      * Constructor
      * @param string $raw API plain response
-     * @param array<string> $cmd API command used within this request
+     * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      */
@@ -167,7 +167,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function getDescription(): string
     {
-        return $this->hash["DESCRIPTION"];
+        return (string)$this->hash["DESCRIPTION"];
     }
 
     /**
@@ -230,7 +230,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function isSuccess(): bool
     {
-        return substr($this->hash["CODE"], 0, 1) === "2";
+        return substr((string)$this->hash["CODE"], 0, 1) === "2";
     }
 
     /**
@@ -240,7 +240,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function isTmpError(): bool
     {
-        return substr($this->hash["CODE"], 0, 1) === "4";
+        return substr((string)$this->hash["CODE"], 0, 1) === "4";
     }
 
     /**
@@ -329,7 +329,7 @@ class Response implements ResponseInterface
 
     /**
      * Get Command used in this request
-     * @return array<string>
+     * @return array<string, string>
      */
     #[\Override]
     public function getCommand(): array
