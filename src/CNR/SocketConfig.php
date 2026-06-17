@@ -9,64 +9,49 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
+use CNIC\AbstractSocketConfig;
+
 /**
  * CNR SocketConfig
  *
  * @package CNIC\CNR
  */
-class SocketConfig
+final class SocketConfig extends AbstractSocketConfig
 {
+    protected string $oteUrl = "https://api-ote.rrpproxy.net/api/call.cgi";
+    protected string $liveUrl = "https://api.rrpproxy.net/api/call.cgi";
+    protected int $socketTimeout = 300;
+    protected bool $needsIDNConvert = true;
+    protected string $roleSeparator = ":";
+
     /**
      * Parameter to trigger creation of a backend session
      */
     private bool $persistent = false;
 
     /**
-     * account name
-     */
-    protected string $login = "";
-
-    /**
-     * account password
-     */
-    protected string $pw = "";
-
-    /**
-     * remote ip address (ip filter)
-     */
-    protected string $remoteaddr = "";
-
-    /**
      * API session id
      */
-    protected string $session = "";
-
-    /**
-     * subuser account name (subuser specific data view)
-     */
-    protected string $user = "";
+    private string $session = "";
 
     /**
      * list of http request parameters
-     * @var array<string>
+     * @var array{login: string, password: string, command: string, session: string}
      */
-    protected array $parameters;
-
-    /**
-     * Constructor
-     * @param array<mixed> $parameters
-     */
-    public function __construct(array $parameters)
-    {
-        $this->parameters = $parameters;
-    }
+    private array $parameters = [
+        "login"    => "s_login",
+        "password" => "s_pw",
+        "command"  => "s_command",
+        "session"  => "s_sessionid",
+    ];
 
     /**
      * Get POST data container of connection data
-     * @param array<mixed> $command API Command to request
+     * @param array<string, string|null> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
-     * @return array<string,string>
+     * @return array<string, string|null>
      */
+    #[\Override]
     protected function getPOSTDataParams(array $command, bool $secured): array
     {
         $params = [];
@@ -76,19 +61,13 @@ class SocketConfig
         if (strlen($this->pw) !== 0) {
             $params[$this->parameters["password"]] = $secured ? "***" : $this->pw;
         }
-        if (strlen($this->remoteaddr) && isset($this->parameters["ipfilter"])) {
-            $params[$this->parameters["ipfilter"]] = $this->remoteaddr;
-        }
         if (strlen($this->session) !== 0) {
             $params[$this->parameters["session"]] = $this->session;
         }
-        if (strlen($this->user) && isset($this->parameters["subuser"])) {
-            $params[$this->parameters["subuser"]] = $this->user;
-        }
-        if ($command !== [] && isset($this->parameters["command"])) {
+        if ($command !== []) {
             $newcommand = "";
             foreach ($command as $key => $val) {
-                if (is_null($val)) {
+                if ($val === null) {
                     continue;
                 }
                 if ($secured && preg_match("/^PASSWORD$/i", $key)) {
@@ -102,30 +81,11 @@ class SocketConfig
     }
 
     /**
-     * Create POST data string out of connection data
-     *
-     * @param array<int|string,mixed> $command API Command to request
-     * @param bool $secured if password has to be returned "hidden"
-     * @return string POST data string
-     */
-    public function getPOSTData(array $command = [], bool $secured = false): string
-    {
-        $params = $this->getPOSTDataParams($command, $secured);
-        if ($this->getPersistent()) {
-            $params["persistent"] = 1;
-        }
-        if (strlen($this->user) !== 0) {
-            $params[$this->parameters["command"]] = (string)$params[$this->parameters["command"]] . "\nSUBUSER={$this->user}";
-        }
-        return http_build_query($params); // RFC1738 x-www-form-urlencoded as default
-    }
-
-    /**
      * Add persistent parameter to request (request API session)
-     *
      * @return $this
      */
-    public function setPersistent(bool $value = false)
+    #[\Override]
+    public function setPersistent(bool $value = false): static
     {
         $this->persistent = $value;
         return $this;
@@ -133,8 +93,8 @@ class SocketConfig
 
     /**
      * Get persistent parameter returned
-     *
      */
+    #[\Override]
     public function getPersistent(): bool
     {
         return $this->persistent;
@@ -143,6 +103,7 @@ class SocketConfig
     /**
      * Get API Session ID in use
      */
+    #[\Override]
     public function getSession(): string
     {
         return $this->session;
@@ -153,7 +114,8 @@ class SocketConfig
      * @param string $value account name
      * @return $this
      */
-    public function setLogin(string $value)
+    #[\Override]
+    public function setLogin(string $value): static
     {
         $this->session = "";
         $this->login = $value;
@@ -161,19 +123,12 @@ class SocketConfig
     }
 
     /**
-     * Get current login (including role)
-     */
-    public function getLogin(): string
-    {
-        return $this->login;
-    }
-
-    /**
      * Set account password to use
      * @param string $value account password
      * @return $this
      */
-    public function setPassword(string $value)
+    #[\Override]
+    public function setPassword(string $value): static
     {
         $this->session = "";
         $this->pw = $value;
@@ -181,38 +136,15 @@ class SocketConfig
     }
 
     /**
-     * Set Remote IP Address to use
-     * @param string $value remote ip address
-     * @return $this
-     */
-    public function setRemoteAddress(string $value)
-    {
-        $this->remoteaddr = $value;
-        return $this;
-    }
-
-    /**
      * Set API Session ID to use
-     *
      * @param string $value API Session ID
      * @return $this
      */
-    public function setSession(string $value)
+    #[\Override]
+    public function setSession(string $value = ""): static
     {
         $this->session = $value;
-        // $this->login = "";
         $this->pw = "";
-        return $this;
-    }
-
-    /**
-     * Set subuser account name (for subuser data view)
-     * @param string $value subuser account name
-     * @return $this
-     */
-    public function setUser(string $value)
-    {
-        $this->user = $value;
         return $this;
     }
 }

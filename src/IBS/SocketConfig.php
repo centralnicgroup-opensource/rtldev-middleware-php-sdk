@@ -9,122 +9,46 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\SocketConfig as CNRSocketConfig;
+use CNIC\AbstractSocketConfig;
 
 /**
  * IBS SocketConfig
  *
  * @package CNIC\IBS
  */
-final class SocketConfig extends CNRSocketConfig
+class SocketConfig extends AbstractSocketConfig
 {
-    /**
-     * account name
-     */
-    protected string $login = "";
-
-    /**
-     * account password
-     */
-    protected string $pw = "";
-
-    /**
-     * remote ip address (ip filter)
-     */
-    protected string $remoteaddr = "";
+    protected string $oteUrl = "https://testapi.internet.bs/";
+    protected string $liveUrl = "https://api.internet.bs/";
+    protected int $socketTimeout = 300;
+    protected bool $needsIDNConvert = false;
 
     /**
      * list of http request parameters
-     * @var array<string>
+     * IBS only uses login/password — command and session are CNR-specific.
+     * @var array{login: string, password: string}
      */
-    protected array $parameters;
-
-    /**
-     * Constructor
-     * @param array<mixed> $parameters
-     */
-    public function __construct(array $parameters)
-    {
-        parent::__construct($parameters);
-        $this->parameters = $parameters;
-    }
+    private array $parameters = [
+        "login"    => "apikey",
+        "password" => "password",
+    ];
 
     /**
      * Get POST data container of connection data
-     * @param array<mixed> $command API Command to request
+     * @param array<string, string|null> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
-     * @return array<string,string>
+     * @return array<string, string|null>
      */
     #[\Override]
     protected function getPOSTDataParams(array $command, bool $secured): array
     {
-        $params = $command; // here $command is just an array of request parameters
+        $params = $command;
         if (strlen($this->login) !== 0) {
             $params[$this->parameters["login"]] = $this->login;
         }
         if (strlen($this->pw) !== 0) {
             $params[$this->parameters["password"]] = $secured ? "***" : $this->pw;
         }
-        if (strlen($this->remoteaddr) && isset($this->parameters["ipfilter"])) {
-            $params[$this->parameters["ipfilter"]] = $this->remoteaddr;
-        }
         return $params;
-    }
-
-    /**
-     * Create POST data string out of connection data
-     * @param array<int|string,mixed> $command API Command to request
-     * @param bool $secured if password has to be returned "hidden"
-     */
-    #[\Override]
-    public function getPOSTData(array $command = [], bool $secured = false): string
-    {
-        $params = $this->getPOSTDataParams($command, $secured);
-        return http_build_query($params);//RFC1738 x-www-form-urlencoded as default
-    }
-
-    /**
-     * Set account name to use
-     * @param string $value account name
-     * @return $this
-     */
-    #[\Override]
-    public function setLogin($value)
-    {
-        $this->login = $value;
-        return $this;
-    }
-
-    /**
-     * Get current login (including role)
-     */
-    #[\Override]
-    public function getLogin(): string
-    {
-        return $this->login;
-    }
-
-    /**
-     * Set account password to use
-     * @param string $value account password
-     * @return $this
-     */
-    #[\Override]
-    public function setPassword($value)
-    {
-        $this->pw = $value;
-        return $this;
-    }
-
-    /**
-     * Set Remote IP Address to use
-     * @param string $value remote ip address
-     * @return $this
-     */
-    #[\Override]
-    public function setRemoteAddress($value)
-    {
-        $this->remoteaddr = $value;
-        return $this;
     }
 }

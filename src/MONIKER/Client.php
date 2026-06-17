@@ -12,10 +12,18 @@ namespace CNIC\MONIKER;
 use CNIC\IBS\Client as IBSClient;
 
 /**
- * Moniker API Client — same platform as IBS; config.json provides Moniker-specific endpoints.
+ * Moniker API Client — same platform as IBS; only the endpoints differ.
  *
  * @package CNIC\MONIKER
  */
 class Client extends IBSClient
 {
+    /**
+     * Instantiate MONIKER SocketConfig
+     */
+    #[\Override]
+    protected function newSocketConfig(): SocketConfig
+    {
+        return new SocketConfig();
+    }
 }

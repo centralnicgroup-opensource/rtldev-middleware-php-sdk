@@ -12,7 +12,6 @@ namespace CNIC\CNR;
 use CNIC\AbstractClient;
 use CNIC\CNR\Logger as L;
 use CNIC\CNR\Response;
-use CNIC\CNR\SocketConfig;
 use CNIC\CommandFormatter;
 
 /**
@@ -29,7 +28,7 @@ class Client extends AbstractClient
     #[\Override]
     protected function newSocketConfig(): SocketConfig
     {
-        return new SocketConfig($this->settings["parameters"] ?? []);
+        return new SocketConfig();
     }
 
     /**
@@ -45,7 +44,7 @@ class Client extends AbstractClient
 
     /**
      * Perform API request using the given command
-     * @param array<mixed> $cmd API command to request (optional for session login)
+     * @param array<string, mixed> $cmd API command to request (optional for session login)
      */
     #[\Override]
     public function request(array $cmd = []): Response

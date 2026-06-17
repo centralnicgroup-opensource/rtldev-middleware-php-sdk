@@ -70,8 +70,8 @@ trait SessionCapable
     public function reuseSession(array &$session): static
     {
         if (isset($session["socketcfg"]["login"], $session["socketcfg"]["session"])) {
-            $this->setCredentials($session["socketcfg"]["login"]);
-            $this->setSession($session["socketcfg"]["session"]);
+            $this->setCredentials((string)$session["socketcfg"]["login"]);
+            $this->setSession((string)$session["socketcfg"]["session"]);
         }
         return $this;
     }

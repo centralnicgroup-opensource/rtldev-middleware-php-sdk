@@ -61,7 +61,7 @@ final class ClientTest extends TestCase
     public function testGetUrl(): void
     {
         $url = self::$cl->getURL();
-        $this->assertEquals($url, self::$cl->getSettings()["env"]["live"]["url"]);
+        $this->assertEquals($url, self::$cl->getLiveUrl());
     }
 
     public function testGetUserAgent(): void
@@ -138,25 +138,11 @@ final class ClientTest extends TestCase
         self::$cl->setRoleCredentials("uid", "role", "pw");
     }
 
-    public function testSetUserViewThrows(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Feature `User View / Subresellersystem` not supported.");
-        self::$cl->setUserView("subuser");
-    }
-
     public function testUseHighPerformanceConnectionSetupThrows(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("Feature `High Performance Connection Setup` not supported.");
         self::$cl->useHighPerformanceConnectionSetup();
-    }
-
-    public function testSetRemoteIpAddressThrows(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Feature `IP Filter` not supported");
-        self::$cl->setRemoteIPAddress("10.10.10.10");
     }
 
     public function testSetProxy(): void

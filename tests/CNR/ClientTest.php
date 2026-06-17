@@ -138,7 +138,7 @@ final class ClientTest extends TestCase
     public function testGetUrl(): void
     {
         $url = self::$cl->getURL();
-        $this->assertEquals($url, self::$cl->getSettings()["env"]["live"]["url"]);
+        $this->assertEquals($url, self::$cl->getLiveUrl());
     }
 
     public function testGetUserAgent(): void
@@ -230,33 +230,6 @@ final class ClientTest extends TestCase
             $tmp
         );
         self::$cl->setSession();
-    }
-
-    public function testSetRemoteIpAddressSetThrows(): void
-    {
-        $cl = new SessionClient(); // no config → no ipfilter in parameters → feature unsupported
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Feature `IP Filter` not supported");
-        $cl->setRemoteIPAddress("10.10.10.10");
-    }
-
-    public function testSetRemoteIpAddressSet(): void
-    {
-        $cl = new SessionClient(); // no config → no ipfilter in parameters → feature unsupported
-        $this->expectException(\Exception::class);
-        $cl->setRemoteIPAddress("10.10.10.10");
-    }
-
-    public function testSetRemoteIpAddressReset(): void
-    {
-        self::$cl->setRemoteIPAddress();
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals(
-            "s_login=myaccountid%3Amyrole&s_command=COMMAND%3DStatusAccount",
-            $tmp
-        );
     }
 
     public function testSetCredentialsSet(): void
@@ -660,29 +633,6 @@ final class ClientTest extends TestCase
             $this->assertInstanceOf(R::class, $p);
             $this->assertEquals($p->isSuccess(), true);
         }
-    }
-
-    public function testSetUserView(): void
-    {
-        $this->markTestSkipped('RSRTPM-3111'); //TODO
-        /*
-        self::$cl->setUserView("docutest01");
-        $r = self::$cl->request([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true);
-        */
-    }
-
-    public function testResetUserView(): void
-    {
-        self::$cl->setUserView();
-        $r = self::$cl->request([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertInstanceOf(R::class, $r);
-        $this->assertEquals($r->isSuccess(), true);
     }
 
     public function testSetProxy(): void

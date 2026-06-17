@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace CNIC\IBS;
 
 use CNIC\AbstractClient;
-use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\CommandFormatter;
 use CNIC\IBS\Logger as L;
 use CNIC\IBS\Response;
@@ -27,9 +26,9 @@ class Client extends AbstractClient
      * Instantiate IBS SocketConfig
      */
     #[\Override]
-    protected function newSocketConfig(): CNRSocketConfig
+    protected function newSocketConfig(): SocketConfig
     {
-        return new SocketConfig($this->settings["parameters"] ?? []);
+        return new SocketConfig();
     }
 
     /**
@@ -83,8 +82,8 @@ class Client extends AbstractClient
      * Auto convert API command parameters to punycode, if necessary.
      * Note: IBS handles IDN conversion server-side.
      *
-     * @param array<string> $cmd API command
-     * @return array<string>
+     * @param array<string, string> $cmd API command
+     * @return array<string, string>
      */
     #[\Override]
     protected function autoIDNConvert(array $cmd): array
@@ -95,7 +94,7 @@ class Client extends AbstractClient
     /**
      * Perform API request using the given command
      *
-     * @param array<mixed> $cmd API command to request
+     * @param array<string, mixed> $cmd API command to request
      * @param string $path Path to the API endpoint
      */
     #[\Override]
@@ -111,18 +110,6 @@ class Client extends AbstractClient
             $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
         }
         return $response;
-    }
-
-    /**
-     * Set a data view to a given subuser
-     * Note: not supported.
-     *
-     * @throws \Exception
-     */
-    #[\Override]
-    public function setUserView(string $uid = ""): static
-    {
-        throw new \Exception("Feature `User View / Subresellersystem` not supported.");
     }
 
     /**

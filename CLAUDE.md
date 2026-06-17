@@ -7,7 +7,18 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 ## Architecture
 
 - **Namespace root:** `CNIC\` mapped to `src/` (PSR-4)
-- **Inheritance chain:** `CNR\Client` and `IBS\Client` extend `CNIC\AbstractClient` directly. `MONIKER\Client` extends `IBS\Client` — Moniker and IBS share the same API platform; only their `config.json` (endpoints/credentials) differs. `CNR\SessionClient` uses the `SessionCapable` trait for login/logout; `IBS\SessionClient` and `MONIKER\SessionClient` are session-less.
+- **Shared abstracts (in `CNIC\`):**
+  - `AbstractClient` — shared foundation for all registrar API clients; subclasses provide `request()`, the default logger, and the SocketConfig subtype
+  - `AbstractSocketConfig` — shared base for all SocketConfig classes; subclasses provide `getPOSTDataParams()` and their own `$parameters` array
+  - `HttpTransport` — extracted cURL layer; owns the cURL handle lifecycle and exposes a single `post()` method
+  - `Registrar` enum — backed by string values `CNR`, `CNIC` (legacy alias), `IBS`, `MONIKER`; used by `ClientFactory` for registrar matching
+- **Inheritance chain:**
+  - `CNR\Client` and `IBS\Client` both extend `AbstractClient` directly
+  - `MONIKER\Client` extends `IBS\Client` — Moniker and IBS share the same API platform; only their `config.json` (endpoints/credentials) differs
+  - `CNR\SessionClient extends CNR\Client` and uses the `SessionCapable` trait for login/logout
+  - `IBS\SessionClient extends IBS\Client` and `MONIKER\SessionClient extends MONIKER\Client` — these are thin wrappers with no session-based login/logout
+  - `CNR\SocketConfig`, `IBS\SocketConfig`, `MONIKER\SocketConfig` all extend `AbstractSocketConfig`
+- **IBS shares CNR data models:** `IBS\Response` extends `CNR\Response`, `IBS\Column` extends `CNR\Column`, `IBS\Record` extends `CNR\Record` — IBS adds only the parsing differences on top
 - **Config-driven:** Each sub-namespace has a `config.json` with API URLs, parameter mappings, and feature flags
 - **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` (all in `CNIC\`) define contracts. All concrete classes formally declare `implements`:
   - `CNR\Column`, `IBS\Column` → `ColumnInterface`
@@ -15,7 +26,9 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
   - `CNR\Response`, `IBS\Response` → `ResponseInterface`
   - `CNR\Logger`, `IBS\Logger` → `LoggerInterface`
   - Type-hint against the interface rather than the concrete class (e.g. `LoggerInterface` not `Logger`, `ResponseInterface` not `Response`)
-- **Factory pattern:** `ClientFactory::getClient()` for instantiation
+- **Static utilities:** `ResponseParser::parse()` and `ResponseTranslator` (both `CNR\` and `IBS\`) for parsing/translating raw API responses; `CommandFormatter::flattenCommand()` for request serialisation
+- **Factory pattern:** `ClientFactory::getClient()` returns a `SessionClient|IBSSessionClient|MONIKERSessionClient` union type
+- **Public API annotation:** classes and interfaces that form the public API are annotated `@psalm-api` to suppress unused-symbol warnings
 
 ## Coding Standards
 
@@ -23,6 +36,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 
 - **PSR-12** enforced via PHP CodeSniffer (config: `.github/linters/phpcs.xml`)
 - **PHPStan Level 8** for static analysis (config: `.github/linters/phpstan.neon`)
+- **Psalm Level 6** for additional static analysis (config: `.github/linters/psalm.xml`) — annotate public API symbols with `@psalm-api`
 - Always include `declare(strict_types=1);` in new or modified files
 - Use typed properties and return type declarations on all new code
 - Use `@var` PHPDoc with generic array types: `array<string, mixed>`, `string[]`, `array<string>`
@@ -38,7 +52,6 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 ### Class Patterns
 
 - Setters use fluent interface (return `$this`)
-- Static utility methods for parsers/formatters: `ResponseParser::parse()`, `CommandFormatter::flattenCommand()`
 - Throw `\Exception` directly (no custom exception hierarchy)
 - Password fields must be sanitized before logging: `$cmd["PASSWORD"] = "***"`
 
@@ -59,7 +72,7 @@ namespace CNIC\<SubNamespace>;
 
 ## Testing
 
-- **Framework:** PHPUnit 10.5+
+- **Framework:** PHPUnit 12+
 - **Test namespace:** `CNICTEST\` mirroring `CNIC\` structure
 - **Test classes:** Always `final class` extending `\PHPUnit\Framework\TestCase`
 - **Method naming:** `testDescriptiveName` in camelCase
@@ -71,10 +84,14 @@ namespace CNIC\<SubNamespace>;
 ### Running Tests
 
 ```bash
-composer test          # PHPUnit with coverage
-composer lint          # PHP CodeSniffer
-composer codefix       # Auto-fix coding standard violations
-composer phpstan       # Static analysis
+composer test          # PHPUnit with coverage (.github/phpunit.xml)
+composer lint          # phpcs + phpstan + psalm + shellcheck
+composer codefix       # Auto-fix coding standard violations (phpcbf)
+composer phpstan       # PHPStan static analysis only
+composer psalm         # Psalm static analysis only (monochrome)
+composer psalm:colored # Psalm static analysis (colored output)
+composer rector        # Rector dry-run (detect modernization opportunities)
+composer rector:fix    # Rector apply (write modernized code)
 composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 ```
 
@@ -88,21 +105,25 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
 
 ## Git Conventions
 
-- **Commit messages:** Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`)
+- **Commit messages:** Angular/Conventional Commits with **mandatory scope**: `<type>(<scope>): <summary>` — e.g. `fix(psalm): resolve static analysis warnings`, `feat(ibs): add response translation`
 - **Default branch:** `master`
 - **Versioning:** Semantic versioning managed by CI release workflow
 
 ## Important Files
 
-| Path                           | Purpose                                                |
-| ------------------------------ | ------------------------------------------------------ |
-| `src/CNR/config.json`          | CNR API endpoints and settings                         |
-| `src/IBS/config.json`          | IBS API endpoints and settings                         |
-| `src/MONIKER/config.json`      | Moniker API endpoints and settings                     |
-| `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config                              |
-| `.github/linters/phpstan.neon` | PHPStan level 8 config                                 |
-| `phpunit.xml`                  | PHPUnit configuration                                  |
-| `env.example.sh`               | Template for required env variables (copy to `env.sh`) |
+| Path                           | Purpose                                                 |
+| ------------------------------ | ------------------------------------------------------- |
+| `src/AbstractSocketConfig.php` | Shared abstract base for all SocketConfig classes       |
+| `src/HttpTransport.php`        | Low-level cURL HTTP transport (extracted from clients)  |
+| `src/Registrar.php`            | `Registrar` enum — string-backed, used by ClientFactory |
+| `src/CNR/config.json`          | CNR API endpoints and settings                          |
+| `src/IBS/config.json`          | IBS API endpoints and settings                          |
+| `src/MONIKER/config.json`      | Moniker API endpoints and settings                      |
+| `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config                               |
+| `.github/linters/phpstan.neon` | PHPStan level 8 config                                  |
+| `.github/linters/psalm.xml`    | Psalm level 6 config                                    |
+| `.github/phpunit.xml`          | PHPUnit configuration                                   |
+| `env.example.sh`               | Template for required env variables (copy to `env.sh`)  |
 
 ## Atlassian / JIRA
 
@@ -137,4 +158,3 @@ When adding new entries to the allowlist, confirm the command is strictly read-o
 - Create custom exception classes — use `\Exception` directly
 - Use mocking frameworks (Mockery, Prophecy) — use ResponseTemplateManager
 - Add `@author` tags to docblocks
-- Modify `config.json` files without understanding the API implications
