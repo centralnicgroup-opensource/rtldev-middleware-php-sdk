@@ -44,7 +44,7 @@
   },
   "remoteUser": "vscode",
   "features": {
-    "ghcr.io/devcontainers/features/php:1": {
+    "ghcr.io/devcontainers/features/php:": {
       "version": "8.3",
       "installComposer": true,
       "extensions": "xdebug"
