@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-//declare(strict_types=1);
 namespace CNICTEST\CNR;
 
 use CNIC\CNR\SocketConfig as SC;
@@ -15,17 +14,7 @@ final class SocketConfigTest extends TestCase
      */
     public function testGetPostData(): void
     {
-        $d = (new SC([
-            "login" => [
-                "name" => "s_login",
-                "sep" => "!"
-            ],
-            "password" => "s_pw",
-            "session" => "s_session",
-            "subuser" => "s_user",
-            "command" => "COMMAND",
-            "ipfilter" => "s_remoteaddr"
-        ]))->getPOSTData();
+        $d = (new SC())->getPOSTData();
         $this->assertEmpty($d);
     }
 }

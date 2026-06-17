@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC;
 
-use CNIC\CNR\SocketConfig;
+use CNIC\AbstractSocketConfig;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\LoggerInterface;
 use CNIC\ResponseInterface;
@@ -31,12 +31,6 @@ abstract class AbstractClient
     protected array $context = [];
 
     /**
-     * registrar api settings
-     * @var array<mixed>
-     */
-    protected array $settings;
-
-    /**
      * API connection url
      */
     protected string $socketURL;
@@ -44,7 +38,7 @@ abstract class AbstractClient
     /**
      * Object covering API connection data
      */
-    protected SocketConfig $socketConfig;
+    protected AbstractSocketConfig $socketConfig;
 
     /**
      * activity flag for debug mode
@@ -80,20 +74,9 @@ abstract class AbstractClient
 
     /**
      * Constructor
-     *
-     * @param string $path Path to the configuration file
      */
-    public function __construct(string $path = "")
+    public function __construct()
     {
-        $contents = file_get_contents($path);
-        if ($contents === false) {
-            $contents = "";
-        }
-        $settings = json_decode($contents, true);
-        if (!is_array($settings)) {
-            $settings = [];
-        }
-        $this->settings = $settings;
         $this->socketURL = "";
         $this->debugMode = false;
         $this->ua = "";
@@ -106,7 +89,7 @@ abstract class AbstractClient
     /**
      * Perform API request using the given command.
      * Each client implements its own command serialisation and response type.
-     * @param array<mixed> $cmd API command
+     * @param array<string, mixed> $cmd API command
      */
     abstract public function request(array $cmd = []): ResponseInterface;
 
@@ -114,7 +97,7 @@ abstract class AbstractClient
      * Instantiate the SocketConfig for this client.
      * Subclasses return their own SocketConfig subtype.
      */
-    abstract protected function newSocketConfig(): SocketConfig;
+    abstract protected function newSocketConfig(): AbstractSocketConfig;
 
     /**
      * Set the default logger for this client.
@@ -156,7 +139,7 @@ abstract class AbstractClient
 
     /**
      * Serialize given command for POST request including connection configuration data
-     * @param array<string,mixed> $cmd API command to encode
+     * @param array<string, string|null> $cmd API command to encode
      * @param bool $secured secure password (when used for output)
      */
     public function getPOSTData(array $cmd, bool $secured = false): string
@@ -227,7 +210,7 @@ abstract class AbstractClient
     public function getProxy(): ?string
     {
         if (isset($this->curlopts[CURLOPT_PROXY])) {
-            return $this->curlopts[CURLOPT_PROXY];
+            return (string)$this->curlopts[CURLOPT_PROXY];
         }
         return null;
     }
@@ -253,7 +236,7 @@ abstract class AbstractClient
     public function getReferer(): ?string
     {
         if (isset($this->curlopts[CURLOPT_REFERER])) {
-            return $this->curlopts[CURLOPT_REFERER];
+            return (string)$this->curlopts[CURLOPT_REFERER];
         }
         return null;
     }
@@ -289,21 +272,6 @@ abstract class AbstractClient
     }
 
     /**
-     * Set a Remote IP Address to be used for API communication
-     * @param string $value Remote IP Address (optional, for reset)
-     * @throws \Exception in case this feature is unsupported
-     * @return $this
-     */
-    public function setRemoteIPAddress(string $value = ""): static
-    {
-        if ($value !== '' && $value !== '0' && !isset($this->settings["parameters"]["ipfilter"])) {
-            throw new \Exception("Feature `IP Filter` not supported");
-        }
-        $this->socketConfig->setRemoteAddress($value);
-        return $this;
-    }
-
-    /**
      * Set Credentials to be used for API communication
      * @param string $uid account name (optional, for reset)
      * @param string $pw account password (optional, for reset)
@@ -327,20 +295,9 @@ abstract class AbstractClient
     {
         $login = $uid;
         if ($role !== '' && $role !== '0') {
-            $login .= (string)$this->settings["roleSeparator"] . $role;
+            $login .= $this->socketConfig->getRoleSeparator() . $role;
         }
         return $this->setCredentials($login, $pw);
-    }
-
-    /**
-     * Set a data view to a given subuser
-     * @param string $uid subuser account name
-     * @return $this
-     */
-    public function setUserView(string $uid = ""): static
-    {
-        $this->socketConfig->setUser($uid);
-        return $this;
     }
 
     /**
@@ -371,13 +328,13 @@ abstract class AbstractClient
 
     /**
      * Auto convert API command parameters to punycode, if necessary.
-     * @param array<string> $cmd API command
-     * @return array<string>
+     * @param array<string, string> $cmd API command
+     * @return array<string, string>
      */
     protected function autoIDNConvert(array $cmd): array
     {
         if (
-            !$this->settings["needsIDNConvert"]
+            !$this->socketConfig->getNeedsIDNConvert()
             || !function_exists("idn_to_ascii")
         ) {
             return $cmd;
@@ -426,7 +383,7 @@ abstract class AbstractClient
         return $this->transport->post(
             $cfg["CONNECTION_URL"],
             $data,
-            $this->settings["socketTimeout"],
+            $this->socketConfig->getSocketTimeout(),
             $this->getUserAgent(),
             $extraCurlOpts + $this->curlopts
         );
@@ -441,12 +398,11 @@ abstract class AbstractClient
     }
 
     /**
-     * Get registrar API settings
-     * @return array<mixed>
+     * Get LIVE system URL
      */
-    public function getSettings(): array
+    public function getLiveUrl(): string
     {
-        return $this->settings;
+        return $this->socketConfig->getLiveUrl();
     }
 
     /**
@@ -464,7 +420,7 @@ abstract class AbstractClient
     public function useOTESystem(): static
     {
         $this->isOTE = true;
-        return $this->setURL($this->settings["env"]["ote"]["url"]);
+        return $this->setURL($this->socketConfig->getOTEUrl());
     }
 
     /**
@@ -474,7 +430,7 @@ abstract class AbstractClient
     public function useLIVESystem(): static
     {
         $this->isOTE = false;
-        return $this->setURL($this->settings["env"]["live"]["url"]);
+        return $this->setURL($this->socketConfig->getLiveUrl());
     }
 
     /**

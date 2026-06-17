@@ -40,15 +40,16 @@ class ClientFactory
             $cl->useOTESystem();
         }
         if (
-            !empty($params["username"])
-            && !empty($params["password"])
+            isset($params["username"], $params["password"])
+            && $params["username"] !== ''
+            && $params["password"] !== ''
         ) {
             $cl->setCredentials(
                 $params["username"],
                 html_entity_decode($params["password"], ENT_QUOTES)
             );
         }
-        if (!empty($params["referer"])) {
+        if (isset($params["referer"]) && $params["referer"] !== '') {
             $cl->setReferer($params["referer"]); // GLOBALS["CONFIG"]["SystemURL"] TODO
         }
         if (!empty($params["ua"])) {
@@ -61,7 +62,7 @@ class ClientFactory
         if (!empty($params["logging"])) {
             $cl->enableDebugMode(); // activate logging
         }
-        if (!empty($params["proxyserver"])) {
+        if (isset($params["proxyserver"]) && $params["proxyserver"] !== '') {
             $cl->setProxy($params["proxyserver"]);
         }
         return $cl;
