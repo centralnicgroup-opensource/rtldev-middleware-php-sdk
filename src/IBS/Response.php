@@ -40,7 +40,7 @@ class Response extends CNRResponse implements ResponseInterface
     /**
      * Constructor
      * @param string $raw API plain response
-     * @param array<string> $cmd API command used within this request
+     * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      */
@@ -106,7 +106,7 @@ class Response extends CNRResponse implements ResponseInterface
      */
     public function getStatus(): string
     {
-        return $this->hash["status"];
+        return (string)$this->hash["status"];
     }
 
     /**
@@ -115,7 +115,7 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function getDescription(): string
     {
-        return $this->hash["message"] ?? $this->hash["product_0_message"] ?? "Command completed successfully";
+        return (string)($this->hash["message"] ?? $this->hash["product_0_message"] ?? "Command completed successfully");
     }
 
     /**
@@ -274,7 +274,7 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Get Command used in this request
-     * @return array<string>
+     * @return array<string, string>
      */
     #[\Override]
     public function getCommand(): array

@@ -20,8 +20,8 @@ interface ResponseInterface
     /**
      * Constructor
      * @param string $raw API plain response
-     * @param array<string> $cmd API command used within this request
-     * @param array<string> $ph placeholder array to get vars in response description dynamically replaced
+     * @param array<string, string> $cmd API command used within this request
+     * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
      */
     public function __construct(string $raw, array $cmd, array $ph = []);
 
@@ -136,7 +136,7 @@ interface ResponseInterface
 
     /**
      * Get Command used in this request
-     * @return array<string> command
+     * @return array<string, string> command
      */
     public function getCommand(): array;
 

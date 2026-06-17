@@ -56,6 +56,7 @@ final class ResponseParser
             }
         });
 
+        /** @psalm-var array<string, mixed> $result */
         return $result;
     }
 }
