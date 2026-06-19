@@ -4,6 +4,7 @@ name: Lint & Security
     types:
       - opened
       - synchronize
+      - reopened
 
 permissions:
   contents: read
