@@ -1,0 +1,12 @@
+name: Monthly WHMCS PHP version check
+
+on:
+  schedule:
+    - cron: "0 6 1 * *" # First of each month at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check:
+    uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/whmcs-php-check.yml@main
+    with:
+      pinned-php-version: "8.3"
