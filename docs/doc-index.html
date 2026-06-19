@@ -92,7 +92,7 @@
                                                 <li><a href="#letterL">L</a></li>
                                                 <li class="disabled"><a href="#letterM">M</a></li>
                                                 <li><a href="#letterN">N</a></li>
-                                                <li class="disabled"><a href="#letterO">O</a></li>
+                                                <li><a href="#letterO">O</a></li>
                                                 <li><a href="#letterP">P</a></li>
                                                 <li class="disabled"><a href="#letterQ">Q</a></li>
                                                 <li><a href="#letterR">R</a></li>
@@ -110,7 +110,8 @@
         <dl id="indexA"><dt><a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Shared foundation for all registrar API clients.</p></dd><dt><a href="CNIC/AbstractClient.html#method_autoIDNConvert">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::autoIDNConvert</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Auto convert API command parameters to punycode, if necessary.</p></dd><dt><a href="CNIC/CNR/Response.html#method_addColumn">
+                    <dd><p>Auto convert API command parameters to punycode, if necessary.</p></dd><dt><a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
+                    <dd><p>Shared base for all registrar SocketConfig implementations.</p></dd><dt><a href="CNIC/CNR/Response.html#method_addColumn">
 <abbr title="CNIC\CNR\Response">Response</abbr>::addColumn</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>Add a column to the column list</p></dd><dt><a href="CNIC/CNR/Response.html#method_addRecord">
 <abbr title="CNIC\CNR\Response">Response</abbr>::addRecord</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
@@ -155,7 +156,7 @@
                     <dd><p>IBS Column</p></dd><dt>$<a href="CNIC/IBS/Response.html#property_context">
 <abbr title="CNIC\IBS\Response">Response</abbr>#context</a> &mdash; <em>Property in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd><p>Context data for the response</p></dd><dt><a href="CNIC/MONIKER/Client.html"><abbr title="CNIC\MONIKER\Client">Client</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/MONIKER.html">CNIC\MONIKER</a></em></dt>
-                    <dd><p>Moniker API Client — same platform as IBS; config.json provides Moniker-specific endpoints.</p></dd>        </dl><h2 id="letterD">D</h2>
+                    <dd><p>Moniker API Client — same platform as IBS; only the endpoints differ.</p></dd>        </dl><h2 id="letterD">D</h2>
         <dl id="indexD"><dt>$<a href="CNIC/AbstractClient.html#property_debugMode">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>#debugMode</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>activity flag for debug mode</p></dd><dt><a href="CNIC/AbstractClient.html#method_disableDebugMode">
@@ -185,9 +186,29 @@
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getReferer</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>Get Referer configuration for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_getVersion">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getVersion</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Get the current module version</p></dd><dt><a href="CNIC/AbstractClient.html#method_getSettings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getSettings</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Get registrar API settings</p></dd><dt><a href="CNIC/CNR/Column.html#method_getKey">
+                    <dd><p>Get the current module version</p></dd><dt><a href="CNIC/AbstractClient.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::getLiveUrl</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
+                    <dd><p>Get LIVE system URL</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getLogin</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get current login</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getSession</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get API Session ID in use</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getPersistent</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get persistent parameter</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getOTEUrl</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get OT&amp;E endpoint URL</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getLiveUrl</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get LIVE endpoint URL</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getSocketTimeout</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get socket timeout in seconds</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getNeedsIDNConvert">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getNeedsIDNConvert</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get whether IDN conversion is needed</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getRoleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getRoleSeparator</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get role separator character</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getPOSTDataParams">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getPOSTDataParams</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Get POST data container of connection data</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Create POST data string out of connection data</p></dd><dt><a href="CNIC/CNR/Column.html#method_getKey">
 <abbr title="CNIC\CNR\Column">Column</abbr>::getKey</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
                     <dd><p>Get column name</p></dd><dt><a href="CNIC/CNR/Column.html#method_getData">
 <abbr title="CNIC\CNR\Column">Column</abbr>::getData</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
@@ -266,15 +287,11 @@ This is the count of requested rows</p></dd><dt><a href="CNIC/CNR/ResponseTempla
 <abbr title="CNIC\CNR\ResponseTemplateManager">ResponseTemplateManager</abbr>::getTemplates</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseTemplateManager.html"><abbr title="CNIC\CNR\ResponseTemplateManager">ResponseTemplateManager</abbr></a></em></dt>
                     <dd><p>Return all available response templates</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_getPOSTDataParams">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::getPOSTDataParams</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Get POST data container of connection data</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_getPOSTData">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Create POST data string out of connection data</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_getPersistent">
+                    <dd><p>Get POST data container of connection data</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_getPersistent">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::getPersistent</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Get persistent parameter returned</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_getSession">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::getSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Get API Session ID in use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_getLogin">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::getLogin</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Get current login (including role)</p></dd><dt><a href="CNIC/ClientFactory.html#method_getClient">
+                    <dd><p>Get API Session ID in use</p></dd><dt><a href="CNIC/ClientFactory.html#method_getClient">
 <abbr title="CNIC\ClientFactory">ClientFactory</abbr>::getClient</a>() &mdash; <em>Method in class <a href="CNIC/ClientFactory.html"><abbr title="CNIC\ClientFactory">ClientFactory</abbr></a></em></dt>
                     <dd><p>Returns Client Instance by configuration</p></dd><dt><a href="CNIC/ColumnInterface.html#method_getKey">
 <abbr title="CNIC\ColumnInterface">ColumnInterface</abbr>::getKey</a>() &mdash; <em>Method in class <a href="CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a></em></dt>
@@ -287,7 +304,13 @@ This is the count of requested rows</p></dd><dt><a href="CNIC/CNR/ResponseTempla
                     <dd><p>Get the sorted command array based on priority</p></dd><dt><a href="CNIC/IBS/Client.html#method_getSession">
 <abbr title="CNIC\IBS\Client">Client</abbr>::getSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Get the API Session ID that is currently set
-Note: not supported.</p></dd><dt><a href="CNIC/IBS/Response.html#method_getCode">
+Note: not supported.</p></dd><dt><a href="CNIC/IBS/Column.html#method_getKey">
+<abbr title="CNIC\IBS\Column">Column</abbr>::getKey</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Column.html"><abbr title="CNIC\IBS\Column">Column</abbr></a></em></dt>
+                    <dd><p>Get column name</p></dd><dt><a href="CNIC/IBS/Column.html#method_getData">
+<abbr title="CNIC\IBS\Column">Column</abbr>::getData</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Column.html"><abbr title="CNIC\IBS\Column">Column</abbr></a></em></dt>
+                    <dd><p>Get column data</p></dd><dt><a href="CNIC/IBS/Column.html#method_getDataByIndex">
+<abbr title="CNIC\IBS\Column">Column</abbr>::getDataByIndex</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Column.html"><abbr title="CNIC\IBS\Column">Column</abbr></a></em></dt>
+                    <dd><p>Get column data at given index</p></dd><dt><a href="CNIC/IBS/Response.html#method_getCode">
 <abbr title="CNIC\IBS\Response">Response</abbr>::getCode</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd><p>Get API response code</p></dd><dt><a href="CNIC/IBS/Response.html#method_getStatus">
 <abbr title="CNIC\IBS\Response">Response</abbr>::getStatus</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
@@ -354,11 +377,7 @@ This is the count of requested rows</p></dd><dt><a href="CNIC/IBS/ResponseTempla
 <abbr title="CNIC\IBS\ResponseTemplateManager">ResponseTemplateManager</abbr>::getTemplates</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseTemplateManager.html"><abbr title="CNIC\IBS\ResponseTemplateManager">ResponseTemplateManager</abbr></a></em></dt>
                     <dd><p>Return all available response templates</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_getPOSTDataParams">
 <abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::getPOSTDataParams</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Get POST data container of connection data</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_getPOSTData">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::getPOSTData</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Create POST data string out of connection data</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_getLogin">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::getLogin</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Get current login (including role)</p></dd><dt><a href="CNIC/RecordInterface.html#method_getData">
+                    <dd><p>Get POST data container of connection data</p></dd><dt><a href="CNIC/RecordInterface.html#method_getData">
 <abbr title="CNIC\RecordInterface">RecordInterface</abbr>::getData</a>() &mdash; <em>Method in class <a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a></em></dt>
                     <dd><p>Get row data</p></dd><dt><a href="CNIC/RecordInterface.html#method_getDataByKey">
 <abbr title="CNIC\RecordInterface">RecordInterface</abbr>::getDataByKey</a>() &mdash; <em>Method in class <a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a></em></dt>
@@ -493,7 +512,11 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
                     <dd><p>Check if current operation is returned as pending</p></dd>        </dl><h2 id="letterL">L</h2>
         <dl id="indexL"><dt>$<a href="CNIC/AbstractClient.html#property_logger">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>#logger</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>logger instance for debug mode</p></dd><dt>$<a href="CNIC/CNR/Column.html#property_length">
+                    <dd><p>logger instance for debug mode</p></dd><dt>$<a href="CNIC/AbstractSocketConfig.html#property_login">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#login</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>account name</p></dd><dt>$<a href="CNIC/AbstractSocketConfig.html#property_liveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#liveUrl</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>API LIVE endpoint URL</p></dd><dt>$<a href="CNIC/CNR/Column.html#property_length">
 <abbr title="CNIC\CNR\Column">Column</abbr>#length</a> &mdash; <em>Property in class <a href="CNIC/CNR/Column.html"><abbr title="CNIC\CNR\Column">Column</abbr></a></em></dt>
                     <dd><p>count of column data entries</p></dd><dt><a href="CNIC/CNR/Logger.html"><abbr title="CNIC\CNR\Logger">Logger</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR Logger</p></dd><dt><a href="CNIC/CNR/Logger.html#method_log">
@@ -502,46 +525,63 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
 <abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::login</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
                     <dd><p>Perform API login to start session-based communication</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_logout">
 <abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::logout</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
-                    <dd><p>Perform API logout to close API session in use</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_login">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#login</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>account name</p></dd><dt><a href="CNIC/IBS/Logger.html"><abbr title="CNIC\IBS\Logger">Logger</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
+                    <dd><p>Perform API logout to close API session in use</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_liveUrl">
+<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#liveUrl</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt>$<a href="CNIC/IBS/Column.html#property_length">
+<abbr title="CNIC\IBS\Column">Column</abbr>#length</a> &mdash; <em>Property in class <a href="CNIC/IBS/Column.html"><abbr title="CNIC\IBS\Column">Column</abbr></a></em></dt>
+                    <dd><p>Count of column data entries</p></dd><dt><a href="CNIC/IBS/Logger.html"><abbr title="CNIC\IBS\Logger">Logger</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS Logger</p></dd><dt><a href="CNIC/IBS/Logger.html#method_log">
 <abbr title="CNIC\IBS\Logger">Logger</abbr>::log</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Logger.html"><abbr title="CNIC\IBS\Logger">Logger</abbr></a></em></dt>
-                    <dd><p>Output/log given data</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_login">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#login</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>account name</p></dd><dt><a href="CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
+                    <dd><p>Output/log given data</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_liveUrl">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#liveUrl</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Logger Interface</p></dd><dt><a href="CNIC/LoggerInterface.html#method_log">
 <abbr title="CNIC\LoggerInterface">LoggerInterface</abbr>::log</a>() &mdash; <em>Method in class <a href="CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></em></dt>
-                    <dd><p>Output/log given data</p></dd>        </dl><h2 id="letterN">N</h2>
+                    <dd><p>Output/log given data</p></dd><dt>$<a href="CNIC/MONIKER/SocketConfig.html#property_liveUrl">
+<abbr title="CNIC\MONIKER\SocketConfig">SocketConfig</abbr>#liveUrl</a> &mdash; <em>Property in class <a href="CNIC/MONIKER/SocketConfig.html"><abbr title="CNIC\MONIKER\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd>        </dl><h2 id="letterN">N</h2>
         <dl id="indexN"><dt><a href="CNIC/AbstractClient.html#method_newSocketConfig">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Instantiate the SocketConfig for this client.</p></dd><dt><a href="CNIC/CNR/Client.html#method_newSocketConfig">
+                    <dd><p>Instantiate the SocketConfig for this client.</p></dd><dt>$<a href="CNIC/AbstractSocketConfig.html#property_needsIDNConvert">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#needsIDNConvert</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Whether API command values need IDN conversion</p></dd><dt><a href="CNIC/CNR/Client.html#method_newSocketConfig">
 <abbr title="CNIC\CNR\Client">Client</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
-                    <dd><p>Instantiate CNR SocketConfig</p></dd><dt><a href="CNIC/IBS/Client.html#method_newSocketConfig">
+                    <dd><p>Instantiate CNR SocketConfig</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_needsIDNConvert">
+<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#needsIDNConvert</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/IBS/Client.html#method_newSocketConfig">
 <abbr title="CNIC\IBS\Client">Client</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
-                    <dd><p>Instantiate IBS SocketConfig</p></dd>        </dl><h2 id="letterP">P</h2>
-        <dl id="indexP"><dt>$<a href="CNIC/CNR/Response.html#property_paginationkeys">
+                    <dd><p>Instantiate IBS SocketConfig</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_needsIDNConvert">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#needsIDNConvert</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/MONIKER/Client.html#method_newSocketConfig">
+<abbr title="CNIC\MONIKER\Client">Client</abbr>::newSocketConfig</a>() &mdash; <em>Method in class <a href="CNIC/MONIKER/Client.html"><abbr title="CNIC\MONIKER\Client">Client</abbr></a></em></dt>
+                    <dd><p>Instantiate MONIKER SocketConfig</p></dd>        </dl><h2 id="letterO">O</h2>
+        <dl id="indexO"><dt>$<a href="CNIC/AbstractSocketConfig.html#property_oteUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#oteUrl</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>API OT&amp;E endpoint URL</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_oteUrl">
+<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#oteUrl</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_oteUrl">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#oteUrl</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt>$<a href="CNIC/MONIKER/SocketConfig.html#property_oteUrl">
+<abbr title="CNIC\MONIKER\SocketConfig">SocketConfig</abbr>#oteUrl</a> &mdash; <em>Property in class <a href="CNIC/MONIKER/SocketConfig.html"><abbr title="CNIC\MONIKER\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd>        </dl><h2 id="letterP">P</h2>
+        <dl id="indexP"><dt>$<a href="CNIC/AbstractSocketConfig.html#property_pw">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#pw</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>account password</p></dd><dt>$<a href="CNIC/CNR/Response.html#property_paginationkeys">
 <abbr title="CNIC\CNR\Response">Response</abbr>#paginationkeys</a> &mdash; <em>Property in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
                     <dd><p>Regex for pagination related column keys</p></dd><dt><a href="CNIC/CNR/ResponseParser.html#method_parse">
 <abbr title="CNIC\CNR\ResponseParser">ResponseParser</abbr>::parse</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseParser.html"><abbr title="CNIC\CNR\ResponseParser">ResponseParser</abbr></a></em></dt>
-                    <dd><p>Method to parse plain API response into js object</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_pw">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#pw</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>account password</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_parameters">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#parameters</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>list of http request parameters</p></dd><dt><a href="CNIC/HttpTransport.html#method_post">
+                    <dd><p>Method to parse plain API response into js object</p></dd><dt><a href="CNIC/HttpTransport.html#method_post">
 <abbr title="CNIC\HttpTransport">HttpTransport</abbr>::post</a>() &mdash; <em>Method in class <a href="CNIC/HttpTransport.html"><abbr title="CNIC\HttpTransport">HttpTransport</abbr></a></em></dt>
                     <dd><p>Execute a POST request and return the raw response.</p></dd><dt>$<a href="CNIC/IBS/Response.html#property_paginationkeys">
 <abbr title="CNIC\IBS\Response">Response</abbr>#paginationkeys</a> &mdash; <em>Property in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
                     <dd><p>Regex for pagination related column keys</p></dd><dt><a href="CNIC/IBS/ResponseParser.html#method_parse">
 <abbr title="CNIC\IBS\ResponseParser">ResponseParser</abbr>::parse</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseParser.html"><abbr title="CNIC\IBS\ResponseParser">ResponseParser</abbr></a></em></dt>
-                    <dd><p>Method to parse API response into associative array</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_pw">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#pw</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>account password</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_parameters">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#parameters</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>list of http request parameters</p></dd>        </dl><h2 id="letterR">R</h2>
+                    <dd><p>Method to parse API response into associative array</p></dd>        </dl><h2 id="letterR">R</h2>
         <dl id="indexR"><dt><a href="CNIC/AbstractClient.html#method_request">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::request</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Perform API request using the given command.</p></dd><dt><a href="CNIC/CNR/Client.html#method_request">
+                    <dd><p>Perform API request using the given command.</p></dd><dt>$<a href="CNIC/AbstractSocketConfig.html#property_roleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#roleSeparator</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Separator character for role credentials</p></dd><dt><a href="CNIC/CNR/Client.html#method_request">
 <abbr title="CNIC\CNR\Client">Client</abbr>::request</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
                     <dd><p>Perform API request using the given command</p></dd><dt><a href="CNIC/CNR/Client.html#method_requestNextResponsePage">
 <abbr title="CNIC\CNR\Client">Client</abbr>::requestNextResponsePage</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
@@ -566,9 +606,9 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
 <abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr>::replacePlaceholders</a>() &mdash; <em>Method in class <a href="CNIC/CNR/ResponseTranslator.html"><abbr title="CNIC\CNR\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
                     <dd><p>Replace known placeholders in DESCRIPTION while preserving literal brace content.</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_reuseSession">
 <abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::reuseSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
-                    <dd><p>Rebuild connection settings from a PHP session object</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_remoteaddr">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#remoteaddr</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>remote ip address (ip filter)</p></dd><dt><a href="CNIC/IBS/Client.html#method_request">
+                    <dd><p>Rebuild connection settings from a PHP session object</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_roleSeparator">
+<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#roleSeparator</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/IBS/Client.html#method_request">
 <abbr title="CNIC\IBS\Client">Client</abbr>::request</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Perform API request using the given command</p></dd><dt><a href="CNIC/IBS/Record.html"><abbr title="CNIC\IBS\Record">Record</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS Record</p></dd><dt><a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
@@ -579,16 +619,12 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
                     <dd><p>IBS ResponseTemplateManager</p></dd><dt><a href="CNIC/IBS/ResponseTranslator.html"><abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
                     <dd><p>IBS ResponseTranslator</p></dd><dt><a href="CNIC/IBS/ResponseTranslator.html#method_replacePlaceholders">
 <abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr>::replacePlaceholders</a>() &mdash; <em>Method in class <a href="CNIC/IBS/ResponseTranslator.html"><abbr title="CNIC\IBS\ResponseTranslator">ResponseTranslator</abbr></a></em></dt>
-                    <dd><p>Replace placeholder vars like {CONNECTION_URL} in a string</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_remoteaddr">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#remoteaddr</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>remote ip address (ip filter)</p></dd><dt><a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
+                    <dd><p>Replace placeholder vars like {CONNECTION_URL} in a string</p></dd><dt><a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Record Interface</p></dd><dt><a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a> &mdash; <em>Class in namespace <a href="CNIC.html">CNIC</a></em></dt>
                     <dd><p>Common Response Interface</p></dd><dt><a href="CNIC/ResponseInterface.html#method_rewindRecordList">
 <abbr title="CNIC\ResponseInterface">ResponseInterface</abbr>::rewindRecordList</a>() &mdash; <em>Method in class <a href="CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></em></dt>
                     <dd><p>Reset index in record list back to zero</p></dd>        </dl><h2 id="letterS">S</h2>
-        <dl id="indexS"><dt>$<a href="CNIC/AbstractClient.html#property_settings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr>#settings</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>registrar api settings</p></dd><dt>$<a href="CNIC/AbstractClient.html#property_socketURL">
+        <dl id="indexS"><dt>$<a href="CNIC/AbstractClient.html#property_socketURL">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>#socketURL</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>API connection url</p></dd><dt>$<a href="CNIC/AbstractClient.html#property_socketConfig">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>#socketConfig</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
@@ -606,57 +642,53 @@ API response code is an 4xx code</p></dd><dt><a href="CNIC/ResponseInterface.htm
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setURL</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>Set another connection url to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setSession">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setRemoteIPAddress">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setRemoteIPAddress</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Set a Remote IP Address to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setCredentials">
+                    <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setCredentials">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setCredentials</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>Set Credentials to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setRoleCredentials">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setRoleCredentials</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Set Role Credentials to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setUserView">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setUserView</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Set a data view to a given subuser</p></dd><dt><a href="CNIC/AbstractClient.html#method_setContext">
+                    <dd><p>Set Role Credentials to be used for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_setContext">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::setContext</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Set context data for the client</p></dd><dt><a href="CNIC/CNR/Client.html#method_setDefaultLogger">
+                    <dd><p>Set context data for the client</p></dd><dt>$<a href="CNIC/AbstractSocketConfig.html#property_socketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>#socketTimeout</a> &mdash; <em>Property in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>API socket timeout in seconds</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::setLogin</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Set account name to use</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::setPassword</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Set account password to use</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_setSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Set API Session ID to use</p></dd><dt><a href="CNIC/AbstractSocketConfig.html#method_setPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr>::setPersistent</a>() &mdash; <em>Method in class <a href="CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></em></dt>
+                    <dd><p>Add persistent parameter to request (request API session)</p></dd><dt><a href="CNIC/CNR/Client.html#method_setDefaultLogger">
 <abbr title="CNIC\CNR\Client">Client</abbr>::setDefaultLogger</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Client.html"><abbr title="CNIC\CNR\Client">Client</abbr></a></em></dt>
                     <dd><p>Set default CNR logger</p></dd><dt><a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>Provides session-based API communication methods.</p></dd><dt><a href="CNIC/CNR/SessionCapable.html#method_saveSession">
 <abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr>::saveSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionCapable.html"><abbr title="CNIC\CNR\SessionCapable">SessionCapable</abbr></a></em></dt>
                     <dd><p>Apply session data to a PHP session object</p></dd><dt><a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
                     <dd><p>CNR Session API Client</p></dd><dt><a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/CNR.html">CNIC\CNR</a></em></dt>
-                    <dd><p>CNR SocketConfig</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_session">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#session</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>API session id</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setPersistent">
+                    <dd><p>CNR SocketConfig</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_socketTimeout">
+<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#socketTimeout</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setPersistent">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setPersistent</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Add persistent parameter to request (request API session)</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setLogin">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setLogin</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd><p>Set account name to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setPassword">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setPassword</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set account password to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setRemoteAddress">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setRemoteAddress</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set Remote IP Address to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setSession">
+                    <dd><p>Set account password to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setSession">
 <abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set API Session ID to use</p></dd><dt><a href="CNIC/CNR/SocketConfig.html#method_setUser">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::setUser</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set subuser account name (for subuser data view)</p></dd><dt><a href="CNIC/IBS/Client.html#method_setDefaultLogger">
+                    <dd><p>Set API Session ID to use</p></dd><dt><a href="CNIC/IBS/Client.html#method_setDefaultLogger">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setDefaultLogger</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Set default IBS logger</p></dd><dt><a href="CNIC/IBS/Client.html#method_setSession">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setSession</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Set an API session id to be used for API communication</p></dd><dt><a href="CNIC/IBS/Client.html#method_setRoleCredentials">
 <abbr title="CNIC\IBS\Client">Client</abbr>::setRoleCredentials</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Set Role Credentials to be used for API communication
-Note: not supported.</p></dd><dt><a href="CNIC/IBS/Client.html#method_setUserView">
-<abbr title="CNIC\IBS\Client">Client</abbr>::setUserView</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
-                    <dd><p>Set a data view to a given subuser
 Note: not supported.</p></dd><dt><a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
-                    <dd><p>IBS API Client</p></dd><dt><a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
-                    <dd><p>IBS SocketConfig</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_setLogin">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::setLogin</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set account name to use</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_setPassword">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::setPassword</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set account password to use</p></dd><dt><a href="CNIC/IBS/SocketConfig.html#method_setRemoteAddress">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::setRemoteAddress</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>Set Remote IP Address to use</p></dd><dt><a href="CNIC/MONIKER/SessionClient.html"><abbr title="CNIC\MONIKER\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/MONIKER.html">CNIC\MONIKER</a></em></dt>
-                    <dd><p>Moniker API Client</p></dd>        </dl><h2 id="letterT">T</h2>
+                    <dd><p>IBS Session API Client</p></dd><dt><a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/IBS.html">CNIC\IBS</a></em></dt>
+                    <dd><p>IBS SocketConfig</p></dd><dt>$<a href="CNIC/IBS/SocketConfig.html#property_socketTimeout">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>#socketTimeout</a> &mdash; <em>Property in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/MONIKER/SessionClient.html"><abbr title="CNIC\MONIKER\SessionClient">SessionClient</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/MONIKER.html">CNIC\MONIKER</a></em></dt>
+                    <dd><p>Moniker Session API Client</p></dd><dt><a href="CNIC/MONIKER/SocketConfig.html"><abbr title="CNIC\MONIKER\SocketConfig">SocketConfig</abbr></a> &mdash; <em>Class in namespace <a href="CNIC/MONIKER.html">CNIC\MONIKER</a></em></dt>
+                    <dd><p>Moniker SocketConfig — same API platform as IBS; only the endpoints differ.</p></dd>        </dl><h2 id="letterT">T</h2>
         <dl id="indexT"><dt>$<a href="CNIC/AbstractClient.html#property_transport">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>#transport</a> &mdash; <em>Property in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>HTTP transport layer</p></dd><dt>$<a href="CNIC/CNR/ResponseTemplateManager.html#property_templates">
@@ -676,9 +708,7 @@ Note: not supported.</p></dd><dt><a href="CNIC/IBS/SessionClient.html"><abbr tit
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::useOTESystem</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
                     <dd><p>Set OT&amp;E System for API communication</p></dd><dt><a href="CNIC/AbstractClient.html#method_useLIVESystem">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr>::useLIVESystem</a>() &mdash; <em>Method in class <a href="CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></em></dt>
-                    <dd><p>Set LIVE System for API communication (this is the default setting)</p></dd><dt>$<a href="CNIC/CNR/SocketConfig.html#property_user">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>#user</a> &mdash; <em>Property in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd><p>subuser account name (subuser specific data view)</p></dd><dt><a href="CNIC/IBS/Client.html#method_useHighPerformanceConnectionSetup">
+                    <dd><p>Set LIVE System for API communication (this is the default setting)</p></dd><dt><a href="CNIC/IBS/Client.html#method_useHighPerformanceConnectionSetup">
 <abbr title="CNIC\IBS\Client">Client</abbr>::useHighPerformanceConnectionSetup</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Client.html"><abbr title="CNIC\IBS\Client">Client</abbr></a></em></dt>
                     <dd><p>Activate High Performance Setup
 Note: not supported.</p></dd>        </dl><h2 id="letter_">_</h2>
@@ -691,20 +721,12 @@ Note: not supported.</p></dd>        </dl><h2 id="letter_">_</h2>
                     <dd><p>Constructor
 e.g.</p></dd><dt><a href="CNIC/CNR/Response.html#method___construct">
 <abbr title="CNIC\CNR\Response">Response</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/CNR/SessionClient.html#method___construct">
-<abbr title="CNIC\CNR\SessionClient">SessionClient</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SessionClient.html"><abbr title="CNIC\CNR\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/CNR/SocketConfig.html#method___construct">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/ColumnInterface.html#method___construct">
 <abbr title="CNIC\ColumnInterface">ColumnInterface</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/IBS/Response.html#method___construct">
+                    <dd>Constructor</dd><dt><a href="CNIC/IBS/Column.html#method___construct">
+<abbr title="CNIC\IBS\Column">Column</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Column.html"><abbr title="CNIC\IBS\Column">Column</abbr></a></em></dt>
+                    <dd></dd><dt><a href="CNIC/IBS/Response.html#method___construct">
 <abbr title="CNIC\IBS\Response">Response</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/Response.html"><abbr title="CNIC\IBS\Response">Response</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/IBS/SessionClient.html#method___construct">
-<abbr title="CNIC\IBS\SessionClient">SessionClient</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SessionClient.html"><abbr title="CNIC\IBS\SessionClient">SessionClient</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/IBS/SocketConfig.html#method___construct">
-<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></em></dt>
-                    <dd>Constructor</dd><dt><a href="CNIC/MONIKER/SessionClient.html#method___construct">
-<abbr title="CNIC\MONIKER\SessionClient">SessionClient</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/MONIKER/SessionClient.html"><abbr title="CNIC\MONIKER\SessionClient">SessionClient</abbr></a></em></dt>
                     <dd>Constructor</dd><dt><a href="CNIC/RecordInterface.html#method___construct">
 <abbr title="CNIC\RecordInterface">RecordInterface</abbr>::__construct</a>() &mdash; <em>Method in class <a href="CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a></em></dt>
                     <dd><p>Constructor

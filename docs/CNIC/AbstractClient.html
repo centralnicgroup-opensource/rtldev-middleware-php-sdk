@@ -113,15 +113,6 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_settings">
-                                        protected                                        mixed[]
-                                                                                
-                                    </td>
-                <td>$settings</td>
-                <td class="last"><p>registrar api settings</p></td>
-                <td></td>
-            </tr>
-                    <tr>
                 <td class="type" id="property_socketURL">
                                         protected                                        string
                                                                                 
@@ -132,7 +123,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </tr>
                     <tr>
                 <td class="type" id="property_socketConfig">
-                                        protected                                        <a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+                                        protected                                        <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
                                                                                 
                                     </td>
                 <td>$socketConfig</td>
@@ -204,7 +195,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(string $path = &quot;&quot;)
+                    <a href="#method___construct">__construct</a>()
         
                                             <p>Constructor</p>                </div>
                 <div class="col-md-2"></div>
@@ -221,7 +212,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+                    <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_newSocketConfig">newSocketConfig</a>()
@@ -394,16 +385,6 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
                     <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_setRemoteIPAddress">setRemoteIPAddress</a>(string $value = &quot;&quot;)
-        
-                                            <p><p>Set a Remote IP Address to be used for API communication</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-                </div>
-                <div class="col-md-8">
                     <a href="#method_setCredentials">setCredentials</a>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
         
                                             <p><p>Set Credentials to be used for API communication</p></p>                </div>
@@ -417,16 +398,6 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
                     <a href="#method_setRoleCredentials">setRoleCredentials</a>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
         
                                             <p><p>Set Role Credentials to be used for API communication</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setUserView">setUserView</a>(string $uid = &quot;&quot;)
-        
-                                            <p><p>Set a data view to a given subuser</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -481,12 +452,12 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getSettings">getSettings</a>()
+                    <a href="#method_getLiveUrl">getLiveUrl</a>()
         
-                                            <p><p>Get registrar API settings</p></p>                </div>
+                                            <p><p>Get LIVE system URL</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -537,9 +508,9 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L86">at line 86</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L78">at line 78</a></div>
         <code>                    
-    <strong>__construct</strong>(string $path = &quot;&quot;)
+    <strong>__construct</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -551,16 +522,6 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
                             <p>Constructor</p>                        
         </div>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$path</td>
-                <td><p>Path to the configuration file</p></td>
-            </tr>
-            </table>
-
             
             
             
@@ -571,7 +532,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_request">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L111">at line 111</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L94">at line 94</a></div>
         <code>    abstract                <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>request</strong>(array $cmd = [])
         </code>
@@ -614,8 +575,8 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_newSocketConfig">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L117">at line 117</a></div>
-        <code>    abstract        protected        <a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L100">at line 100</a></div>
+        <code>    abstract        protected        <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
     <strong>newSocketConfig</strong>()
         </code>
     </h3>
@@ -633,7 +594,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></td>
+            <td><a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -647,7 +608,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setDefaultLogger">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L124">at line 124</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L107">at line 107</a></div>
         <code>    abstract                <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setDefaultLogger</strong>()
         </code>
@@ -680,7 +641,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setCustomLogger">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L131">at line 131</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L114">at line 114</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setCustomLogger</strong>(<a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
         </code>
@@ -723,7 +684,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_enableDebugMode">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L141">at line 141</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L124">at line 124</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>enableDebugMode</strong>()
         </code>
@@ -756,7 +717,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_disableDebugMode">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L151">at line 151</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L134">at line 134</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>disableDebugMode</strong>()
         </code>
@@ -789,7 +750,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPOSTData">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L145">at line 145</a></div>
         <code>                    string
     <strong>getPOSTData</strong>(array $cmd, bool $secured = false)
         </code>
@@ -837,7 +798,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getSession">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L170">at line 170</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L153">at line 153</a></div>
         <code>                    string|null
     <strong>getSession</strong>()
         </code>
@@ -870,7 +831,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getURL">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L179">at line 179</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
         <code>                    string
     <strong>getURL</strong>()
         </code>
@@ -903,7 +864,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setUserAgent">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L191">at line 191</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L174">at line 174</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setUserAgent</strong>(string $str, string $rv, array $modules = [])
         </code>
@@ -956,7 +917,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserAgent">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L201">at line 201</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L184">at line 184</a></div>
         <code>                    string
     <strong>getUserAgent</strong>()
         </code>
@@ -989,7 +950,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setProxy">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L214">at line 214</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L197">at line 197</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setProxy</strong>(string $proxy = &quot;&quot;)
         </code>
@@ -1032,7 +993,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getProxy">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L227">at line 227</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L210">at line 210</a></div>
         <code>                    string|null
     <strong>getProxy</strong>()
         </code>
@@ -1065,7 +1026,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setReferer">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L240">at line 240</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L223">at line 223</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setReferer</strong>(string $referer = &quot;&quot;)
         </code>
@@ -1108,7 +1069,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getReferer">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L253">at line 253</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L236">at line 236</a></div>
         <code>                    string|null
     <strong>getReferer</strong>()
         </code>
@@ -1141,7 +1102,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getVersion">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L264">at line 264</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L247">at line 247</a></div>
         <code>                    string
     <strong>getVersion</strong>()
         </code>
@@ -1174,7 +1135,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setURL">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L274">at line 274</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L257">at line 257</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setURL</strong>(string $value)
         </code>
@@ -1217,7 +1178,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setSession">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L285">at line 285</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L268">at line 268</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setSession</strong>(string $value = &quot;&quot;)
         </code>
@@ -1259,60 +1220,8 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_setRemoteIPAddress">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L297">at line 297</a></div>
-        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-    <strong>setRemoteIPAddress</strong>(string $value = &quot;&quot;)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set a Remote IP Address to be used for API communication</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>Remote IP Address (optional, for reset)</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_setCredentials">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L312">at line 312</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L280">at line 280</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setCredentials</strong>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
         </code>
@@ -1360,7 +1269,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setRoleCredentials">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L326">at line 326</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L294">at line 294</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setRoleCredentials</strong>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
         </code>
@@ -1412,51 +1321,8 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_setUserView">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L340">at line 340</a></div>
-        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-    <strong>setUserView</strong>(string $uid = &quot;&quot;)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set a data view to a given subuser</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$uid</td>
-                <td><p>subuser account name</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_useHighPerformanceConnectionSetup">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L350">at line 350</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L307">at line 307</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useHighPerformanceConnectionSetup</strong>()
         </code>
@@ -1489,7 +1355,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_IDNConvert">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L367">at line 367</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L324">at line 324</a></div>
         <code>                    array
     <strong>IDNConvert</strong>(array $domains)
         </code>
@@ -1532,7 +1398,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_autoIDNConvert">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L377">at line 377</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L336">at line 336</a></div>
         <code>            protected        array
     <strong>autoIDNConvert</strong>(array $cmd)
         </code>
@@ -1575,7 +1441,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_executeCurl">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L424">at line 424</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L383">at line 383</a></div>
         <code>            protected        array
     <strong>executeCurl</strong>(string $data, array $cfg, array $extraCurlOpts = [])
         </code>
@@ -1600,7 +1466,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
                     <tr>
                 <td>array</td>
                 <td>$cfg</td>
-                <td><p>connection config (must contain CONNECTION_URL)</p></td>
+                <td><p>connection config</p></td>
             </tr>
                     <tr>
                 <td>array</td>
@@ -1628,7 +1494,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_close">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L438">at line 438</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L397">at line 397</a></div>
         <code>                    void
     <strong>close</strong>()
         </code>
@@ -1660,10 +1526,10 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getSettings">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L447">at line 447</a></div>
-        <code>                    array
-    <strong>getSettings</strong>()
+                    <h3 id="method_getLiveUrl">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L405">at line 405</a></div>
+        <code>                    string
+    <strong>getLiveUrl</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -1672,7 +1538,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             
 
         <div class="method-description">
-                            <p><p>Get registrar API settings</p></p>                        
+                            <p><p>Get LIVE system URL</p></p>                        
         </div>
         <div class="tags">
             
@@ -1680,7 +1546,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>string</td>
             <td></td>
         </tr>
     </table>
@@ -1694,7 +1560,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_isOTE">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L455">at line 455</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L413">at line 413</a></div>
         <code>                    bool
     <strong>isOTE</strong>()
         </code>
@@ -1727,7 +1593,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_useOTESystem">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L464">at line 464</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L422">at line 422</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useOTESystem</strong>()
         </code>
@@ -1760,7 +1626,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_useLIVESystem">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L474">at line 474</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L432">at line 432</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useLIVESystem</strong>()
         </code>
@@ -1793,7 +1659,7 @@ logger, and the appropriate SocketConfig subtype.</p></p>        </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_setContext">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L485">at line 485</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L443">at line 443</a></div>
         <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setContext</strong>(array $context)
         </code>

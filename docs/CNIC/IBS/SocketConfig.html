@@ -85,8 +85,8 @@
     </div>
 
     
-    <p>final         class
-    <strong>SocketConfig</strong>        extends <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php">View source</a>)
+    <p>        class
+    <strong>SocketConfig</strong>        extends <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php">View source</a>)
 </p>
 
         
@@ -109,7 +109,8 @@
                                     </td>
                 <td>$login</td>
                 <td class="last"><p>account name</p></td>
-                <td></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_login">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
             </tr>
                     <tr>
                 <td class="type" id="property_pw">
@@ -118,45 +119,54 @@
                                     </td>
                 <td>$pw</td>
                 <td class="last"><p>account password</p></td>
-                <td></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_pw">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
             </tr>
                     <tr>
-                <td class="type" id="property_remoteaddr">
+                <td class="type" id="property_oteUrl">
                                         protected                                        string
                                                                                 
                                     </td>
-                <td>$remoteaddr</td>
-                <td class="last"><p>remote ip address (ip filter)</p></td>
+                <td>$oteUrl</td>
+                <td class="last"></td>
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_session">
+                <td class="type" id="property_liveUrl">
                                         protected                                        string
                                                                                 
                                     </td>
-                <td>$session</td>
-                <td class="last"><p>API session id</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#property_session">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_user">
-                                        protected                                        string
-                                                                                
-                                    </td>
-                <td>$user</td>
-                <td class="last"><p>subuser account name (subuser specific data view)</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#property_user">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_parameters">
-                                        protected                                        string[]
-                                                                                
-                                    </td>
-                <td>$parameters</td>
-                <td class="last"><p>list of http request parameters</p></td>
+                <td>$liveUrl</td>
+                <td class="last"></td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_socketTimeout">
+                                        protected                                        int
+                                                                                
+                                    </td>
+                <td>$socketTimeout</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_needsIDNConvert">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$needsIDNConvert</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_roleSeparator">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$roleSeparator</td>
+                <td class="last"><p>Separator character for role credentials</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_roleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
             </tr>
             </table>
 
@@ -166,13 +176,135 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(array $parameters)
+                    <a href="#method_setLogin">setLogin</a>(string $value)
         
-                                            <p>Constructor</p>                </div>
-                <div class="col-md-2"></div>
+                                            <p><p>Set account name to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLogin">getLogin</a>()
+        
+                                            <p><p>Get current login</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setPassword">setPassword</a>(string $value)
+        
+                                            <p><p>Set account password to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSession">getSession</a>()
+        
+                                            <p><p>Get API Session ID in use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setSession">setSession</a>(string $value = &quot;&quot;)
+        
+                                            <p><p>Set API Session ID to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setPersistent">setPersistent</a>(bool $value = false)
+        
+                                            <p><p>Add persistent parameter to request (request API session)</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPersistent">getPersistent</a>()
+        
+                                            <p><p>Get persistent parameter</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getOTEUrl">getOTEUrl</a>()
+        
+                                            <p><p>Get OT&amp;E endpoint URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLiveUrl">getLiveUrl</a>()
+        
+                                            <p><p>Get LIVE endpoint URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSocketTimeout">getSocketTimeout</a>()
+        
+                                            <p><p>Get socket timeout in seconds</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNeedsIDNConvert">getNeedsIDNConvert</a>()
+        
+                                            <p><p>Get whether IDN conversion is needed</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getNeedsIDNConvert">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRoleSeparator">getRoleSeparator</a>()
+        
+                                            <p><p>Get role separator character</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getRoleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -192,102 +324,8 @@
                     <a href="#method_getPOSTData">getPOSTData</a>(array $command = [], bool $secured = false)
         
                                             <p><p>Create POST data string out of connection data</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    $this
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setPersistent">setPersistent</a>(bool $value = false)
-        
-                                            <p><p>Add persistent parameter to request (request API session)</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#method_setPersistent">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getPersistent">getPersistent</a>()
-        
-                                            <p><p>Get persistent parameter returned</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#method_getPersistent">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getSession">getSession</a>()
-        
-                                            <p><p>Get API Session ID in use</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#method_getSession">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    $this
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setLogin">setLogin</a>(string $value)
-        
-                                            <p><p>Set account name to use</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getLogin">getLogin</a>()
-        
-                                            <p><p>Get current login (including role)</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    $this
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setPassword">setPassword</a>(string $value)
-        
-                                            <p><p>Set account password to use</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    $this
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setRemoteAddress">setRemoteAddress</a>(string $value)
-        
-                                            <p><p>Set Remote IP Address to use</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    $this
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setSession">setSession</a>(string $value)
-        
-                                            <p><p>Set API Session ID to use</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#method_setSession">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    $this
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setUser">setUser</a>(string $value)
-        
-                                            <p><p>Set subuser account name (for subuser data view)</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/SocketConfig.html#method_setUser">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></small></div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
             </div>
             </div>
 
@@ -296,10 +334,11 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L46">at line 46</a></div>
-        <code>                    
-    <strong>__construct</strong>(array $parameters)
+                    <h3 id="method_setLogin">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L61">at line 61</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setLogin</strong>(string $value)
         </code>
     </h3>
     <div class="details">    
@@ -308,20 +347,433 @@
             
 
         <div class="method-description">
-                            <p>Constructor</p>                        
+                            <p><p>Set account name to use</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>array</td>
-                <td>$parameters</td>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>account name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLogin">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L70">at line 70</a></div>
+        <code>                    string
+    <strong>getLogin</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get current login</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setPassword">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L80">at line 80</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setPassword</strong>(string $value)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set account password to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>account password</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSession">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L89">at line 89</a></div>
+        <code>                    string
+    <strong>getSession</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API Session ID in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSession">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L99">at line 99</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setSession</strong>(string $value = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set API Session ID to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>API Session ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setPersistent">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L108">at line 108</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setPersistent</strong>(bool $value = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add persistent parameter to request (request API session)</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$value</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPersistent">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L116">at line 116</a></div>
+        <code>                    bool
+    <strong>getPersistent</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get persistent parameter</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getOTEUrl">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L124">at line 124</a></div>
+        <code>                    string
+    <strong>getOTEUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get OT&amp;E endpoint URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLiveUrl">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L132">at line 132</a></div>
+        <code>                    string
+    <strong>getLiveUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get LIVE endpoint URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSocketTimeout">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L140">at line 140</a></div>
+        <code>                    int
+    <strong>getSocketTimeout</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get socket timeout in seconds</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNeedsIDNConvert">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getNeedsIDNConvert">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L148">at line 148</a></div>
+        <code>                    bool
+    <strong>getNeedsIDNConvert</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get whether IDN conversion is needed</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRoleSeparator">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getRoleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L156">at line 156</a></div>
+        <code>                    string
+    <strong>getRoleSeparator</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get role separator character</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
             
@@ -331,7 +783,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPOSTDataParams">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L58">at line 58</a></div>
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L42">at line 42</a></div>
         <code>            protected        array
     <strong>getPOSTDataParams</strong>(array $command, bool $secured)
         </code>
@@ -379,7 +831,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getPOSTData">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L79">at line 79</a></div>
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L175">at line 175</a></div>
         <code>                    string
     <strong>getPOSTData</strong>(array $command = [], bool $secured = false)
         </code>
@@ -415,368 +868,6 @@
         <tr>
             <td>string</td>
             <td><p>POST data string</p></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setPersistent">
-        <div class="location">in <a href="../../CNIC/CNR/SocketConfig.html#method_setPersistent">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/SocketConfig.php#L128">at line 128</a></div>
-        <code>                    $this
-    <strong>setPersistent</strong>(bool $value = false)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Add persistent parameter to request (request API session)</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>bool</td>
-                <td>$value</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>$this</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getPersistent">
-        <div class="location">in <a href="../../CNIC/CNR/SocketConfig.html#method_getPersistent">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/SocketConfig.php#L138">at line 138</a></div>
-        <code>                    bool
-    <strong>getPersistent</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get persistent parameter returned</p></p>                        
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getSession">
-        <div class="location">in <a href="../../CNIC/CNR/SocketConfig.html#method_getSession">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/SocketConfig.php#L146">at line 146</a></div>
-        <code>                    string
-    <strong>getSession</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get API Session ID in use</p></p>                        
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>string</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setLogin">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L91">at line 91</a></div>
-        <code>                    $this
-    <strong>setLogin</strong>(string $value)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set account name to use</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>account name</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>$this</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getLogin">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L101">at line 101</a></div>
-        <code>                    string
-    <strong>getLogin</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get current login (including role)</p></p>                        
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>string</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setPassword">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L112">at line 112</a></div>
-        <code>                    $this
-    <strong>setPassword</strong>(string $value)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set account password to use</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>account password</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>$this</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setRemoteAddress">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L124">at line 124</a></div>
-        <code>                    $this
-    <strong>setRemoteAddress</strong>(string $value)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set Remote IP Address to use</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>remote ip address</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>$this</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setSession">
-        <div class="location">in <a href="../../CNIC/CNR/SocketConfig.html#method_setSession">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/SocketConfig.php#L200">at line 200</a></div>
-        <code>                    $this
-    <strong>setSession</strong>(string $value)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set API Session ID to use</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>API Session ID</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>$this</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_setUser">
-        <div class="location">in <a href="../../CNIC/CNR/SocketConfig.html#method_setUser">
-<abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/SocketConfig.php#L213">at line 213</a></div>
-        <code>                    $this
-    <strong>setUser</strong>(string $value)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set subuser account name (for subuser data view)</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>subuser account name</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>$this</td>
-            <td></td>
         </tr>
     </table>
 
