@@ -4,6 +4,7 @@ name: Dependabot auto-merge & tests
     types:
       - opened
       - synchronize
+      - reopened
 
 permissions:
   contents: write
@@ -23,7 +24,7 @@ jobs:
             relevant:
               - 'src/**'
               - 'tests/**'
-              - 'phpunit.xml'
+              - '.github/phpunit.xml'
               - 'composer.json'
               - 'composer.lock'
 
