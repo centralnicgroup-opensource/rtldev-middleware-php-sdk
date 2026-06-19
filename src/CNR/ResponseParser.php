@@ -20,11 +20,11 @@ final class ResponseParser
     /**
      * Method to parse plain API response into js object
      * @param string $raw API plain response
-     * @return array<string,mixed>
+     * @return array<string, string|array<string, list<string>>>
      */
     public static function parse(string $raw): array
     {
-        /** @var array<string,mixed> $hash */
+        /** @var array<string, string|array<string, list<string>>> $hash */
         $hash = [];
         /** @var array<string, list<string>> $properties */
         $properties = [];
