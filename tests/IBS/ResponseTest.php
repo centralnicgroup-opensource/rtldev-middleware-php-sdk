@@ -100,7 +100,7 @@ final class ResponseTest extends TestCase
         $raw = "this is not valid at all";
         $result = RP::parse($raw);
         $this->assertSame('FAILURE', $result['status']);
-        $this->assertStringContainsString('Invalid API response', $result['message']);
+        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
     // --- ResponseTemplateManager tests ---
@@ -246,8 +246,21 @@ final class ResponseTest extends TestCase
         // nested objects and arrays preserved
         $this->assertIsArray($r->getHash()["contacts"]);
         $this->assertIsArray($r->getHash()["nameserver"]);
-        $this->assertEquals("Middle", $r->getHash()["contacts"]["registrant"]["firstname"]);
+        $this->assertEquals([
+            "registrant" => ["firstname" => "Middle", "lastname" => "Ware"],
+            "admin"      => ["firstname" => "Kai",    "lastname" => "Schwarz"],
+        ], $r->getHash()["contacts"]);
         $this->assertEquals("ns1.ispapi.net", $r->getHash()["nameserver"][0]);
+
+        // One column per top-level JSON key: 10 total
+        $this->assertCount(10, $r->getColumns());
+        $colKeys = $r->getColumnKeys();
+        $this->assertContains("domain", $colKeys);
+        $this->assertContains("nameserver", $colKeys);
+        $this->assertContains("contacts", $colKeys);
+
+        // Two records: nameserver is the longest column (length 2)
+        $this->assertCount(2, $r->getRecords());
     }
 
     public function testNoCurlTemplate(): void
