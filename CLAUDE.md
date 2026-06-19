@@ -106,6 +106,15 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
 ## Git Conventions
 
 - **Commit messages:** Angular/Conventional Commits with **mandatory scope**: `<type>(<scope>): <summary>` — e.g. `fix(psalm): resolve static analysis warnings`, `feat(ibs): add response translation`. Never append a `Co-Authored-By:` trailer.
+- **Commit type selection:** `fix` and `feat` are reserved for changes to library source code in `src/` — they trigger a release. For everything else use a non-releasing type: `ci` for CI workflows and devcontainer, `build` for build tooling or scripts, `chore` for housekeeping, `docs` for documentation, `test` for test-only changes, `refactor` for internal restructuring without behaviour change.
+- **Breaking changes:** When a `src/` change breaks the public API, add a `BREAKING CHANGE: <short summary>` line to the commit message body (blank line after the subject). This triggers a **major** version bump via semantic-release. Example:
+
+  ```
+  feat(client): remove deprecated setProxy() method
+
+  BREAKING CHANGE: setProxy() has been removed; use HttpTransport::withProxy() instead.
+  ```
+
 - **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821/short-description`
 - **Pull requests:** always include the Jira issue link in the PR description. After opening the PR, add the PR URL as a comment on the Jira issue.
 - **Default branch:** `master`
