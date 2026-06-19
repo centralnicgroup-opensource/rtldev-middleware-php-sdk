@@ -75,7 +75,7 @@ final class LoggerTest extends TestCase
     public function testLogWithNullErrorOmitsHttpErrorLine(): void
     {
         ob_start();
-        self::$logger->log("apikey=mykey&password=***", self::$successResponse, null);
+        self::$logger->log("apikey=mykey&password=***", self::$successResponse);
         $output = (string)ob_get_clean();
         $this->assertStringNotContainsString("HTTP communication failed", $output);
     }
