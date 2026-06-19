@@ -103,6 +103,17 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
 - **Automated apply:** `.github/workflows/rector.yml` runs `composer rector:fix` on the first of each month and opens a PR (`chore/rector-modernization`) with commit message `chore(rector): apply automated modernization fixes`. Can also be triggered manually via `workflow_dispatch`.
 - **Manual apply:** run `composer rector:fix` locally and open a PR with the same commit prefix.
 
+## PHP Version Policy
+
+The SDK targets **PHP 8.3** as both its minimum and maximum supported version. This is not arbitrary — the SDK is deployed inside WHMCS environments and must align with what WHMCS itself supports:
+
+- **WHMCS 9 (GA)** — minimum supported PHP: 8.3
+- **WHMCS 8.13 (LTS)** — maximum supported PHP: 8.3
+
+PHP 8.3 is therefore the correct ceiling: it is simultaneously the floor of the current GA release and the ceiling of the current LTS release.
+
+Do **not** bump `composer.json`, `rector.php`, or CI matrix entries beyond PHP 8.3 until WHMCS raises its own minimum supported PHP version. Track [RSRMID-2826](https://centralnic.atlassian.net/browse/RSRMID-2826) for the unblocking condition.
+
 ## Git Conventions
 
 - **Commit messages:** Angular/Conventional Commits with **mandatory scope**: `<type>(<scope>): <summary>` — e.g. `fix(psalm): resolve static analysis warnings`, `feat(ibs): add response translation`. Never append a `Co-Authored-By:` trailer.
