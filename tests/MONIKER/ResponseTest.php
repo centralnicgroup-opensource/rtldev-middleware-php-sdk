@@ -100,7 +100,7 @@ final class ResponseTest extends TestCase
         $raw = "this is not valid at all";
         $result = RP::parse($raw);
         $this->assertSame('FAILURE', $result['status']);
-        $this->assertStringContainsString('Invalid API response', $result['message']);
+        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
     // --- ResponseTemplateManager tests ---
@@ -246,7 +246,10 @@ final class ResponseTest extends TestCase
         // nested objects and arrays preserved
         $this->assertIsArray($r->getHash()["contacts"]);
         $this->assertIsArray($r->getHash()["nameserver"]);
-        $this->assertEquals("Middle", $r->getHash()["contacts"]["registrant"]["firstname"]);
+        $this->assertEquals([
+            "registrant" => ["firstname" => "Middle", "lastname" => "Ware"],
+            "admin"      => ["firstname" => "Kai",    "lastname" => "Schwarz"],
+        ], $r->getHash()["contacts"]);
         $this->assertEquals("ns1.ispapi.net", $r->getHash()["nameserver"][0]);
     }
 
