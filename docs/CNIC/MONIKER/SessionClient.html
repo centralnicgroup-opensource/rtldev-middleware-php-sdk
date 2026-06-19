@@ -95,7 +95,7 @@
         
 
             <div class="description">
-            <p><p>Moniker API Client</p></p>                    </div>
+            <p><p>Moniker Session API Client</p></p>                    </div>
             
         
     
@@ -113,16 +113,6 @@
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
             </tr>
                     <tr>
-                <td class="type" id="property_settings">
-                                        protected                                        mixed[]
-                                                                                
-                                    </td>
-                <td>$settings</td>
-                <td class="last"><p>registrar api settings</p></td>
-                <td><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#property_settings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></td>
-            </tr>
-                    <tr>
                 <td class="type" id="property_socketURL">
                                         protected                                        string
                                                                                 
@@ -134,7 +124,7 @@
             </tr>
                     <tr>
                 <td class="type" id="property_socketConfig">
-                                        protected                                        <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+                                        protected                                        <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
                                                                                 
                                     </td>
                 <td>$socketConfig</td>
@@ -216,7 +206,8 @@
                     <a href="#method___construct">__construct</a>()
         
                                             <p>Constructor</p>                </div>
-                <div class="col-md-2"></div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method___construct">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -231,14 +222,14 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_newSocketConfig">newSocketConfig</a>()
         
-                                            <p><p>Instantiate IBS SocketConfig</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_newSocketConfig">
-<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
+                                            <p><p>Instantiate MONIKER SocketConfig</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/MONIKER/Client.html#method_newSocketConfig">
+<abbr title="CNIC\MONIKER\Client">Client</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -422,17 +413,6 @@ Note: not supported.</p></p>                </div>
                     <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_setRemoteIPAddress">setRemoteIPAddress</a>(string $value = &quot;&quot;)
-        
-                                            <p><p>Set a Remote IP Address to be used for API communication</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_setRemoteIPAddress">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-                </div>
-                <div class="col-md-8">
                     <a href="#method_setCredentials">setCredentials</a>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
         
                                             <p><p>Set Credentials to be used for API communication</p></p>                </div>
@@ -449,18 +429,6 @@ Note: not supported.</p></p>                </div>
                                             <p><p>Set Role Credentials to be used for API communication
 Note: not supported.</p></p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_setRoleCredentials">
-<abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_setUserView">setUserView</a>(string $uid = &quot;&quot;)
-        
-                                            <p><p>Set a data view to a given subuser
-Note: not supported.</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/Client.html#method_setUserView">
 <abbr title="CNIC\IBS\Client">Client</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -521,13 +489,13 @@ Note: not supported.</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getSettings">getSettings</a>()
+                    <a href="#method_getLiveUrl">getLiveUrl</a>()
         
-                                            <p><p>Get registrar API settings</p></p>                </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getSettings">
+                                            <p><p>Get LIVE system URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractClient.html#method_getLiveUrl">
 <abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -582,7 +550,8 @@ Note: not supported.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/MONIKER/SessionClient.php#L24">at line 24</a></div>
+        <div class="location">in <a href="../../CNIC/AbstractClient.html#method___construct">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L78">at line 78</a></div>
         <code>                    
     <strong>__construct</strong>()
         </code>
@@ -598,15 +567,6 @@ Note: not supported.</p></p>                </div>
         <div class="tags">
             
             
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
-                <td></td>
-            </tr>
-            </table>
-
             
             
                     </div>
@@ -616,7 +576,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_request">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_request">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L101">at line 101</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L100">at line 100</a></div>
         <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
     <strong>request</strong>(array $cmd = [], string $path = &quot;&quot;)
         </code>
@@ -664,9 +624,9 @@ Note: not supported.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_newSocketConfig">
-        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_newSocketConfig">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L29">at line 29</a></div>
-        <code>            protected        <a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a>
+        <div class="location">in <a href="../../CNIC/MONIKER/Client.html#method_newSocketConfig">
+<abbr title="CNIC\MONIKER\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/MONIKER/Client.php#L24">at line 24</a></div>
+        <code>            protected        <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
     <strong>newSocketConfig</strong>()
         </code>
     </h3>
@@ -676,7 +636,7 @@ Note: not supported.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Instantiate IBS SocketConfig</p></p>                        
+                            <p><p>Instantiate MONIKER SocketConfig</p></p>                        
         </div>
         <div class="tags">
             
@@ -684,7 +644,7 @@ Note: not supported.</p></p>                </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../CNIC/CNR/SocketConfig.html"><abbr title="CNIC\CNR\SocketConfig">SocketConfig</abbr></a></td>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -699,7 +659,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_setDefaultLogger">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setDefaultLogger">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L39">at line 39</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L38">at line 38</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setDefaultLogger</strong>()
         </code>
@@ -733,7 +693,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_setCustomLogger">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setCustomLogger">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L131">at line 131</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L114">at line 114</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setCustomLogger</strong>(<a href="../../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
         </code>
@@ -777,7 +737,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_enableDebugMode">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_enableDebugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L141">at line 141</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L124">at line 124</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>enableDebugMode</strong>()
         </code>
@@ -811,7 +771,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_disableDebugMode">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_disableDebugMode">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L151">at line 151</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L134">at line 134</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>disableDebugMode</strong>()
         </code>
@@ -845,7 +805,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_getPOSTData">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getPOSTData">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L145">at line 145</a></div>
         <code>                    string
     <strong>getPOSTData</strong>(array $cmd, bool $secured = false)
         </code>
@@ -894,7 +854,7 @@ Note: not supported.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_getSession">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_getSession">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L52">at line 52</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L51">at line 51</a></div>
         <code>                    string|null
     <strong>getSession</strong>()
         </code>
@@ -938,7 +898,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_getURL">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L179">at line 179</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
         <code>                    string
     <strong>getURL</strong>()
         </code>
@@ -972,7 +932,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setUserAgent">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setUserAgent">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L191">at line 191</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L174">at line 174</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setUserAgent</strong>(string $str, string $rv, array $modules = [])
         </code>
@@ -1026,7 +986,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_getUserAgent">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getUserAgent">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L201">at line 201</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L184">at line 184</a></div>
         <code>                    string
     <strong>getUserAgent</strong>()
         </code>
@@ -1060,7 +1020,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setProxy">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setProxy">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L214">at line 214</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L197">at line 197</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setProxy</strong>(string $proxy = &quot;&quot;)
         </code>
@@ -1104,7 +1064,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_getProxy">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getProxy">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L227">at line 227</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L210">at line 210</a></div>
         <code>                    string|null
     <strong>getProxy</strong>()
         </code>
@@ -1138,7 +1098,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setReferer">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setReferer">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L240">at line 240</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L223">at line 223</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setReferer</strong>(string $referer = &quot;&quot;)
         </code>
@@ -1182,7 +1142,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_getReferer">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getReferer">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L253">at line 253</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L236">at line 236</a></div>
         <code>                    string|null
     <strong>getReferer</strong>()
         </code>
@@ -1216,7 +1176,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_getVersion">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getVersion">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L264">at line 264</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L247">at line 247</a></div>
         <code>                    string
     <strong>getVersion</strong>()
         </code>
@@ -1250,7 +1210,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setURL">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setURL">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L274">at line 274</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L257">at line 257</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setURL</strong>(string $value)
         </code>
@@ -1294,7 +1254,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setSession">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setSession">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L64">at line 64</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L63">at line 63</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setSession</strong>(string $value = &quot;&quot;)
         </code>
@@ -1345,62 +1305,9 @@ Note: not supported.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_setRemoteIPAddress">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setRemoteIPAddress">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L297">at line 297</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-    <strong>setRemoteIPAddress</strong>(string $value = &quot;&quot;)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set a Remote IP Address to be used for API communication</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td><p>Remote IP Address (optional, for reset)</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_setCredentials">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setCredentials">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L312">at line 312</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L280">at line 280</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setCredentials</strong>(string $uid = &quot;&quot;, string $pw = &quot;&quot;)
         </code>
@@ -1449,7 +1356,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setRoleCredentials">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setRoleCredentials">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L76">at line 76</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L75">at line 75</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setRoleCredentials</strong>(string $uid = &quot;&quot;, string $role = &quot;&quot;, string $pw = &quot;&quot;)
         </code>
@@ -1511,63 +1418,9 @@ Note: not supported.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_setUserView">
-        <div class="location">in <a href="../../CNIC/IBS/Client.html#method_setUserView">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L122">at line 122</a></div>
-        <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
-    <strong>setUserView</strong>(string $uid = &quot;&quot;)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Set a data view to a given subuser
-Note: not supported.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$uid</td>
-                <td><p>subuser account name</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_useHighPerformanceConnectionSetup">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_useHighPerformanceConnectionSetup">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L134">at line 134</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L121">at line 121</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useHighPerformanceConnectionSetup</strong>()
         </code>
@@ -1611,7 +1464,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_IDNConvert">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_IDNConvert">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L367">at line 367</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L324">at line 324</a></div>
         <code>                    array
     <strong>IDNConvert</strong>(array $domains)
         </code>
@@ -1655,7 +1508,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_autoIDNConvert">
         <div class="location">in <a href="../../CNIC/IBS/Client.html#method_autoIDNConvert">
-<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L89">at line 89</a></div>
+<abbr title="CNIC\IBS\Client">Client</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Client.php#L88">at line 88</a></div>
         <code>            protected        array
     <strong>autoIDNConvert</strong>(array $cmd)
         </code>
@@ -1699,7 +1552,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_executeCurl">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_executeCurl">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L424">at line 424</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L383">at line 383</a></div>
         <code>            protected        array
     <strong>executeCurl</strong>(string $data, array $cfg, array $extraCurlOpts = [])
         </code>
@@ -1724,7 +1577,7 @@ Note: not supported.</p></p>
                     <tr>
                 <td>array</td>
                 <td>$cfg</td>
-                <td><p>connection config (must contain CONNECTION_URL)</p></td>
+                <td><p>connection config</p></td>
             </tr>
                     <tr>
                 <td>array</td>
@@ -1753,7 +1606,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_close">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_close">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L438">at line 438</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L397">at line 397</a></div>
         <code>                    void
     <strong>close</strong>()
         </code>
@@ -1785,11 +1638,11 @@ Note: not supported.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getSettings">
-        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getSettings">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L447">at line 447</a></div>
-        <code>                    array
-    <strong>getSettings</strong>()
+                    <h3 id="method_getLiveUrl">
+        <div class="location">in <a href="../../CNIC/AbstractClient.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L405">at line 405</a></div>
+        <code>                    string
+    <strong>getLiveUrl</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -1798,7 +1651,7 @@ Note: not supported.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Get registrar API settings</p></p>                        
+                            <p><p>Get LIVE system URL</p></p>                        
         </div>
         <div class="tags">
             
@@ -1806,7 +1659,7 @@ Note: not supported.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>string</td>
             <td></td>
         </tr>
     </table>
@@ -1821,7 +1674,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_isOTE">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_isOTE">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L455">at line 455</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L413">at line 413</a></div>
         <code>                    bool
     <strong>isOTE</strong>()
         </code>
@@ -1855,7 +1708,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_useOTESystem">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_useOTESystem">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L464">at line 464</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L422">at line 422</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useOTESystem</strong>()
         </code>
@@ -1889,7 +1742,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_useLIVESystem">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_useLIVESystem">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L474">at line 474</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L432">at line 432</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>useLIVESystem</strong>()
         </code>
@@ -1923,7 +1776,7 @@ Note: not supported.</p></p>
                     <div class="method-item">
                     <h3 id="method_setContext">
         <div class="location">in <a href="../../CNIC/AbstractClient.html#method_setContext">
-<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L485">at line 485</a></div>
+<abbr title="CNIC\AbstractClient">AbstractClient</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L443">at line 443</a></div>
         <code>                    <a href="../../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
     <strong>setContext</strong>(array $context)
         </code>
