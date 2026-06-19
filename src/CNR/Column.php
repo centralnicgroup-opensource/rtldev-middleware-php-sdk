@@ -29,6 +29,7 @@ class Column implements ColumnInterface
      *
      * @param string $key Column Name
      * @param string[] $data Column Data
+     * @psalm-suppress MoreSpecificImplementedParamType CNR columns are always string-valued
      */
     public function __construct(
         private readonly string $key,
@@ -61,7 +62,7 @@ class Column implements ColumnInterface
      * @param integer $idx data index
      */
     #[\Override]
-    public function getDataByIndex(int $idx): mixed
+    public function getDataByIndex(int $idx): string|null
     {
         return $this->hasDataIndex($idx) ? $this->data[$idx] : null;
     }

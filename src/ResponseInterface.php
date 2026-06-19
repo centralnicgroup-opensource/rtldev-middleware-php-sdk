@@ -97,7 +97,7 @@ interface ResponseInterface
     /**
      * Add a column to the column list
      * @param string $key column name
-     * @param array<string> $data array of column data
+     * @param array<array-key, mixed> $data array of column data
      */
     public function addColumn(string $key, array $data): ResponseInterface;
 

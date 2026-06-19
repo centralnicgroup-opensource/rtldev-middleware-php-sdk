@@ -21,7 +21,7 @@ interface ColumnInterface
      * Constructor
      *
      * @param string $key Column Name
-     * @param array<string> $data Column Data
+     * @param array<array-key, mixed> $data Column Data
      */
     public function __construct(string $key, array $data);
 
@@ -33,7 +33,7 @@ interface ColumnInterface
     /**
      * Get column data
      *
-     * @return array<string>
+     * @return array<array-key, mixed>
      */
     public function getData(): array;
 
