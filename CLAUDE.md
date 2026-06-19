@@ -18,7 +18,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
   - `CNR\SessionClient extends CNR\Client` and uses the `SessionCapable` trait for login/logout
   - `IBS\SessionClient extends IBS\Client` and `MONIKER\SessionClient extends MONIKER\Client` — these are thin wrappers with no session-based login/logout
   - `CNR\SocketConfig`, `IBS\SocketConfig`, `MONIKER\SocketConfig` all extend `AbstractSocketConfig`
-- **IBS shares CNR data models:** `IBS\Response` extends `CNR\Response`, `IBS\Column` extends `CNR\Column`, `IBS\Record` extends `CNR\Record` — IBS adds only the parsing differences on top
+- **IBS shares CNR data models:** `IBS\Response` extends `CNR\Response`, `IBS\Record` extends `CNR\Record` — IBS adds only the parsing differences on top. `IBS\Column` is a **standalone** implementation (does not extend `CNR\Column`) because IBS JSON responses carry mixed-typed values (strings, nested objects, lists) that CNR columns do not.
 - **Config-driven:** Each sub-namespace has a `config.json` with API URLs, parameter mappings, and feature flags
 - **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` (all in `CNIC\`) define contracts. All concrete classes formally declare `implements`:
   - `CNR\Column`, `IBS\Column` → `ColumnInterface`
@@ -35,8 +35,8 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 ### PHP Style
 
 - **PSR-12** enforced via PHP CodeSniffer (config: `.github/linters/phpcs.xml`)
-- **PHPStan Level 8** for static analysis (config: `.github/linters/phpstan.neon`)
-- **Psalm Level 6** for additional static analysis (config: `.github/linters/psalm.xml`) — annotate public API symbols with `@psalm-api`
+- **PHPStan Level 9** (strictest) for static analysis (config: `.github/linters/phpstan.neon`)
+- **Psalm Level 1** (strictest) for additional static analysis (config: `.github/linters/psalm.xml`) — annotate public API symbols with `@psalm-api`
 - Always include `declare(strict_types=1);` in new or modified files
 - Use typed properties and return type declarations on all new code
 - Use `@var` PHPDoc with generic array types: `array<string, mixed>`, `string[]`, `array<string>`
@@ -105,7 +105,9 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
 
 ## Git Conventions
 
-- **Commit messages:** Angular/Conventional Commits with **mandatory scope**: `<type>(<scope>): <summary>` — e.g. `fix(psalm): resolve static analysis warnings`, `feat(ibs): add response translation`
+- **Commit messages:** Angular/Conventional Commits with **mandatory scope**: `<type>(<scope>): <summary>` — e.g. `fix(psalm): resolve static analysis warnings`, `feat(ibs): add response translation`. Never append a `Co-Authored-By:` trailer.
+- **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821/short-description`
+- **Pull requests:** always include the Jira issue link in the PR description. After opening the PR, add the PR URL as a comment on the Jira issue.
 - **Default branch:** `master`
 - **Versioning:** Semantic versioning managed by CI release workflow
 
@@ -120,8 +122,8 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
 | `src/IBS/config.json`          | IBS API endpoints and settings                          |
 | `src/MONIKER/config.json`      | Moniker API endpoints and settings                      |
 | `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config                               |
-| `.github/linters/phpstan.neon` | PHPStan level 8 config                                  |
-| `.github/linters/psalm.xml`    | Psalm level 6 config                                    |
+| `.github/linters/phpstan.neon` | PHPStan level 9 (strictest) config                      |
+| `.github/linters/psalm.xml`    | Psalm level 1 (strictest) config                        |
 | `.github/phpunit.xml`          | PHPUnit configuration                                   |
 | `env.example.sh`               | Template for required env variables (copy to `env.sh`)  |
 
@@ -140,6 +142,7 @@ Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `COD
 - **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
 - **Workflow transitions:** To Do (`11`), In Progress (`21`), In Review (`41`), QA (`61`), Ready for Deployment (`51`), Done (`31`), Stand-by (`71`), Cancelled (`91`)
 - **Known account IDs:** Kai Schwarz `61358848ee2fd0006aac7b4f`, Asif Nawaz `62a84362bf7afc006f3b15e5`
+- **Issue descriptions:** always use ADF (Atlassian Document Format, JSON) — never markdown. Markdown renders literal `\n` characters instead of line breaks.
 
 ## Claude Code Allowlist (`.claude/settings.json`)
 
@@ -158,3 +161,4 @@ When adding new entries to the allowlist, confirm the command is strictly read-o
 - Create custom exception classes — use `\Exception` directly
 - Use mocking frameworks (Mockery, Prophecy) — use ResponseTemplateManager
 - Add `@author` tags to docblocks
+- Add `Co-Authored-By:` trailers to commit messages
