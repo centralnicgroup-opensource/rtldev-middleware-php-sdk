@@ -44,7 +44,7 @@ class Client extends AbstractClient
 
     /**
      * Perform API request using the given command
-     * @param array<string, mixed> $cmd API command to request (optional for session login)
+     * @param array<string, scalar|scalar[]|null> $cmd API command to request (optional for session login)
      */
     #[\Override]
     public function request(array $cmd = []): Response
@@ -89,7 +89,7 @@ class Client extends AbstractClient
 
     /**
      * Request all pages/entries for the given query command
-     * @param array<string,mixed> $cmd API list command to use
+     * @param array<string, scalar|scalar[]|null> $cmd API list command to use
      * @return Response[]
      */
     public function requestAllResponsePages(array $cmd): array

@@ -35,23 +35,27 @@ final class CommandFormatter
     /**
      * Flatten API command's nested arrays for easier handling
      *
-     * @param array<string, mixed> $cmd API Command
+     * @param array<string,scalar|scalar[]|null> $cmd API Command
      * @param bool $toupper flag to convert keys to uppercase or leave as is
      * @return array<string,string>
      */
     public static function flattenCommand(array $cmd, bool $toupper = true): array
     {
+        /** @var array<string,string> $newcmd */
         $newcmd = [];
         foreach ($cmd as $key => $val) {
-            if (isset($val)) {
-                $newKey = $toupper ? \strtoupper($key) : $key;
-                if (is_array($val)) {
-                    foreach ($val as $idx => $v) {
-                        $newcmd[$newKey . (string)$idx] = preg_replace("/\r|\n/", "", (string)$v) ?? (string)$v;
-                    }
-                } else {
-                    $newcmd[$newKey] = preg_replace("/\r|\n/", "", (string)$val) ?? (string)$val;
-                }
+            if (!isset($val)) {
+                continue;
+            }
+            $newKey = $toupper ? \strtoupper($key) : $key;
+            if (!is_array($val)) {
+                $newv = (string)$val;
+                $newcmd[$newKey] = preg_replace("/\r|\n/", "", $newv) ?? $newv;
+                continue;
+            }
+            foreach ($val as $idx => $v) {
+                $newv = (string)$v;
+                $newcmd[$newKey . (string)$idx] = preg_replace("/\r|\n/", "", $newv) ?? $newv;
             }
         }
 
@@ -78,46 +82,41 @@ final class CommandFormatter
     /**
      * Assign the priority of each key in the command array based on the key pattern
      *
-     * @return array<string,mixed>
+     * @return array{properties: array<string, int>, contact: array{types: array<string, int>, fields: array<string, int>}}
      */
     private static function getPropertiesContactFieldsWithPriority(): array
     {
-        $keyProperties = [
-            "COMMAND" => 1,
-            "/^(DOMAIN|DNSZONE|NAMESERVER|ZONE|SUBUSER)[0-9]*$/i" => 2,
-            "/^(PERIOD|ACTION|AUTH|TARGET|X-FEE-COMMAND|RENEWALMODE|LIMIT|WIDE)$/i" => 3,
-            "/^(NS_LIST|TRANSFERLOCK|DNSSEC0|X-FEE-AMOUNT|LOG|TYPE|OBJECT|INACTIVE|OBJECTID|OBJECTCLASS|ORDER|ORDERBY|CURRENCYFROM|CURRENCYTO)$/i" => 4,
-        ];
-
-        $contactTypes = [
-            "OWNERCONTACT|REGISTRANT" => 5,
-            "ADMINCONTACT|TECHNICAL" => 6,
-            "TECHCONTACT|BILLING" => 7,
-            "BILLINGCONTACT|ADMIN" => 8,
-        ];
-        $contactFields = [
-            "FIRSTNAME" => 1,
-            "MIDDLENAME" => 2,
-            "LASTNAME" => 3,
-            "ORGANIZATION" => 4,
-            "STREET" => 5,
-            "ZIP" => 6,
-            "CITY" => 7,
-            "STATE" => 8,
-            "COUNTRY" => 9,
-            "PHONE|PHONENUMBER" => 10,
-            "EMAIL" => 11,
-            "CONTACT" => 12,
-            "LEGALFORM" => 13,
-            "IDENTIFICACION" => 14,
-            "TIPO-IDENTIFICACION" => 15,
-        ];
-
         return [
-            "properties" => $keyProperties,
+            "properties" => [
+                "COMMAND" => 1,
+                "/^(DOMAIN|DNSZONE|NAMESERVER|ZONE|SUBUSER)[0-9]*$/i" => 2,
+                "/^(PERIOD|ACTION|AUTH|TARGET|X-FEE-COMMAND|RENEWALMODE|LIMIT|WIDE)$/i" => 3,
+                "/^(NS_LIST|TRANSFERLOCK|DNSSEC0|X-FEE-AMOUNT|LOG|TYPE|OBJECT|INACTIVE|OBJECTID|OBJECTCLASS|ORDER|ORDERBY|CURRENCYFROM|CURRENCYTO)$/i" => 4,
+            ],
             "contact" => [
-                "types" => $contactTypes,
-                "fields" => $contactFields
+                "types" => [
+                    "OWNERCONTACT|REGISTRANT" => 5,
+                    "ADMINCONTACT|TECHNICAL" => 6,
+                    "TECHCONTACT|BILLING" => 7,
+                    "BILLINGCONTACT|ADMIN" => 8,
+                ],
+                "fields" => [
+                    "FIRSTNAME" => 1,
+                    "MIDDLENAME" => 2,
+                    "LASTNAME" => 3,
+                    "ORGANIZATION" => 4,
+                    "STREET" => 5,
+                    "ZIP" => 6,
+                    "CITY" => 7,
+                    "STATE" => 8,
+                    "COUNTRY" => 9,
+                    "PHONE|PHONENUMBER" => 10,
+                    "EMAIL" => 11,
+                    "CONTACT" => 12,
+                    "LEGALFORM" => 13,
+                    "IDENTIFICACION" => 14,
+                    "TIPO-IDENTIFICACION" => 15,
+                ]
             ]
         ];
     }

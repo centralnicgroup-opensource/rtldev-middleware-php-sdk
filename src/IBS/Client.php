@@ -94,7 +94,7 @@ class Client extends AbstractClient
     /**
      * Perform API request using the given command
      *
-     * @param array<string, mixed> $cmd API command to request
+     * @param array<string, scalar|scalar[]|null> $cmd API command to request
      * @param string $path Path to the API endpoint
      */
     #[\Override]
