@@ -1,3 +1,18 @@
+# [15.5.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.4.0...v15.5.0) (2026-06-19)
+
+
+### Bug Fixes
+
+* **ibs:** preserve nested JSON values using array_is_list detection ([5d9aaf4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5d9aaf427388cc3ced1bd55c00e1017e93da10fc))
+* **phpstan:** resolve level 9 type errors in src ([06ee950](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/06ee9503efaafc7c138f324e9958f55f3405944c))
+* **psalm:** narrow array key types in Response hierarchy and ResponseInterface ([a4b93f5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a4b93f5bf31261b3bb9807e8cefcda5655eb1ff7))
+* **psalm:** resolve initial static analysis warnings ([68aef17](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/68aef178759fd78c418e7a9ec2eb627b0634b1d7))
+
+
+### Features
+
+* **ibs:** standalone Column implementation and widened interfaces ([8937cb3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8937cb376dc572c8405478a62ef76687931bb865))
+
 # [15.4.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.3.0...v15.4.0) (2026-06-16)
 
 
