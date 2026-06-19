@@ -89,7 +89,7 @@ abstract class AbstractClient
     /**
      * Perform API request using the given command.
      * Each client implements its own command serialisation and response type.
-     * @param array<string, mixed> $cmd API command
+     * @param array<string, scalar|scalar[]|null> $cmd API command
      */
     abstract public function request(array $cmd = []): ResponseInterface;
 
@@ -209,8 +209,8 @@ abstract class AbstractClient
      */
     public function getProxy(): ?string
     {
-        if (isset($this->curlopts[CURLOPT_PROXY])) {
-            return (string)$this->curlopts[CURLOPT_PROXY];
+        if (array_key_exists(CURLOPT_PROXY, $this->curlopts) && is_string($this->curlopts[CURLOPT_PROXY])) {
+            return $this->curlopts[CURLOPT_PROXY];
         }
         return null;
     }
@@ -235,8 +235,8 @@ abstract class AbstractClient
      */
     public function getReferer(): ?string
     {
-        if (isset($this->curlopts[CURLOPT_REFERER])) {
-            return (string)$this->curlopts[CURLOPT_REFERER];
+        if (array_key_exists(CURLOPT_REFERER, $this->curlopts) && is_string($this->curlopts[CURLOPT_REFERER])) {
+            return $this->curlopts[CURLOPT_REFERER];
         }
         return null;
     }
@@ -319,11 +319,13 @@ abstract class AbstractClient
     /**
      * Convert domain names to idn + punycode if necessary
      * @param array<string> $domains list of domain names (or tlds)
-     * @return array<mixed>
+     * @return array<int, array{idn: string|false, punycode: string|false}>
      */
     public function IDNConvert(array $domains): array
     {
-        return ConverterFactory::convert($domains);
+        /** @var array<int, array{idn: string|false, punycode: string|false}> $result */
+        $result = ConverterFactory::convert($domains);
+        return $result;
     }
 
     /**
@@ -365,7 +367,7 @@ abstract class AbstractClient
         if ($toconvert !== []) {
             $results = $this->IDNConvert($toconvert);
             foreach ($results as $idx => $row) {
-                $cmd[$idxs[$idx]] = $row["punycode"];
+                $cmd[$idxs[$idx]] = (string)$row["punycode"];
             }
         }
         return $cmd;

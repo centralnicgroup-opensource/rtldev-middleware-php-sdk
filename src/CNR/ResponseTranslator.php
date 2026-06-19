@@ -19,20 +19,27 @@ use CNIC\CNR\ResponseTemplateManager as RTM;
 final class ResponseTranslator
 {
     /**
-     * hidden class var of API description regex mappings for translation
-     * @var array<mixed>
+     * plain-string description keys for translation; keys are preg_quote'd before matching
+     * @var array<string, string>
      */
     private static array $descriptionRegexMap = [
+        // HX - just for future reference, can be cleaned up if we have something similar in place for CNR (used in test automation currently)
+        "Authorization failed; Operation forbidden by ACL" => "Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List",
         // CNR
         "Missing required attribute; premium domain name. please provide required parameters" => "Confirm the Premium pricing by providing the necessary premium domain price data.",
-        "SkipPregQuote" => [
-            // HX - just for future reference
-            //"Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1",
-            //"Missing required attribute; CLASS(?:=| \[MUST BE )PREMIUM_([\w\+]+)[\s\]]" => "Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_$1.",
-            //"Syntax error in Parameter DOMAIN \((.+)\)" => "The Domain Name $1 is invalid.",
-            // CNR
-            "Authorization failed.*(?:\[.*(authori[sz]ation (information|code|password)|authinfo).*\]|wrong auth code)" => "The provided Authorization Code (EPP Code) is incorrect. Please verify the correct Authorization Code with the current registrar and try again."
-        ]
+    ];
+
+    /**
+     * raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)
+     * @var array<string, string>
+     */
+    private static array $descriptionRawPatternMap = [
+        // HX - just for future reference
+        //"Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1",
+        //"Missing required attribute; CLASS(?:=| \[MUST BE )PREMIUM_([\w\+]+)[\s\]]" => "Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_$1.",
+        //"Syntax error in Parameter DOMAIN \((.+)\)" => "The Domain Name $1 is invalid.",
+        // CNR
+        "Authorization failed.*(?:\[.*(authori[sz]ation (information|code|password)|authinfo).*\]|wrong auth code)" => "The provided Authorization Code (EPP Code) is incorrect. Please verify the correct Authorization Code with the current registrar and try again.",
     ];
 
     /**
@@ -75,32 +82,20 @@ final class ResponseTranslator
             $newraw = RTM::$templates["invalid"];
         }
 
-        // Iterate through the description-to-regex mapping
         // generic API response description rewrite
         $data = false;
         foreach (self::$descriptionRegexMap as $regex => $val) {
-            // Check if $regex should be treated as multiple patterns
-            if ($regex === "SkipPregQuote") {
-                // Iterate through each temporary pattern in $val
-                foreach ($val as $tmpRegex => $tmpVal) {
-                    // Attempt to find a match using the temporary pattern
-                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal, $cmd);
-
-                    // If a match is found, exit the inner loop
-                    if ($data) {
-                        break;
-                    }
-                }
-            } else {
-                // Escape the pattern and attempt to find a match
-                // for the given pattern ($regex)
-                $escapedRegex = preg_quote((string)$regex, "/");
-                $data = self::findMatch($escapedRegex, $newraw, $val, $cmd);
-            }
-
-            // If a match is found, exit the outer loop
+            $data = self::findMatch(preg_quote($regex, "/"), $newraw, $val, $cmd);
             if ($data) {
                 break;
+            }
+        }
+        if (!$data) {
+            foreach (self::$descriptionRawPatternMap as $pattern => $val) {
+                $data = self::findMatch($pattern, $newraw, $val, $cmd);
+                if ($data) {
+                    break;
+                }
             }
         }
 

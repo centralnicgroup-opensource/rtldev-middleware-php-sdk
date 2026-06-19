@@ -69,9 +69,16 @@ trait SessionCapable
      */
     public function reuseSession(array &$session): static
     {
-        if (isset($session["socketcfg"]["login"], $session["socketcfg"]["session"])) {
-            $this->setCredentials((string)$session["socketcfg"]["login"]);
-            $this->setSession((string)$session["socketcfg"]["session"]);
+        if (
+            isset($session["socketcfg"]) &&
+            is_array($session["socketcfg"]) &&
+            isset($session["socketcfg"]["login"]) &&
+            is_string($session["socketcfg"]["login"]) &&
+            isset($session["socketcfg"]["session"]) &&
+            is_string($session["socketcfg"]["session"])
+        ) {
+            $this->setCredentials($session["socketcfg"]["login"]);
+            $this->setSession($session["socketcfg"]["session"]);
         }
         return $this;
     }

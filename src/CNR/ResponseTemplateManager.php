@@ -95,7 +95,7 @@ final class ResponseTemplateManager
 
     /**
      * Check if given API response hash matches a given template by code and description
-     * @param array<string> $tpl api response hash
+     * @param array<string, mixed> $tpl api response hash
      * @param string $id template id
      */
     public static function isTemplateMatchHash(array $tpl, string $id): bool

@@ -19,10 +19,16 @@ use CNIC\IBS\ResponseTemplateManager as RTM;
 final class ResponseTranslator
 {
     /**
-     * hidden class var of API description regex mappings for translation
-     * @var array<mixed>
+     * plain-string description keys for translation; keys are preg_quote'd before matching
+     * @var array<string, string>
      */
     private static array $descriptionRegexMap = [];
+
+    /**
+     * raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)
+     * @var array<string, string>
+     */
+    private static array $descriptionRawPatternMap = [];
 
     /**
      * translate a raw api response
@@ -66,36 +72,24 @@ final class ResponseTranslator
             $newraw = RTM::$templates["invalid"];
         }
 
-        if (self::$descriptionRegexMap === []) {
+        if (self::$descriptionRegexMap === [] && self::$descriptionRawPatternMap === []) {
             return self::replacePlaceholders($newraw, $ph);
         }
 
-        // Iterate through the description-to-regex mapping
         // generic API response description rewrite
         $data = false;
         foreach (self::$descriptionRegexMap as $regex => $val) {
-            // Check if $regex should be treated as multiple patterns
-            if ($regex === "SkipPregQuote") {
-                // Iterate through each temporary pattern in $val
-                foreach ($val as $tmpRegex => $tmpVal) {
-                    // Attempt to find a match using the temporary pattern
-                    $data = self::findMatch($tmpRegex, $newraw, $tmpVal);
-
-                    // If a match is found, exit the inner loop
-                    if ($data) {
-                        break;
-                    }
-                }
-            } else {
-                // Escape the pattern and attempt to find a match
-                // for the given pattern ($regex)
-                $escapedRegex = preg_quote($regex, "/");
-                $data = self::findMatch($escapedRegex, $newraw, $val);
-            }
-
-            // If a match is found, exit the outer loop
+            $data = self::findMatch(preg_quote($regex, "/"), $newraw, $val);
             if ($data) {
                 break;
+            }
+        }
+        if (!$data) {
+            foreach (self::$descriptionRawPatternMap as $pattern => $val) {
+                $data = self::findMatch($pattern, $newraw, $val);
+                if ($data) {
+                    break;
+                }
             }
         }
 
