@@ -11,17 +11,17 @@ use PHPUnit\Framework\TestCase;
 final class ColumnTest extends TestCase
 {
     // Domain info fixture — mirrors ResponseTest::testJsonDomainInfoResponse
-    private const NAMESERVERS = ["ns1.ispapi.net", "ns2.ispapi.net"];
-    private const CONTACTS = [
+    private const array NAMESERVERS = ["ns1.ispapi.net", "ns2.ispapi.net"];
+    private const array CONTACTS = [
         ["firstname" => "Middle", "lastname" => "Ware"],
         ["firstname" => "Kai",    "lastname" => "Schwarz"],
     ];
-    private const FULL_CONTACTS = [
+    private const array FULL_CONTACTS = [
         "registrant" => ["firstname" => "Middle", "lastname" => "Ware"],
         "admin"      => ["firstname" => "Kai",    "lastname" => "Schwarz"],
     ];
 
-    private static function buildDomainInfoResponse(): R
+    private function buildDomainInfoResponse(): R
     {
         $cmd  = ["ResponseFormat" => "JSON"];
         $data = [
@@ -98,7 +98,7 @@ final class ColumnTest extends TestCase
 
     public function testNameserverColumnFromResponse(): void
     {
-        $col = self::buildDomainInfoResponse()->getColumn("nameserver");
+        $col = $this->buildDomainInfoResponse()->getColumn("nameserver");
         $this->assertNotNull($col);
         $this->assertSame(self::NAMESERVERS, $col->getData());
         $this->assertSame("ns1.ispapi.net", $col->getDataByIndex(0));
@@ -108,7 +108,7 @@ final class ColumnTest extends TestCase
 
     public function testContactsColumnFromResponse(): void
     {
-        $col = self::buildDomainInfoResponse()->getColumn("contacts");
+        $col = $this->buildDomainInfoResponse()->getColumn("contacts");
         $this->assertNotNull($col);
         // associative object → stored as one column entry preserving registrant/admin keys
         $this->assertCount(1, $col->getData());

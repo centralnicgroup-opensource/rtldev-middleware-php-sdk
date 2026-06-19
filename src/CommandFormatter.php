@@ -55,7 +55,7 @@ final class CommandFormatter
             }
             foreach ($val as $idx => $v) {
                 $newv = (string)$v;
-                $newcmd[$newKey . (string)$idx] = preg_replace("/\r|\n/", "", $newv) ?? $newv;
+                $newcmd[$newKey . $idx] = preg_replace("/\r|\n/", "", $newv) ?? $newv;
             }
         }
 

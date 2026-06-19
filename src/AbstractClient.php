@@ -33,7 +33,7 @@ abstract class AbstractClient
     /**
      * API connection url
      */
-    protected string $socketURL;
+    protected string $socketURL = "";
 
     /**
      * Object covering API connection data
@@ -43,12 +43,12 @@ abstract class AbstractClient
     /**
      * activity flag for debug mode
      */
-    protected bool $debugMode;
+    protected bool $debugMode = false;
 
     /**
      * user agent
      */
-    protected string $ua = '';
+    protected string $ua = "";
 
     /**
      * additional curl options to use
@@ -77,9 +77,6 @@ abstract class AbstractClient
      */
     public function __construct()
     {
-        $this->socketURL = "";
-        $this->debugMode = false;
-        $this->ua = "";
         $this->transport = new HttpTransport();
         $this->socketConfig = $this->newSocketConfig();
         $this->useLIVESystem();

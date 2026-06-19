@@ -48,7 +48,7 @@ final class HttpTransport
             CURLOPT_HTTPHEADER      => [
                 "Expect:",
                 "Content-Type: application/x-www-form-urlencoded", //UTF-8 implied
-                "Content-Length: " . (string)strlen($data),
+                "Content-Length: " . strlen($data),
                 "Connection: keep-alive"
             ]
         ] + $options);

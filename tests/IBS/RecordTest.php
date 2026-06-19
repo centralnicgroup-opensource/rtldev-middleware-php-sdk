@@ -12,7 +12,7 @@ final class RecordTest extends TestCase
 {
     // Mirrors record 0 built by IBS\Response from the domain info fixture.
     // contacts is the full associative object — preserved as one column entry.
-    private const DOMAIN_INFO_RECORD = [
+    private const array DOMAIN_INFO_RECORD = [
         "transactid"       => "8986680508b740347a73e339b5c3bd67",
         "status"           => "SUCCESS",
         "domain"           => "ibstest.com",
@@ -28,7 +28,7 @@ final class RecordTest extends TestCase
         "transferauthinfo" => "qCg+ic'G1m",
     ];
 
-    private static function buildDomainInfoResponse(): R
+    private function buildDomainInfoResponse(): R
     {
         $cmd  = ["ResponseFormat" => "JSON"];
         $data = [
@@ -83,7 +83,7 @@ final class RecordTest extends TestCase
 
     public function testRecord0FromDomainInfoResponse(): void
     {
-        $rec = self::buildDomainInfoResponse()->getRecord(0);
+        $rec = $this->buildDomainInfoResponse()->getRecord(0);
         $this->assertNotNull($rec);
         // all scalar fields present at index 0
         $this->assertSame("ibstest.com", $rec->getDataByKey("domain"));
@@ -97,7 +97,7 @@ final class RecordTest extends TestCase
 
     public function testRecord1FromDomainInfoResponse(): void
     {
-        $rec = self::buildDomainInfoResponse()->getRecord(1);
+        $rec = $this->buildDomainInfoResponse()->getRecord(1);
         $this->assertNotNull($rec);
         // only nameserver[1] — contacts has no second entry, scalar columns have no second row
         $this->assertCount(1, $rec->getData());

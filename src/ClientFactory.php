@@ -6,6 +6,7 @@ namespace CNIC;
 
 use CNIC\CNR\SessionClient;
 use CNIC\IBS\SessionClient as IBSSessionClient;
+use CNIC\LoggerInterface;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
 use CNIC\Registrar;
 
@@ -32,7 +33,7 @@ class ClientFactory
             Registrar::MONIKER              => new MONIKERSessionClient(),
             null                            => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
         };
-        if ($logger !== null) {
+        if ($logger instanceof LoggerInterface) {
             $cl->setCustomLogger($logger);
         }
 
