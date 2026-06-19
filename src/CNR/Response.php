@@ -12,6 +12,7 @@ namespace CNIC\CNR;
 use CNIC\CNR\Column;
 use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
+use CNIC\ColumnInterface;
 use CNIC\CommandFormatter;
 use CNIC\ResponseInterface;
 
@@ -36,7 +37,7 @@ class Response implements ResponseInterface
 
     /**
      * hash representation of plain API response
-     * @var array<string,mixed>
+     * @var array<string, mixed>
      */
     protected array $hash;
 
@@ -54,7 +55,7 @@ class Response implements ResponseInterface
 
     /**
      * Container of Column Instances
-     * @var Column[]
+     * @var ColumnInterface[]
      */
     protected array $columns;
 
@@ -103,13 +104,14 @@ class Response implements ResponseInterface
         $this->recordIndex = 0;
         $this->records = [];
 
-        if (array_key_exists("PROPERTY", $this->hash)) {
-            $colKeys = array_map("strval", array_keys($this->hash["PROPERTY"]));
+        $properties = $this->hash["PROPERTY"] ?? null;
+        if (is_array($properties)) {
+            $colKeys = array_map("strval", array_keys($properties));
             $count = 0;
             foreach ($colKeys as $k) {
-                $this->addColumn($k, $this->hash["PROPERTY"][$k]);
+                $this->addColumn($k, $properties[$k]);
                 $col = $this->getColumn($k);
-                if (!is_null($col)) {
+                if ($col instanceof Column) {
                     $count2 = $col->length;
                     if ($count2 > $count) {
                         $count = $count2;
@@ -158,7 +160,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function getCode(): int
     {
-        return intval($this->hash["CODE"], 10);
+        return intval($this->getHashString("CODE"), 10);
     }
 
     /**
@@ -167,7 +169,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function getDescription(): string
     {
-        return (string)$this->hash["DESCRIPTION"];
+        return $this->getHashString("DESCRIPTION");
     }
 
     /**
@@ -186,7 +188,7 @@ class Response implements ResponseInterface
     public function getQueuetime(): float
     {
         if (array_key_exists("QUEUETIME", $this->hash)) {
-            return floatval($this->hash["QUEUETIME"]);
+            return floatval($this->getHashString("QUEUETIME"));
         }
         return 0.00;
     }
@@ -208,7 +210,7 @@ class Response implements ResponseInterface
     public function getRuntime(): float
     {
         if (array_key_exists("RUNTIME", $this->hash)) {
-            return floatval($this->hash["RUNTIME"]);
+            return floatval($this->getHashString("RUNTIME"));
         }
         return 0.00;
     }
@@ -220,7 +222,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function isError(): bool
     {
-        return substr((string)$this->hash["CODE"], 0, 1) === "5";
+        return substr($this->getHashString("CODE"), 0, 1) === "5";
     }
 
     /**
@@ -230,7 +232,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function isSuccess(): bool
     {
-        return substr((string)$this->hash["CODE"], 0, 1) === "2";
+        return substr($this->getHashString("CODE"), 0, 1) === "2";
     }
 
     /**
@@ -240,7 +242,7 @@ class Response implements ResponseInterface
     #[\Override]
     public function isTmpError(): bool
     {
-        return substr((string)$this->hash["CODE"], 0, 1) === "4";
+        return substr($this->getHashString("CODE"), 0, 1) === "4";
     }
 
     /**
@@ -257,6 +259,7 @@ class Response implements ResponseInterface
      * @param string $key column name
      * @param string[] $data array of column data
      * @return $this
+     * @psalm-suppress MoreSpecificImplementedParamType CNR columns are always string-valued
      */
     #[\Override]
     public function addColumn(string $key, array $data): static
@@ -284,7 +287,7 @@ class Response implements ResponseInterface
      * @param string $key column name
      */
     #[\Override]
-    public function getColumn(string $key): ?Column
+    public function getColumn(string $key): ?ColumnInterface
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
     }
@@ -319,7 +322,7 @@ class Response implements ResponseInterface
 
     /**
      * Get List of Columns
-     * @return Column[]
+     * @return ColumnInterface[]
      */
     #[\Override]
     public function getColumns(): array
@@ -408,7 +411,7 @@ class Response implements ResponseInterface
 
     /**
      * Get Response as List Hash including useful meta data for tables
-     * @return array<mixed>
+     * @return array{LIST: list<array<string, mixed>>, meta: array{columns: string[], pg: array<string, int|null>}}
      */
     #[\Override]
     public function getListHash(): array
@@ -664,5 +667,15 @@ class Response implements ResponseInterface
     private function hasPreviousRecord(): bool
     {
         return ($this->recordIndex > 0 && $this->hasCurrentRecord());
+    }
+
+    /**
+     * Get a string value from the hash by key, returning a default if not found or not a string
+     */
+    private function getHashString(string $key, string $default = ""): string
+    {
+        return array_key_exists($key, $this->hash) && is_string($this->hash[$key])
+            ? $this->hash[$key]
+            : $default;
     }
 }

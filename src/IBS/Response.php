@@ -9,10 +9,11 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Column;
 use CNIC\CNR\Record;
 use CNIC\CNR\Response as CNRResponse;
+use CNIC\ColumnInterface;
 use CNIC\CommandFormatter;
+use CNIC\IBS\Column as IBSColumn;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\ResponseInterface;
@@ -52,7 +53,8 @@ class Response extends CNRResponse implements ResponseInterface
 
         $this->context = $context;
         $this->raw = RT::translate($raw, $cmd, $ph);
-        $this->hash = RP::parse($this->raw, $cmd);
+        $parsedHash = RP::parse($this->raw, $cmd);
+        $this->hash = $parsedHash;
         $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
         $this->command = $cmd;
         $this->columnkeys = [];
@@ -63,10 +65,10 @@ class Response extends CNRResponse implements ResponseInterface
         $colKeys = array_map("strval", array_keys($this->hash));
         $count = 0;
         foreach ($colKeys as $k) {
-            $this->addColumn($k, [ $this->hash[$k] ]);
+            $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
             $col = $this->getColumn($k);
-            if (!is_null($col)) {
-                $count2 = $col->length;
+            if ($col instanceof ColumnInterface) {
+                $count2 = count($col->getData());
                 if ($count2 > $count) {
                     $count = $count2;
                 }
@@ -76,9 +78,11 @@ class Response extends CNRResponse implements ResponseInterface
             $d = [];
             foreach ($colKeys as $k) {
                 $col = $this->getColumn($k);
-                if ($col instanceof Column) {
+                if ($col instanceof ColumnInterface) {
+                    /** @psalm-suppress MixedAssignment getDataByIndex returns mixed by design — IBS columns hold arbitrary JSON values */
                     $v = $col->getDataByIndex($i);
                     if ($v !== null) {
+                        /** @psalm-suppress MixedAssignment */
                         $d[$k] = $v;
                     }
                 }
@@ -94,7 +98,7 @@ class Response extends CNRResponse implements ResponseInterface
     public function getCode(): int
     {
         foreach (["code", "product_0_code"] as $key) {
-            if (isset($this->hash[$key])) {
+            if (isset($this->hash[$key]) && is_numeric($this->hash[$key])) {
                 return intval($this->hash[$key]);
             }
         }
@@ -106,7 +110,7 @@ class Response extends CNRResponse implements ResponseInterface
      */
     public function getStatus(): string
     {
-        return (string)$this->hash["status"];
+        return $this->getHashString("status");
     }
 
     /**
@@ -115,7 +119,9 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function getDescription(): string
     {
-        return (string)($this->hash["message"] ?? $this->hash["product_0_message"] ?? "Command completed successfully");
+        return $this->getHashString("message")
+            ?: $this->getHashString("product_0_message")
+            ?: "Command completed successfully";
     }
 
     /**
@@ -200,13 +206,13 @@ class Response extends CNRResponse implements ResponseInterface
     /**
      * Add a column to the column list
      * @param string $key column name
-     * @param string[] $data array of column data
+     * @param array<array-key, mixed> $data array of column data
      * @return $this
      */
     #[\Override]
     public function addColumn(string $key, array $data): static
     {
-        $col = new Column($key, $data);
+        $col = new IBSColumn($key, $data);
         $this->columns[] = $col;
         $this->columnkeys[] = $key;
         return $this;
@@ -229,7 +235,7 @@ class Response extends CNRResponse implements ResponseInterface
      * @param string $key column name
      */
     #[\Override]
-    public function getColumn(string $key): ?Column
+    public function getColumn(string $key): ?ColumnInterface
     {
         return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
     }
@@ -243,7 +249,7 @@ class Response extends CNRResponse implements ResponseInterface
     public function getColumnIndex(string $colkey, int $index): mixed
     {
         $col = $this->getColumn($colkey);
-        return $col instanceof Column ? $col->getDataByIndex($index) : null;
+        return $col instanceof ColumnInterface ? $col->getDataByIndex($index) : null;
     }
 
     /**
@@ -264,7 +270,7 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Get List of Columns
-     * @return Column[]
+     * @return ColumnInterface[]
      */
     #[\Override]
     public function getColumns(): array
@@ -329,7 +335,7 @@ class Response extends CNRResponse implements ResponseInterface
         if (is_null($last)) {
             foreach ($this->columnkeys as $k) {
                 if ((bool)preg_match("/^(.+)?count|total(_.+)?$/", $k)) {
-                    $last = intval($this->hash[$k], 10) - 1;
+                    $last = (is_numeric($this->hash[$k]) ? intval($this->hash[$k], 10) : 0) - 1;
                     return $last;
                 }
             }
@@ -558,5 +564,15 @@ class Response extends CNRResponse implements ResponseInterface
     private function hasPreviousRecord(): bool
     {
         return ($this->recordIndex > 0 && $this->hasCurrentRecord());
+    }
+
+    /**
+     * Get a string value from the hash by key, returning a default if not found or not a string
+     */
+    private function getHashString(string $key, string $default = ""): string
+    {
+        return array_key_exists($key, $this->hash) && is_string($this->hash[$key])
+            ? $this->hash[$key]
+            : $default;
     }
 }
