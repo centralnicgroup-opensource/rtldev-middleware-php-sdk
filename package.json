@@ -11,7 +11,7 @@
   "engines": {
     "node": ">=24.10.0"
   },
-  "homepage": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk",
+  "homepage": "https://centralnicgroup-opensource.github.io/rtldev-middleware-php-sdk/",
   "repository": "github:centralnicgroup-opensource/rtldev-middleware-php-sdk.git",
   "bugs": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/issues",
   "maintainers": [
@@ -48,6 +48,7 @@
   ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",

@@ -23,12 +23,18 @@
       }
     ],
     [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "composer run-script docs && composer run-script generate-uml",
+        "successCmd": "bash .github/scripts/publish-docs.sh"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
           "HISTORY.md",
           "@(package?(-lock)|composer).json",
-          "docs",
           "src/AbstractClient.php"
         ]
       }

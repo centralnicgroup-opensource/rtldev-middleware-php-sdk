@@ -17,6 +17,10 @@ package-lock.json
 # (used for setting secrets for local testing)
 env.sh
 
+# generated API documentation — published to the gh-pages branch on release,
+# regenerated locally via `composer docs` (served with `composer docs:serve`)
+docs/
+
 # uml diagram related
 plantuml.jar
 uml.puml
