@@ -11,6 +11,11 @@ permissions:
   pull-requests: write
 
 jobs:
+  # Delegates to the shared php-sdk-lint workflow, which runs these jobs:
+  #   composer-audit (composer audit --no-dev — dependency CVE gating),
+  #   trufflehog, actionlint, hadolint, shellcheck, phpcs, phpstan, psalm.
+  # See: centralnicgroup-opensource/rtldev-middleware-shareable-workflows
+  #      .github/workflows/php-sdk-lint.yml
   lint:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-lint.yml@main
     secrets: inherit

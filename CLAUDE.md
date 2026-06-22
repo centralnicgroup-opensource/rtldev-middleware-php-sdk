@@ -96,6 +96,8 @@ composer rector:fix    # Rector apply (write modernized code)
 composer audit         # Check dependencies for known CVEs (Composer 2.4+)
 ```
 
+> **CI coverage:** `composer audit` is a pre-flight convenience command, not a `composer.json` script. Dependency CVE gating is already enforced on every PR by the shared `php-sdk-lint.yml` workflow (its `composer-audit` job runs `composer audit --no-dev`), which `.github/workflows/lint.yml` delegates to. There is no separate audit step to wire into this repo.
+
 ## Codebase Modernization (Rector)
 
 Rector is configured in `.github/linters/rector.php` targeting PHP 8.3 with `CODE_QUALITY`, `DEAD_CODE`, and `PHP_83` rulesets.
