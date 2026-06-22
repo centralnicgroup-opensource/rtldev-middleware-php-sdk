@@ -169,6 +169,7 @@ Do **not** bump `composer.json`, `rector.php`, or CI matrix entries beyond PHP 8
   - `10187` = CentralNic Reseller (default for this SDK)
 - **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
 - **Workflow transitions:** To Do (`11`), In Progress (`21`), In Review (`41`), QA (`61`), Ready for Deployment (`51`), Done (`31`), Stand-by (`71`), Cancelled (`91`)
+- **Closing an issue (mandatory time tracking):** an issue will not stay in **Done** without a worklog — Jira automation stamps a `missing-time-spent` label on issues with no time logged and auto-reopens them. Correct sequence: (1) add a worklog (`timeSpent`); (2) remove the `missing-time-spent` label; (3) transition to Done (`31`). When the time amount isn't obvious, ask rather than guessing.
 - **Known account IDs:** Kai Schwarz `61358848ee2fd0006aac7b4f`, Asif Nawaz `62a84362bf7afc006f3b15e5`
 - **Issue descriptions:** always use ADF (Atlassian Document Format, JSON) — never markdown. Markdown renders literal `\n` characters instead of line breaks.
 
