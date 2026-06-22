@@ -18,6 +18,12 @@ use CNIC\IBS\ResponseTemplateManager as RTM;
  */
 final class ResponseTranslator
 {
+    // NOTE: IBS has no brand-specific message rewrites yet, so both maps below are
+    // intentionally empty. While they stay empty, translate() returns via the early
+    // exit in the "$descriptionRegexMap === [] && $descriptionRawPatternMap === []"
+    // branch and findMatch() is never reached — it is kept for structural parity with
+    // CNR\ResponseTranslator and becomes live as soon as an entry is added here.
+
     /**
      * plain-string description keys for translation; keys are preg_quote'd before matching
      * @var array<string, string>
