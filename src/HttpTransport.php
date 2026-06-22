@@ -43,6 +43,8 @@ final class HttpTransport
             CURLOPT_POST            => 1,
             CURLOPT_HEADER          => 0,
             CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_SSL_VERIFYPEER  => true, // explicit (cURL default) — verify the peer's certificate
+            CURLOPT_SSL_VERIFYHOST  => 2,    // explicit (cURL default) — certificate host must match
             CURLOPT_POSTFIELDS      => $data,
             CURLOPT_USERAGENT       => $userAgent,
             CURLOPT_HTTPHEADER      => [
