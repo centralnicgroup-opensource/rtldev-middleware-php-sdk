@@ -1,33 +1,72 @@
 version: 2
+
+# NOTE: there is intentionally no "npm" ecosystem here.
+# Node dependencies are refreshed by .github/workflows/daily-node-dependency-refresh.yml
+# (full `npm update` incl. transitive deps) to avoid the duplicate-PR / false-positive
+# noise a Dependabot npm entry would reintroduce. Do not add an npm ecosystem.
+#
+# Cadence is weekly across the board: `schedule` controls *version* updates only —
+# security updates are raised independently of this schedule, so weekly loses no CVE
+# responsiveness while collapsing routine bumps into one predictable batch.
+
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: "devcontainers"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      devcontainers:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     directory: "/.devcontainer"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      docker:
+        patterns:
+          - "*"
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      composer-production:
+        dependency-type: "production"
+        patterns:
+          - "*"
+      composer-development:
+        dependency-type: "development"
+        patterns:
+          - "*"
