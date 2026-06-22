@@ -49,7 +49,7 @@
       "installComposer": true,
       "extensions": "xdebug"
     },
-    "ghcr.io/devcontainers/features/node:1": {
+    "ghcr.io/devcontainers/features/node:2": {
       "version": "lts"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
