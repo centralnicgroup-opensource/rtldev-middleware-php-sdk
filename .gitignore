@@ -24,6 +24,8 @@ docs/
 # (plantuml.jar now lives under tools/, covered below)
 uml.puml
 tools/
+# guard against a stray plantuml.jar being re-added at the repo root
+/plantuml.jar
 
 # Claude Code — local user settings (personal overrides, MCP permissions)
 .claude/settings.local.json
