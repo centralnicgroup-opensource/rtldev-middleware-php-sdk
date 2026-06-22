@@ -77,7 +77,7 @@
     "rector": "rector process --config .github/linters/rector.php --dry-run",
     "rector:fix": "rector process --config .github/linters/rector.php",
     "docs:serve": "php -S 0.0.0.0:8000 -t docs",
-    "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test ! -e plantuml.jar && wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar; tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ >> ./docs/uml.puml; java -jar plantuml.jar ./docs/uml.puml -o uml_diagram"
+    "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test -f tools/plantuml.jar || (mkdir -p tools && wget -q https://github.com/plantuml/plantuml/releases/download/v1.2026.6/plantuml-1.2026.6.jar -O tools/plantuml.jar && echo '89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690  tools/plantuml.jar' | sha256sum -c); tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ >> ./docs/uml.puml; java -jar tools/plantuml.jar ./docs/uml.puml -o uml_diagram"
   },
   "config": {
     "allow-plugins": {

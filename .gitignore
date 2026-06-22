@@ -21,7 +21,7 @@ env.sh
 docs/
 
 # uml diagram related
-plantuml.jar
+# (plantuml.jar now lives under tools/, covered below)
 uml.puml
 tools/
 
