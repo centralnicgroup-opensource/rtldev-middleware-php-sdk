@@ -9,7 +9,6 @@ build/api-cache
 php-sdk.phar
 php-sdk.phar.gz
 reports
-package-lock.json
 .pnpm-store
 # do not remove the following line
 # it blocks env.sh from being committed
