@@ -34,7 +34,8 @@
       {
         "assets": [
           "HISTORY.md",
-          "@(package?(-lock)|composer).json",
+          "@(package|composer).json",
+          "pnpm-lock.yaml",
           "src/AbstractClient.php"
         ]
       }

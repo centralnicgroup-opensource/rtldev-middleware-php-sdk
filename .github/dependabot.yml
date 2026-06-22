@@ -1,8 +1,9 @@
 version: 2
 
 # NOTE: there is intentionally no "npm" ecosystem here.
+# ("npm" is Dependabot's identifier for the JS ecosystem; it resolves pnpm-lock.yaml too.)
 # Node dependencies are refreshed by .github/workflows/daily-node-dependency-refresh.yml
-# (full `npm update` incl. transitive deps) to avoid the duplicate-PR / false-positive
+# (full `pnpm update` incl. transitive deps) to avoid the duplicate-PR / false-positive
 # noise a Dependabot npm entry would reintroduce. Do not add an npm ecosystem.
 #
 # Cadence is weekly across the board: `schedule` controls *version* updates only —
