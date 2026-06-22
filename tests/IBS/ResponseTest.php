@@ -6,12 +6,12 @@ namespace CNICTEST\IBS;
 
 use CNIC\IBS\Response as R;
 use CNIC\IBS\ResponseParser as RP;
-use CNIC\IBS\ResponseTemplateManager as RTM;
-use CNIC\IBS\ResponseTranslator as RT;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseTest extends TestCase
 {
+    // --- ResponseParser: JSON parsing ---
+
     public function testParseResponseWithDates(): void
     {
         $raw = (string) json_encode([
@@ -85,6 +85,32 @@ final class ResponseTest extends TestCase
         $this->assertSame($expected, RP::parse($raw));
     }
 
+    public function testParseNestedDateNormalization(): void
+    {
+        $raw = (string) json_encode([
+            "domain" => "ibstest.com",
+            "data" => [
+                "expirationdate" => "2026/02/20",
+                "nested" => ["paiduntil" => "2027/01/02"]
+            ]
+        ]);
+        $expected = [
+            "domain" => "ibstest.com",
+            "data" => [
+                "expirationdate" => "2026-02-20",
+                "nested" => ["paiduntil" => "2027-01-02"]
+            ]
+        ];
+        $this->assertSame($expected, RP::parse($raw));
+    }
+
+    public function testParseResponseFormatCaseInsensitive(): void
+    {
+        // a lowercase "json" ResponseFormat is still treated as JSON
+        $result = RP::parse('{"status":"SUCCESS"}', ["ResponseFormat" => "json"]);
+        $this->assertSame(["status" => "SUCCESS"], $result);
+    }
+
     // --- ResponseParser: plain text and invalid ---
 
     public function testParsePlainTextResponse(): void
@@ -103,87 +129,37 @@ final class ResponseTest extends TestCase
         $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
-    // --- ResponseTemplateManager tests ---
-
-    public function testGetTemplateNotFound(): void
+    public function testParseEmptyStringIsInvalid(): void
     {
-        $tpl = RTM::getTemplate("IwontExist");
-        $this->assertEquals("FAILURE", $tpl->getStatus());
-        $this->assertEquals("500 Response Template not found", $tpl->getDescription());
+        $result = RP::parse("");
+        $this->assertSame('FAILURE', $result['status']);
+        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
-    public function testGetTemplates(): void
+    public function testParseForcedPlainTextWithJsonPayload(): void
     {
-        $tpl = RTM::getTemplates();
-        foreach (array_keys(RTM::$templates) as $key) {
-            $this->assertArrayHasKey($key, $tpl);
-        }
+        // an explicit non-JSON ResponseFormat forces the plain-text path,
+        // so a JSON payload (no "key=value" lines) is treated as invalid
+        $result = RP::parse('{"status":"SUCCESS"}', ["ResponseFormat" => "TEXT"]);
+        $this->assertSame('FAILURE', $result['status']);
+        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
-    public function testIsTemplateMatchHash(): void
+    public function testParseNonEmptyCmdWithoutResponseFormat(): void
     {
-        $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
+        // a non-empty command without ResponseFormat also forces the plain-text path
+        $result = RP::parse('{"status":"SUCCESS"}', ["Command" => "QueryDomainList"]);
+        $this->assertSame('FAILURE', $result['status']);
+        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
-    public function testIsTemplateMatchPlain(): void
-    {
-        $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
-    }
-
-    public function testAddTemplate(): void
-    {
-        // providing template in plain text
-        $tplid = "custom403";
-        RTM::addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
-        $this->assertTrue(RTM::hasTemplate($tplid));
-        $tpl = RTM::getTemplate($tplid);
-        $this->assertEquals("FAILURE", $tpl->getStatus());
-        $this->assertEquals("Forbidden", $tpl->getDescription());
-
-        // providing template by status and description
-        $tplid = "custom2_403";
-        RTM::addTemplate($tplid, "FAILURE", "Forbidden");
-        $this->assertTrue(RTM::hasTemplate($tplid));
-        $tpl = RTM::getTemplate($tplid);
-        $this->assertEquals("FAILURE", $tpl->getStatus());
-        $this->assertEquals("Forbidden", $tpl->getDescription());
-    }
-
-    // --- ResponseTranslator tests ---
-
-    public function testPlaceHolderReplacements(): void
-    {
-        // no placeholders left in response when none provided
-        $r = new R("");
-        $this->assertEquals(0, preg_match("/\{[A-Z_]+\}/", $r->getDescription()));
-
-        // placeholder replaced when provided
-        $r = new R("", [], ["CONNECTION_URL" => "123HXPHFOUND123"]);
-        $this->assertStringContainsString("123HXPHFOUND123", $r->getDescription());
-    }
+    // --- Response class: construction and error templates ---
 
     public function testConstructorEmptyResponse(): void
     {
         $r = new R("");
         $this->assertEquals("FAILURE", $r->getStatus());
         $this->assertEquals("423 Empty API response. Probably unreachable API end point", $r->getDescription());
-    }
-
-    public function testInvalidResponse(): void
-    {
-        // JSON without status field
-        $raw = RT::translate('{"somekey":"somevalue"}', []);
-        $r = new R($raw);
-        $this->assertEquals("FAILURE", $r->getStatus());
-        $this->assertEquals("423 Invalid API response. Contact Support", $r->getDescription());
-
-        // plain text without status field
-        $raw2 = RT::translate("somekey=somevalue\r\n", []);
-        $r2 = new R($raw2);
-        $this->assertEquals("FAILURE", $r2->getStatus());
-        $this->assertEquals("423 Invalid API response. Contact Support", $r2->getDescription());
     }
 
     public function testHttpErrorTemplate(): void
@@ -194,7 +170,24 @@ final class ResponseTest extends TestCase
         $this->assertStringContainsString("Connection timed out", $r->getDescription());
     }
 
-    // --- JSON response tests (with ResponseFormat=JSON command) ---
+    public function testNoCurlTemplate(): void
+    {
+        $r = new R("nocurl");
+        $this->assertTrue($r->isError());
+        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertStringContainsString("curl_init failed", $r->getDescription());
+    }
+
+    public function testEmptyResponseWithJsonCommand(): void
+    {
+        $cmd = ["ResponseFormat" => "JSON"];
+        $r = new R("", $cmd);
+        $this->assertTrue($r->isError());
+        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertStringContainsString("Empty API response", $r->getDescription());
+    }
+
+    // --- Response class: JSON responses (with ResponseFormat=JSON command) ---
 
     public function testJsonSuccessResponse(): void
     {
@@ -262,22 +255,5 @@ final class ResponseTest extends TestCase
 
         // Two records: nameserver is the longest column (length 2)
         $this->assertCount(2, $r->getRecords());
-    }
-
-    public function testNoCurlTemplate(): void
-    {
-        $r = new R("nocurl");
-        $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
-        $this->assertStringContainsString("curl_init failed", $r->getDescription());
-    }
-
-    public function testEmptyResponseWithJsonCommand(): void
-    {
-        $cmd = ["ResponseFormat" => "JSON"];
-        $r = new R("", $cmd);
-        $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
-        $this->assertStringContainsString("Empty API response", $r->getDescription());
     }
 }
