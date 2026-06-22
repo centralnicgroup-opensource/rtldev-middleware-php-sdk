@@ -22,9 +22,9 @@ This module is a connector library for the insanely fast CNIC Backend APIs (Cent
 
 `composer require centralnic-reseller/php-sdk`
 
-Find a demo app for the Brand of choice in the tests folder that should help you with getting started.
+Find a demo app for the Brand of choice in the examples folder that should help you with getting started.
 
-e.g. `tests/CNR/app.php` etc.
+e.g. `examples/app_CNR.php` etc.
 
 ## Dev Container
 
@@ -72,11 +72,11 @@ To run the demo application, follow these steps:
 
    ```plaintext
    # CentralNic Reseller
-   tests/CNR/app.php
+   examples/app_CNR.php
    # internet.bs
-   tests/IBS/app.php
+   examples/app_IBS.php
    # Moniker
-   tests/MONIKER/app.php
+   examples/app_MONIKER.php
    ```
 
 ## CI / Testing
