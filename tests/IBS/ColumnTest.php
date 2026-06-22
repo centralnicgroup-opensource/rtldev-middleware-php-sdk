@@ -36,7 +36,7 @@ final class ColumnTest extends TestCase
             "nameserver"       => self::NAMESERVERS,
             "transferauthinfo" => "qCg+ic'G1m",
         ];
-        return new R(json_encode($data) ?: "", $cmd);
+        return new R((string) json_encode($data), $cmd);
     }
 
     // --- Unit tests: Column class directly ---
@@ -78,8 +78,8 @@ final class ColumnTest extends TestCase
     {
         $col = new Column("contacts", self::CONTACTS);
         $this->assertSame(self::CONTACTS, $col->getData());
+        // per-index equality also covers the nested firstname/lastname values
         $this->assertSame(self::CONTACTS[0], $col->getDataByIndex(0));
-        $this->assertSame("Middle", $col->getDataByIndex(0)["firstname"]);
         $this->assertSame(self::CONTACTS[1], $col->getDataByIndex(1));
         $this->assertNull($col->getDataByIndex(2));
     }
@@ -112,8 +112,8 @@ final class ColumnTest extends TestCase
         $this->assertNotNull($col);
         // associative object → stored as one column entry preserving registrant/admin keys
         $this->assertCount(1, $col->getData());
+        // full structure equality also covers the nested registrant/admin values
         $this->assertSame(self::FULL_CONTACTS, $col->getDataByIndex(0));
-        $this->assertSame("Middle", $col->getDataByIndex(0)["registrant"]["firstname"]);
         $this->assertNull($col->getDataByIndex(1));
     }
 }
