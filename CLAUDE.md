@@ -37,6 +37,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 - **PSR-12** enforced via PHP CodeSniffer (config: `.github/linters/phpcs.xml`)
 - **PHPStan Level 9** (strictest) for static analysis (config: `.github/linters/phpstan.neon`)
 - **Psalm Level 1** (strictest) for additional static analysis (config: `.github/linters/psalm.xml`) — annotate public API symbols with `@psalm-api`
+- **Both tools analyze `src/` and `tests/`** (aligned scope). Psalm runs with `findUnusedCode="true"`; because PHPUnit invokes test classes/methods via reflection, the dead-code family (`UnusedClass`, `PossiblyUnusedReturnValue`, `UnusedMethodCall`) is suppressed for `tests/` in `psalm.xml` to avoid false positives. All other Psalm checks apply to test code in full.
 - Always include `declare(strict_types=1);` in new or modified files
 - Use typed properties and return type declarations on all new code
 - Use `@var` PHPDoc with generic array types: `array<string, mixed>`, `string[]`, `array<string>`

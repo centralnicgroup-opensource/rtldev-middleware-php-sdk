@@ -37,6 +37,7 @@ final class ClientTest extends TestCase
      */
     public static string $rolepw;
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         $cl = CF::getClient([
@@ -44,13 +45,13 @@ final class ClientTest extends TestCase
         ]);
         \assert($cl instanceof SessionClient);
         self::$cl = $cl;
-        self::$user = getenv("RTLDEV_MW_CI_USER_CNR") ?: "";
+        self::$user = (string) getenv("RTLDEV_MW_CI_USER_CNR");
         if (self::$user === "") {
             echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR.\n";
             exit(1);
         }
 
-        self::$role = getenv("RTLDEV_MW_CI_ROLE_CNR") ?: "";
+        self::$role = (string) getenv("RTLDEV_MW_CI_ROLE_CNR");
         if (self::$role === "") {
             echo "Please provide environment variables RTLDEV_MW_CI_ROLE_CNR.\n";
             exit(1);
@@ -58,7 +59,7 @@ final class ClientTest extends TestCase
 
         // qmtest pass is unknown, we emulate it via role
         self::$userNoRole = self::$user;
-        self::$pw = self::$rolepw = getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR") ?: "";
+        self::$pw = self::$rolepw = (string) getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR");
         self::$user .= ":" . self::$role;
 
         if (self::$rolepw === "") {
@@ -67,6 +68,7 @@ final class ClientTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         sleep(2);
@@ -172,7 +174,7 @@ final class ClientTest extends TestCase
     {
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        if (!empty($hostname)) {
+        if (is_string($hostname) && $hostname !== "") {
             $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
             $url = self::$cl->setURL($newurl)->getURL();
             $this->assertEquals($url, $newurl);
@@ -404,7 +406,7 @@ final class ClientTest extends TestCase
                     IDNA_DEFAULT,
                 INTL_IDNA_VARIANT_UTS46
             );
-            $this->assertEquals($ace, $tmp, "Failure: " . $idn . " -> " . $tmp . " vs. " . $ace);
+            $this->assertEquals($ace, $tmp, "Failure: " . $idn . " -> " . (string) $tmp . " vs. " . $ace);
         }
     }
 
@@ -657,7 +659,7 @@ final class ClientTest extends TestCase
     {
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        if (!empty($hostname)) {
+        if (is_string($hostname) && $hostname !== "") {
             $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
             $newurl = str_replace("https://", "http://", $newurl);
             self::$cl->useHighPerformanceConnectionSetup();

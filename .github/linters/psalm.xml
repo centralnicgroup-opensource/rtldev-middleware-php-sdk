@@ -10,6 +10,7 @@
 >
     <projectFiles>
         <directory name="../../src" />
+        <directory name="../../tests" />
         <ignoreFiles>
             <directory name="../../vendor" />
         </ignoreFiles>
@@ -20,6 +21,27 @@
                 <directory name="../../src" />
             </errorLevel>
         </LessSpecificReturnStatement>
-
+        <!-- PHPUnit invokes test classes/methods via reflection; findUnusedCode
+             cannot see this usage, so its dead-code reports are false positives
+             in tests/. Suppress that family for tests/ only; src/ stays strict. -->
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="../../tests" />
+            </errorLevel>
+        </UnusedClass>
+        <!-- IBS\Client overrides these inherited methods purely to throw
+             "not supported"; they never return, so their declared return value
+             is unusable. Now that tests/ exercise them, Psalm flags the return
+             as unused — a false positive for throw-only stubs. -->
+        <PossiblyUnusedReturnValue>
+            <errorLevel type="suppress">
+                <file name="../../src/IBS/Client.php" />
+            </errorLevel>
+        </PossiblyUnusedReturnValue>
+        <UnusedMethodCall>
+            <errorLevel type="suppress">
+                <directory name="../../tests" />
+            </errorLevel>
+        </UnusedMethodCall>
     </issueHandlers>
 </psalm>

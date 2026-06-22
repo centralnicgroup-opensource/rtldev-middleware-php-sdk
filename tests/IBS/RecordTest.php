@@ -43,7 +43,7 @@ final class RecordTest extends TestCase
             "nameserver"       => ["ns1.ispapi.net", "ns2.ispapi.net"],
             "transferauthinfo" => "qCg+ic'G1m",
         ];
-        return new R(json_encode($data) ?: "", $cmd);
+        return new R((string) json_encode($data), $cmd);
     }
 
     // --- Unit tests: Record class directly ---
@@ -90,9 +90,8 @@ final class RecordTest extends TestCase
         $this->assertSame("2026-02-20", $rec->getDataByKey("expirationdate"));
         $this->assertSame("EXPIRED", $rec->getDataByKey("domainstatus"));
         $this->assertSame("ns1.ispapi.net", $rec->getDataByKey("nameserver"));
-        // contacts full object preserved
+        // contacts full object preserved (nested registrant/admin values covered by equality)
         $this->assertSame(self::DOMAIN_INFO_RECORD["contacts"], $rec->getDataByKey("contacts"));
-        $this->assertSame("Middle", $rec->getDataByKey("contacts")["registrant"]["firstname"]);
     }
 
     public function testRecord1FromDomainInfoResponse(): void

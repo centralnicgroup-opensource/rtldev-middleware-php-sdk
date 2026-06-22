@@ -22,11 +22,12 @@ final class ClientFactoryTest extends TestCase
      */
     public static string $pw;
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         //session_start();
-        self::$user = getenv("RTLDEV_MW_CI_USER_CNR") ?: "";
-        self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_CNR") ?: "";
+        self::$user = (string) getenv("RTLDEV_MW_CI_USER_CNR");
+        self::$pw = (string) getenv("RTLDEV_MW_CI_USERPASSWORD_CNR");
     }
 
     /**

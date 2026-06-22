@@ -16,19 +16,21 @@ final class ClientTest extends TestCase
     public static string $user;
     public static string $pw;
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         $cl = CF::getClient(["registrar" => "IBS"]);
         \assert($cl instanceof SessionClient);
         self::$cl = $cl;
 
-        self::$user = getenv("RTLDEV_MW_CI_USER_IBS") ?: "";
-        self::$pw = getenv("RTLDEV_MW_CI_USERPASSWORD_IBS") ?: "";
+        self::$user = (string) getenv("RTLDEV_MW_CI_USER_IBS");
+        self::$pw = (string) getenv("RTLDEV_MW_CI_USERPASSWORD_IBS");
         if (self::$user === "" || self::$pw === "") {
             self::markTestSkipped("IBS credentials not set (RTLDEV_MW_CI_USER_IBS / RTLDEV_MW_CI_USERPASSWORD_IBS).");
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         sleep(2);
@@ -95,7 +97,7 @@ final class ClientTest extends TestCase
     {
         $oldurl = self::$cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
-        if (!empty($hostname)) {
+        if (is_string($hostname) && $hostname !== "") {
             $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
             $url = self::$cl->setURL($newurl)->getURL();
             $this->assertEquals($newurl, $url);

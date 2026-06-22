@@ -14,12 +14,12 @@ final class ResponseTest extends TestCase
 {
     public function testParseResponseWithDates(): void
     {
-        $raw = json_encode([
+        $raw = (string) json_encode([
             "date" => "2021/12/31",
             "expirydate" => "2026/12/31",
             "paiduntil" => "2023/07/01",
             "EXPIRATION" => "2024/05/02"
-        ]) ?: "";
+        ]);
         $expected = [
             'date' => '2021-12-31',
             'expirydate' => '2026-12-31',
@@ -36,7 +36,7 @@ final class ResponseTest extends TestCase
             "key2"   => "value-with-spaces",
             "key3"   => "value/with/slashes"
         ];
-        $raw = json_encode($input) ?: "";
+        $raw = (string) json_encode($input);
         $expected = $input;
         $this->assertSame($expected, RP::parse($raw));
     }
@@ -47,7 +47,7 @@ final class ResponseTest extends TestCase
             "key1" => "value=with=multiple=equals",
             "key2" => "=value2"
         ];
-        $raw = json_encode($input) ?: "";
+        $raw = (string) json_encode($input);
         $expected = $input;
         $this->assertSame($expected, RP::parse($raw));
     }
@@ -59,7 +59,7 @@ final class ResponseTest extends TestCase
             'emoji' => '😊',
             'symbols' => '©™®'
         ];
-        $raw = json_encode($input) ?: "";
+        $raw = (string) json_encode($input);
         $expected = $input;
         $this->assertSame($expected, RP::parse($raw));
     }
@@ -70,7 +70,7 @@ final class ResponseTest extends TestCase
             '123' => '456',
             '789' => '012'
         ];
-        $raw = json_encode($input) ?: "";
+        $raw = (string) json_encode($input);
         $expected = $input;
         $this->assertSame($expected, RP::parse($raw));
     }
@@ -80,7 +80,7 @@ final class ResponseTest extends TestCase
         $input = [
             'key1' => 'value1'
         ];
-        $raw = json_encode($input) ?: "";
+        $raw = (string) json_encode($input);
         $expected = $input;
         $this->assertSame($expected, RP::parse($raw));
     }
@@ -236,7 +236,7 @@ final class ResponseTest extends TestCase
             "nameserver" => ["ns1.ispapi.net", "ns2.ispapi.net"],
             "transferauthinfo" => "qCg+ic'G1m"
         ];
-        $json = json_encode($data) ?: "";
+        $json = (string) json_encode($data);
         $r = new R($json, $cmd);
         $this->assertTrue($r->isSuccess());
         $this->assertEquals("ibstest.com", $r->getHash()["domain"]);
@@ -245,12 +245,13 @@ final class ResponseTest extends TestCase
         $this->assertEquals("2026-02-20", $r->getHash()["paiduntil"]);
         // nested objects and arrays preserved
         $this->assertIsArray($r->getHash()["contacts"]);
-        $this->assertIsArray($r->getHash()["nameserver"]);
+        $nameserver = $r->getHash()["nameserver"];
+        $this->assertIsArray($nameserver);
         $this->assertEquals([
             "registrant" => ["firstname" => "Middle", "lastname" => "Ware"],
             "admin"      => ["firstname" => "Kai",    "lastname" => "Schwarz"],
         ], $r->getHash()["contacts"]);
-        $this->assertEquals("ns1.ispapi.net", $r->getHash()["nameserver"][0]);
+        $this->assertEquals("ns1.ispapi.net", $nameserver[0]);
 
         // One column per top-level JSON key: 10 total
         $this->assertCount(10, $r->getColumns());
