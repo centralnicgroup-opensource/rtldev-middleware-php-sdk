@@ -243,7 +243,7 @@ abstract class AbstractClient
      */
     public function getVersion(): string
     {
-        return "15.5.0";
+        return "16.0.0";
     }
 
     /**

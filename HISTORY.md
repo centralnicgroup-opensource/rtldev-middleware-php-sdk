@@ -1,3 +1,41 @@
+# [16.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.5.0...v16.0.0) (2026-06-23)
+
+
+### Bug Fixes
+
+* **client:** scope high-performance URL rewrite to host and scheme ([b16f3df](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b16f3dfcb4e9dfa4653955924559ab036c13c385)), closes [hi#performance](https://github.com/hi/issues/performance)
+* **http:** reset reused cURL handle per call to stop option leakage ([8ec9f92](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8ec9f92c66d2520c42c0bd6533cc5f47fae834fa))
+* **ibs:** compute getLastRecordIndex per-instance and harden status access ([cb5a177](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/cb5a177de62dec48acd7ae640e69c65132935c0e))
+* **translator:** preserve full cURL error text containing a pipe ([fa44c9f](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/fa44c9ff2ce605fb8ee1419d4f64262ba28c1346))
+
+
+### Features
+
+* **factory:** simplify getClient() to registrar-only construction ([d30c5ab](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d30c5ab37425ff83de0308979edd64c0e798e006))
+
+
+### BREAKING CHANGES
+
+* **factory:** ClientFactory::getClient() no longer accepts a $params array or
+a $logger argument; its signature is now getClient(string $registrar). Callers
+must configure the returned client themselves and decode credentials before use.
+
+  Before:
+    $cl = ClientFactory::getClient([
+        "registrar"   => "CNR",
+        "username"    => $user,
+        "password"    => $pw,     // was html_entity_decode()'d internally
+        "sandbox"     => true,
+        "proxyserver" => $proxy,
+    ], $logger);
+
+  After:
+    $cl = ClientFactory::getClient("CNR");
+    $cl->useOTESystem()
+        ->setCredentials($user, html_entity_decode($pw, ENT_QUOTES))
+        ->setProxy($proxy)
+        ->setCustomLogger($logger);
+
 # [15.5.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.4.0...v15.5.0) (2026-06-19)
 
 
