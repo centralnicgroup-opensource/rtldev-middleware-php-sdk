@@ -68,6 +68,16 @@ final class ResponseTranslatorTest extends TestCase
     }
 
     /**
+     * Test that an HTTP/cURL error message containing a pipe is preserved in full
+     * (the split must keep everything after the first pipe, not truncate at the next)
+     */
+    public function testHttpErrorWithPipeIsPreserved(): void
+    {
+        $raw = RT::translate("httperror|proxy CONNECT failed | host unreachable", []);
+        $this->assertStringContainsString("(proxy CONNECT failed | host unreachable)", $raw);
+    }
+
+    /**
      * Test that all "missing or empty status" variants map to the "invalid" template
      */
     public function testInvalidResponseBranches(): void
