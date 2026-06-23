@@ -1,0 +1,236 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CNICTEST\IBS;
+
+use CNIC\IBS\Response as R;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Coverage for IBS\Response record navigation, pagination metadata,
+ * column access and the response code/description fallbacks.
+ *
+ * All fixtures are template-driven (no live API / credentials required).
+ */
+final class ResponseNavigationTest extends TestCase
+{
+    /** @var array<string,string> command forcing JSON parsing */
+    private const JSONCMD = ["ResponseFormat" => "JSON"];
+
+    /**
+     * A three-record list response: the "domain" list column drives the
+     * record count, "total" is a pagination/count column.
+     */
+    private function listResponse(): R
+    {
+        $json = '{"status":"SUCCESS","total":3,"domain":["a.com","b.com","c.com"]}';
+        return new R($json, self::JSONCMD);
+    }
+
+    // --- record navigation cursor ---
+
+    public function testRecordCursorWalksForwardAndStopsAtEnd(): void
+    {
+        $r = $this->listResponse();
+        $this->assertEquals(3, $r->getRecordsCount());
+
+        $cur = $r->getCurrentRecord();
+        $this->assertNotNull($cur);
+        $this->assertEquals("a.com", $cur->getDataByKey("domain"));
+
+        $next = $r->getNextRecord();
+        $this->assertNotNull($next);
+        $this->assertEquals("b.com", $next->getDataByKey("domain"));
+
+        $next = $r->getNextRecord();
+        $this->assertNotNull($next);
+        $this->assertEquals("c.com", $next->getDataByKey("domain"));
+
+        // already at the last record -> no further record
+        $this->assertNull($r->getNextRecord());
+    }
+
+    public function testRecordCursorWalksBackwardAndRewinds(): void
+    {
+        $r = $this->listResponse();
+        $r->getNextRecord(); // -> index 1
+        $r->getNextRecord(); // -> index 2
+
+        $prev = $r->getPreviousRecord();
+        $this->assertNotNull($prev);
+        $this->assertEquals("b.com", $prev->getDataByKey("domain"));
+
+        // rewind returns $this (fluent) and resets to the first record
+        $first = $r->rewindRecordList()->getCurrentRecord();
+        $this->assertNotNull($first);
+        $this->assertEquals("a.com", $first->getDataByKey("domain"));
+
+        // at index 0 there is no previous record
+        $this->assertNull($r->getPreviousRecord());
+    }
+
+    public function testGetRecordByIndexBounds(): void
+    {
+        $r = $this->listResponse();
+
+        $rec = $r->getRecord(2);
+        $this->assertNotNull($rec);
+        $this->assertEquals("c.com", $rec->getDataByKey("domain"));
+
+        $this->assertNull($r->getRecord(-1));
+        $this->assertNull($r->getRecord(3));
+    }
+
+    public function testStatusOnlyResponseHasSingleRecord(): void
+    {
+        // a status-only response has exactly one column -> exactly one record
+        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
+        $this->assertEquals(1, $r->getRecordsCount());
+        $this->assertNotNull($r->getCurrentRecord());
+    }
+
+    // --- pagination metadata ---
+
+    public function testPaginationMetadata(): void
+    {
+        $r = $this->listResponse();
+        $pg = $r->getPagination();
+
+        $this->assertEquals(3, $pg["COUNT"]);
+        $this->assertEquals(1, $pg["CURRENTPAGE"]);
+        $this->assertEquals(0, $pg["FIRST"]);
+        $this->assertEquals(2, $pg["LAST"]); // total(3) - 1
+        $this->assertEquals(3, $pg["LIMIT"]);
+        $this->assertEquals(1, $pg["PAGES"]);
+        $this->assertEquals(1, $pg["NEXTPAGE"]); // clamped to the last page
+        $this->assertNull($pg["PREVIOUSPAGE"]); // already on the first page
+        $this->assertEquals(3, $pg["TOTAL"]);
+    }
+
+    public function testPageNavigationHelpers(): void
+    {
+        $r = $this->listResponse();
+        $this->assertEquals(1, $r->getCurrentPageNumber());
+        $this->assertEquals(0, $r->getFirstRecordIndex());
+        $this->assertEquals(1, $r->getNumberOfPages());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertFalse($r->hasPreviousPage());
+    }
+
+    // --- getLastRecordIndex (regression for the cross-instance static leak) ---
+
+    public function testGetLastRecordIndexIsComputedPerInstance(): void
+    {
+        // Two independent responses with different count columns. Before the fix
+        // a method-scoped `static $last` cached the first result and poisoned the
+        // second (returning null). Each must now report its own value.
+        $a = new R('{"status":"SUCCESS","total":5,"item":["x"]}', self::JSONCMD);
+        $b = new R('{"status":"SUCCESS","total":2,"item":["y"]}', self::JSONCMD);
+
+        $this->assertEquals(4, $a->getLastRecordIndex()); // 5 - 1
+        $this->assertEquals(1, $b->getLastRecordIndex()); // 2 - 1
+        // re-reading A must remain stable and independent of B
+        $this->assertEquals(4, $a->getLastRecordIndex());
+    }
+
+    public function testGetLastRecordIndexNullWithoutCountColumn(): void
+    {
+        $r = new R('{"status":"SUCCESS","domain":["a.com"]}', self::JSONCMD);
+        $this->assertNull($r->getLastRecordIndex());
+    }
+
+    // --- column access ---
+
+    public function testGetColumnIndex(): void
+    {
+        $r = $this->listResponse();
+        $this->assertEquals("b.com", $r->getColumnIndex("domain", 1));
+        $this->assertNull($r->getColumnIndex("domain", 9));
+        $this->assertNull($r->getColumnIndex("doesnotexist", 0));
+    }
+
+    public function testGetColumnKeysFiltersPaginationColumns(): void
+    {
+        $r = $this->listResponse();
+        $this->assertEquals(["status", "total", "domain"], $r->getColumnKeys());
+        // the "total" pagination/count column is stripped when filtering
+        $this->assertEquals(["status", "domain"], $r->getColumnKeys(true));
+    }
+
+    public function testGetCommandAndPlain(): void
+    {
+        $r = $this->listResponse();
+        $cmd = $r->getCommand();
+        $this->assertNotEmpty($cmd);
+        $this->assertStringContainsString("JSON", $r->getCommandPlain());
+    }
+
+    // --- code / description fallbacks ---
+
+    public function testGetCodeDefaultsTo200(): void
+    {
+        $r = new R('{"status":"SUCCESS","domain":"x.com"}', self::JSONCMD);
+        $this->assertEquals(200, $r->getCode());
+    }
+
+    public function testGetCodeFallsBackToProductCode(): void
+    {
+        $r = new R('{"status":"SUCCESS","product_0_code":"201"}', self::JSONCMD);
+        $this->assertEquals(201, $r->getCode());
+    }
+
+    public function testGetDescriptionDefault(): void
+    {
+        $r = new R('{"status":"SUCCESS","domain":"x.com"}', self::JSONCMD);
+        $this->assertEquals("Command completed successfully", $r->getDescription());
+    }
+
+    public function testGetDescriptionFallsBackToProductMessage(): void
+    {
+        $r = new R('{"status":"SUCCESS","product_0_message":"Created"}', self::JSONCMD);
+        $this->assertEquals("Created", $r->getDescription());
+    }
+
+    // --- not-supported / not-implemented contract methods ---
+
+    public function testGetQueuetimeThrows(): void
+    {
+        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Not supported");
+        $r->getQueuetime();
+    }
+
+    public function testGetRuntimeThrows(): void
+    {
+        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Not supported");
+        $r->getRuntime();
+    }
+
+    public function testIsTmpErrorThrows(): void
+    {
+        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Not supported");
+        $r->isTmpError();
+    }
+
+    public function testIsPendingThrows(): void
+    {
+        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Not supported");
+        $r->isPending();
+    }
+
+    public function testGetListHashThrows(): void
+    {
+        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Not implemented.");
+        $r->getListHash();
+    }
+}
