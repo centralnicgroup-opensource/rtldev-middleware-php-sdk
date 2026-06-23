@@ -52,7 +52,9 @@ final class ResponseTranslator
         $httperror = "";
         $isHTTPError = substr($newraw, 0, 10) === "httperror|";
         if ($isHTTPError) {
-            [$newraw, $httperror] = explode("|", $newraw);
+            $parts = explode("|", $newraw, 2);
+            $newraw = $parts[0];
+            $httperror = $parts[1] ?? "";
         }
 
         // Explicit call for a static template
