@@ -303,11 +303,18 @@ abstract class AbstractClient
      */
     public function useHighPerformanceConnectionSetup(): static
     {
-        $oldurl = $this->getURL();
-        $hostname = parse_url($oldurl, PHP_URL_HOST);
-        if (is_string($hostname) && $hostname !== '') {
-            $url = str_replace($hostname, "127.0.0.1", $oldurl);
-            $url = str_replace("https://", "http://", $url);
+        $parts = parse_url($this->getURL());
+        if (isset($parts["host"]) && $parts["host"] !== '') {
+            // Route to the co-located high-performance proxy on loopback.
+            // The https->http downgrade is deliberate and safe: the request never
+            // leaves the host — it targets a trusted local socket — so credentials
+            // in the POST body are not exposed on the wire. Rebuild from the URL
+            // components so only the host (and scheme) are swapped; a blind
+            // str_replace would also clobber a hostname recurring in path/query.
+            $url = "http://127.0.0.1"
+                . (isset($parts["port"]) ? ":" . $parts["port"] : "")
+                . ($parts["path"] ?? "")
+                . (isset($parts["query"]) ? "?" . $parts["query"] : "");
             $this->setURL($url);
         }
         return $this;

@@ -665,6 +665,21 @@ final class ClientTest extends TestCase
         }
     }
 
+    /**
+     * High-performance setup must swap only the scheme and host, preserving the
+     * port, path and query — even when the hostname also appears in the path.
+     */
+    public function testHighPerformanceSetupRewritesOnlyHostAndScheme(): void
+    {
+        $cl = CF::getClient("CNR");
+        $cl->setURL("https://api.example.com:8443/api.example.com/call.cgi?foo=bar");
+        $cl->useHighPerformanceConnectionSetup();
+        $this->assertSame(
+            "http://127.0.0.1:8443/api.example.com/call.cgi?foo=bar",
+            $cl->getURL()
+        );
+    }
+
     public function testSortCommandParams(): void
     {
         $params = [
