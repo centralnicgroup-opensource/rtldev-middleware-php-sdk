@@ -170,7 +170,7 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function isError(): bool
     {
-        return ($this->hash["status"] === "FAILURE");
+        return ($this->getHashString("status") === "FAILURE");
     }
 
     /**
@@ -180,7 +180,7 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function isSuccess(): bool
     {
-        return ($this->hash["status"] === "SUCCESS" || !$this->isError());
+        return ($this->getHashString("status") === "SUCCESS" || !$this->isError());
     }
 
     /**
@@ -330,14 +330,9 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function getLastRecordIndex(): ?int
     {
-        static $last = null;
-
-        if (is_null($last)) {
-            foreach ($this->columnkeys as $k) {
-                if ((bool)preg_match("/^(.+)?count|total(_.+)?$/", $k)) {
-                    $last = (is_numeric($this->hash[$k]) ? intval($this->hash[$k], 10) : 0) - 1;
-                    return $last;
-                }
+        foreach ($this->columnkeys as $k) {
+            if ((bool)preg_match("/^(.+)?count|total(_.+)?$/", $k)) {
+                return (is_numeric($this->hash[$k]) ? intval($this->hash[$k], 10) : 0) - 1;
             }
         }
 
