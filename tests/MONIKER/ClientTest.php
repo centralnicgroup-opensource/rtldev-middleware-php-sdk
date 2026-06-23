@@ -19,7 +19,7 @@ final class ClientTest extends TestCase
     #[\Override]
     public static function setUpBeforeClass(): void
     {
-        $cl = CF::getClient(["registrar" => "MONIKER"]);
+        $cl = CF::getClient("MONIKER");
         \assert($cl instanceof SessionClient);
         self::$cl = $cl;
 

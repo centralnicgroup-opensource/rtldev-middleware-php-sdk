@@ -6,7 +6,6 @@ namespace CNIC;
 
 use CNIC\CNR\SessionClient;
 use CNIC\IBS\SessionClient as IBSSessionClient;
-use CNIC\LoggerInterface;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
 use CNIC\Registrar;
 
@@ -19,53 +18,25 @@ use CNIC\Registrar;
 class ClientFactory
 {
     /**
-     * Returns Client Instance by configuration
+     * Returns the registrar-specific Client instance.
      *
-     * @param array{registrar: string, username?: string, password?: string, sandbox?: bool, referer?: string, ua?: array{name: string, version: string, modules: string[]}, logging?: bool, proxyserver?: string} $params Configuration settings
-     * @param LoggerInterface|null $logger Logger Instance (optional)
-     * @throws \Exception
+     * The factory resolves the registrar identifier to its Client subtype only.
+     * All further configuration — credentials, referer, user-agent, proxy,
+     * logging and OT&E/sandbox mode — is the caller's responsibility via the
+     * client's fluent setters. This keeps the SDK platform-agnostic and
+     * transport-faithful: the caller normalizes input (e.g. HTML-entity
+     * decoding of WHMCS-stored passwords) before handing it to the client.
+     *
+     * @param string $registrar Registrar identifier (CNR, CNIC, IBS, MONIKER; case-insensitive)
+     * @throws \Exception if the registrar is not supported
      */
-    public static function getClient(array $params, ?LoggerInterface $logger = null): SessionClient|IBSSessionClient|MONIKERSessionClient
+    public static function getClient(string $registrar): SessionClient|IBSSessionClient|MONIKERSessionClient
     {
-        $cl = match (Registrar::tryFrom(strtoupper($params["registrar"]))) {
+        return match (Registrar::tryFrom(strtoupper($registrar))) {
             Registrar::CNR, Registrar::CNIC => new SessionClient(),
             Registrar::IBS                  => new IBSSessionClient(),
             Registrar::MONIKER              => new MONIKERSessionClient(),
-            null                            => throw new \Exception("Registrar `{$params["registrar"]}` not supported."),
+            null                            => throw new \Exception("Registrar `{$registrar}` not supported."),
         };
-        if ($logger instanceof LoggerInterface) {
-            $cl->setCustomLogger($logger);
-        }
-
-        if (!empty($params["sandbox"])) {
-            $cl->useOTESystem();
-        }
-        if (
-            isset($params["username"], $params["password"])
-            && $params["username"] !== ''
-            && $params["password"] !== ''
-        ) {
-            $cl->setCredentials(
-                $params["username"],
-                html_entity_decode($params["password"], ENT_QUOTES)
-            );
-        }
-        if (isset($params["referer"]) && $params["referer"] !== '') {
-            $cl->setReferer($params["referer"]); // GLOBALS["CONFIG"]["SystemURL"] TODO
-        }
-        if (!empty($params["ua"])) {
-            $cl->setUserAgent(
-                $params["ua"]["name"],
-                $params["ua"]["version"],
-                $params["ua"]["modules"]
-            ); // "WHMCS", $GLOBALS["CONFIG"]["Version"], $modules TODO
-        }
-        if (!empty($params["logging"])) {
-            $cl->enableDebugMode(); // activate logging
-        }
-        if (isset($params["proxyserver"]) && $params["proxyserver"] !== '') {
-            $cl->setProxy($params["proxyserver"]);
-        }
-        return $cl;
     }
 }

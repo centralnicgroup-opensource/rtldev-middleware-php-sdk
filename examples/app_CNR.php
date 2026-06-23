@@ -15,9 +15,7 @@ if ($user === false || $password === false) {
 }
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n";
-$cl = ClientFactory::getClient([
-    "registrar" => "CNR" // fka RRPproxy
-]);
+$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setCredentials($user, $password);
 $r = $cl->request([
@@ -28,9 +26,7 @@ print_r($r->getHash());
 
 // --- SESSION BASED API COMMUNICATION ---
 echo "--- SESSION-BASED API COMMUNICATION ----\n";
-$cl = ClientFactory::getClient([
-    "registrar" => "CNR" // fka RRPproxy
-]);
+$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setCredentials($user, $password);
 $r = $cl->login();
