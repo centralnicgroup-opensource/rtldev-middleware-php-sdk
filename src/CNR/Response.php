@@ -301,7 +301,7 @@ class Response implements ResponseInterface
     public function getColumnIndex(string $colkey, int $index): mixed
     {
         $col = $this->getColumn($colkey);
-        return $col instanceof Column ? $col->getDataByIndex($index) : null;
+        return $col instanceof ColumnInterface ? $col->getDataByIndex($index) : null;
     }
 
     /**
@@ -631,7 +631,7 @@ class Response implements ResponseInterface
      * Check if column exists in response
      * @param string $key column name
      */
-    private function hasColumn(string $key): bool
+    protected function hasColumn(string $key): bool
     {
         return in_array($key, $this->columnkeys);
     }
@@ -640,7 +640,7 @@ class Response implements ResponseInterface
      * Check if the record list contains a record for the
      * current record index in use
      */
-    private function hasCurrentRecord(): bool
+    protected function hasCurrentRecord(): bool
     {
         $len = $this->getRecordsCount();
         return (
@@ -654,7 +654,7 @@ class Response implements ResponseInterface
      * Check if the record list contains a next record for the
      * current record index in use
      */
-    private function hasNextRecord(): bool
+    protected function hasNextRecord(): bool
     {
         $next = $this->recordIndex + 1;
         return ($this->hasCurrentRecord() && ($next < $this->getRecordsCount()));
@@ -664,7 +664,7 @@ class Response implements ResponseInterface
      * Check if the record list contains a previous record for the
      * current record index in use
      */
-    private function hasPreviousRecord(): bool
+    protected function hasPreviousRecord(): bool
     {
         return ($this->recordIndex > 0 && $this->hasCurrentRecord());
     }
@@ -672,7 +672,7 @@ class Response implements ResponseInterface
     /**
      * Get a string value from the hash by key, returning a default if not found or not a string
      */
-    private function getHashString(string $key, string $default = ""): string
+    protected function getHashString(string $key, string $default = ""): string
     {
         return array_key_exists($key, $this->hash) && is_string($this->hash[$key])
             ? $this->hash[$key]

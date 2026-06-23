@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Record;
 use CNIC\CNR\Response as CNRResponse;
 use CNIC\ColumnInterface;
-use CNIC\CommandFormatter;
 use CNIC\IBS\Column as IBSColumn;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
@@ -20,6 +18,12 @@ use CNIC\ResponseInterface;
 
 /**
  * IBS Response
+ *
+ * Extends CNR\Response and only overrides what genuinely differs for the IBS
+ * platform: the JSON-shaped response parsing (constructor), the status/code/
+ * description accessors, the IBS column type, the not-supported contract
+ * methods and the flat (single-page) pagination model. Every other accessor
+ * and the record-cursor navigation are inherited unchanged from CNR\Response.
  *
  * @psalm-api
  * @package CNIC\IBS
@@ -31,12 +35,6 @@ class Response extends CNRResponse implements ResponseInterface
      * @var non-empty-string
      */
     protected string $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
-
-    /**
-     * Context data for the response
-     * @var array<string,mixed>
-     */
-    protected array $context;
 
     /**
      * Constructor
@@ -106,7 +104,7 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Get API response code
+     * Get API response status
      */
     public function getStatus(): string
     {
@@ -125,15 +123,6 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Get Plain API response
-     */
-    #[\Override]
-    public function getPlain(): string
-    {
-        return $this->raw;
-    }
-
-    /**
      * Get Queuetime of API response
      * @throws \Exception
      */
@@ -141,16 +130,6 @@ class Response extends CNRResponse implements ResponseInterface
     public function getQueuetime(): float
     {
         throw new \Exception("Not supported");
-    }
-
-    /**
-     * Get API response as Hash
-     * @return array<string,mixed>
-     */
-    #[\Override]
-    public function getHash(): array
-    {
-        return $this->hash;
     }
 
     /**
@@ -165,7 +144,6 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Check if current API response represents an error case
-     * API response code is an 5xx code
      */
     #[\Override]
     public function isError(): bool
@@ -175,7 +153,6 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Check if current API response represents a success case
-     * API response code is an 2xx code
      */
     #[\Override]
     public function isSuccess(): bool
@@ -219,100 +196,12 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Add a record to the record list
-     * @param array<string,mixed> $h row hash data
-     * @return $this
-     */
-    #[\Override]
-    public function addRecord(array $h): static
-    {
-        $this->records[] = new Record($h);
-        return $this;
-    }
-
-    /**
-     * Get column by column name
-     * @param string $key column name
-     */
-    #[\Override]
-    public function getColumn(string $key): ?ColumnInterface
-    {
-        return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
-    }
-
-    /**
-     * Get Data by Column Name and Index
-     * @param string $colkey column name
-     * @param int $index column data index
-     */
-    #[\Override]
-    public function getColumnIndex(string $colkey, int $index): mixed
-    {
-        $col = $this->getColumn($colkey);
-        return $col instanceof ColumnInterface ? $col->getDataByIndex($index) : null;
-    }
-
-    /**
-     * Get Column Names
-     * @param bool $filterPaginationKeys strip pagination columns
-     * @return string[]
-     */
-    #[\Override]
-    public function getColumnKeys(bool $filterPaginationKeys = false): array
-    {
-        if ($filterPaginationKeys) {
-            // Ensure that preg_grep always returns an array
-            $paginationKeys = preg_grep($this->paginationkeys, $this->columnkeys, PREG_GREP_INVERT) ?: [];
-            return array_values($paginationKeys);
-        }
-        return $this->columnkeys;
-    }
-
-    /**
-     * Get List of Columns
-     * @return ColumnInterface[]
-     */
-    #[\Override]
-    public function getColumns(): array
-    {
-        return $this->columns;
-    }
-
-    /**
-     * Get Command used in this request
-     * @return array<string, string>
-     */
-    #[\Override]
-    public function getCommand(): array
-    {
-        return CommandFormatter::getSortedCommand($this->command);
-    }
-
-    /**
-     * Get Command used in this request in plain text format
-     */
-    #[\Override]
-    public function getCommandPlain(): string
-    {
-        return CommandFormatter::formatCommand($this->getCommand());
-    }
-
-    /**
      * Get Page Number of current List Query
      */
     #[\Override]
     public function getCurrentPageNumber(): ?int
     {
         return 1;
-    }
-
-    /**
-     * Get Record of current record index
-     */
-    #[\Override]
-    public function getCurrentRecord(): ?Record
-    {
-        return $this->hasCurrentRecord() ? $this->records[$this->recordIndex] : null;
     }
 
     /**
@@ -350,128 +239,6 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Get next record in record list
-     */
-    #[\Override]
-    public function getNextRecord(): ?Record
-    {
-        if ($this->hasNextRecord()) {
-            return $this->records[++$this->recordIndex];
-        }
-        return null;
-    }
-
-    /**
-     * Get Page Number of next list query
-     */
-    #[\Override]
-    public function getNextPageNumber(): ?int
-    {
-        $cp = $this->getCurrentPageNumber();
-        if ($cp === null) {
-            return null;
-        }
-        $page = $cp + 1;
-        $pages = $this->getNumberOfPages();
-        return ($page <= $pages ? $page : $pages);
-    }
-
-    /**
-     * Get the number of pages available for this list query
-     */
-    #[\Override]
-    public function getNumberOfPages(): int
-    {
-        $t = $this->getRecordsTotalCount();
-        $limit = $this->getRecordsLimitation();
-        if ($t && $limit) {
-            return (int)ceil($t / $this->getRecordsLimitation());
-        }
-        return 0;
-    }
-
-    /**
-     * Get object containing all paging data
-     * @return array<string,int|null>
-     */
-    #[\Override]
-    public function getPagination(): array
-    {
-        return [
-            "COUNT" => $this->getRecordsCount(),
-            "CURRENTPAGE" => $this->getCurrentPageNumber(),
-            "FIRST" => $this->getFirstRecordIndex(),
-            "LAST" => $this->getLastRecordIndex(),
-            "LIMIT" => $this->getRecordsLimitation(),
-            "NEXTPAGE" => $this->getNextPageNumber(),
-            "PAGES" => $this->getNumberOfPages(),
-            "PREVIOUSPAGE" => $this->getPreviousPageNumber(),
-            "TOTAL" => $this->getRecordsTotalCount()
-        ];
-    }
-
-    /**
-     * Get Page Number of previous list query
-     */
-    #[\Override]
-    public function getPreviousPageNumber(): ?int
-    {
-        $cp = $this->getCurrentPageNumber();
-        if ($cp === null) {
-            return null;
-        }
-        $cp -= 1;
-        if ($cp === 0) {
-            return null;
-        }
-        return $cp;
-    }
-
-    /**
-     * Get previous record in record list
-     */
-    #[\Override]
-    public function getPreviousRecord(): ?Record
-    {
-        if ($this->hasPreviousRecord()) {
-            return $this->records[--$this->recordIndex];
-        }
-        return null;
-    }
-
-    /**
-     * Get Record at given index
-     * @param int $idx record index
-     */
-    #[\Override]
-    public function getRecord(int $idx): ?Record
-    {
-        if ($idx >= 0 && $this->getRecordsCount() > $idx) {
-            return $this->records[$idx];
-        }
-        return null;
-    }
-
-    /**
-     * Get all Records
-     * @return Record[]
-     */
-    #[\Override]
-    public function getRecords(): array
-    {
-        return $this->records;
-    }
-
-    /**
-     * Get count of rows in this response
-     */
-    #[\Override]
-    public function getRecordsCount(): int
-    {
-        return count($this->records);
-    }
-
-    /**
      * Get total count of records available for the list query
      */
     #[\Override]
@@ -506,68 +273,5 @@ class Response extends CNRResponse implements ResponseInterface
     public function hasPreviousPage(): bool
     {
         return false;
-    }
-
-    /**
-     * Reset index in record list back to zero
-     * @return $this
-     */
-    #[\Override]
-    public function rewindRecordList(): static
-    {
-        $this->recordIndex = 0;
-        return $this;
-    }
-
-    /**
-     * Check if column exists in response
-     * @param string $key column name
-     */
-    private function hasColumn(string $key): bool
-    {
-        return in_array($key, $this->columnkeys);
-    }
-
-    /**
-     * Check if the record list contains a record for the
-     * current record index in use
-     */
-    private function hasCurrentRecord(): bool
-    {
-        $len = $this->getRecordsCount();
-        return (
-            $len > 0 &&
-            $this->recordIndex >= 0 &&
-            $this->recordIndex < $len
-        );
-    }
-
-    /**
-     * Check if the record list contains a next record for the
-     * current record index in use
-     */
-    private function hasNextRecord(): bool
-    {
-        $next = $this->recordIndex + 1;
-        return ($this->hasCurrentRecord() && ($next < $this->getRecordsCount()));
-    }
-
-    /**
-     * Check if the record list contains a previous record for the
-     * current record index in use
-     */
-    private function hasPreviousRecord(): bool
-    {
-        return ($this->recordIndex > 0 && $this->hasCurrentRecord());
-    }
-
-    /**
-     * Get a string value from the hash by key, returning a default if not found or not a string
-     */
-    private function getHashString(string $key, string $default = ""): string
-    {
-        return array_key_exists($key, $this->hash) && is_string($this->hash[$key])
-            ? $this->hash[$key]
-            : $default;
     }
 }
