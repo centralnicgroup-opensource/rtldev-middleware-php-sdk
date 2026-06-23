@@ -35,6 +35,12 @@ final class HttpTransport
             $this->handle = $tmp;
         }
 
+        // Reset per-call options on the reused handle so that options from a
+        // previous call (e.g. proxy/referer) cannot leak into this one. This
+        // preserves the live connection, DNS and SSL session caches, so the
+        // keep-alive benefit of handle reuse is retained.
+        curl_reset($this->handle);
+
         curl_setopt_array($this->handle, [
             // CURLOPT_VERBOSE         => true,
             CURLOPT_URL             => $url,
