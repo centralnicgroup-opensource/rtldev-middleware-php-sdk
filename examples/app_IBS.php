@@ -16,9 +16,7 @@ if ($user === false || $password === false) {
 
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n\n";
-$cl = ClientFactory::getClient([
-    "registrar" => "IBS"
-]);
+$cl = ClientFactory::getClient("IBS");
 $cl->useOTESystem()//LIVE System would be used otherwise by default
    //->setRemoteIPAddress("1.2.3.4") // provide ip address used for active ip filter
    ->setCredentials($user, $password)

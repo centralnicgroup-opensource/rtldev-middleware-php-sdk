@@ -22,9 +22,7 @@ if ($rolepassword === false) {
     die("Please provide environment variables RTLDEV_MW_CI_ROLEPASSWORD_CNR.\n");
 }
 
-$cl = ClientFactory::getClient([
-    "registrar" => "CNR" // fka RRPproxy
-]);
+$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setRoleCredentials($user, $role, $rolepassword);
 
@@ -51,9 +49,7 @@ echo "Time: $end1 seconds\n";
 // --- SESSION BASED API COMMUNICATION ---
 echo "--- SESSION-BASED API COMMUNICATION ----\n";
 
-$cl = ClientFactory::getClient([
-    "registrar" => "CNR" // fka RRPproxy
-]);
+$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setRoleCredentials($user, $role, $rolepassword);
 $r = $cl->login();
