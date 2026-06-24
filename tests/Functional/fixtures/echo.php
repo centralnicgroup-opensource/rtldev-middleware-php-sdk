@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * CNICTEST\Functional
- * Copyright © CentralNic Group PLC
+ * Copyright © Team Internet Group PLC
  *
  * Router script for the PHP built-in server used by HttpTransportTest.
  * Echoes selected request details back as JSON so the test can assert which
