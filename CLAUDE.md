@@ -131,6 +131,37 @@ Do **not** bump `composer.json`, `rector.php`, or CI matrix entries beyond PHP 8
 - **`composer.lock` is committed deliberately.** Conventional guidance says a library should not commit its lockfile because consumers ignore it (Composer resolves the library's constraints fresh into the consumer's own `composer.lock`). That still holds for consumers — keeping our lockfile does **not** affect downstream installs. We commit it anyway so that CI, devcontainer, and local developer setups all resolve the exact same dependency tree, giving reproducible lint/test runs and pinning the dev toolchain (PHPUnit, PHPStan, Psalm, Rector). Do not remove or git-ignore `composer.lock`.
 - **`pnpm-lock.yaml` is committed** (the project migrated from npm to pnpm; the old `package-lock.json` is gone). Both lockfiles are `export-ignore`d in `.gitattributes` so they stay out of the Composer distribution archive.
 
+## Distribution Archive (`.gitattributes`)
+
+`export-ignore` in `.gitattributes` controls what Packagist serves as the **dist zip** — the tarball `composer require` actually downloads. It does **not** affect CI or local clones (`actions/checkout` and `git clone` always fetch the full tree), so excluding a file there is safe for the toolchain.
+
+- **Keep the dist lean: only runtime essentials ship.** `src/`, `composer.json`, `LICENSE`, and `README.md` stay in the archive; everything dev-only is `export-ignore`d (CI/linters under `.github`, `tests`, `.devcontainer`, `.husky`, `.claude`, editor/formatter configs, `codecov.yml`, both lockfiles, `package.json`/`pnpm-workspace.yaml`, all `*.sh`).
+- When adding a new dev-only file at the repo root, add a matching `export-ignore` line.
+- Verify with `git check-attr export-ignore -- <path>` (expects `set`) or inspect the whole archive with `git archive HEAD | tar t`.
+
+## CI / GitHub Actions
+
+Most workflows in `.github/workflows/` are thin wrappers that **delegate to the shared reusable workflows** in `centralnicgroup-opensource/rtldev-middleware-shareable-workflows` (pinned `@main`):
+
+- `lint.yml` → `php-sdk-lint.yml` (phpcs, phpstan, psalm, `composer audit --no-dev` CVE gating, trufflehog, actionlint, hadolint, shellcheck)
+- `test.yml` → `php-sdk-test.yml` (PHP matrix tests, **Codecov** coverage upload via `codecov-action`, and a `dependabot` auto-merge job that chains into `auto-merge-dependabot-pr.yml`)
+- `release.yml` → `php-sdk-release.yml`; `daily-node-dependency-refresh.yml` and `whmcs-php-check.yml` likewise delegate.
+- `rector.yml` is the one substantial repo-local workflow (monthly modernization PR).
+
+Because of this, **caching, the test matrix, coverage upload, and audit gating are configured in the shared repo, not here** — don't try to add them to the local wrappers.
+
+### Reusable-workflow permissions (important)
+
+A reusable workflow's effective `GITHUB_TOKEN` is the **intersection** of the root caller's top-level `permissions:` and the called job's own `permissions:`. A called workflow can **never** exceed what the caller grants. Consequences:
+
+- **`test.yml` must keep `contents: write` + `pull-requests: write`.** The shared `php-sdk-test.yml` chains into `auto-merge-dependabot-pr.yml`, which needs both; downgrading the caller to `contents: read` silently breaks Dependabot auto-merge. This is intentional, not an over-grant.
+- **`lint.yml` uses `contents: read` + `pull-requests: write`** (no auto-merge) — keep it least-privilege.
+- When changing a wrapper's permissions, check what the shared workflow it calls actually needs before tightening.
+
+### Action pinning
+
+Third-party actions are used directly in only two workflows (`test.yml`, `rector.yml`); everything else delegates. Pin those to **commit SHAs with a `# vX` comment** (e.g. `actions/checkout@9c091bb… # v7`) rather than floating tags — a moved tag would run unreviewed code with the workflow's token. The Dependabot `github-actions` ecosystem (`.github/dependabot.yml`, weekly) bumps both the SHA and the comment automatically, so there is no manual upkeep. Any newly-introduced direct action use should be SHA-pinned the same way.
+
 ## Git Conventions
 
 - **Commit messages:** Angular/Conventional Commits with **mandatory scope**: `<type>(<scope>): <summary>` — e.g. `fix(psalm): resolve static analysis warnings`, `feat(ibs): add response translation`. Never append a `Co-Authored-By:` trailer.
