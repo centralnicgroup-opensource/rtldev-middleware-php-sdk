@@ -28,7 +28,7 @@ class Response implements ResponseInterface
      * The API Command used within this request
      * @var array<string, string>
      */
-    protected array $command;
+    protected array $command = [];
 
     /**
      * plain API response
@@ -51,30 +51,38 @@ class Response implements ResponseInterface
      * Column names available in this response
      * @var string[]
      */
-    protected array $columnkeys;
+    protected array $columnkeys = [];
 
     /**
      * Container of Column Instances
      * @var ColumnInterface[]
      */
-    protected array $columns;
+    protected array $columns = [];
+
+    /**
+     * Map of column name to its index in the column/columnkeys lists.
+     * Maintained by addColumn() to provide O(1) column lookup. First
+     * occurrence wins, mirroring the previous array_search() behaviour.
+     * @var array<string, int>
+     */
+    protected array $columnindex = [];
 
     /**
      * Record Index we currently point to in record list
      */
-    protected int $recordIndex;
+    protected int $recordIndex = 0;
 
     /**
      * Record List (List of rows)
      * @var Record[]
      */
-    protected array $records;
+    protected array $records = [];
 
     /**
      * Context data for the response
      * @var array<string,mixed>
      */
-    protected array $context;
+    protected array $context = [];
 
     /**
      * API request url
@@ -90,48 +98,65 @@ class Response implements ResponseInterface
      */
     public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
     {
-        if (isset($cmd["PASSWORD"])) { // make password no longer accessible
-            $cmd["PASSWORD"] = "***";
-        }
-
+        $cmd = self::sanitizeCommand($cmd);
         $this->context = $context;
+        $this->command = $cmd;
+        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
         $this->raw = RT::translate($raw, $cmd, $ph);
         $this->hash = RP::parse($this->raw);
-        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
-        $this->command = $cmd;
-        $this->columnkeys = [];
-        $this->columns = [];
-        $this->recordIndex = 0;
-        $this->records = [];
 
         $properties = $this->hash["PROPERTY"] ?? null;
         if (is_array($properties)) {
             $colKeys = array_map("strval", array_keys($properties));
-            $count = 0;
             foreach ($colKeys as $k) {
                 $this->addColumn($k, $properties[$k]);
+            }
+            $this->assembleRecords();
+        }
+    }
+
+    /**
+     * Mask password-like command keys so they can no longer be read back from
+     * the response (e.g. by custom loggers). Handles both the upper-case CNR
+     * key and the lower-case IBS key so subclasses share one implementation.
+     * @param array<string, string> $cmd API command used within this request
+     * @return array<string, string>
+     */
+    protected static function sanitizeCommand(array $cmd): array
+    {
+        foreach (["PASSWORD", "password"] as $key) {
+            if (isset($cmd[$key])) {
+                $cmd[$key] = "***";
+            }
+        }
+        return $cmd;
+    }
+
+    /**
+     * Assemble the record (row) list from the columns already added via
+     * addColumn(). Shared by CNR and IBS: each subclass populates the columns
+     * with its own Column type beforehand, while the row assembly is identical.
+     */
+    protected function assembleRecords(): void
+    {
+        $count = 0;
+        foreach ($this->columns as $col) {
+            $count = max($count, count($col->getData()));
+        }
+        for ($i = 0; $i < $count; $i++) {
+            $d = [];
+            foreach ($this->columnkeys as $k) {
                 $col = $this->getColumn($k);
-                if ($col instanceof Column) {
-                    $count2 = $col->length;
-                    if ($count2 > $count) {
-                        $count = $count2;
+                if ($col instanceof ColumnInterface) {
+                    /** @psalm-suppress MixedAssignment getDataByIndex returns mixed by design — IBS columns hold arbitrary JSON values */
+                    $v = $col->getDataByIndex($i);
+                    if ($v !== null) {
+                        /** @psalm-suppress MixedAssignment */
+                        $d[$k] = $v;
                     }
                 }
             }
-            for ($i = 0; $i < $count; $i++) {
-                $d = [];
-                foreach ($colKeys as $k) {
-                    $k .= "";
-                    $col = $this->getColumn($k);
-                    if ($col instanceof Column) {
-                        $v = $col->getDataByIndex($i);
-                        if ($v !== null) {
-                            $d[$k] = $v;
-                        }
-                    }
-                }
-                $this->addRecord($d);
-            }
+            $this->addRecord($d);
         }
     }
 
@@ -267,6 +292,7 @@ class Response implements ResponseInterface
         $col = new Column($key, $data);
         $this->columns[] = $col;
         $this->columnkeys[] = $key;
+        $this->columnindex[$key] ??= count($this->columns) - 1;
         return $this;
     }
 
@@ -289,7 +315,8 @@ class Response implements ResponseInterface
     #[\Override]
     public function getColumn(string $key): ?ColumnInterface
     {
-        return ($this->hasColumn($key) ? $this->columns[array_search($key, $this->columnkeys)] : null);
+        $idx = $this->columnindex[$key] ?? null;
+        return $idx === null ? null : $this->columns[$idx];
     }
 
     /**
@@ -633,7 +660,7 @@ class Response implements ResponseInterface
      */
     protected function hasColumn(string $key): bool
     {
-        return in_array($key, $this->columnkeys);
+        return isset($this->columnindex[$key]);
     }
 
     /**
