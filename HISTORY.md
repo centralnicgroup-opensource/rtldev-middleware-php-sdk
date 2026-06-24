@@ -1,3 +1,10 @@
+## [16.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.0...v16.0.1) (2026-06-24)
+
+
+### Bug Fixes
+
+* **client:** guard pagination against non-positive page size ([eb9f2ba](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/eb9f2ba6efc268e371f814f8a8de76f72e79f274))
+
 # [16.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v15.5.0...v16.0.0) (2026-06-23)
 
 
