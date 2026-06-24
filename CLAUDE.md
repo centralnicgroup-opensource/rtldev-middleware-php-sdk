@@ -65,7 +65,7 @@ declare(strict_types=1);
 
 /**
  * CNIC\<SubNamespace>
- * Copyright © CentralNic Group PLC
+ * Copyright © Team Internet Group PLC
  */
 
 namespace CNIC\<SubNamespace>;

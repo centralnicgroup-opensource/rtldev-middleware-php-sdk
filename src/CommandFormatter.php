@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/**
+ * CNIC
+ * Copyright © Team Internet Group PLC
+ */
+
 namespace CNIC;
 
 /**
