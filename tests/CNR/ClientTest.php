@@ -9,6 +9,7 @@ namespace CNICTEST\CNR;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CL;
 use CNIC\CNR\Response as R;
+use CNIC\CNR\ResponseTemplateManager as RTM;
 use CNIC\CNR\SessionClient;
 use CNIC\IDNA\Factory\ConverterFactory;
 use PHPUnit\Framework\TestCase;
@@ -617,6 +618,30 @@ final class ClientTest extends TestCase
         $this->assertEquals($r->getRecordsCount(), 2);
         $this->assertEquals($r->getFirstRecordIndex(), 0);
         $this->assertEquals($r->getLastRecordIndex(), 1);
+    }
+
+    public function testRequestNextResponsePageZeroLimit(): void
+    {
+        // Real CNR response shape for `QueryDomainList` with LIMIT = 0:
+        // count/limit come back as 0 while total reflects the full list size.
+        // Without the guard in requestNextResponsePage(), $first never advances
+        // and requestAllResponsePages() would loop forever.
+        RTM::addTemplate(
+            "listLimitZero",
+            "[RESPONSE]\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=0\r\nPROPERTY[LAST][0]=0\r\n"
+            . "PROPERTY[LIMIT][0]=0\r\nPROPERTY[TOTAL][0]=1725494\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.286\r\nEOF\r\n"
+        );
+        $r = new R("listLimitZero", [
+            "COMMAND" => "QueryDomainList",
+            "FIRST" => "0",
+            "LIMIT" => "0"
+        ]);
+        $this->assertTrue($r->isSuccess());
+        $this->assertSame(0, $r->getRecordsLimitation());
+        $this->assertSame(1725494, $r->getRecordsTotalCount());
+        // The guard must stop pagination rather than re-request the same page.
+        $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
 
     public function testRequestAllResponsePagesOk(): void

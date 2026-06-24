@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * CNIC\CNR
- * Copyright © CentralNic Group PLC
+ * Copyright © Team Internet Group PLC
  */
 
 namespace CNIC\CNR;
@@ -78,6 +78,14 @@ class Client extends AbstractClient
         }
         $total = $rr->getRecordsTotalCount();
         $limit = $rr->getRecordsLimitation();
+        // A non-positive page size cannot advance pagination: $first would never
+        // grow, so requestAllResponsePages would loop forever re-requesting the
+        // same page. This is reachable when the caller passes LIMIT=0 (the API
+        // echoes limit=0 with a non-zero total). Treat it as "no further pages",
+        // consistent with getNumberOfPages() which also returns 0 when limit==0.
+        if ($limit <= 0) {
+            return null;
+        }
         $first += $limit;
         if ($first < $total) {
             $mycmd["FIRST"] = $first;
