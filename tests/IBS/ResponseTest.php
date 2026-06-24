@@ -29,6 +29,19 @@ final class ResponseTest extends TestCase
         $this->assertSame($expected, RP::parse($raw));
     }
 
+    public function testCommandSecureMasksSensitiveFields(): void
+    {
+        // password and the transfer auth code are sensitive; masking is case-insensitive
+        $r = new R("{}", [
+            "command" => "RegisterDomain",
+            "password" => "secret",
+            "TransferAuthInfo" => "qCg+ic'G1m"
+        ]);
+        $cmd = $r->getCommand();
+        $this->assertEquals("***", $cmd["password"]);
+        $this->assertEquals("***", $cmd["TransferAuthInfo"]);
+    }
+
     public function testParseResponseWithSpecialCharacters(): void
     {
         $input = [

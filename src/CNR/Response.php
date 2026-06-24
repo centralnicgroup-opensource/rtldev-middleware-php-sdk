@@ -31,13 +31,16 @@ class Response implements ResponseInterface
     protected array $command = [];
 
     /**
-     * Command parameter key that carries the account password for this brand.
-     * The value is masked before the command is stored so it can never be read
-     * back (e.g. by custom loggers). Brand-specific by design: CNR uses the
-     * upper-case "PASSWORD", IBS overrides it with "password". A future brand
-     * with a different casing simply declares its own key.
+     * Command parameter keys that carry sensitive data for this brand (account
+     * password, domain authorization code, ...). Their values are masked before
+     * the command is stored so they can never be read back (e.g. by custom
+     * loggers). Matching is case-insensitive (see sanitizeCommand()), so only
+     * the names matter, not their casing. Brand-specific by design: CNR uses
+     * upper-case keys, IBS overrides with its own; a future brand simply
+     * declares the keys it uses.
+     * @var string[]
      */
-    protected string $passwordField = "PASSWORD";
+    protected array $sensitiveFields = ["PASSWORD", "AUTH"];
 
     /**
      * plain API response
@@ -125,16 +128,20 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Mask the brand's password command key (see $passwordField) so it can no
-     * longer be read back from the response (e.g. by custom loggers). Shared by
-     * CNR and IBS; the key itself is supplied per-brand via $passwordField.
+     * Mask the brand's sensitive command keys (see $sensitiveFields) so their
+     * values can never be read back from the response (e.g. by custom loggers).
+     * Matching is case-insensitive to stay robust against casing differences
+     * between what a brand documents and what it actually sends.
      * @param array<string, string> $cmd API command used within this request
      * @return array<string, string>
      */
     protected function sanitizeCommand(array $cmd): array
     {
-        if (isset($cmd[$this->passwordField])) {
-            $cmd[$this->passwordField] = "***";
+        $sensitive = array_map("strtolower", $this->sensitiveFields);
+        foreach (array_keys($cmd) as $key) {
+            if (in_array(strtolower($key), $sensitive, true)) {
+                $cmd[$key] = "***";
+            }
         }
         return $cmd;
     }

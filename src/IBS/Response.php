@@ -36,9 +36,10 @@ class Response extends CNRResponse implements ResponseInterface
     protected string $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
 
     /**
-     * IBS sends the account password under a lower-case command key.
+     * IBS carries sensitive data under lower-/camel-case command keys.
+     * @var string[]
      */
-    protected string $passwordField = "password";
+    protected array $sensitiveFields = ["password", "transferAuthInfo"];
 
     /**
      * Constructor

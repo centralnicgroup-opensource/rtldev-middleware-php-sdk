@@ -46,6 +46,22 @@ final class ResponseTest extends TestCase
         $this->assertEquals($expected, $r->getCommandPlain());
     }
 
+    public function testCommandPlainSecureMasksAuthCode(): void
+    {
+        // the domain authorization code (AUTH) is sensitive and must be masked too
+        $r = new R("", ["COMMAND" => "TransferDomain", "DOMAIN" => "test.com", "AUTH" => "secretcode"]);
+        $this->assertEquals("***", $r->getCommand()["AUTH"]);
+    }
+
+    public function testCommandPlainSecureCaseInsensitive(): void
+    {
+        // masking matches sensitive keys case-insensitively, regardless of the casing actually sent
+        $r = new R("", ["COMMAND" => "CheckAuthentication", "password" => "secret", "Auth" => "secretcode"]);
+        $cmd = $r->getCommand();
+        $this->assertEquals("***", $cmd["password"]);
+        $this->assertEquals("***", $cmd["Auth"]);
+    }
+
     public function testGetContext(): void
     {
         $context = ["traceId" => "abc123", "attempt" => 1];
