@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace CNIC\IBS;
 
 use CNIC\CNR\Response as CNRResponse;
-use CNIC\ColumnInterface;
 use CNIC\IBS\Column as IBSColumn;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
@@ -45,48 +44,21 @@ class Response extends CNRResponse implements ResponseInterface
      */
     public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
     {
-        if (isset($cmd["password"])) { // make password no longer accessible
-            $cmd["password"] = "***";
-        }
-
+        $cmd = self::sanitizeCommand($cmd);
         $this->context = $context;
-        $this->raw = RT::translate($raw, $cmd, $ph);
-        $parsedHash = RP::parse($this->raw, $cmd);
-        $this->hash = $parsedHash;
-        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
         $this->command = $cmd;
-        $this->columnkeys = [];
-        $this->columns = [];
-        $this->recordIndex = 0;
-        $this->records = [];
+        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
+        $this->raw = RT::translate($raw, $cmd, $ph);
+        $this->hash = RP::parse($this->raw, $cmd);
 
+        // IBS responses are flat key => value maps; each hash entry becomes a
+        // column. List values are kept as-is, anything else is wrapped into a
+        // single-cell list so the shared record assembly can iterate them.
         $colKeys = array_map("strval", array_keys($this->hash));
-        $count = 0;
         foreach ($colKeys as $k) {
             $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
-            $col = $this->getColumn($k);
-            if ($col instanceof ColumnInterface) {
-                $count2 = count($col->getData());
-                if ($count2 > $count) {
-                    $count = $count2;
-                }
-            }
         }
-        for ($i = 0; $i < $count; $i++) {
-            $d = [];
-            foreach ($colKeys as $k) {
-                $col = $this->getColumn($k);
-                if ($col instanceof ColumnInterface) {
-                    /** @psalm-suppress MixedAssignment getDataByIndex returns mixed by design — IBS columns hold arbitrary JSON values */
-                    $v = $col->getDataByIndex($i);
-                    if ($v !== null) {
-                        /** @psalm-suppress MixedAssignment */
-                        $d[$k] = $v;
-                    }
-                }
-            }
-            $this->addRecord($d);
-        }
+        $this->assembleRecords();
     }
 
     /**
@@ -192,6 +164,7 @@ class Response extends CNRResponse implements ResponseInterface
         $col = new IBSColumn($key, $data);
         $this->columns[] = $col;
         $this->columnkeys[] = $key;
+        $this->columnindex[$key] ??= count($this->columns) - 1;
         return $this;
     }
 
