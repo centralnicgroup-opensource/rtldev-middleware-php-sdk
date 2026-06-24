@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * CNIC
- * Copyright © CentralNic Group PLC
+ * Copyright © Team Internet Group PLC
  */
 
 namespace CNIC;
@@ -24,6 +24,12 @@ use CNIC\ResponseInterface;
  */
 abstract class AbstractClient
 {
+    /**
+     * Current module version.
+     * Kept in sync automatically by semantic-release — see .releaserc.json.
+     */
+    private const string VERSION = "16.0.0";
+
     /**
      * context data for the client
      * @var array<string,mixed>
@@ -243,7 +249,7 @@ abstract class AbstractClient
      */
     public function getVersion(): string
     {
-        return "16.0.0";
+        return self::VERSION;
     }
 
     /**

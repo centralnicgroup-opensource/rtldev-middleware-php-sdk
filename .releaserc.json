@@ -15,9 +15,17 @@
         "replacements": [
           {
             "files": ["src/AbstractClient.php"],
-            "from": "\"\\d+\\.\\d+\\.\\d+\"",
-            "to": "\"${nextRelease.version}\"",
-            "countMatches": true
+            "from": "VERSION = \"\\d+\\.\\d+\\.\\d+\"",
+            "to": "VERSION = \"${nextRelease.version}\"",
+            "countMatches": true,
+            "results": [
+              {
+                "file": "src/AbstractClient.php",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ]
           }
         ]
       }
