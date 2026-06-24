@@ -129,4 +129,32 @@ final class HttpTransportTest extends TestCase
         $this->assertSame("b=2", $d2["body"] ?? null);
         $t->close();
     }
+
+    public function testPostReturnsHttpErrorTupleOnConnectionFailure(): void
+    {
+        // Allocate then immediately release a loopback port so that nothing is
+        // listening on it; cURL then fails fast with "connection refused",
+        // exercising the curl_exec()-returns-false branch of post().
+        $probe = @stream_socket_server("tcp://127.0.0.1:0", $errno, $errstr);
+        if ($probe === false) {
+            $this->markTestSkipped("cannot allocate a probe port");
+        }
+        $name = stream_socket_get_name($probe, false);
+        fclose($probe);
+        if ($name === false) {
+            $this->markTestSkipped("cannot determine probe port");
+        }
+        $parts = explode(":", $name);
+        $closedPort = (int) end($parts);
+
+        $t = new HttpTransport();
+        [$raw, $error] = $t->post("http://127.0.0.1:" . $closedPort . "/", "x=1", 2, "UA");
+        $t->close();
+
+        $this->assertStringStartsWith("httperror|", $raw);
+        $this->assertIsString($error);
+        $this->assertNotSame("", $error, "a cURL error message is expected on connection failure");
+        // the raw payload carries the same error after the "httperror|" prefix
+        $this->assertSame("httperror|" . $error, $raw);
+    }
 }
