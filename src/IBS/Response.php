@@ -36,6 +36,11 @@ class Response extends CNRResponse implements ResponseInterface
     protected string $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
 
     /**
+     * IBS sends the account password under a lower-case command key.
+     */
+    protected string $passwordField = "password";
+
+    /**
      * Constructor
      * @param string $raw API plain response
      * @param array<string, string> $cmd API command used within this request
@@ -44,7 +49,7 @@ class Response extends CNRResponse implements ResponseInterface
      */
     public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
     {
-        $cmd = self::sanitizeCommand($cmd);
+        $cmd = $this->sanitizeCommand($cmd);
         $this->context = $context;
         $this->command = $cmd;
         $this->requestUrl = $ph["CONNECTION_URL"] ?? "";

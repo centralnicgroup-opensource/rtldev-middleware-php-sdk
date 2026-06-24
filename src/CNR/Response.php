@@ -31,6 +31,15 @@ class Response implements ResponseInterface
     protected array $command = [];
 
     /**
+     * Command parameter key that carries the account password for this brand.
+     * The value is masked before the command is stored so it can never be read
+     * back (e.g. by custom loggers). Brand-specific by design: CNR uses the
+     * upper-case "PASSWORD", IBS overrides it with "password". A future brand
+     * with a different casing simply declares its own key.
+     */
+    protected string $passwordField = "PASSWORD";
+
+    /**
      * plain API response
      */
     protected string $raw;
@@ -98,7 +107,7 @@ class Response implements ResponseInterface
      */
     public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
     {
-        $cmd = self::sanitizeCommand($cmd);
+        $cmd = $this->sanitizeCommand($cmd);
         $this->context = $context;
         $this->command = $cmd;
         $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
@@ -116,18 +125,16 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Mask password-like command keys so they can no longer be read back from
-     * the response (e.g. by custom loggers). Handles both the upper-case CNR
-     * key and the lower-case IBS key so subclasses share one implementation.
+     * Mask the brand's password command key (see $passwordField) so it can no
+     * longer be read back from the response (e.g. by custom loggers). Shared by
+     * CNR and IBS; the key itself is supplied per-brand via $passwordField.
      * @param array<string, string> $cmd API command used within this request
      * @return array<string, string>
      */
-    protected static function sanitizeCommand(array $cmd): array
+    protected function sanitizeCommand(array $cmd): array
     {
-        foreach (["PASSWORD", "password"] as $key) {
-            if (isset($cmd[$key])) {
-                $cmd[$key] = "***";
-            }
+        if (isset($cmd[$this->passwordField])) {
+            $cmd[$this->passwordField] = "***";
         }
         return $cmd;
     }
