@@ -29,9 +29,14 @@ final class HttpTransport
     {
         if (!$this->handle instanceof \CurlHandle) {
             $tmp = curl_init();
+            // @codeCoverageIgnoreStart
+            // curl_init() only returns false when the curl extension is
+            // unavailable; ext-curl is a hard composer requirement, so this
+            // defensive guard is unreachable in any supported environment.
             if ($tmp === false) {
                 return ["nocurl", "CURL for PHP missing."];
             }
+            // @codeCoverageIgnoreEnd
             $this->handle = $tmp;
         }
 
