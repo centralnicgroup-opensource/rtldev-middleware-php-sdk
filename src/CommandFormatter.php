@@ -17,6 +17,17 @@ namespace CNIC;
 final class CommandFormatter
 {
     /**
+     * Memoized priority map produced by getPropertiesPriority().
+     * The map is derived from purely static data (see
+     * getPropertiesContactFieldsWithPriority()) and never depends on the
+     * command being sorted, so it is built once per process and reused across
+     * every getSortedCommand() call (each request flatten and each response
+     * getCommand()).
+     * @var array<string,int>|null
+     */
+    private static ?array $priorityCache = null;
+
+    /**
      * Get the sorted command array based on priority
      *
      * @param array<string,string> $command The command array to be sorted
@@ -133,6 +144,10 @@ final class CommandFormatter
      */
     private static function getPropertiesPriority(): array
     {
+        if (self::$priorityCache !== null) {
+            return self::$priorityCache;
+        }
+
         $propertiesWithPriority = self::getPropertiesContactFieldsWithPriority();
 
         foreach ($propertiesWithPriority["contact"]["types"] as $typePattern => $typePriority) {
@@ -141,7 +156,7 @@ final class CommandFormatter
             }
         }
 
-        return $propertiesWithPriority["properties"];
+        return self::$priorityCache = $propertiesWithPriority["properties"];
     }
 
     /**
