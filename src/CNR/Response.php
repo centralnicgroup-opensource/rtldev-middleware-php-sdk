@@ -118,9 +118,33 @@ class Response implements ResponseInterface
         $this->context = $context;
         $this->command = $cmd;
         $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
-        $this->raw = RT::translate($raw, $cmd, $ph);
-        $this->hash = RP::parse($this->raw);
+        $this->raw = $this->translate($raw, $cmd, $ph);
+        $this->populate();
+    }
 
+    /**
+     * Translate the raw API response into its canonical form.
+     * Brand-specific by the ResponseTranslator each subclass imports; IBS
+     * overrides this to use its own translator. $cmd is already sanitized.
+     * @param array<string, string> $cmd API command used within this request
+     * @param array{CONNECTION_URL?: string} $ph placeholder array for dynamic replacement
+     */
+    protected function translate(string $raw, array $cmd, array $ph): string
+    {
+        return RT::translate($raw, $cmd, $ph);
+    }
+
+    /**
+     * Parse the translated response into the hash and build the column/record
+     * lists from it. Parsing and column extraction are kept together because
+     * each brand's parser returns a different hash shape: CNR exposes its
+     * columns under the PROPERTY sub-array and assembles records only when
+     * properties are present, while IBS (which overrides this) uses a flat
+     * key => value map. The sanitized command is available as $this->command.
+     */
+    protected function populate(): void
+    {
+        $this->hash = RP::parse($this->raw);
         $properties = $this->hash["PROPERTY"] ?? null;
         if (is_array($properties)) {
             $colKeys = array_map("strval", array_keys($properties));

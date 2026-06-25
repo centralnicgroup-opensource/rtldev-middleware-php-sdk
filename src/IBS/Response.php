@@ -19,10 +19,11 @@ use CNIC\ResponseInterface;
  * IBS Response
  *
  * Extends CNR\Response and only overrides what genuinely differs for the IBS
- * platform: the JSON-shaped response parsing (constructor), the status/code/
- * description accessors, the IBS column type, the not-supported contract
- * methods and the flat (single-page) pagination model. Every other accessor
- * and the record-cursor navigation are inherited unchanged from CNR\Response.
+ * platform: the JSON-shaped response parsing (the translate() and populate()
+ * constructor hooks), the status/code/description accessors, the IBS column
+ * type, the not-supported contract methods and the flat (single-page)
+ * pagination model. The constructor itself and every other accessor and the
+ * record-cursor navigation are inherited unchanged from CNR\Response.
  *
  * @psalm-api
  * @package CNIC\IBS
@@ -56,24 +57,28 @@ class Response extends CNRResponse implements ResponseInterface
     protected array $sensitiveFields = ["password", "transferAuthInfo"];
 
     /**
-     * Constructor
-     * @param string $raw API plain response
+     * Translate the raw API response using the IBS translator.
      * @param array<string, string> $cmd API command used within this request
-     * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
-     * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
+     * @param array{CONNECTION_URL?: string} $ph placeholder array for dynamic replacement
      */
-    public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
+    #[\Override]
+    protected function translate(string $raw, array $cmd, array $ph): string
     {
-        $cmd = $this->sanitizeCommand($cmd);
-        $this->context = $context;
-        $this->command = $cmd;
-        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
-        $this->raw = RT::translate($raw, $cmd, $ph);
-        $this->hash = RP::parse($this->raw, $cmd);
+        return RT::translate($raw, $cmd, $ph);
+    }
 
-        // IBS responses are flat key => value maps; each hash entry becomes a
-        // column. List values are kept as-is, anything else is wrapped into a
-        // single-cell list so the shared record assembly can iterate them.
+    /**
+     * Parse the translated response with the IBS parser and build the columns
+     * from it. The IBS parser needs the sanitized command (kept on
+     * $this->command by the shared constructor). IBS responses are flat
+     * key => value maps; each hash entry becomes a column, list values kept
+     * as-is and anything else wrapped into a single-cell list so the shared
+     * record assembly can iterate them.
+     */
+    #[\Override]
+    protected function populate(): void
+    {
+        $this->hash = RP::parse($this->raw, $this->command);
         $colKeys = array_map("strval", array_keys($this->hash));
         foreach ($colKeys as $k) {
             $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
