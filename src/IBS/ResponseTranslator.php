@@ -39,7 +39,7 @@ final class ResponseTranslator
     /**
      * translate a raw api response
      * @param string $raw API raw response
-     * @param array<string> $cmd requested API command
+     * @param array<string, string> $cmd requested API command
      * @param array{CONNECTION_URL?: string} $ph list of place holder vars
      * @psalm-suppress UnusedParam $cmd kept for API consistency with CNR\ResponseTranslator
      */
