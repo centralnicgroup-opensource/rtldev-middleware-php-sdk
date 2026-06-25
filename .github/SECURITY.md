@@ -2,12 +2,9 @@
 
 ## Supported Versions
 
-Only the latest major release receives security fixes. Older major versions are not actively patched.
+Only the **latest major release** receives security fixes. All earlier major versions are unsupported and will not be patched.
 
-| Version | Supported |
-| ------- | --------- |
-| 15.x    | ✅        |
-| < 15    | ❌        |
+The latest major version is whatever is currently published on [Packagist](https://packagist.org/packages/centralnic-reseller/php-sdk) — upgrade to it to stay on a supported release.
 
 ## Reporting a Vulnerability
 
