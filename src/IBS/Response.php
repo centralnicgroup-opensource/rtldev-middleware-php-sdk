@@ -121,7 +121,13 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Check if current API response represents an error case
+     * Check if current API response represents an error case.
+     *
+     * FAILURE is the only IBS status that signals an error. Every other status
+     * means the command itself succeeded — "SUCCESS" for ordinary commands, and
+     * for Domain/Check specifically "AVAILABLE"/"UNAVAILABLE", which report the
+     * domain's registrability rather than a failure. Missing/empty statuses are
+     * normalised to FAILURE upstream by ResponseTranslator's fallback templates.
      */
     #[\Override]
     public function isError(): bool
@@ -130,12 +136,16 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Check if current API response represents a success case
+     * Check if current API response represents a success case.
+     *
+     * The complement of isError(): any non-FAILURE status (SUCCESS, AVAILABLE,
+     * UNAVAILABLE, ...) is a success. See isError() for why FAILURE is the sole
+     * error signal.
      */
     #[\Override]
     public function isSuccess(): bool
     {
-        return ($this->getHashString("status") === "SUCCESS" || !$this->isError());
+        return !$this->isError();
     }
 
     /**
