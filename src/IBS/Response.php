@@ -199,7 +199,7 @@ class Response extends CNRResponse implements ResponseInterface
     public function getLastRecordIndex(): ?int
     {
         foreach ($this->columnkeys as $k) {
-            if ((bool)preg_match("/^(.+)?count|total(_.+)?$/", $k)) {
+            if ((bool)preg_match($this->paginationkeys, $k)) {
                 return (is_numeric($this->hash[$k]) ? intval($this->hash[$k], 10) : 0) - 1;
             }
         }
