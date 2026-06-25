@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 final class ResponseNavigationTest extends TestCase
 {
     /** @var array<string,string> command forcing JSON parsing */
-    private const JSONCMD = ["ResponseFormat" => "JSON"];
+    private const array JSONCMD = ["ResponseFormat" => "JSON"];
 
     /**
      * A three-record list response mirroring Domain/List: the "domain" list
