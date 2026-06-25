@@ -103,7 +103,7 @@ class Client extends AbstractClient
     public function requestAllResponsePages(array $cmd): array
     {
         $responses = [];
-        $rr = $this->request(array_merge([], $cmd, ["FIRST" => 0]));
+        $rr = $this->request(array_merge($cmd, ["FIRST" => 0]));
         $tmp = $rr;
         $idx = 0;
         do {
