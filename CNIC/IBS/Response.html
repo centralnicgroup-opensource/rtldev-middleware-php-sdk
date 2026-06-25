@@ -1,0 +1,2556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\IBS\Response | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
+        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../doctum.js"></script>
+        <script async defer src="../../js/bootstrap.min.js"></script>
+        <script async defer src="../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_IBS_Response" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                    <li><a href="../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/IBS.html">IBS</a></li><li class="backslash">\</li><li>Response</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>Response    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>Response</strong>        extends <a href="../../CNIC/CNR/Response.html"><abbr title="CNIC\CNR\Response">Response</abbr></a>        implements        <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>IBS Response</p></p>            <p><p>Extends CNR\Response and only overrides what genuinely differs for the IBS
+platform: the JSON-shaped response parsing (constructor), the status/code/
+description accessors, the IBS column type, the not-supported contract
+methods and the flat (single-page) pagination model. Every other accessor
+and the record-cursor navigation are inherited unchanged from CNR\Response.</p></p>        </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_command">
+                                        protected                                        <abbr title="CNIC\CNR\array&lt;string, string&gt;">array&lt;string, string&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$command</td>
+                <td class="last"><p>The API Command used within this request</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_command">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_sensitiveFields">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$sensitiveFields</td>
+                <td class="last"><p>IBS carries sensitive data under lower-/camel-case command keys.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_raw">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$raw</td>
+                <td class="last"><p>plain API response</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_raw">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_hash">
+                                        protected                                        <abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$hash</td>
+                <td class="last"><p>hash representation of plain API response</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_hash">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_paginationkeys">
+                                        protected                                        <abbr title="CNIC\IBS\non-empty-string">non-empty-string</abbr>
+                                                                                
+                                    </td>
+                <td>$paginationkeys</td>
+                <td class="last"><p>Regex for the count/metadata column keys IBS emits alongside a list.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_columnkeys">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$columnkeys</td>
+                <td class="last"><p>Column names available in this response</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_columnkeys">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_columns">
+                                        protected                                        <a href="../../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>[]
+                                                                                
+                                    </td>
+                <td>$columns</td>
+                <td class="last"><p>Container of Column Instances</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_columns">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_columnindex">
+                                        protected                                        <abbr title="CNIC\CNR\array&lt;string, int&gt;">array&lt;string, int&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$columnindex</td>
+                <td class="last"><p>Map of column name to its index in the column/columnkeys lists.</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_columnindex">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_recordIndex">
+                                        protected                                        int
+                                                                                
+                                    </td>
+                <td>$recordIndex</td>
+                <td class="last"><p>Record Index we currently point to in record list</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_recordIndex">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_records">
+                                        protected                                        <a href="../../CNIC/CNR/Record.html"><abbr title="CNIC\CNR\Record">Record</abbr></a>[]
+                                                                                
+                                    </td>
+                <td>$records</td>
+                <td class="last"><p>Record List (List of rows)</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_records">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_context">
+                                        protected                                        <abbr title="CNIC\CNR\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$context</td>
+                <td class="last"><p>Context data for the response</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_context">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestUrl">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$requestUrl</td>
+                <td class="last"><p>API request url</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#property_requestUrl">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(string $raw, array $cmd = [], array $ph = [], array $context = [])
+        
+                                            <p>Constructor</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sanitizeCommand">sanitizeCommand</a>(array $cmd)
+        
+                                            <p><p>Mask the brand's sensitive command keys (see $sensitiveFields) so their
+values can never be read back from the response (e.g. by custom loggers).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_sanitizeCommand">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_assembleRecords">assembleRecords</a>()
+        
+                                            <p><p>Assemble the record (row) list from the columns already added via
+addColumn(). Shared by CNR and IBS: each subclass populates the columns
+with its own Column type beforehand, while the row assembly is identical.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_assembleRecords">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getContext">getContext</a>()
+        
+                                            <p><p>Get context data for the response</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getContext">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRequestURL">getRequestURL</a>()
+        
+                                            <p><p>Get Request URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getRequestURL">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCode">getCode</a>()
+        
+                                            <p><p>Get API response code</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getDescription">getDescription</a>()
+        
+                                            <p><p>Get API response description</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPlain">getPlain</a>()
+        
+                                            <p><p>Get Plain API response</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getPlain">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    float
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getQueuetime">getQueuetime</a>()
+        
+                                            <p><p>Get Queuetime of API response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getHash">getHash</a>()
+        
+                                            <p><p>Get API response as Hash</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getHash">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    float
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRuntime">getRuntime</a>()
+        
+                                            <p><p>Get Runtime of API response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isError">isError</a>()
+        
+                                            <p><p>Check if current API response represents an error case.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isSuccess">isSuccess</a>()
+        
+                                            <p><p>Check if current API response represents a success case.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isTmpError">isTmpError</a>()
+        
+                                            <p><p>Check if current API response represents a temporary error case</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isPending">isPending</a>()
+        
+                                            <p><p>Check if current operation is returned as pending</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addColumn">addColumn</a>(string $key, array $data)
+        
+                                            <p><p>Add a column to the column list</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addRecord">addRecord</a>(array $h)
+        
+                                            <p><p>Add a record to the record list</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_addRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumn">getColumn</a>(string $key)
+        
+                                            <p><p>Get column by column name</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getColumn">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumnIndex">getColumnIndex</a>(string $colkey, int $index)
+        
+                                            <p><p>Get Data by Column Name and Index</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getColumnIndex">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumnKeys">getColumnKeys</a>(bool $filterPaginationKeys = false)
+        
+                                            <p><p>Get Column Names</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getColumnKeys">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumns">getColumns</a>()
+        
+                                            <p><p>Get List of Columns</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getColumns">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCommand">getCommand</a>()
+        
+                                            <p><p>Get Command used in this request</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getCommand">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCommandPlain">getCommandPlain</a>()
+        
+                                            <p><p>Get Command used in this request in plain text format</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getCommandPlain">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCurrentPageNumber">getCurrentPageNumber</a>()
+        
+                                            <p><p>Get Page Number of current List Query</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCurrentRecord">getCurrentRecord</a>()
+        
+                                            <p><p>Get Record of current record index</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getCurrentRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getFirstRecordIndex">getFirstRecordIndex</a>()
+        
+                                            <p><p>Get Index of first row in this response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLastRecordIndex">getLastRecordIndex</a>()
+        
+                                            <p><p>Get last record index of the current list query</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getListHash">getListHash</a>()
+        
+                                            <p><p>Get Response as List Hash including useful meta data for tables</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNextRecord">getNextRecord</a>()
+        
+                                            <p><p>Get next record in record list</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getNextRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNextPageNumber">getNextPageNumber</a>()
+        
+                                            <p><p>Get Page Number of next list query</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getNextPageNumber">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNumberOfPages">getNumberOfPages</a>()
+        
+                                            <p><p>Get the number of pages available for this list query</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getNumberOfPages">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPagination">getPagination</a>()
+        
+                                            <p><p>Get object containing all paging data</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getPagination">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPreviousPageNumber">getPreviousPageNumber</a>()
+        
+                                            <p><p>Get Page Number of previous list query</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getPreviousPageNumber">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPreviousRecord">getPreviousRecord</a>()
+        
+                                            <p><p>Get previous record in record list</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getPreviousRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecord">getRecord</a>(int $idx)
+        
+                                            <p><p>Get Record at given index</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecords">getRecords</a>()
+        
+                                            <p><p>Get all Records</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getRecords">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecordsCount">getRecordsCount</a>()
+        
+                                            <p><p>Get count of rows in this response</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getRecordsCount">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecordsTotalCount">getRecordsTotalCount</a>()
+        
+                                            <p><p>Get total count of records available for the list query</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecordsLimitation">getRecordsLimitation</a>()
+        
+                                            <p><p>Get limit(ation) setting of the current list query
+This is the count of requested rows</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasNextPage">hasNextPage</a>()
+        
+                                            <p><p>Check if this list query has a next page</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasPreviousPage">hasPreviousPage</a>()
+        
+                                            <p><p>Check if this list query has a previous page</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_rewindRecordList">rewindRecordList</a>()
+        
+                                            <p><p>Reset index in record list back to zero</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_rewindRecordList">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasColumn">hasColumn</a>(string $key)
+        
+                                            <p><p>Check if column exists in response</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_hasColumn">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasCurrentRecord">hasCurrentRecord</a>()
+        
+                                            <p><p>Check if the record list contains a record for the
+current record index in use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_hasCurrentRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasNextRecord">hasNextRecord</a>()
+        
+                                            <p><p>Check if the record list contains a next record for the
+current record index in use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_hasNextRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasPreviousRecord">hasPreviousRecord</a>()
+        
+                                            <p><p>Check if the record list contains a previous record for the
+current record index in use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_hasPreviousRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getHashString">getHashString</a>(string $key, string $default = &quot;&quot;)
+        
+                                            <p><p>Get a string value from the hash by key, returning a default if not found or not a string</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/CNR/Response.html#method_getHashString">
+<abbr title="CNIC\CNR\Response">Response</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getStatus">getStatus</a>()
+        
+                                            <p><p>Get API response status</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L65">at line 65</a></div>
+        <code>                    
+    <strong>__construct</strong>(string $raw, array $cmd = [], array $ph = [], array $context = [])
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p>Constructor</p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td><p>API plain response</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command used within this request</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$ph</td>
+                <td><p>placeholder array to get vars in response description dynamically replaced</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$context</td>
+                <td><p>context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sanitizeCommand">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_sanitizeCommand">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L142">at line 142</a></div>
+        <code>            protected        array
+    <strong>sanitizeCommand</strong>(array $cmd)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Mask the brand's sensitive command keys (see $sensitiveFields) so their
+values can never be read back from the response (e.g. by custom loggers).</p></p>                <p><p>Matching is case-insensitive to stay robust against casing differences
+between what a brand documents and what it actually sends.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command used within this request</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_assembleRecords">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_assembleRecords">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L158">at line 158</a></div>
+        <code>            protected        void
+    <strong>assembleRecords</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Assemble the record (row) list from the columns already added via
+addColumn(). Shared by CNR and IBS: each subclass populates the columns
+with its own Column type beforehand, while the row assembly is identical.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getContext">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getContext">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L185">at line 185</a></div>
+        <code>                    array
+    <strong>getContext</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get context data for the response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>context data</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestURL">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getRequestURL">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L194">at line 194</a></div>
+        <code>                    string
+    <strong>getRequestURL</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Request URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Request URL</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCode">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L87">at line 87</a></div>
+        <code>                    int
+    <strong>getCode</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API response code</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>API response code</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDescription">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L109">at line 109</a></div>
+        <code>                    string
+    <strong>getDescription</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API response description</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>API response description</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPlain">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getPlain">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L221">at line 221</a></div>
+        <code>                    string
+    <strong>getPlain</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Plain API response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Plain API response</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getQueuetime">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L121">at line 121</a></div>
+        <code>                    float
+    <strong>getQueuetime</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Queuetime of API response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>float</td>
+            <td><p>Queuetime of API response</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getHash">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getHash">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L243">at line 243</a></div>
+        <code>                    array
+    <strong>getHash</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API response as Hash</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>API response hash</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRuntime">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L131">at line 131</a></div>
+        <code>                    float
+    <strong>getRuntime</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Runtime of API response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>float</td>
+            <td><p>Runtime of API response</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isError">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L146">at line 146</a></div>
+        <code>                    bool
+    <strong>isError</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if current API response represents an error case.</p></p>                <p><p>FAILURE is the only IBS status that signals an error. Every other status
+means the command itself succeeded — &quot;SUCCESS&quot; for ordinary commands, and
+for Domain/Check specifically &quot;AVAILABLE&quot;/&quot;UNAVAILABLE&quot;, which report the
+domain's registrability rather than a failure. Missing/empty statuses are
+normalised to FAILURE upstream by ResponseTranslator's fallback templates.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>boolean result</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isSuccess">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L159">at line 159</a></div>
+        <code>                    bool
+    <strong>isSuccess</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if current API response represents a success case.</p></p>                <p><p>The complement of isError(): any non-FAILURE status (SUCCESS, AVAILABLE,
+UNAVAILABLE, ...) is a success. See isError() for why FAILURE is the sole
+error signal.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>boolean result</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isTmpError">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L169">at line 169</a></div>
+        <code>                    bool
+    <strong>isTmpError</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if current API response represents a temporary error case</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td>result</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isPending">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L179">at line 179</a></div>
+        <code>                    bool
+    <strong>isPending</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if current operation is returned as pending</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td>result</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addColumn">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L191">at line 191</a></div>
+        <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>addColumn</strong>(string $key, array $data)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a column to the column list</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td><p>column name</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$data</td>
+                <td><p>array of column data</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_addRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L322">at line 322</a></div>
+        <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>addRecord</strong>(array $h)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a record to the record list</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$h</td>
+                <td><p>row hash data</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumn">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getColumn">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L333">at line 333</a></div>
+        <code>                    <a href="../../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
+    <strong>getColumn</strong>(string $key)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get column by column name</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td><p>column name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null</td>
+            <td><p>column instance or null if column does not exist</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumnIndex">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getColumnIndex">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L345">at line 345</a></div>
+        <code>                    mixed
+    <strong>getColumnIndex</strong>(string $colkey, int $index)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Data by Column Name and Index</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$colkey</td>
+                <td><p>column name</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$index</td>
+                <td><p>column data index</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>column data at index or null if not found</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumnKeys">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getColumnKeys">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L357">at line 357</a></div>
+        <code>                    array
+    <strong>getColumnKeys</strong>(bool $filterPaginationKeys = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Column Names</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$filterPaginationKeys</td>
+                <td><p>strip pagination columns</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of Column Names</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumns">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getColumns">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L372">at line 372</a></div>
+        <code>                    array
+    <strong>getColumns</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get List of Columns</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of Columns</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCommand">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getCommand">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L382">at line 382</a></div>
+        <code>                    array
+    <strong>getCommand</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Command used in this request</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>command</td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCommandPlain">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getCommandPlain">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L391">at line 391</a></div>
+        <code>                    string
+    <strong>getCommandPlain</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Command used in this request in plain text format</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td>command</td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCurrentPageNumber">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L204">at line 204</a></div>
+        <code>                    int|null
+    <strong>getCurrentPageNumber</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Page Number of current List Query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>page number or null in case of a non-list response</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCurrentRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getCurrentRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L414">at line 414</a></div>
+        <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+    <strong>getCurrentRecord</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Record of current record index</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null in case of a non-list response</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getFirstRecordIndex">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L213">at line 213</a></div>
+        <code>                    int|null
+    <strong>getFirstRecordIndex</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Index of first row in this response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>first row index</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLastRecordIndex">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L222">at line 222</a></div>
+        <code>                    int|null
+    <strong>getLastRecordIndex</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get last record index of the current list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>record index or null for a non-list response</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getListHash">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L247">at line 247</a></div>
+        <code>                    array
+    <strong>getListHash</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Response as List Hash including useful meta data for tables</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>hash including list meta data and array of rows in hash notation</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNextRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getNextRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L486">at line 486</a></div>
+        <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+    <strong>getNextRecord</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get next record in record list</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null in case there's no further record</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNextPageNumber">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getNextPageNumber">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L498">at line 498</a></div>
+        <code>                    int|null
+    <strong>getNextPageNumber</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Page Number of next list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>page number or null if there's no next page</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNumberOfPages">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getNumberOfPages">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L513">at line 513</a></div>
+        <code>                    int
+    <strong>getNumberOfPages</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the number of pages available for this list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>number of pages</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPagination">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getPagination">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L528">at line 528</a></div>
+        <code>                    array
+    <strong>getPagination</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get object containing all paging data</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>paginator data</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPreviousPageNumber">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getPreviousPageNumber">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L547">at line 547</a></div>
+        <code>                    int|null
+    <strong>getPreviousPageNumber</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Page Number of previous list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>page number or null if there's no previous page</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPreviousRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getPreviousRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L564">at line 564</a></div>
+        <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+    <strong>getPreviousRecord</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get previous record in record list</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null if there's no previous record</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L577">at line 577</a></div>
+        <code>                    <a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+    <strong>getRecord</strong>(int $idx)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Record at given index</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$idx</td>
+                <td><p>record index</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td><p>Record or null if index does not exist</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecords">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getRecords">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L590">at line 590</a></div>
+        <code>                    array
+    <strong>getRecords</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get all Records</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>array of records</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecordsCount">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getRecordsCount">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L599">at line 599</a></div>
+        <code>                    int
+    <strong>getRecordsCount</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get count of rows in this response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>count of rows</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecordsTotalCount">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L256">at line 256</a></div>
+        <code>                    int
+    <strong>getRecordsTotalCount</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get total count of records available for the list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>total count of records or count of records for a non-list response</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecordsLimitation">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L266">at line 266</a></div>
+        <code>                    int
+    <strong>getRecordsLimitation</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get limit(ation) setting of the current list query
+This is the count of requested rows</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>limit setting or count requested rows</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasNextPage">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L275">at line 275</a></div>
+        <code>                    bool
+    <strong>hasNextPage</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if this list query has a next page</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>boolean result</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasPreviousPage">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L284">at line 284</a></div>
+        <code>                    bool
+    <strong>hasPreviousPage</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if this list query has a previous page</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>boolean result</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_rewindRecordList">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_rewindRecordList">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L668">at line 668</a></div>
+        <code>                    <a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>rewindRecordList</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Reset index in record list back to zero</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasColumn">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_hasColumn">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L679">at line 679</a></div>
+        <code>            protected        bool
+    <strong>hasColumn</strong>(string $key)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if column exists in response</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td><p>column name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasCurrentRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_hasCurrentRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L688">at line 688</a></div>
+        <code>            protected        bool
+    <strong>hasCurrentRecord</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if the record list contains a record for the
+current record index in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasNextRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_hasNextRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L702">at line 702</a></div>
+        <code>            protected        bool
+    <strong>hasNextRecord</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if the record list contains a next record for the
+current record index in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasPreviousRecord">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_hasPreviousRecord">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L712">at line 712</a></div>
+        <code>            protected        bool
+    <strong>hasPreviousRecord</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if the record list contains a previous record for the
+current record index in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getHashString">
+        <div class="location">in <a href="../../CNIC/CNR/Response.html#method_getHashString">
+<abbr title="CNIC\CNR\Response">Response</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/CNR/Response.php#L720">at line 720</a></div>
+        <code>            protected        string
+    <strong>getHashString</strong>(string $key, string $default = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get a string value from the hash by key, returning a default if not found or not a string</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$default</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getStatus">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/Response.php#L101">at line 101</a></div>
+        <code>                    string
+    <strong>getStatus</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API response status</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
