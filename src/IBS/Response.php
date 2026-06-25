@@ -30,10 +30,24 @@ use CNIC\ResponseInterface;
 class Response extends CNRResponse implements ResponseInterface
 {
     /**
-     * Regex for pagination related column keys
+     * Regex for the count/metadata column keys IBS emits alongside a list.
+     *
+     * Derived from the real IBS list endpoints: Domain/List carries
+     * "domaincount", while Url-/EmailForward/List use "total_rules" and
+     * DnsRecord/List "total_records". The alternation is fully anchored so it
+     * matches those keys exactly and never as a substring. In particular the
+     * loose ".*count" form is avoided on purpose: Domain/Count returns one
+     * top-level key per TLD the reseller holds, and ".discount" is a real gTLD,
+     * so a key literally named "discount" can occur and must NOT be treated as
+     * metadata. "totaldomains" (Domain/Count's grand total) is intentionally
+     * NOT matched either — it is meaningful aggregate data, not list metadata.
+     *
+     * Used only to strip these columns in getColumnKeys(true)/getListHash().
+     * It does NOT drive getLastRecordIndex(): IBS returns the full result set
+     * in a single page, so the last index is the record-grounded count - 1.
      * @var non-empty-string
      */
-    protected string $paginationkeys = "/^(.+)?count|total(_.+)?$/"; // to be extended
+    protected string $paginationkeys = "/^(total_.*|domaincount)$/";
 
     /**
      * IBS carries sensitive data under lower-/camel-case command keys.
@@ -208,12 +222,21 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function getLastRecordIndex(): ?int
     {
-        foreach ($this->columnkeys as $k) {
-            if ((bool)preg_match($this->paginationkeys, $k)) {
-                return (is_numeric($this->hash[$k]) ? intval($this->hash[$k], 10) : 0) - 1;
-            }
+        // IBS returns the full result set in a single page — there is no
+        // limit/offset/page cursor — so the last index is simply count - 1,
+        // grounded in the actual record list (mirrors CNR\Response).
+        //
+        // We deliberately do NOT derive this from a "count" column (e.g.
+        // domaincount, total_rules, total_records). That field equals the row
+        // count when the list is populated (so it is redundant), but on an
+        // empty list it is 0 while the meta keys (transactid/status/...) still
+        // form one record — which made the old count-key logic underflow LAST
+        // to -1, contradicting FIRST=0/COUNT=1. Grounding LAST in the records
+        // keeps the pagination block internally coherent in every case.
+        $c = $this->getRecordsCount();
+        if ($c !== 0) {
+            return $c - 1;
         }
-
         return null;
     }
 
