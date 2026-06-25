@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 final class HttpTransportTest extends TestCase
 {
     /** @var resource|null */
-    private static $proc = null;
+    private static $proc;
     /** @var array<array-key,resource> */
     private static array $pipes = [];
     private static string $url = "";

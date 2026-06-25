@@ -405,7 +405,12 @@ final class ClientTest extends TestCase
                     IDNA_DEFAULT,
                 INTL_IDNA_VARIANT_UTS46
             );
-            $this->assertEquals($ace, $tmp, "Failure: " . $idn . " -> " . (string) $tmp . " vs. " . $ace);
+            // idn_to_ascii() returns string|false; a false here is a genuine
+            // conversion failure, not an empty result. Assert it away first so
+            // the message below concatenates a real string (no cast needed) and
+            // a failure reads clearly instead of as an empty conversion.
+            $this->assertNotFalse($tmp, "idn_to_ascii() failed for: " . $idn);
+            $this->assertEquals($ace, $tmp, "Failure: " . $idn . " -> " . $tmp . " vs. " . $ace);
         }
     }
 
