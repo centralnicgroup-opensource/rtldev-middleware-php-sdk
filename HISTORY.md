@@ -1,3 +1,10 @@
+## [16.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.2...v16.0.3) (2026-06-25)
+
+
+### Bug Fixes
+
+* **response:** ground IBS getLastRecordIndex in count, anchor pagination regex ([62d2ffd](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/62d2ffd3e1d1a3db8404668e419620b4f4b6da89))
+
 ## [16.0.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.1...v16.0.2) (2026-06-25)
 
 
