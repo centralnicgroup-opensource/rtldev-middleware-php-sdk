@@ -165,6 +165,51 @@ final class ResponseTest extends TestCase
         $this->assertEquals($lh["meta"]["pg"], $r->getPagination());
     }
 
+    public function testPaginationKeysDoNotStripRealColumns(): void
+    {
+        // RSRMID-2854: columns whose names merely *contain* a pagination keyword
+        // as a substring (COUNTRY -> COUNT, FIRSTNAME -> FIRST) must NOT be
+        // treated as pagination metadata. Only the exact keys TOTAL/COUNT/LIMIT/
+        // FIRST/LAST are pagination columns and get stripped by getColumnKeys(true)
+        // and getListHash().
+        $raw = implode("\r\n", [
+            "[RESPONSE]",
+            "CODE=200",
+            "DESCRIPTION=Command completed successfully",
+            "PROPERTY[TOTAL][0]=2",
+            "PROPERTY[FIRST][0]=0",
+            "PROPERTY[LAST][0]=1",
+            "PROPERTY[COUNT][0]=2",
+            "PROPERTY[LIMIT][0]=2",
+            "PROPERTY[FIRSTNAME][0]=Adrian",
+            "PROPERTY[FIRSTNAME][1]=John",
+            "PROPERTY[COUNTRY][0]=PL",
+            "PROPERTY[COUNTRY][1]=US",
+            "EOF"
+        ]);
+        $r = new R($raw);
+
+        // unfiltered keys list everything
+        $allKeys = $r->getColumnKeys();
+        $this->assertContains("FIRSTNAME", $allKeys);
+        $this->assertContains("COUNTRY", $allKeys);
+
+        // filtered keys keep the real columns but drop the genuine pagination keys
+        $filtered = $r->getColumnKeys(true);
+        $this->assertContains("FIRSTNAME", $filtered);
+        $this->assertContains("COUNTRY", $filtered);
+        foreach (["TOTAL", "COUNT", "LIMIT", "FIRST", "LAST"] as $pgKey) {
+            $this->assertNotContains($pgKey, $filtered);
+        }
+
+        // list hash rows retain the real columns and drop the pagination keys
+        $lh = $r->getListHash();
+        $this->assertSame(["columns", "pg"], array_keys($lh["meta"]));
+        $this->assertEquals($filtered, $lh["meta"]["columns"]);
+        $this->assertSame(["FIRSTNAME" => "Adrian", "COUNTRY" => "PL"], $lh["LIST"][0]);
+        $this->assertSame(["FIRSTNAME" => "John", "COUNTRY" => "US"], $lh["LIST"][1]);
+    }
+
     public function testGetNextRecord(): void
     {
         $r = new R("listP0");
