@@ -19,12 +19,13 @@ final class ResponseNavigationTest extends TestCase
     private const JSONCMD = ["ResponseFormat" => "JSON"];
 
     /**
-     * A three-record list response: the "domain" list column drives the
-     * record count, "total" is a pagination/count column.
+     * A three-record list response mirroring Domain/List: the "domain" list
+     * column drives the record count, "domaincount" is the count/metadata
+     * column stripped by getColumnKeys(true).
      */
     private function listResponse(): R
     {
-        $json = '{"status":"SUCCESS","total":3,"domain":["a.com","b.com","c.com"]}';
+        $json = '{"status":"SUCCESS","domaincount":3,"domain":["a.com","b.com","c.com"]}';
         return new R($json, self::JSONCMD);
     }
 
@@ -100,7 +101,7 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(3, $pg["COUNT"]);
         $this->assertEquals(1, $pg["CURRENTPAGE"]);
         $this->assertEquals(0, $pg["FIRST"]);
-        $this->assertEquals(2, $pg["LAST"]); // total(3) - 1
+        $this->assertEquals(2, $pg["LAST"]); // recordsCount(3) - 1
         $this->assertEquals(3, $pg["LIMIT"]);
         $this->assertEquals(1, $pg["PAGES"]);
         $this->assertEquals(1, $pg["NEXTPAGE"]); // clamped to the last page
@@ -122,11 +123,11 @@ final class ResponseNavigationTest extends TestCase
 
     public function testGetLastRecordIndexIsComputedPerInstance(): void
     {
-        // Two independent responses with different count columns. Before the fix
+        // Two independent responses with different record counts. Before the fix
         // a method-scoped `static $last` cached the first result and poisoned the
-        // second (returning null). Each must now report its own value.
-        $a = new R('{"status":"SUCCESS","total":5,"item":["x"]}', self::JSONCMD);
-        $b = new R('{"status":"SUCCESS","total":2,"item":["y"]}', self::JSONCMD);
+        // second (returning null). Each must now report its own count - 1.
+        $a = new R('{"status":"SUCCESS","item":["a","b","c","d","e"]}', self::JSONCMD); // 5 rows
+        $b = new R('{"status":"SUCCESS","item":["x","y"]}', self::JSONCMD);             // 2 rows
 
         $this->assertEquals(4, $a->getLastRecordIndex()); // 5 - 1
         $this->assertEquals(1, $b->getLastRecordIndex()); // 2 - 1
@@ -134,10 +135,14 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(4, $a->getLastRecordIndex());
     }
 
-    public function testGetLastRecordIndexNullWithoutCountColumn(): void
+    public function testGetLastRecordIndexFallsBackToCountWithoutCountColumn(): void
     {
+        // No pagination/count column: fall back to the single-page model and
+        // report count - 1 (mirrors CNR\Response), so FIRST/LAST form a coherent
+        // pair instead of FIRST=0 / LAST=null. Here the response holds a single
+        // record, so the last index is 0.
         $r = new R('{"status":"SUCCESS","domain":["a.com"]}', self::JSONCMD);
-        $this->assertNull($r->getLastRecordIndex());
+        $this->assertEquals(0, $r->getLastRecordIndex());
     }
 
     // --- column access ---
@@ -153,9 +158,33 @@ final class ResponseNavigationTest extends TestCase
     public function testGetColumnKeysFiltersPaginationColumns(): void
     {
         $r = $this->listResponse();
-        $this->assertEquals(["status", "total", "domain"], $r->getColumnKeys());
-        // the "total" pagination/count column is stripped when filtering
+        $this->assertEquals(["status", "domaincount", "domain"], $r->getColumnKeys());
+        // the "domaincount" count/metadata column is stripped when filtering
         $this->assertEquals(["status", "domain"], $r->getColumnKeys(true));
+    }
+
+    /**
+     * Lock in the anchored pagination-key regex against the real IBS column
+     * shapes. The count/metadata keys emitted by the list endpoints
+     * (domaincount, total_rules, total_records) must be stripped, while
+     * genuine data columns that merely contain those substrings must not be
+     * — including "totaldomains" (Domain/Count's aggregate sum) and a TLD key
+     * literally named "discount" (".discount" is a real gTLD in Domain/Count).
+     */
+    public function testGetColumnKeysFilteringMatchesRealKeyShapes(): void
+    {
+        // stripped: the documented count/metadata keys
+        foreach (["domaincount", "total_rules", "total_records"] as $key) {
+            $r = new R('{"status":"SUCCESS","' . $key . '":2,"domain":["a.com","b.com"]}', self::JSONCMD);
+            $this->assertNotContains($key, $r->getColumnKeys(true), "$key should be stripped");
+        }
+
+        // kept: aggregate data and substring look-alikes must survive filtering
+        $r = new R('{"status":"SUCCESS","com":2655,"discount":4,"totaldomains":4142}', self::JSONCMD);
+        $kept = $r->getColumnKeys(true);
+        foreach (["status", "com", "discount", "totaldomains"] as $key) {
+            $this->assertContains($key, $kept, "$key must not be stripped");
+        }
     }
 
     public function testGetCommandAndPlain(): void
