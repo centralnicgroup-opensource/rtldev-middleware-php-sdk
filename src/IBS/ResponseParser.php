@@ -20,7 +20,7 @@ final class ResponseParser
     /**
      * Method to parse API response into associative array
      * @param string $raw API response
-     * @param array<string> $cmd API command used within this request
+     * @param array<string, string> $cmd API command used within this request
      * @return array<string,mixed>
      */
     public static function parse(string $raw, array $cmd = []): array

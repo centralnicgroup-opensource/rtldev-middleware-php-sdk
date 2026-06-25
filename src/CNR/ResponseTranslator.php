@@ -45,7 +45,7 @@ final class ResponseTranslator
     /**
      * translate a raw api response
      * @param string $raw API raw response
-     * @param array<string> $cmd requested API command
+     * @param array<string, string> $cmd requested API command
      * @param array{CONNECTION_URL?: string} $ph list of place holder vars
      */
     public static function translate(string $raw, array $cmd, array $ph = []): string
@@ -113,7 +113,7 @@ final class ResponseTranslator
      * @param string $regex The regular expression pattern to search for.
      * @param string $newraw The input text where the match will be searched for and replacements applied.
      * @param string $val The value to be used in replacement if a match is found.
-     * @param array<string> $cmd The command data containing replacements, if applicable.
+     * @param array<string, string> $cmd The command data containing replacements, if applicable.
      */
     private static function findMatch(string $regex, string &$newraw, string $val, array $cmd): bool
     {
