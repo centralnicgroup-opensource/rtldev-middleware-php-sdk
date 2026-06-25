@@ -268,13 +268,6 @@ interface ResponseInterface
     public function rewindRecordList(): ResponseInterface;
 
     /**
-     * Check if column exists in response
-     * @param string $key column name
-     * @return bool boolean result
-     */
-    //private function hasColumn($key): bool;
-
-    /**
      * Check if the record list contains a record for the
      * current record index in use
      * @return bool boolean result
