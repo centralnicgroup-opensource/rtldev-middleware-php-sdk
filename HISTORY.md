@@ -1,3 +1,10 @@
+## [16.0.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.1...v16.0.2) (2026-06-25)
+
+
+### Bug Fixes
+
+* **response:** anchor CNR pagination-key regex to exact keys ([1b254ea](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/1b254ea2b0864639d1972fae81bbe368de6e1154))
+
 ## [16.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.0...v16.0.1) (2026-06-24)
 
 
