@@ -199,7 +199,7 @@ abstract class AbstractClient
      */
     public function setProxy(string $proxy = ""): static
     {
-        if ($proxy === '' || $proxy === '0') {
+        if ($proxy === '') {
             unset($this->curlopts[CURLOPT_PROXY]);
         } else {
             $this->curlopts[CURLOPT_PROXY] = $proxy;
@@ -225,7 +225,7 @@ abstract class AbstractClient
      */
     public function setReferer(string $referer = ""): static
     {
-        if ($referer === '' || $referer === '0') {
+        if ($referer === '') {
             unset($this->curlopts[CURLOPT_REFERER]);
         } else {
             $this->curlopts[CURLOPT_REFERER] = $referer;
@@ -297,7 +297,7 @@ abstract class AbstractClient
     public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
     {
         $login = $uid;
-        if ($role !== '' && $role !== '0') {
+        if ($role !== '') {
             $login .= $this->socketConfig->getRoleSeparator() . $role;
         }
         return $this->setCredentials($login, $pw);
