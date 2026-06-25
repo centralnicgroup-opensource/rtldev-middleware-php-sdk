@@ -512,7 +512,7 @@ class Response implements ResponseInterface
         $t = $this->getRecordsTotalCount();
         $limit = $this->getRecordsLimitation();
         if ($t && $limit) {
-            return (int)ceil($t / $this->getRecordsLimitation());
+            return (int)ceil($t / $limit);
         }
         return 0;
     }
