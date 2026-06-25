@@ -49,5 +49,4 @@ if ($r->isSuccess()) {
     }
 } else {
     echo "LOGIN FAILED.\n";
-    echo "NOTE: Session-based communication not yet correctly supported for RRPproxy.";
 }
