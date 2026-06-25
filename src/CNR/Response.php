@@ -54,10 +54,14 @@ class Response implements ResponseInterface
     protected array $hash;
 
     /**
-     * Regex for pagination related column keys
+     * Regex for pagination related column keys.
+     * The alternation is grouped so the ^…$ anchors apply to every keyword;
+     * without the group only TOTAL/LAST are anchored and COUNT|LIMIT|FIRST
+     * would match anywhere, wrongly stripping real columns such as COUNTRY,
+     * FIRSTNAME, DISCOUNT or ACCOUNT from getColumnKeys()/getListHash().
      * @var non-empty-string
      */
-    protected string $paginationkeys = "/^TOTAL|COUNT|LIMIT|FIRST|LAST$/";
+    protected string $paginationkeys = "/^(TOTAL|COUNT|LIMIT|FIRST|LAST)$/";
 
     /**
      * Column names available in this response
