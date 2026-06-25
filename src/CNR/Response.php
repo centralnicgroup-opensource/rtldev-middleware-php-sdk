@@ -673,15 +673,6 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Check if column exists in response
-     * @param string $key column name
-     */
-    protected function hasColumn(string $key): bool
-    {
-        return isset($this->columnindex[$key]);
-    }
-
-    /**
      * Check if the record list contains a record for the
      * current record index in use
      */
