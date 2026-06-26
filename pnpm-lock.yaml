@@ -34,7 +34,7 @@ importers:
         version: 25.0.5
       semantic-release-replace-plugin:
         specifier: github:centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin
-        version: https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/e70fbb8781c855d766a04f0f9d7c8d6d641f7c00
+        version: https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/1652f970c0591f32768e5fd274c099835539a89c
       semantic-release-teams-notify-plugin:
         specifier: github:centralnicgroup-opensource/rtldev-middleware-semantic-release-notify-plugin
         version: https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-notify-plugin/tar.gz/50742ca66679b77a1275c23bc802cba3b72a9ba2
@@ -1105,8 +1105,8 @@ packages:
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
-  semantic-release-replace-plugin@https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/e70fbb8781c855d766a04f0f9d7c8d6d641f7c00:
-    resolution: {gitHosted: true, integrity: sha512-zGjMdIplDFs0m30pCBw6E/oIRT88YtB6SLTxLegU0mnmODTjz1I24MFl18aXYki1SEqbREz+67XFTcv23M6Sdw==, tarball: https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/e70fbb8781c855d766a04f0f9d7c8d6d641f7c00}
+  semantic-release-replace-plugin@https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/1652f970c0591f32768e5fd274c099835539a89c:
+    resolution: {gitHosted: true, integrity: sha512-zW6oCt1pUSEEqoQ4CNxmbVXy5+nVxGmQGpku66c/9ZhC6kkI8VpnPPjHL9rNHJqNaM0JYRZxu2IDfDp7xcYKSg==, tarball: https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/1652f970c0591f32768e5fd274c099835539a89c}
     version: 1.2.7
     engines: {node: ^24.10.0}
 
@@ -2423,7 +2423,7 @@ snapshots:
 
   safe-buffer@5.1.2: {}
 
-  semantic-release-replace-plugin@https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/e70fbb8781c855d766a04f0f9d7c8d6d641f7c00:
+  semantic-release-replace-plugin@https://codeload.github.com/centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin/tar.gz/1652f970c0591f32768e5fd274c099835539a89c:
     dependencies:
       replace-in-file: 8.4.0
       semantic-release: 25.0.5
