@@ -54,8 +54,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.4",
     "semantic-release": "^25.0.5",
-    "semantic-release-replace-plugin": "github:centralnicgroup-opensource/rtldev-middleware-semantic-release-replace-plugin",
-    "semantic-release-teams-notify-plugin": "github:centralnicgroup-opensource/rtldev-middleware-semantic-release-notify-plugin"
+    "@team-internet/semantic-release-plugins": "^1.0.6"
   },
   "lint-staged": {
     "**/*": [
