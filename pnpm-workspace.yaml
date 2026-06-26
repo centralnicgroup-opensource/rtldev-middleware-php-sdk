@@ -1,5 +1,6 @@
 minimumReleaseAgeExclude:
   - prettier@3.8.4
   - semantic-release@25.0.5
+  - "@team-internet/semantic-release-plugins@1.0.6"
 overrides:
   brace-expansion: ">=5.0.6"
