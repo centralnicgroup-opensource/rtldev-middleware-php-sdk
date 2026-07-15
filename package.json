@@ -52,8 +52,8 @@
     "@semantic-release/git": "^10.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "prettier": "^3.9.4",
-    "semantic-release": "^25.0.5",
+    "prettier": "^3.9.5",
+    "semantic-release": "^25.0.7",
     "@team-internet/semantic-release-plugins": "^1.0.7"
   },
   "lint-staged": {
