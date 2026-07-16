@@ -67,7 +67,7 @@ trait SessionCapable
      * @param array<string,mixed> $session php session object ($_SESSION)
      * @return $this
      */
-    public function reuseSession(array &$session): static
+    public function reuseSession(array $session): static
     {
         if (
             isset($session["socketcfg"]) &&
