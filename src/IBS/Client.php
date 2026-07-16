@@ -33,7 +33,6 @@ class Client extends AbstractClient
 
     /**
      * Set default IBS logger
-     * @return $this
      */
     #[\Override]
     public function setDefaultLogger(): static

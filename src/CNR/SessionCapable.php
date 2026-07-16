@@ -50,7 +50,6 @@ trait SessionCapable
      * Apply session data to a PHP session object
      *
      * @param array<string,mixed> $session php session instance ($_SESSION)
-     * @return $this
      */
     public function saveSession(array &$session): static
     {
@@ -65,7 +64,6 @@ trait SessionCapable
      * Rebuild connection settings from a PHP session object
      *
      * @param array<string,mixed> $session php session object ($_SESSION)
-     * @return $this
      */
     public function reuseSession(array $session): static
     {

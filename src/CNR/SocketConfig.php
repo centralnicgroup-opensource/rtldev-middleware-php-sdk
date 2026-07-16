@@ -82,7 +82,6 @@ final class SocketConfig extends AbstractSocketConfig
 
     /**
      * Add persistent parameter to request (request API session)
-     * @return $this
      */
     #[\Override]
     public function setPersistent(bool $value = false): static
@@ -112,7 +111,6 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Set account name to use
      * @param string $value account name
-     * @return $this
      */
     #[\Override]
     public function setLogin(string $value): static
@@ -125,7 +123,6 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Set account password to use
      * @param string $value account password
-     * @return $this
      */
     #[\Override]
     public function setPassword(string $value): static
@@ -138,7 +135,6 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Set API Session ID to use
      * @param string $value API Session ID
-     * @return $this
      */
     #[\Override]
     public function setSession(string $value = ""): static

@@ -191,7 +191,6 @@ class Response extends CNRResponse implements ResponseInterface
      * Add a column to the column list
      * @param string $key column name
      * @param array<array-key, mixed> $data array of column data
-     * @return $this
      */
     #[\Override]
     public function addColumn(string $key, array $data): static

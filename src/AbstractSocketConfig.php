@@ -56,7 +56,6 @@ abstract class AbstractSocketConfig
     /**
      * Set account name to use
      * @param string $value account name
-     * @return $this
      */
     public function setLogin(string $value): static
     {
@@ -75,7 +74,6 @@ abstract class AbstractSocketConfig
     /**
      * Set account password to use
      * @param string $value account password
-     * @return $this
      */
     public function setPassword(string $value): static
     {
@@ -94,7 +92,6 @@ abstract class AbstractSocketConfig
     /**
      * Set API Session ID to use
      * @param string $value API Session ID
-     * @return $this
      */
     public function setSession(string $value = ""): static
     {
@@ -103,7 +100,6 @@ abstract class AbstractSocketConfig
 
     /**
      * Add persistent parameter to request (request API session)
-     * @return $this
      */
     public function setPersistent(bool $value = false): static
     {

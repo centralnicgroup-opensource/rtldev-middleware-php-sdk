@@ -325,7 +325,6 @@ class Response implements ResponseInterface
      * Add a column to the column list
      * @param string $key column name
      * @param string[] $data array of column data
-     * @return $this
      * @psalm-suppress MoreSpecificImplementedParamType CNR columns are always string-valued
      */
     #[\Override]
@@ -341,7 +340,6 @@ class Response implements ResponseInterface
     /**
      * Add a record to the record list
      * @param array<string,mixed> $h row hash data
-     * @return $this
      */
     #[\Override]
     public function addRecord(array $h): static
@@ -687,7 +685,6 @@ class Response implements ResponseInterface
 
     /**
      * Reset index in record list back to zero
-     * @return $this
      */
     #[\Override]
     public function rewindRecordList(): static
