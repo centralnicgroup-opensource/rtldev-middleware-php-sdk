@@ -118,14 +118,12 @@ abstract class AbstractClient
     /**
      * Set the default logger for this client.
      * Subclasses instantiate the appropriate Logger implementation.
-     * @return $this
      */
     abstract public function setDefaultLogger(): static;
 
     /**
      * Set custom logger to use instead of the default one.
      * Create your own class implementing \CNIC\LoggerInterface.
-     * @return $this
      */
     public function setCustomLogger(LoggerInterface $customLogger): static
     {
@@ -135,7 +133,6 @@ abstract class AbstractClient
 
     /**
      * Enable debug output to STDOUT
-     * @return $this
      */
     public function enableDebugMode(): static
     {
@@ -145,7 +142,6 @@ abstract class AbstractClient
 
     /**
      * Disable debug output
-     * @return $this
      */
     public function disableDebugMode(): static
     {
@@ -185,7 +181,6 @@ abstract class AbstractClient
      * @param string $str user agent label
      * @param string $rv user agent revision
      * @param array<string> $modules further modules to add to user agent string
-     * @return $this
      */
     public function setUserAgent(string $str, string $rv, array $modules = []): static
     {
@@ -208,7 +203,6 @@ abstract class AbstractClient
     /**
      * Set proxy to use for API communication
      * @param string $proxy proxy to use (optional, for reset)
-     * @return $this
      */
     public function setProxy(string $proxy = ""): static
     {
@@ -234,7 +228,6 @@ abstract class AbstractClient
     /**
      * Set Referer to use for API communication
      * @param string $referer Referer (optional, for reset)
-     * @return $this
      */
     public function setReferer(string $referer = ""): static
     {
@@ -268,7 +261,6 @@ abstract class AbstractClient
     /**
      * Set another connection url to be used for API communication
      * @param string $value API connection url to set
-     * @return $this
      */
     public function setURL(string $value): static
     {
@@ -279,7 +271,6 @@ abstract class AbstractClient
     /**
      * Set an API session id to be used for API communication
      * @param string $value API session id (optional, for reset)
-     * @return $this
      */
     public function setSession(string $value = ""): static
     {
@@ -291,7 +282,6 @@ abstract class AbstractClient
      * Set Credentials to be used for API communication
      * @param string $uid account name (optional, for reset)
      * @param string $pw account password (optional, for reset)
-     * @return $this
      */
     public function setCredentials(string $uid = "", string $pw = ""): static
     {
@@ -305,7 +295,6 @@ abstract class AbstractClient
      * @param string $uid account name (optional, for reset)
      * @param string $role role user id (optional, for reset)
      * @param string $pw role user password (optional, for reset)
-     * @return $this
      */
     public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
     {
@@ -318,7 +307,6 @@ abstract class AbstractClient
 
     /**
      * Activate High Performance Setup
-     * @return $this
      */
     public function useHighPerformanceConnectionSetup(): static
     {
@@ -440,7 +428,6 @@ abstract class AbstractClient
 
     /**
      * Set OT&E System for API communication
-     * @return $this
      */
     public function useOTESystem(): static
     {
@@ -450,7 +437,6 @@ abstract class AbstractClient
 
     /**
      * Set LIVE System for API communication (this is the default setting)
-     * @return $this
      */
     public function useLIVESystem(): static
     {
@@ -461,7 +447,6 @@ abstract class AbstractClient
     /**
      * Set context data for the client
      * @param array<string,mixed> $context
-     * @return $this
      */
     public function setContext(array $context): static
     {
