@@ -92,10 +92,22 @@ class Client extends AbstractClient
     }
 
     /**
-     * Perform API request using the given command
+     * Perform API request using the given command.
+     *
+     * Unlike CNR — which targets a single fixed endpoint baked into the
+     * configured URL — the IBS/Moniker platform exposes many endpoints under one
+     * host, where the path selects the operation (e.g. `Domain/Create`,
+     * `Domain/Info`). The base host is configured on the SocketConfig
+     * (`liveUrl`/`oteUrl`, host only, with a trailing slash); the per-operation
+     * path is appended here and therefore must be supplied per request.
+     *
+     * This is why the signature widens {@see \CNIC\AbstractClient::request()}
+     * with an optional `$path`: it is deliberate and accepted by both static
+     * analysers. Consumers that need `$path` must hold the concrete
+     * IBS/Moniker `Client` type — the abstract contract intentionally omits it.
      *
      * @param array<string, scalar|scalar[]|null> $cmd API command to request
-     * @param string $path Path to the API endpoint
+     * @param string $path Path segment appended to the base URL to select the endpoint
      */
     #[\Override]
     public function request(array $cmd = [], string $path = ""): Response
