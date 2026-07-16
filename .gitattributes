@@ -10,6 +10,7 @@ reports export-ignore
 tests export-ignore
 docs export-ignore
 build export-ignore
+examples export-ignore
 
 # files to exclude
 .editorconfig export-ignore
@@ -19,7 +20,10 @@ build export-ignore
 .prettierrc export-ignore
 .releaserc.json export-ignore
 CLAUDE.md export-ignore
+CONTRIBUTING.md export-ignore
+HISTORY.md export-ignore
 codecov.yml export-ignore
+composer.lock export-ignore
 package.json export-ignore
 pnpm-lock.yaml export-ignore
 pnpm-workspace.yaml export-ignore
