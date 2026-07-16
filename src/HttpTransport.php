@@ -49,7 +49,7 @@ final class HttpTransport
         curl_setopt_array($this->handle, [
             // CURLOPT_VERBOSE         => true,
             CURLOPT_URL             => $url,
-            CURLOPT_CONNECTTIMEOUT  => 30, // 30s, 300s by default
+            CURLOPT_CONNECTTIMEOUT  => 30, // 30s connect timeout (cURL defaults to 300s when this is not set explicitly)
             CURLOPT_TIMEOUT         => $timeout,
             CURLOPT_POST            => 1,
             CURLOPT_HEADER          => 0,
