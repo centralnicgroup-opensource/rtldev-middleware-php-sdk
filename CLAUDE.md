@@ -179,6 +179,7 @@ Third-party actions are used directly in only two workflows (`test.yml`, `rector
 - **Branch creation:** always branch from an up-to-date default branch. Before `git checkout -b`, run `git checkout master && git pull --ff-only` so the new branch starts from the latest `origin/master`. Branching from a stale local `master` (or another feature branch) risks re-doing work that already landed upstream.
 - **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821/short-description`
 - **Pull requests:** always include the Jira issue link in the PR description. After opening the PR, add the PR URL as a comment on the Jira issue.
+- **Merging PRs:** use **rebase-merge** (`gh pr merge --rebase`). Squash merges are **disabled** at the repo level (`gh pr merge --squash` fails with "Squash merges are not allowed on this repository"); rebase keeps a linear history without merge commits.
 - **Default branch:** `master`
 - **Versioning:** Semantic versioning managed by CI release workflow
 
