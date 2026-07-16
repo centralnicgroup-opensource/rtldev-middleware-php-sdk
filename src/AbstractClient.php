@@ -92,6 +92,19 @@ abstract class AbstractClient
     /**
      * Perform API request using the given command.
      * Each client implements its own command serialisation and response type.
+     *
+     * Endpoint routing differs by brand and is intentionally not part of this
+     * contract. CNR talks to a single fixed endpoint — the full script path
+     * (e.g. `/api/call.cgi`) is baked into the configured URL and only the
+     * hostname changes between OT&E and LIVE — so CNR needs no per-request path.
+     * IBS/Moniker instead expose many endpoints under one host, where the path
+     * selects the operation, so {@see \CNIC\IBS\Client::request()} widens this
+     * signature with an optional `string $path` supplied per call. That widening
+     * is deliberate and accepted by PHPStan (L9) and Psalm (L1); the trade-off is
+     * that `$path` is reachable only through the concrete IBS/Moniker type, not
+     * through this abstract. Keeping `$path` off the shared contract is by design:
+     * CNR must never accept a per-request path, so it is not hoisted here.
+     *
      * @param array<string, scalar|scalar[]|null> $cmd API command
      */
     abstract public function request(array $cmd = []): ResponseInterface;
