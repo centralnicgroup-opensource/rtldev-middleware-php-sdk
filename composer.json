@@ -1,5 +1,5 @@
 {
-  "name": "centralnicgroup-opensource/rtldev-middleware-php-sdk",
+  "name": "centralnic-reseller/php-sdk",
   "type": "library",
   "description": "API connector library for the insanely fast Team Internet Backend APIs (CentralNic Reseller, Internet.bs, Moniker)",
   "keywords": [
