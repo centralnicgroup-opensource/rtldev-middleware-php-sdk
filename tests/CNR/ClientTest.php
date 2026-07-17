@@ -649,6 +649,29 @@ final class ClientTest extends TestCase
         $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
 
+    public function testRequestNextResponsePageLastPage(): void
+    {
+        // Final page of a multi-page list (FIRST=8, LIMIT=2, TOTAL=10): the
+        // current page already holds the last rows, so there is no next page.
+        // Response::hasNextPage() returns false here, and requestNextResponsePage()
+        // must return null accordingly (termination logic is no longer duplicated).
+        RTM::addTemplate(
+            "listLastPage",
+            "[RESPONSE]\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[FIRST][0]=8\r\nPROPERTY[LAST][0]=9\r\n"
+            . "PROPERTY[LIMIT][0]=2\r\nPROPERTY[TOTAL][0]=10\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.286\r\nEOF\r\n"
+        );
+        $r = new R("listLastPage", [
+            "COMMAND" => "QueryDomainList",
+            "FIRST" => "8",
+            "LIMIT" => "2"
+        ]);
+        $this->assertTrue($r->isSuccess());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+        $this->assertNull(self::$cl->requestNextResponsePage($r));
+    }
+
     public function testRequestAllResponsePagesOk(): void
     {
         self::$cl->setCredentials(self::$user, self::$pw)
