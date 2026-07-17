@@ -71,27 +71,24 @@ class Client extends AbstractClient
         if (array_key_exists("LAST", $mycmd)) {
             throw new \Exception("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         }
+        // Delegate the termination decision to the Response pagination helper so
+        // "is there a next page?" lives in one place (Response::hasNextPage())
+        // rather than being re-derived from total/limit arithmetic here. This
+        // also subsumes the former LIMIT<=0 guard: a non-positive page size makes
+        // getCurrentPageNumber() null, so hasNextPage() returns false and
+        // requestAllResponsePages() terminates instead of re-requesting the same
+        // page forever (see testRequestNextResponsePageZeroLimit).
+        if (!$rr->hasNextPage()) {
+            return null;
+        }
         $first = 0;
         if (array_key_exists("FIRST", $mycmd)) {
             $first = (int) $mycmd["FIRST"];
         }
-        $total = $rr->getRecordsTotalCount();
         $limit = $rr->getRecordsLimitation();
-        // A non-positive page size cannot advance pagination: $first would never
-        // grow, so requestAllResponsePages would loop forever re-requesting the
-        // same page. This is reachable when the caller passes LIMIT=0 (the API
-        // echoes limit=0 with a non-zero total). Treat it as "no further pages",
-        // consistent with getNumberOfPages() which also returns 0 when limit==0.
-        if ($limit <= 0) {
-            return null;
-        }
-        $first += $limit;
-        if ($first < $total) {
-            $mycmd["FIRST"] = $first;
-            $mycmd["LIMIT"] = $limit;
-            return $this->request($mycmd);
-        }
-        return null;
+        $mycmd["FIRST"] = $first + $limit;
+        $mycmd["LIMIT"] = $limit;
+        return $this->request($mycmd);
     }
 
     /**
