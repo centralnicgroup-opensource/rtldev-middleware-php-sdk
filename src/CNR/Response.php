@@ -525,8 +525,10 @@ class Response implements ResponseInterface
             return null;
         }
         $page = $cp + 1;
-        $pages = $this->getNumberOfPages();
-        return ($page <= $pages ? $page : $pages);
+        if ($page > $this->getNumberOfPages()) {
+            return null;
+        }
+        return $page;
     }
 
     /**
