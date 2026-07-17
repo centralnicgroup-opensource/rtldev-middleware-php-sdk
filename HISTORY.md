@@ -1,3 +1,10 @@
+## [16.0.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.4...v16.0.5) (2026-07-17)
+
+
+### Bug Fixes
+
+* **ibs:** guard ResponseParser against scalar JSON input ([8486898](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8486898803c56039d52c564a9f17d5ef89899bc5))
+
 ## [16.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.3...v16.0.4) (2026-07-17)
 
 
