@@ -1,3 +1,10 @@
+## [16.0.4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.3...v16.0.4) (2026-07-17)
+
+
+### Bug Fixes
+
+* **ibs:** derive getCode from status and read nested product code ([1cd2d9a](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/1cd2d9aba495123782de4f186d51bff71f2ea827))
+
 ## [16.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.2...v16.0.3) (2026-06-25)
 
 
