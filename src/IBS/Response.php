@@ -87,17 +87,36 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Get API response code
+     * Get API response code.
+     *
+     * IBS returns a numeric "code" on some responses even though it is not part
+     * of the public API documentation, e.g. for these requests:
+     * - /Domain/Info?domain=noexistingdomain.com&...
+     * - /unknown/path?...
+     * Two shapes occur: a top-level "code", and — since the switch to
+     * ResponseFormat=JSON — a per-product code nested under product[0].code
+     * (earlier "product_0_code", RTLDEV-16781). When present the code is returned
+     * as-is; otherwise it is derived from the status: 200 for a success, 500 for
+     * an error (see isError()).
      */
     #[\Override]
     public function getCode(): int
     {
-        foreach (["code", "product_0_code"] as $key) {
-            if (isset($this->hash[$key]) && is_numeric($this->hash[$key])) {
-                return intval($this->hash[$key]);
-            }
+        // Top-level numeric code.
+        if (isset($this->hash["code"]) && is_numeric($this->hash["code"])) {
+            return intval($this->hash["code"]);
         }
-        return 200; // default code
+        // Per-product code nested under product[0] (ResponseFormat=JSON). Cast
+        // each level to an array so a missing or scalar value degrades to
+        // "absent" instead of a type error.
+        $product = (array)($this->hash["product"] ?? []);
+        $first = (array)($product[0] ?? []);
+        if (isset($first["code"]) && is_numeric($first["code"])) {
+            return intval($first["code"]);
+        }
+        // No explicit code: map to CNR's numeric convention via status —
+        // 200 for a clear success, 500 for a clear error (see isError()).
+        return $this->isSuccess() ? 200 : 500;
     }
 
     /**

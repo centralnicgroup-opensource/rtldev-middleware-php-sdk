@@ -203,10 +203,28 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(200, $r->getCode());
     }
 
-    public function testGetCodeFallsBackToProductCode(): void
+    public function testGetCodeFallsBackTo500ForCodelessFailure(): void
     {
-        $r = new R('{"status":"SUCCESS","product_0_code":"201"}', self::JSONCMD);
+        $r = new R('{"status":"FAILURE","message":"something went wrong"}', self::JSONCMD);
+        $this->assertEquals(500, $r->getCode());
+    }
+
+    public function testGetCodeReadsNestedProductCode(): void
+    {
+        // ResponseFormat=JSON nests products as a list; the code lives at product[0].code
+        $r = new R('{"status":"SUCCESS","product":[{"code":201}]}', self::JSONCMD);
         $this->assertEquals(201, $r->getCode());
+    }
+
+    public function testGetCodeDefaultsTo200ForJsonProductWithoutCode(): void
+    {
+        // Real Domain/Create JSON response (product present, no code) -> success => 200
+        $raw = '{"transactid":"4695e4972908b18913b9ff6a1846f5bf","status":"SUCCESS","currency":"USD",'
+            . '"price":"45.20","product":[{"price":"45.20","status":"SUCCESS","domain":"testingapitest124.com",'
+            . '"domainstatus":"REGISTRAR LOCKED","expiration":"2030\/07\/17","paiduntil":"2030\/07\/17",'
+            . '"privatewhois":"FULL","whoisprivacy":"on"}]}';
+        $r = new R($raw, self::JSONCMD);
+        $this->assertEquals(200, $r->getCode());
     }
 
     public function testGetDescriptionDefault(): void

@@ -51,7 +51,7 @@ final class ResponseParser
 
         // Normalize date separators (handles nested arrays)
         array_walk_recursive($result, function (mixed &$value, string $key): void {
-            if (is_string($value) && preg_match("/date|paiduntil|expiration$/i", $key)) {
+            if (is_string($value) && preg_match("/(date|paiduntil|expiration)$/i", $key)) {
                 $value = str_replace("/", "-", $value);
             }
         });
