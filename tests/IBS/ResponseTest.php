@@ -149,6 +149,19 @@ final class ResponseTest extends TestCase
         $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
     }
 
+    public function testParseScalarJsonIsInvalid(): void
+    {
+        // A bare valid JSON scalar (number, quoted string, boolean, float)
+        // decodes to a non-array value. It must not fatal in
+        // array_walk_recursive() but return the graceful invalid-response
+        // fallback, same as any other unparseable response.
+        foreach (["123", '"a string"', "true", "false", "1.5"] as $raw) {
+            $result = RP::parse($raw);
+            $this->assertSame('FAILURE', $result['status'], "raw: {$raw}");
+            $this->assertSame('423 Invalid API response. Contact Support', $result['message'], "raw: {$raw}");
+        }
+    }
+
     public function testParseForcedPlainTextWithJsonPayload(): void
     {
         // an explicit non-JSON ResponseFormat forces the plain-text path,

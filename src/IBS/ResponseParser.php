@@ -27,8 +27,21 @@ final class ResponseParser
     {
         $isJson = $cmd === [] || (isset($cmd["ResponseFormat"]) && strtoupper($cmd["ResponseFormat"]) === "JSON");
 
-        /** @var array<string, mixed>|null $result */
+        $invalidResponse = [
+            "status" => "FAILURE",
+            "message" => "423 Invalid API response. Contact Support"
+        ];
+
+        /** @var array<string, mixed>|scalar|null $result */
         $result = $isJson ? json_decode($raw, true) : null;
+
+        // A bare valid JSON scalar (number, quoted string, boolean) decodes to a
+        // non-null, non-array value that array_walk_recursive() cannot handle.
+        // Report it as an invalid response up front rather than routing it through
+        // the plain-text parser below (which would mis-split a scalar containing "=").
+        if (is_scalar($result)) {
+            return $invalidResponse;
+        }
 
         // Plain text key=value format (templates and non-JSON responses)
         if (is_null($result)) {
@@ -43,10 +56,7 @@ final class ResponseParser
         }
 
         if (is_null($result)) {
-            return [
-                "status" => "FAILURE",
-                "message" => "423 Invalid API response. Contact Support"
-            ];
+            return $invalidResponse;
         }
 
         // Normalize date separators (handles nested arrays)
