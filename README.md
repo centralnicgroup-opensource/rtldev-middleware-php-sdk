@@ -56,16 +56,18 @@ To run the demo application, follow these steps:
 
 2. **Execute the Demo**: Once the credentials are configured, run the appropriate demo command:
 
-   Run the below npm scripts (or execute the related commands covered in package.json):
+   Run the below Composer scripts:
 
    ```sh
    # CentralNic Reseller
-   npm run test-demo-cnr
+   composer demo:cnr
    # internet.bs
-   npm run test-demo-ibs
+   composer demo:ibs
    # Moniker
-   npm run test-demo-moniker
+   composer demo:moniker
    ```
+
+   These are thin wrappers around plain PHP, so you can also run the examples directly without any tooling, e.g. `php -f examples/app_CNR.php`.
 
 3. **Update Demo Contents**:
    If you need to modify the demo contents, the relevant files are located at:
