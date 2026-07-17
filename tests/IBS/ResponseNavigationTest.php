@@ -104,7 +104,7 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(2, $pg["LAST"]); // recordsCount(3) - 1
         $this->assertEquals(3, $pg["LIMIT"]);
         $this->assertEquals(1, $pg["PAGES"]);
-        $this->assertEquals(1, $pg["NEXTPAGE"]); // clamped to the last page
+        $this->assertNull($pg["NEXTPAGE"]); // no next page on the last (only) page
         $this->assertNull($pg["PREVIOUSPAGE"]); // already on the first page
         $this->assertEquals(3, $pg["TOTAL"]);
     }
