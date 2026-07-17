@@ -14,13 +14,13 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
   - `Registrar` enum — backed by string values `CNR`, `CNIC` (legacy alias), `IBS`, `MONIKER`; used by `ClientFactory` for registrar matching
 - **Inheritance chain:**
   - `CNR\Client` and `IBS\Client` both extend `AbstractClient` directly
-  - `MONIKER\Client` extends `IBS\Client` — Moniker and IBS share the same API platform; only their `config.json` (endpoints/credentials) differs
+  - `MONIKER\Client` extends `IBS\Client` — Moniker and IBS share the same API platform; only their `SocketConfig` (endpoints/credentials) differs
   - `CNR\SessionClient extends CNR\Client` and uses the `SessionCapable` trait for login/logout
   - `IBS\SessionClient extends IBS\Client` and `MONIKER\SessionClient extends MONIKER\Client` — these are thin wrappers with no session-based login/logout
   - `CNR\SocketConfig`, `IBS\SocketConfig`, `MONIKER\SocketConfig` all extend `AbstractSocketConfig`
 - **IBS shares CNR data models:** `IBS\Response` extends `CNR\Response`, `IBS\Record` extends `CNR\Record` — IBS adds only the parsing differences on top. `IBS\Column` is a **standalone** implementation (does not extend `CNR\Column`) because IBS JSON responses carry mixed-typed values (strings, nested objects, lists) that CNR columns do not.
 - **Response construction is a template method:** `CNR\Response::__construct()` defines the skeleton and delegates the two brand-specific steps to protected hook methods — `translate()` (raw-response translation) and `populate()` (parse + record assembly). `IBS\Response` inherits the constructor unchanged and overrides **only** those two hooks (each marked `#[\Override]`) to plug in its own `ResponseParser`/`ResponseTranslator` and flat-JSON handling. When adding a new brand or changing how a response is parsed, override the hooks — do not reimplement the constructor.
-- **Config-driven:** Each sub-namespace has a `config.json` with API URLs, parameter mappings, and feature flags
+- **Config-driven:** Each sub-namespace's `SocketConfig` (extending `AbstractSocketConfig`) carries the API config as typed properties — endpoints (`$liveUrl`/`$oteUrl`), the POST parameter map (`$parameters`), and feature flags (`$socketTimeout`, `$needsIDNConvert`, `$roleSeparator`). (Historical note: this config previously lived in per-namespace `config.json` files, removed in favour of typed properties.)
 - **Interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `LoggerInterface` (all in `CNIC\`) define contracts. All concrete classes formally declare `implements`:
   - `CNR\Column`, `IBS\Column` → `ColumnInterface`
   - `CNR\Record`, `IBS\Record` → `RecordInterface`
@@ -190,9 +190,9 @@ Third-party actions are used directly in only two workflows (`test.yml`, `rector
 | `src/AbstractSocketConfig.php` | Shared abstract base for all SocketConfig classes       |
 | `src/HttpTransport.php`        | Low-level cURL HTTP transport (extracted from clients)  |
 | `src/Registrar.php`            | `Registrar` enum — string-backed, used by ClientFactory |
-| `src/CNR/config.json`          | CNR API endpoints and settings                          |
-| `src/IBS/config.json`          | IBS API endpoints and settings                          |
-| `src/MONIKER/config.json`      | Moniker API endpoints and settings                      |
+| `src/CNR/SocketConfig.php`     | CNR API endpoints and settings (typed properties)       |
+| `src/IBS/SocketConfig.php`     | IBS API endpoints and settings (typed properties)       |
+| `src/MONIKER/SocketConfig.php` | Moniker API endpoints and settings (typed properties)   |
 | `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config                               |
 | `.github/linters/phpstan.neon` | PHPStan level 9 (strictest) config                      |
 | `.github/linters/psalm.xml`    | Psalm level 1 (strictest) config                        |
