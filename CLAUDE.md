@@ -97,6 +97,9 @@ composer psalm:colored # Psalm static analysis (colored output)
 composer rector        # Rector dry-run (detect modernization opportunities)
 composer rector:fix    # Rector apply (write modernized code)
 composer audit         # Check dependencies for known CVEs (Composer 2.4+)
+composer demo:cnr      # Run the CNR demo app (examples/app_CNR.php)
+composer demo:ibs      # Run the IBS demo app
+composer demo:moniker  # Run the Moniker demo app
 ```
 
 > **CI coverage:** `composer audit` is a pre-flight convenience command, not a `composer.json` script. Dependency CVE gating is already enforced on every PR by the shared `php-sdk-lint.yml` workflow (its `composer-audit` job runs `composer audit --no-dev`), which `.github/workflows/lint.yml` delegates to. There is no separate audit step to wire into this repo.

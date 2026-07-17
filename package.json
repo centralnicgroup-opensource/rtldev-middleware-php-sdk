@@ -21,10 +21,7 @@
     }
   ],
   "scripts": {
-    "prepare": "husky",
-    "test-demo-cnr": "php -f examples/app_CNR.php",
-    "test-demo-ibs": "php -f examples/app_IBS.php",
-    "test-demo-moniker": "php -f examples/app_MONIKER.php"
+    "prepare": "husky"
   },
   "keywords": [
     "cnr",

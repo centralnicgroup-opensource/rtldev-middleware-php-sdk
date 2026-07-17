@@ -77,7 +77,28 @@
     "rector": "rector process --config .github/linters/rector.php --dry-run",
     "rector:fix": "rector process --config .github/linters/rector.php",
     "docs:serve": "php -S 0.0.0.0:8000 -t docs",
+    "demo:cnr": "@php examples/app_CNR.php",
+    "demo:ibs": "@php examples/app_IBS.php",
+    "demo:moniker": "@php examples/app_MONIKER.php",
     "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test -f tools/plantuml.jar || (mkdir -p tools && wget -q --timeout=30 --tries=3 https://github.com/plantuml/plantuml/releases/download/v1.2026.6/plantuml-1.2026.6.jar -O tools/plantuml.jar && echo '89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690  tools/plantuml.jar' | sha256sum -c); tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ > ./docs/uml.puml; java -jar tools/plantuml.jar ./docs/uml.puml -o uml_diagram"
+  },
+  "scripts-descriptions": {
+    "docs": "Generate API documentation with Doctum",
+    "codefix": "Auto-fix coding standard violations (phpcbf)",
+    "phpcs": "Check coding standards (PSR-12) with PHP_CodeSniffer",
+    "lint": "Run all linters (phpcs, phpstan, psalm, shellcheck)",
+    "test": "Run the PHPUnit test suite with coverage",
+    "shellcheck": "Lint shell scripts with shellcheck",
+    "phpstan": "Run PHPStan static analysis (level 9)",
+    "psalm": "Run Psalm static analysis (monochrome)",
+    "psalm:colored": "Run Psalm static analysis (colored output)",
+    "rector": "Detect modernization opportunities (Rector dry-run)",
+    "rector:fix": "Apply Rector modernization fixes",
+    "docs:serve": "Serve the generated API docs locally on port 8000",
+    "demo:cnr": "Run the CentralNic Reseller (CNR) demo application",
+    "demo:ibs": "Run the Internet.bs (IBS) demo application",
+    "demo:moniker": "Run the Moniker demo application",
+    "generate-uml": "Generate a UML class diagram (php-class-diagram + PlantUML)"
   },
   "config": {
     "allow-plugins": {
