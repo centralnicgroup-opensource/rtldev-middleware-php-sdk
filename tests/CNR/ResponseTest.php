@@ -307,6 +307,24 @@ final class ResponseTest extends TestCase
         $this->assertEquals(2, $r->getNextPageNumber());
     }
 
+    public function testGetNextPageNumberLastPage(): void
+    {
+        // Single-page list (FIRST=0, LIMIT=10, TOTAL=2): the last page has no
+        // next page, so getNextPageNumber() must honour the documented null
+        // contract rather than clamping to the current page number.
+        RTM::addTemplate(
+            "listLastPage",
+            "[RESPONSE]\r\nPROPERTY[TOTAL][0]=2\r\nPROPERTY[FIRST][0]=0\r\n"
+            . "PROPERTY[DOMAIN][0]=example1.com\r\nPROPERTY[DOMAIN][1]=example2.com\r\n"
+            . "PROPERTY[COUNT][0]=2\r\nPROPERTY[LAST][0]=1\r\nPROPERTY[LIMIT][0]=10\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
+        );
+        $r = new R("listLastPage");
+        $this->assertEquals(1, $r->getNumberOfPages());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+    }
+
     public function testGetNumberOfPages(): void
     {
         $r = new R("OK");
