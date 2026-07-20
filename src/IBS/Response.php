@@ -138,7 +138,8 @@ class Response extends CNRResponse implements ResponseInterface
         if ($message !== "") {
             return $message;
         }
-        // Per-product message nested under product[0] (ResponseFormat=JSON),
+        // Per-product message nested under product[0].message (since the switch
+        // to ResponseFormat=JSON; earlier flat "product_0_message", RTLDEV-16781),
         // mirroring getCode()'s product[0].code handling. Cast each level to an
         // array so a missing or scalar value degrades to "absent".
         $product = (array)($this->hash["product"] ?? []);
@@ -146,7 +147,9 @@ class Response extends CNRResponse implements ResponseInterface
         if (isset($first["message"]) && is_string($first["message"]) && $first["message"] !== "") {
             return $first["message"];
         }
-        return "Command completed successfully";
+        // No explicit message: derive from status the same way getCode() derives
+        // 200/500 — a success message for a success, a failure message otherwise.
+        return $this->isSuccess() ? "Command completed successfully" : "Command failed";
     }
 
     /**

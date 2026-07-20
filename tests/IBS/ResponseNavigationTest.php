@@ -233,6 +233,15 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals("Command completed successfully", $r->getDescription());
     }
 
+    public function testGetDescriptionErrorFallbackDerivesFromStatus(): void
+    {
+        // A message-less FAILURE must not report a success string; the final
+        // fallback mirrors getCode()'s 200/500 split on isSuccess().
+        $r = new R('{"status":"FAILURE"}', self::JSONCMD);
+        $this->assertEquals("Command failed", $r->getDescription());
+        $this->assertEquals(500, $r->getCode());
+    }
+
     public function testGetDescriptionFallsBackToProductMessage(): void
     {
         // ResponseFormat=JSON nests products as a list; the message lives at
