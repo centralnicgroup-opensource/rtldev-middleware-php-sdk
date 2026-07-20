@@ -35,6 +35,33 @@ final class SocketConfigTest extends TestCase
         );
     }
 
+    public function testGetPOSTDataSecuredMasksTransferAuthInfo(): void
+    {
+        // transferAuthInfo (domain auth code) must be masked in the secured
+        // POST body used for debug logging, alongside the account password
+        // (RSRMID-2897).
+        $sc = new SC();
+        $sc->setLogin("myuser")->setPassword("mypw");
+        $raw = $sc->getPOSTData([
+            "Domain" => "test.com",
+            "transferAuthInfo" => "sup3r-s3cr3t-auth"
+        ], true);
+        $this->assertStringContainsString("transferAuthInfo=%2A%2A%2A", $raw);
+        $this->assertStringContainsString("password=%2A%2A%2A", $raw);
+        $this->assertStringNotContainsString("sup3r-s3cr3t-auth", $raw);
+    }
+
+    public function testGetPOSTDataUnsecuredKeepsTransferAuthInfo(): void
+    {
+        // On the actual wire request (not secured) the value must pass through.
+        $sc = new SC();
+        $raw = $sc->getPOSTData([
+            "Domain" => "test.com",
+            "transferAuthInfo" => "sup3r-s3cr3t-auth"
+        ]);
+        $this->assertStringContainsString("transferAuthInfo=sup3r-s3cr3t-auth", $raw);
+    }
+
     public function testGetPOSTDataLoginOnly(): void
     {
         $sc = new SC();
