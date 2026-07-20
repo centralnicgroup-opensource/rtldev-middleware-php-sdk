@@ -1,3 +1,10 @@
+# [17.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.0.1...v17.1.0) (2026-07-20)
+
+
+### Features
+
+* **factory:** return shared AbstractClient instead of 3-way union ([5cea723](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5cea723ff3cb3fcc002625b2563507d4a2612608))
+
 ## [17.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.0.0...v17.0.1) (2026-07-20)
 
 
