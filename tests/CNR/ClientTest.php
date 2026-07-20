@@ -209,6 +209,22 @@ final class ClientTest extends TestCase
         $this->assertEquals(self::$cl->getUserAgent(), $ua);
     }
 
+    public function testSetContext(): void
+    {
+        $context = ["traceId" => "abc123", "attempt" => 1];
+        $cls = self::$cl->setContext($context);
+        $this->assertInstanceOf(CL::class, $cls);
+
+        // context set on the client must propagate into every Response
+        self::$cl->setCredentials(self::$user, self::$pw)
+            ->useOTESystem();
+        $r = self::$cl->request(["COMMAND" => "CheckDomains", "DOMAIN" => ["example.com"]]);
+        $this->assertSame($context, $r->getContext());
+
+        // reset so later tests are unaffected
+        self::$cl->setContext([]);
+    }
+
     public function testSetUrl(): void
     {
         $oldurl = self::$cl->getURL();
