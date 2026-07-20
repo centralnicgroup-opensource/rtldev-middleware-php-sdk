@@ -12,6 +12,7 @@ use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
 use CNIC\CNR\SessionClient;
 use CNIC\IDNA\Factory\ConverterFactory;
+use CNIC\System;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
@@ -140,6 +141,22 @@ final class ClientTest extends TestCase
     {
         $url = self::$cl->getURL();
         $this->assertEquals($url, self::$cl->getLiveUrl());
+    }
+
+    public function testGetSystem(): void
+    {
+        // LIVE is the default; isOTE() must agree with getSystem()
+        $this->assertSame(System::LIVE, self::$cl->getSystem());
+        $this->assertFalse(self::$cl->isOTE());
+
+        self::$cl->useOTESystem();
+        $this->assertSame(System::OTE, self::$cl->getSystem());
+        $this->assertTrue(self::$cl->isOTE());
+
+        // restore default so later tests keep the expected baseline
+        self::$cl->useLIVESystem();
+        $this->assertSame(System::LIVE, self::$cl->getSystem());
+        $this->assertFalse(self::$cl->isOTE());
     }
 
     public function testGetUserAgent(): void

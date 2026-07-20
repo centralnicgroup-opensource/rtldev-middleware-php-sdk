@@ -23,7 +23,7 @@ final class ResponseTranslator extends AbstractResponseTranslator
      * plain-string description keys for translation; keys are preg_quote'd before matching
      * @var array<string, string>
      */
-    private static array $descriptionRegexMap = [
+    private const array DESCRIPTION_REGEX_MAP = [
         // HX - just for future reference, can be cleaned up if we have something similar in place for CNR (used in test automation currently)
         "Authorization failed; Operation forbidden by ACL" => "Authorization failed; Used Command `{COMMAND}` not white-listed by your Access Control List",
         // CNR
@@ -34,7 +34,7 @@ final class ResponseTranslator extends AbstractResponseTranslator
      * raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)
      * @var array<string, string>
      */
-    private static array $descriptionRawPatternMap = [
+    private const array DESCRIPTION_RAW_PATTERN_MAP = [
         // HX - just for future reference
         //"Invalid attribute value syntax; resource record \[(.+)\]" => "Invalid Syntax for DNSZone Resource Record: $1",
         //"Missing required attribute; CLASS(?:=| \[MUST BE )PREMIUM_([\w\+]+)[\s\]]" => "Confirm the Premium pricing by providing the parameter CLASS with the value PREMIUM_$1.",
@@ -59,7 +59,7 @@ final class ResponseTranslator extends AbstractResponseTranslator
     #[\Override]
     protected static function descriptionRegexMap(): array
     {
-        return self::$descriptionRegexMap;
+        return self::DESCRIPTION_REGEX_MAP;
     }
 
     /**
@@ -68,7 +68,7 @@ final class ResponseTranslator extends AbstractResponseTranslator
     #[\Override]
     protected static function descriptionRawPatternMap(): array
     {
-        return self::$descriptionRawPatternMap;
+        return self::DESCRIPTION_RAW_PATTERN_MAP;
     }
 
     /**

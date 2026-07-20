@@ -23,7 +23,6 @@ $cl = ClientFactory::getClient("IBS");
 // the concrete Client before using it — the SDK guarantees the IBS arm is one.
 assert($cl instanceof Client);
 $cl->useOTESystem()//LIVE System would be used otherwise by default
-   //->setRemoteIPAddress("1.2.3.4") // provide ip address used for active ip filter
    ->setCredentials($user, $password)
    ->enableDebugMode();
 $r = $cl->request(["domain" => "tronexats.com"], "Domain/Info");

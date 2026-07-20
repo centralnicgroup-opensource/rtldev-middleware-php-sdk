@@ -23,7 +23,6 @@ $cl = ClientFactory::getClient("MONIKER");
 // the concrete Client before using it — the SDK guarantees the Moniker arm is one.
 assert($cl instanceof Client);
 $cl->useOTESystem()//LIVE System would be used otherwise by default
-   //->setRemoteIPAddress("1.2.3.4") // provide ip address used for active ip filter
    ->setCredentials($user, $password)
    ->enableDebugMode();
 $r = $cl->request(["tld" => "nl"], "Domain/Tldinfo");

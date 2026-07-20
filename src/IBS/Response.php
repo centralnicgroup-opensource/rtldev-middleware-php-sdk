@@ -79,7 +79,7 @@ class Response extends CNRResponse implements ResponseInterface
     protected function populate(): void
     {
         $this->hash = RP::parse($this->raw, $this->command);
-        $colKeys = array_map("strval", array_keys($this->hash));
+        $colKeys = array_map(strval(...), array_keys($this->hash));
         foreach ($colKeys as $k) {
             $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
         }

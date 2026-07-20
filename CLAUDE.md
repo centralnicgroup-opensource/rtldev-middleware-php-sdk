@@ -14,6 +14,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
   - `AbstractResponseTemplateManager` — shared template container plus its `addTemplate()`/`getTemplate()`/`getTemplates()`/`hasTemplate()`/`isTemplateMatch*()` operations; subclasses redeclare their `$templates` array and supply the hooks — `generateTemplate()` (wire format), `createResponse()`, `parseResponse()`, and `matchKeys()` (the two compared hash keys: `CODE`/`DESCRIPTION` for CNR, `status`/`message` for IBS)
   - `AbstractResponseTranslator` — shared `translate()`/`findMatch()`/`replacePlaceholders()` pipeline; subclasses supply narrow hooks — `templates()` (the brand's template container), the two rewrite maps (`descriptionRegexMap()`/`descriptionRawPatternMap()`), `fieldName()` (`description` for CNR, `message` for IBS), and `hasMissingRequiredFields()` (the invalid-template fallback trigger: `CODE`/`DESCRIPTION` for CNR, `status` for IBS). Placeholder stripping is unified on a per-field callback (only inside the human-readable field), **not** global — so `{UPPER}` content in other data fields is preserved. (Ref: RSRMID-2893.)
   - `Registrar` enum — backed by string values `CNR`, `CNIC` (legacy alias), `IBS`, `MONIKER`; used by `ClientFactory` for registrar matching
+  - `System` enum — string-backed `OTE`/`LIVE`; the API system a client is on. `AbstractClient` holds it as `protected System $system` (default `LIVE`); `useOTESystem()`/`useLIVESystem()` set it, `isOTE()` and `getSystem()` read it. The public bool `isOTE()` API is preserved — the enum only replaces the internal `bool` flag. (Ref: RSRMID-2896.)
 - **Inheritance chain:**
   - `CNR\Client` and `IBS\Client` both extend `AbstractClient` directly
   - `MONIKER\Client` extends `IBS\Client` — Moniker and IBS share the same API platform; only their `SocketConfig` (endpoints/credentials) differs
@@ -190,21 +191,22 @@ Third-party actions are used directly in only two workflows (`test.yml`, `rector
 
 ## Important Files
 
-| Path                                      | Purpose                                                 |
-| ----------------------------------------- | ------------------------------------------------------- |
-| `src/AbstractSocketConfig.php`            | Shared abstract base for all SocketConfig classes       |
-| `src/AbstractResponseTemplateManager.php` | Shared base for brand ResponseTemplateManager classes   |
-| `src/AbstractResponseTranslator.php`      | Shared translate()/findMatch()/placeholder pipeline     |
-| `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)  |
-| `src/Registrar.php`                       | `Registrar` enum — string-backed, used by ClientFactory |
-| `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)       |
-| `src/IBS/SocketConfig.php`                | IBS API endpoints and settings (typed properties)       |
-| `src/MONIKER/SocketConfig.php`            | Moniker API endpoints and settings (typed properties)   |
-| `.github/linters/phpcs.xml`               | CodeSniffer PSR-12 config                               |
-| `.github/linters/phpstan.neon`            | PHPStan level 9 (strictest) config                      |
-| `.github/linters/psalm.xml`               | Psalm level 1 (strictest) config                        |
-| `.github/phpunit.xml`                     | PHPUnit configuration                                   |
-| `env.example.sh`                          | Template for required env variables (copy to `env.sh`)  |
+| Path                                      | Purpose                                                  |
+| ----------------------------------------- | -------------------------------------------------------- |
+| `src/AbstractSocketConfig.php`            | Shared abstract base for all SocketConfig classes        |
+| `src/AbstractResponseTemplateManager.php` | Shared base for brand ResponseTemplateManager classes    |
+| `src/AbstractResponseTranslator.php`      | Shared translate()/findMatch()/placeholder pipeline      |
+| `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)   |
+| `src/Registrar.php`                       | `Registrar` enum — string-backed, used by ClientFactory  |
+| `src/System.php`                          | `System` enum — string-backed `OTE`/`LIVE` client system |
+| `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)        |
+| `src/IBS/SocketConfig.php`                | IBS API endpoints and settings (typed properties)        |
+| `src/MONIKER/SocketConfig.php`            | Moniker API endpoints and settings (typed properties)    |
+| `.github/linters/phpcs.xml`               | CodeSniffer PSR-12 config                                |
+| `.github/linters/phpstan.neon`            | PHPStan level 9 (strictest) config                       |
+| `.github/linters/psalm.xml`               | Psalm level 1 (strictest) config                         |
+| `.github/phpunit.xml`                     | PHPUnit configuration                                    |
+| `env.example.sh`                          | Template for required env variables (copy to `env.sh`)   |
 
 ## Atlassian / JIRA
 

@@ -28,13 +28,13 @@ final class ResponseTranslator extends AbstractResponseTranslator
      * plain-string description keys for translation; keys are preg_quote'd before matching
      * @var array<string, string>
      */
-    private static array $descriptionRegexMap = [];
+    private const array DESCRIPTION_REGEX_MAP = [];
 
     /**
      * raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)
      * @var array<string, string>
      */
-    private static array $descriptionRawPatternMap = [];
+    private const array DESCRIPTION_RAW_PATTERN_MAP = [];
 
     /**
      * The IBS static template container.
@@ -52,7 +52,7 @@ final class ResponseTranslator extends AbstractResponseTranslator
     #[\Override]
     protected static function descriptionRegexMap(): array
     {
-        return self::$descriptionRegexMap;
+        return self::DESCRIPTION_REGEX_MAP;
     }
 
     /**
@@ -61,7 +61,7 @@ final class ResponseTranslator extends AbstractResponseTranslator
     #[\Override]
     protected static function descriptionRawPatternMap(): array
     {
-        return self::$descriptionRawPatternMap;
+        return self::DESCRIPTION_RAW_PATTERN_MAP;
     }
 
     /**

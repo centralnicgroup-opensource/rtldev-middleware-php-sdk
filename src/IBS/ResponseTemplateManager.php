@@ -56,7 +56,7 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
     #[\Override]
     public static function getTemplate(string $id): Response
     {
-        return static::createResponse(static::hasTemplate($id) ? $id : "notfound");
+        return self::createResponse(self::hasTemplate($id) ? $id : "notfound");
     }
 
     /**
