@@ -235,8 +235,11 @@ final class ResponseNavigationTest extends TestCase
 
     public function testGetDescriptionFallsBackToProductMessage(): void
     {
-        $r = new R('{"status":"SUCCESS","product_0_message":"Created"}', self::JSONCMD);
-        $this->assertEquals("Created", $r->getDescription());
+        // ResponseFormat=JSON nests products as a list; the message lives at
+        // product[0].message (mirrors getCode() reading product[0].code).
+        $r = new R('{"status":"FAILURE","product":[{"code":100005,"message":"Permission denied!"}]}', self::JSONCMD);
+        $this->assertEquals("Permission denied!", $r->getDescription());
+        $this->assertEquals(100005, $r->getCode());
     }
 
     // --- not-supported / not-implemented contract methods ---
