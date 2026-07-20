@@ -13,6 +13,7 @@ use CNIC\AbstractSocketConfig;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\LoggerInterface;
 use CNIC\ResponseInterface;
+use CNIC\System;
 
 /**
  * Shared foundation for all registrar API clients.
@@ -69,9 +70,9 @@ abstract class AbstractClient
     protected LoggerInterface $logger;
 
     /**
-     * is connected to OT&E
+     * API system the client is connected to (defaults to LIVE)
      */
-    protected bool $isOTE = false;
+    protected System $system = System::LIVE;
 
     /**
      * HTTP transport layer
@@ -419,11 +420,19 @@ abstract class AbstractClient
     }
 
     /**
+     * Get the API system the client is currently connected to
+     */
+    public function getSystem(): System
+    {
+        return $this->system;
+    }
+
+    /**
      * Check whether the client is connected to the OT&E system
      */
     public function isOTE(): bool
     {
-        return $this->isOTE;
+        return $this->system === System::OTE;
     }
 
     /**
@@ -431,7 +440,7 @@ abstract class AbstractClient
      */
     public function useOTESystem(): static
     {
-        $this->isOTE = true;
+        $this->system = System::OTE;
         return $this->setURL($this->socketConfig->getOTEUrl());
     }
 
@@ -440,7 +449,7 @@ abstract class AbstractClient
      */
     public function useLIVESystem(): static
     {
-        $this->isOTE = false;
+        $this->system = System::LIVE;
         return $this->setURL($this->socketConfig->getLiveUrl());
     }
 

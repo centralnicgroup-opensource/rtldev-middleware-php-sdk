@@ -17,12 +17,52 @@ namespace CNIC;
 final class CommandFormatter
 {
     /**
+     * Static priority seed: the base property patterns plus the contact type and
+     * field patterns from which getPropertiesPriority() builds the full map. The
+     * data never changes at runtime, so it lives as a class constant rather than
+     * a rebuilt-per-call literal.
+     * @var array{properties: array<string, int>, contact: array{types: array<string, int>, fields: array<string, int>}}
+     */
+    private const array CONTACT_FIELDS_PRIORITY = [
+        "properties" => [
+            "COMMAND" => 1,
+            "/^(DOMAIN|DNSZONE|NAMESERVER|ZONE|SUBUSER)[0-9]*$/i" => 2,
+            "/^(PERIOD|ACTION|AUTH|TARGET|X-FEE-COMMAND|RENEWALMODE|LIMIT|WIDE)$/i" => 3,
+            "/^(NS_LIST|TRANSFERLOCK|DNSSEC0|X-FEE-AMOUNT|LOG|TYPE|OBJECT|INACTIVE|OBJECTID|OBJECTCLASS|ORDER|ORDERBY|CURRENCYFROM|CURRENCYTO)$/i" => 4,
+        ],
+        "contact" => [
+            "types" => [
+                "OWNERCONTACT|REGISTRANT" => 5,
+                "ADMINCONTACT|TECHNICAL" => 6,
+                "TECHCONTACT|BILLING" => 7,
+                "BILLINGCONTACT|ADMIN" => 8,
+            ],
+            "fields" => [
+                "FIRSTNAME" => 1,
+                "MIDDLENAME" => 2,
+                "LASTNAME" => 3,
+                "ORGANIZATION" => 4,
+                "STREET" => 5,
+                "ZIP" => 6,
+                "CITY" => 7,
+                "STATE" => 8,
+                "COUNTRY" => 9,
+                "PHONE|PHONENUMBER" => 10,
+                "EMAIL" => 11,
+                "CONTACT" => 12,
+                "LEGALFORM" => 13,
+                "IDENTIFICACION" => 14,
+                "TIPO-IDENTIFICACION" => 15,
+            ]
+        ]
+    ];
+
+    /**
      * Memoized priority map produced by getPropertiesPriority().
-     * The map is derived from purely static data (see
-     * getPropertiesContactFieldsWithPriority()) and never depends on the
-     * command being sorted, so it is built once per process and reused across
-     * every getSortedCommand() call (each request flatten and each response
-     * getCommand()).
+     * The map is derived from purely static data (see CONTACT_FIELDS_PRIORITY)
+     * and never depends on the command being sorted, so it is built once per
+     * process and reused across every getSortedCommand() call (each request
+     * flatten and each response getCommand()).
      * @var array<string,int>|null
      */
     private static ?array $priorityCache = null;
@@ -96,48 +136,6 @@ final class CommandFormatter
     }
 
     /**
-     * Assign the priority of each key in the command array based on the key pattern
-     *
-     * @return array{properties: array<string, int>, contact: array{types: array<string, int>, fields: array<string, int>}}
-     */
-    private static function getPropertiesContactFieldsWithPriority(): array
-    {
-        return [
-            "properties" => [
-                "COMMAND" => 1,
-                "/^(DOMAIN|DNSZONE|NAMESERVER|ZONE|SUBUSER)[0-9]*$/i" => 2,
-                "/^(PERIOD|ACTION|AUTH|TARGET|X-FEE-COMMAND|RENEWALMODE|LIMIT|WIDE)$/i" => 3,
-                "/^(NS_LIST|TRANSFERLOCK|DNSSEC0|X-FEE-AMOUNT|LOG|TYPE|OBJECT|INACTIVE|OBJECTID|OBJECTCLASS|ORDER|ORDERBY|CURRENCYFROM|CURRENCYTO)$/i" => 4,
-            ],
-            "contact" => [
-                "types" => [
-                    "OWNERCONTACT|REGISTRANT" => 5,
-                    "ADMINCONTACT|TECHNICAL" => 6,
-                    "TECHCONTACT|BILLING" => 7,
-                    "BILLINGCONTACT|ADMIN" => 8,
-                ],
-                "fields" => [
-                    "FIRSTNAME" => 1,
-                    "MIDDLENAME" => 2,
-                    "LASTNAME" => 3,
-                    "ORGANIZATION" => 4,
-                    "STREET" => 5,
-                    "ZIP" => 6,
-                    "CITY" => 7,
-                    "STATE" => 8,
-                    "COUNTRY" => 9,
-                    "PHONE|PHONENUMBER" => 10,
-                    "EMAIL" => 11,
-                    "CONTACT" => 12,
-                    "LEGALFORM" => 13,
-                    "IDENTIFICACION" => 14,
-                    "TIPO-IDENTIFICACION" => 15,
-                ]
-            ]
-        ];
-    }
-
-    /**
      * Generate the priority array with properties dynamically including contact fields and their priority
      *
      * @return array<string,int> The priority array
@@ -148,7 +146,7 @@ final class CommandFormatter
             return self::$priorityCache;
         }
 
-        $propertiesWithPriority = self::getPropertiesContactFieldsWithPriority();
+        $propertiesWithPriority = self::CONTACT_FIELDS_PRIORITY;
 
         foreach ($propertiesWithPriority["contact"]["types"] as $typePattern => $typePriority) {
             foreach ($propertiesWithPriority["contact"]["fields"] as $fieldPattern => $fieldPriority) {

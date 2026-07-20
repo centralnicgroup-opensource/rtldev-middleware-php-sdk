@@ -147,7 +147,7 @@ class Response implements ResponseInterface
         $this->hash = RP::parse($this->raw);
         $properties = $this->hash["PROPERTY"] ?? null;
         if (is_array($properties)) {
-            $colKeys = array_map("strval", array_keys($properties));
+            $colKeys = array_map(strval(...), array_keys($properties));
             foreach ($colKeys as $k) {
                 $this->addColumn($k, $properties[$k]);
             }
@@ -165,7 +165,7 @@ class Response implements ResponseInterface
      */
     protected function sanitizeCommand(array $cmd): array
     {
-        $sensitive = array_map("strtolower", $this->sensitiveFields);
+        $sensitive = array_map(strtolower(...), $this->sensitiveFields);
         foreach (array_keys($cmd) as $key) {
             if (in_array(strtolower($key), $sensitive, true)) {
                 $cmd[$key] = "***";
