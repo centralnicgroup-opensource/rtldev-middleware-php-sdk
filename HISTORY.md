@@ -1,3 +1,11 @@
+## [17.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.0.0...v17.0.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* **ibs:** derive getDescription() fallback from status ([c05b938](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/c05b9387a88ddf388e4e521cfbf4bcdca293f994))
+* **ibs:** read per-product message in getDescription() ([14da374](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/14da3740f88ad573c315939c41873a651ddec911))
+
 # [17.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.5...v17.0.0) (2026-07-20)
 
 
