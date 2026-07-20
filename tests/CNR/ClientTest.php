@@ -211,18 +211,18 @@ final class ClientTest extends TestCase
 
     public function testSetContext(): void
     {
+        // use a dedicated client so credential/context state does not leak
+        // into the shared static client used by the other tests
+        $cl = new SessionClient();
         $context = ["traceId" => "abc123", "attempt" => 1];
-        $cls = self::$cl->setContext($context);
+        $cls = $cl->setContext($context);
         $this->assertInstanceOf(CL::class, $cls);
 
         // context set on the client must propagate into every Response
-        self::$cl->setCredentials(self::$user, self::$pw)
+        $cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
-        $r = self::$cl->request(["COMMAND" => "CheckDomains", "DOMAIN" => ["example.com"]]);
+        $r = $cl->request(["COMMAND" => "CheckDomains", "DOMAIN" => ["example.com"]]);
         $this->assertSame($context, $r->getContext());
-
-        // reset so later tests are unaffected
-        self::$cl->setContext([]);
     }
 
     public function testSetUrl(): void
