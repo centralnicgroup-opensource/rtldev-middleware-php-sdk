@@ -91,7 +91,10 @@ CI is powered by [reusable GitHub Actions workflows](https://github.com/centraln
 | 8.4         | ✓      |
 | 8.5         | ✓      |
 
-The matrix is configured via the repository variable `RTLDEV_MW_CI_PHP_MATRIX`.
+The matrix is configured via the repository variable `RTLDEV_MW_CI_PHP_MATRIX` and tracks the **actively-maintained** PHP versions — new versions are added as they enter active support and dropped once they reach end-of-life.
+
+> [!NOTE]
+> `composer.json` requires `php: >=8.3.0`, which sets the **minimum** only — the SDK runs on every version in the matrix above. Note that the source code itself is deliberately held to **PHP 8.3 language features** (Rector is pinned to 8.3) because the SDK also ships inside ionCube-encoded WHMCS integrations that cannot execute newer syntax. In short: runs on 8.3–8.5, but only _uses_ 8.3-level language features. See the CLAUDE.md "PHP Version Policy" for the full rationale.
 
 ## Maintainers
 
