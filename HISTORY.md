@@ -1,3 +1,10 @@
+# [17.2.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.1.0...v17.2.0) (2026-07-20)
+
+
+### Features
+
+* **client:** model OT&E/LIVE as System enum; PHP 8.3 modernizations ([82d61ca](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/82d61ca1425a01758c04b048015da5f008d087cc))
+
 # [17.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.0.1...v17.1.0) (2026-07-20)
 
 
