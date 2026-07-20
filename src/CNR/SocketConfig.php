@@ -25,6 +25,13 @@ final class SocketConfig extends AbstractSocketConfig
     protected string $roleSeparator = ":";
 
     /**
+     * CNR carries sensitive data under upper-case command keys. Mirrors
+     * {@see \CNIC\CNR\Response::$sensitiveFields}.
+     * @var string[]
+     */
+    protected array $sensitiveFields = ["PASSWORD", "AUTH"];
+
+    /**
      * Parameter to trigger creation of a backend session
      */
     private bool $persistent = false;
@@ -65,13 +72,13 @@ final class SocketConfig extends AbstractSocketConfig
             $params[$this->parameters["session"]] = $this->session;
         }
         if ($command !== []) {
+            if ($secured) {
+                $command = $this->maskSensitiveCommand($command);
+            }
             $newcommand = "";
             foreach ($command as $key => $val) {
                 if ($val === null) {
                     continue;
-                }
-                if ($secured && preg_match("/^PASSWORD$/i", $key)) {
-                    $val = "***";
                 }
                 $newcommand .= "{$key}={$val}\n";
             }

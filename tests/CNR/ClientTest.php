@@ -103,6 +103,28 @@ final class ClientTest extends TestCase
         );
     }
 
+    public function testGetPostDataSecuredMasksAuth(): void
+    {
+        // AUTH (EPP transfer authorization code) must be masked in the secured
+        // POST body used for debug logging, not only PASSWORD (RSRMID-2897).
+        $enc = self::$cl->getPOSTData([
+            "COMMAND" => "TransferDomain",
+            "DOMAIN" => "example.com",
+            "AUTH" => "sup3r-s3cr3t-auth"
+        ], true);
+
+        $expected = http_build_query([
+            "s_command" => implode("\n", [
+                "COMMAND=TransferDomain",
+                "DOMAIN=example.com",
+                "AUTH=***"
+            ])
+        ]);
+
+        $this->assertEquals($expected, $enc);
+        $this->assertStringNotContainsString("sup3r-s3cr3t-auth", $enc);
+    }
+
     public function testGetPostDataObj(): void
     {
         $enc = self::$cl->getPOSTData([

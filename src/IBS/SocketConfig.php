@@ -24,6 +24,13 @@ class SocketConfig extends AbstractSocketConfig
     protected bool $needsIDNConvert = false;
 
     /**
+     * IBS carries sensitive data under lower-/camel-case command keys. Mirrors
+     * {@see \CNIC\IBS\Response::$sensitiveFields}.
+     * @var string[]
+     */
+    protected array $sensitiveFields = ["password", "transferAuthInfo"];
+
+    /**
      * list of http request parameters
      * IBS only uses login/password — command and session are CNR-specific.
      * @var array{login: string, password: string}
@@ -42,7 +49,7 @@ class SocketConfig extends AbstractSocketConfig
     #[\Override]
     protected function getPOSTDataParams(array $command, bool $secured): array
     {
-        $params = $command;
+        $params = $secured ? $this->maskSensitiveCommand($command) : $command;
         if (strlen($this->login) !== 0) {
             $params[$this->parameters["login"]] = $this->login;
         }

@@ -54,6 +54,18 @@ abstract class AbstractSocketConfig
     protected string $roleSeparator = "";
 
     /**
+     * Command parameter keys whose values carry sensitive data (account
+     * password, domain authorization code, ...) and must be masked in the
+     * "secured" POST body used for debug logging. Matching is case-insensitive
+     * (see maskSensitiveCommand()), so only the names matter, not their casing.
+     * Brand subclasses declare the keys their API uses; this mirrors the
+     * corresponding Response::$sensitiveFields set for each brand so the debug
+     * mask and the stored-command mask cover the same fields.
+     * @var string[]
+     */
+    protected array $sensitiveFields = [];
+
+    /**
      * Set account name to use
      * @param string $value account name
      */
@@ -152,6 +164,27 @@ abstract class AbstractSocketConfig
     public function getRoleSeparator(): string
     {
         return $this->roleSeparator;
+    }
+
+    /**
+     * Mask the values of the brand's sensitive command keys (see
+     * $sensitiveFields) so command-level secrets — e.g. a domain transfer
+     * authorization code — never reach the debug log in cleartext. Matching is
+     * case-insensitive to stay robust against casing differences between what a
+     * brand documents and what it actually sends. `null` values are left
+     * untouched (they are dropped from the request, not logged).
+     * @param array<string, string|null> $command API Command to mask
+     * @return array<string, string|null>
+     */
+    protected function maskSensitiveCommand(array $command): array
+    {
+        $sensitive = array_map(strtolower(...), $this->sensitiveFields);
+        foreach ($command as $key => $val) {
+            if ($val !== null && in_array(strtolower($key), $sensitive, true)) {
+                $command[$key] = "***";
+            }
+        }
+        return $command;
     }
 
     /**
