@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use CNIC\ClientFactory;
+use CNIC\IBS\Client;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -17,6 +18,10 @@ if ($user === false || $password === false) {
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n\n";
 $cl = ClientFactory::getClient("IBS");
+// The factory returns the shared CNIC\AbstractClient contract. The per-request
+// endpoint path (request($cmd, $path)) is IBS/Moniker-specific, so narrow to
+// the concrete Client before using it — the SDK guarantees the IBS arm is one.
+assert($cl instanceof Client);
 $cl->useOTESystem()//LIVE System would be used otherwise by default
    //->setRemoteIPAddress("1.2.3.4") // provide ip address used for active ip filter
    ->setCredentials($user, $password)
