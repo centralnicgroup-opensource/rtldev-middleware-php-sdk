@@ -226,20 +226,18 @@ class Response extends CNRResponse implements ResponseInterface
      * Add a column to the column list
      *
      * IBS uses its own standalone Column (mixed-typed JSON values) rather than
-     * CNR's string-only Column, and the two have divergent constructor types —
-     * so this stays a full override rather than a shared newColumn() factory
-     * hook (unlike newRecord(), where both brands share array<string,mixed>).
+     * CNR's string-only Column, so it builds that type here and hands it to the
+     * shared registerColumn() bookkeeping in the base. The two Column
+     * constructors have divergent value types (string[] vs mixed[]), which is
+     * why a param-typed newColumn() factory would not stay type-clean — see
+     * registerColumn().
      * @param string $key column name
      * @param array<array-key, mixed> $data array of column data
      */
     #[\Override]
     public function addColumn(string $key, array $data): static
     {
-        $col = new IBSColumn($key, $data);
-        $this->columns[] = $col;
-        $this->columnkeys[] = $key;
-        $this->columnindex[$key] ??= count($this->columns) - 1;
-        return $this;
+        return $this->registerColumn(new IBSColumn($key, $data));
     }
 
     /**
