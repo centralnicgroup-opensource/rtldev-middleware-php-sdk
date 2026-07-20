@@ -11,6 +11,8 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
   - `AbstractClient` — shared foundation for all registrar API clients; subclasses provide `request()`, the default logger, and the SocketConfig subtype
   - `AbstractSocketConfig` — shared base for all SocketConfig classes; subclasses provide `getPOSTDataParams()` and their own `$parameters` array
   - `HttpTransport` — extracted cURL layer; owns the cURL handle lifecycle and exposes a single `post()` method
+  - `AbstractResponseTemplateManager` — shared template container plus its `addTemplate()`/`getTemplate()`/`getTemplates()`/`hasTemplate()`/`isTemplateMatch*()` operations; subclasses redeclare their `$templates` array and supply the hooks — `generateTemplate()` (wire format), `createResponse()`, `parseResponse()`, and `matchKeys()` (the two compared hash keys: `CODE`/`DESCRIPTION` for CNR, `status`/`message` for IBS)
+  - `AbstractResponseTranslator` — shared `translate()`/`findMatch()`/`replacePlaceholders()` pipeline; subclasses supply narrow hooks — `templates()` (the brand's template container), the two rewrite maps (`descriptionRegexMap()`/`descriptionRawPatternMap()`), `fieldName()` (`description` for CNR, `message` for IBS), and `hasMissingRequiredFields()` (the invalid-template fallback trigger: `CODE`/`DESCRIPTION` for CNR, `status` for IBS). Placeholder stripping is unified on a per-field callback (only inside the human-readable field), **not** global — so `{UPPER}` content in other data fields is preserved. (Ref: RSRMID-2893.)
   - `Registrar` enum — backed by string values `CNR`, `CNIC` (legacy alias), `IBS`, `MONIKER`; used by `ClientFactory` for registrar matching
 - **Inheritance chain:**
   - `CNR\Client` and `IBS\Client` both extend `AbstractClient` directly
@@ -27,7 +29,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
   - `CNR\Response`, `IBS\Response` → `ResponseInterface`
   - `CNR\Logger`, `IBS\Logger` → `LoggerInterface`
   - Type-hint against the interface rather than the concrete class (e.g. `LoggerInterface` not `Logger`, `ResponseInterface` not `Response`)
-- **Static utilities:** `ResponseParser::parse()` and `ResponseTranslator` (both `CNR\` and `IBS\`) for parsing/translating raw API responses; `CommandFormatter::flattenCommand()` for request serialisation
+- **Static utilities:** `ResponseParser::parse()` and `ResponseTranslator` (both `CNR\` and `IBS\`) for parsing/translating raw API responses; `CommandFormatter::flattenCommand()` for request serialisation. The brand `ResponseTemplateManager` and `ResponseTranslator` classes extend the shared `CNIC\AbstractResponseTemplateManager` / `CNIC\AbstractResponseTranslator` bases above and keep only their per-brand data + hooks — when changing template/translation behaviour, edit the shared pipeline in the abstract and the brand differences in the hooks, don't reimplement the pipeline per brand.
 - **Factory pattern:** `ClientFactory::getClient()` returns a `SessionClient|IBSSessionClient|MONIKERSessionClient` union type
 - **Endpoint routing differs by brand — IBS/Moniker `request()` widens the signature by design:** CNR talks to a **single fixed endpoint**. The full script path (e.g. `/api/call.cgi`) is baked into the configured URL (`CNR\SocketConfig::$liveUrl`/`$oteUrl`); only the hostname changes between OT&E and LIVE, so CNR never needs a per-request path and `CNR\Client::request(array $cmd = [])` matches the `AbstractClient` contract exactly. IBS/Moniker instead expose **many endpoints under one host**, where the path selects the operation. Their SocketConfig configures the **host only** (trailing slash, no path), and `IBS\Client::request(array $cmd = [], string $path = "")` appends a per-request `$path` — so it **widens** the abstract `request(array $cmd = [])` with an optional parameter. This widening is **deliberate**, not a defect: PHP permits it and both PHPStan (L9) and Psalm (L1) accept it. The trade-off — `$path` is reachable only through the concrete IBS/Moniker `Client` type, not through `AbstractClient` — is intended: CNR must never accept a per-request path, so `$path` is **not** hoisted onto the shared contract. When touching these `request()` methods, preserve this asymmetry; do not "align" the signatures by adding `$path` to the abstract. (Ref: RSRMID-2864.)
 - **Public API annotation:** classes and interfaces that form the public API are annotated `@psalm-api` to suppress unused-symbol warnings
@@ -188,19 +190,21 @@ Third-party actions are used directly in only two workflows (`test.yml`, `rector
 
 ## Important Files
 
-| Path                           | Purpose                                                 |
-| ------------------------------ | ------------------------------------------------------- |
-| `src/AbstractSocketConfig.php` | Shared abstract base for all SocketConfig classes       |
-| `src/HttpTransport.php`        | Low-level cURL HTTP transport (extracted from clients)  |
-| `src/Registrar.php`            | `Registrar` enum — string-backed, used by ClientFactory |
-| `src/CNR/SocketConfig.php`     | CNR API endpoints and settings (typed properties)       |
-| `src/IBS/SocketConfig.php`     | IBS API endpoints and settings (typed properties)       |
-| `src/MONIKER/SocketConfig.php` | Moniker API endpoints and settings (typed properties)   |
-| `.github/linters/phpcs.xml`    | CodeSniffer PSR-12 config                               |
-| `.github/linters/phpstan.neon` | PHPStan level 9 (strictest) config                      |
-| `.github/linters/psalm.xml`    | Psalm level 1 (strictest) config                        |
-| `.github/phpunit.xml`          | PHPUnit configuration                                   |
-| `env.example.sh`               | Template for required env variables (copy to `env.sh`)  |
+| Path                                      | Purpose                                                 |
+| ----------------------------------------- | ------------------------------------------------------- |
+| `src/AbstractSocketConfig.php`            | Shared abstract base for all SocketConfig classes       |
+| `src/AbstractResponseTemplateManager.php` | Shared base for brand ResponseTemplateManager classes   |
+| `src/AbstractResponseTranslator.php`      | Shared translate()/findMatch()/placeholder pipeline     |
+| `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)  |
+| `src/Registrar.php`                       | `Registrar` enum — string-backed, used by ClientFactory |
+| `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)       |
+| `src/IBS/SocketConfig.php`                | IBS API endpoints and settings (typed properties)       |
+| `src/MONIKER/SocketConfig.php`            | Moniker API endpoints and settings (typed properties)   |
+| `.github/linters/phpcs.xml`               | CodeSniffer PSR-12 config                               |
+| `.github/linters/phpstan.neon`            | PHPStan level 9 (strictest) config                      |
+| `.github/linters/psalm.xml`               | Psalm level 1 (strictest) config                        |
+| `.github/phpunit.xml`                     | PHPUnit configuration                                   |
+| `env.example.sh`                          | Template for required env variables (copy to `env.sh`)  |
 
 ## Atlassian / JIRA
 
