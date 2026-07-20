@@ -37,6 +37,27 @@ final class ResponseTranslatorTest extends TestCase
     }
 
     /**
+     * Test that unknown uppercase {TOKEN} markers are stripped only inside the
+     * message field, leaving such tokens in other data fields untouched.
+     *
+     * Guards the unified placeholder strategy (RSRMID-2893): the former IBS
+     * behaviour stripped {UPPER} tokens globally across the whole response, which
+     * would have removed the token from the data field below.
+     */
+    public function testUppercaseTokenStrippedOnlyInMessageField(): void
+    {
+        $raw = RT::translate(
+            "status=SUCCESS\r\nmessage=see {UNKNOWN}\r\nspf={UNKNOWN}\r\n",
+            []
+        );
+
+        // stripped inside the message field
+        $this->assertStringContainsString("message=see \r\n", $raw);
+        // preserved in the data field
+        $this->assertStringContainsString("spf={UNKNOWN}", $raw);
+    }
+
+    /**
      * Test that an empty raw response maps to the "empty" template
      */
     public function testEmptyResponseMapsToEmptyTemplate(): void
