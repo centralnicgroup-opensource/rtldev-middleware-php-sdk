@@ -11,6 +11,7 @@ namespace CNIC;
 
 use CNIC\AbstractClient;
 use CNIC\CNR\SessionClient;
+use CNIC\Exception\UnknownRegistrarException;
 use CNIC\IBS\SessionClient as IBSSessionClient;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
 use CNIC\Registrar;
@@ -48,7 +49,7 @@ class ClientFactory
      * itself harder to consume.
      *
      * @param string $registrar Registrar identifier (CNR, CNIC, IBS, MONIKER; case-insensitive)
-     * @throws \Exception if the registrar is not supported
+     * @throws UnknownRegistrarException if the registrar is not supported
      */
     public static function getClient(string $registrar): AbstractClient
     {
@@ -56,7 +57,7 @@ class ClientFactory
             Registrar::CNR, Registrar::CNIC => new SessionClient(),
             Registrar::IBS                  => new IBSSessionClient(),
             Registrar::MONIKER              => new MONIKERSessionClient(),
-            null                            => throw new \Exception("Registrar `{$registrar}` not supported."),
+            null                            => throw new UnknownRegistrarException("Registrar `{$registrar}` not supported."),
         };
     }
 }

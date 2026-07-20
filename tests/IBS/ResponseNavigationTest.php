@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CNICTEST\IBS;
 
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Response as R;
 use PHPUnit\Framework\TestCase;
 
@@ -256,7 +257,7 @@ final class ResponseNavigationTest extends TestCase
     public function testGetQueuetimeThrows(): void
     {
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Not supported");
         $r->getQueuetime();
     }
@@ -264,7 +265,7 @@ final class ResponseNavigationTest extends TestCase
     public function testGetRuntimeThrows(): void
     {
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Not supported");
         $r->getRuntime();
     }
@@ -272,7 +273,7 @@ final class ResponseNavigationTest extends TestCase
     public function testIsTmpErrorThrows(): void
     {
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Not supported");
         $r->isTmpError();
     }
@@ -280,7 +281,7 @@ final class ResponseNavigationTest extends TestCase
     public function testIsPendingThrows(): void
     {
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Not supported");
         $r->isPending();
     }
@@ -288,7 +289,7 @@ final class ResponseNavigationTest extends TestCase
     public function testGetListHashThrows(): void
     {
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Not implemented.");
         $r->getListHash();
     }

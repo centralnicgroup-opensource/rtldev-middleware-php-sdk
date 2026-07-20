@@ -58,7 +58,7 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 ### Class Patterns
 
 - Setters use fluent interface (return `$this`)
-- Throw `\Exception` directly (no custom exception hierarchy)
+- **Exceptions:** throw an exception from the `CNIC\Exception` hierarchy — a class extending the base `CnicException` (which extends `\Exception`). Reuse the existing types where they fit — `UnsupportedFeatureException` (capability not available on this platform/response), `UnknownRegistrarException` (unresolvable registrar identifier), `PaginationException` (list-pagination misuse) — and add a new `CnicException` subclass when a genuinely distinct failure mode arises, rather than reaching for a bare `\Exception`. The hierarchy is **additive and non-breaking**: because every class ultimately extends `\Exception`, existing `catch (\Exception)` consumer code keeps working, so introducing or extending it needs no `BREAKING CHANGE`/major bump. (Ref: RSRMID-2895.) Do **not** create parallel ad-hoc exception types outside `CNIC\Exception`. (Historical note: this policy previously read "throw `\Exception` directly (no custom exception hierarchy)"; that was reversed in RSRMID-2895 so consumers can distinguish failure modes without string-matching messages.)
 - Password fields must be sanitized before logging: `$cmd["PASSWORD"] = "***"`
 
 ### File Header
@@ -197,6 +197,7 @@ Third-party actions are used directly in only two workflows (`test.yml`, `rector
 | `src/AbstractResponseTemplateManager.php` | Shared base for brand ResponseTemplateManager classes    |
 | `src/AbstractResponseTranslator.php`      | Shared translate()/findMatch()/placeholder pipeline      |
 | `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)   |
+| `src/Exception/CnicException.php`         | Base of the additive `CNIC\Exception` hierarchy          |
 | `src/Registrar.php`                       | `Registrar` enum — string-backed, used by ClientFactory  |
 | `src/System.php`                          | `System` enum — string-backed `OTE`/`LIVE` client system |
 | `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)        |
@@ -240,7 +241,7 @@ When adding new entries to the allowlist, confirm the command is strictly read-o
 
 - Read, display, or expose the contents of `env.sh` — it contains secrets
 - Add dependencies without explicit request — this is a lightweight SDK
-- Create custom exception classes — use `\Exception` directly
+- Create ad-hoc exception classes **outside** the `CNIC\Exception` hierarchy, or throw a bare `\Exception` for a new failure mode — extend `CnicException` instead (see **Class Patterns → Exceptions**)
 - Use mocking frameworks (Mockery, Prophecy) — use ResponseTemplateManager
 - Add `@author` tags to docblocks
 - Add `Co-Authored-By:` trailers to commit messages

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace CNIC\IBS;
 
 use CNIC\CNR\Response as CNRResponse;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Column as IBSColumn;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
@@ -154,22 +155,22 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Get Queuetime of API response
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function getQueuetime(): float
     {
-        throw new \Exception("Not supported");
+        throw new UnsupportedFeatureException("Not supported");
     }
 
     /**
      * Get Runtime of API response
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function getRuntime(): float
     {
-        throw new \Exception("Not supported");
+        throw new UnsupportedFeatureException("Not supported");
     }
 
     /**
@@ -202,22 +203,22 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Check if current API response represents a temporary error case
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function isTmpError(): bool
     {
-        throw new \Exception("Not supported");
+        throw new UnsupportedFeatureException("Not supported");
     }
 
     /**
      * Check if current operation is returned as pending
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function isPending(): bool
     {
-        throw new \Exception("Not supported");
+        throw new UnsupportedFeatureException("Not supported");
     }
 
     /**
@@ -279,12 +280,12 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Get Response as List Hash including useful meta data for tables
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function getListHash(): array
     {
-        throw new \Exception("Not implemented.");
+        throw new UnsupportedFeatureException("Not implemented.");
     }
 
     /**
