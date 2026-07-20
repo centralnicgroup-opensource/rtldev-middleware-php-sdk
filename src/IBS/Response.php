@@ -133,9 +133,20 @@ class Response extends CNRResponse implements ResponseInterface
     #[\Override]
     public function getDescription(): string
     {
-        return $this->getHashString("message")
-            ?: $this->getHashString("product_0_message")
-            ?: "Command completed successfully";
+        // Top-level message.
+        $message = $this->getHashString("message");
+        if ($message !== "") {
+            return $message;
+        }
+        // Per-product message nested under product[0] (ResponseFormat=JSON),
+        // mirroring getCode()'s product[0].code handling. Cast each level to an
+        // array so a missing or scalar value degrades to "absent".
+        $product = (array)($this->hash["product"] ?? []);
+        $first = (array)($product[0] ?? []);
+        if (isset($first["message"]) && is_string($first["message"]) && $first["message"] !== "") {
+            return $first["message"];
+        }
+        return "Command completed successfully";
     }
 
     /**
