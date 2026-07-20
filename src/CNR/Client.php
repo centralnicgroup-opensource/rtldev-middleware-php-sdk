@@ -13,6 +13,7 @@ use CNIC\AbstractClient;
 use CNIC\CNR\Logger as L;
 use CNIC\CNR\Response;
 use CNIC\CommandFormatter;
+use CNIC\Exception\PaginationException;
 
 /**
  * CNR API Client
@@ -63,13 +64,13 @@ class Client extends AbstractClient
     /**
      * Request the next page of list entries for the current list query
      * @param Response $rr API Response of current page
-     * @throws \Exception in case Command Parameter LAST is in use while using this method
+     * @throws PaginationException in case Command Parameter LAST is in use while using this method
      */
     public function requestNextResponsePage(Response $rr): ?Response
     {
         $mycmd = $rr->getCommand();
         if (array_key_exists("LAST", $mycmd)) {
-            throw new \Exception("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
+            throw new PaginationException("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         }
         // Delegate the termination decision to the Response pagination helper so
         // "is there a next page?" lives in one place (Response::hasNextPage())

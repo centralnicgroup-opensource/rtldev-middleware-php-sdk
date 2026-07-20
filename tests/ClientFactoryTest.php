@@ -7,6 +7,7 @@ namespace CNICTEST;
 use CNIC\AbstractClient;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\SessionClient as CNRSessionClient;
+use CNIC\Exception\UnknownRegistrarException;
 use CNIC\IBS\SessionClient as IBSSessionClient;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
 use PHPUnit\Framework\TestCase;
@@ -49,7 +50,7 @@ final class ClientFactoryTest extends TestCase
 
     public function testUnsupportedRegistrarThrows(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(UnknownRegistrarException::class);
         $this->expectExceptionMessage("Registrar `InvalidRegistrar` not supported.");
         CF::getClient("InvalidRegistrar");
     }

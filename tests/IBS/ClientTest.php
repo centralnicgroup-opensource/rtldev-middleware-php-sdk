@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CNICTEST\IBS;
 
 use CNIC\ClientFactory as CF;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\Response as R;
 use CNIC\IBS\SessionClient;
@@ -121,28 +122,28 @@ final class ClientTest extends TestCase
 
     public function testGetSessionThrows(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Feature `API Session` Not supported.");
         self::$cl->getSession();
     }
 
     public function testSetSessionThrows(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Feature `API Session` not supported.");
         self::$cl->setSession("test");
     }
 
     public function testSetRoleCredentialsThrows(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Feature `User Role` not supported.");
         self::$cl->setRoleCredentials("uid", "role", "pw");
     }
 
     public function testUseHighPerformanceConnectionSetupThrows(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("Feature `High Performance Connection Setup` not supported.");
         self::$cl->useHighPerformanceConnectionSetup();
     }

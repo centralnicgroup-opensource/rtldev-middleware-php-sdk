@@ -11,6 +11,7 @@ namespace CNIC\IBS;
 
 use CNIC\AbstractClient;
 use CNIC\CommandFormatter;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Logger as L;
 use CNIC\IBS\Response;
 use CNIC\IBS\SocketConfig;
@@ -45,36 +46,36 @@ class Client extends AbstractClient
      * Get the API Session ID that is currently set
      * Note: not supported.
      *
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function getSession(): ?string
     {
-        throw new \Exception("Feature `API Session` Not supported.");
+        throw new UnsupportedFeatureException("Feature `API Session` Not supported.");
     }
 
     /**
      * Set an API session id to be used for API communication
      *
      * @param string $value API session id (optional, for reset)
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function setSession(string $value = ""): static
     {
-        throw new \Exception("Feature `API Session` not supported.");
+        throw new UnsupportedFeatureException("Feature `API Session` not supported.");
     }
 
     /**
      * Set Role Credentials to be used for API communication
      * Note: not supported.
      *
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
     {
-        throw new \Exception("Feature `User Role` not supported.");
+        throw new UnsupportedFeatureException("Feature `User Role` not supported.");
     }
 
     /**
@@ -127,11 +128,11 @@ class Client extends AbstractClient
      * Activate High Performance Setup
      * Note: not supported.
      *
-     * @throws \Exception
+     * @throws UnsupportedFeatureException
      */
     #[\Override]
     public function useHighPerformanceConnectionSetup(): static
     {
-        throw new \Exception("Feature `High Performance Connection Setup` not supported.");
+        throw new UnsupportedFeatureException("Feature `High Performance Connection Setup` not supported.");
     }
 }

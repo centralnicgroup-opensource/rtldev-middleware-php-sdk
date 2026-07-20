@@ -11,6 +11,7 @@ use CNIC\CNR\Client as CL;
 use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
 use CNIC\CNR\SessionClient;
+use CNIC\Exception\PaginationException;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\System;
 use PHPUnit\Framework\TestCase;
@@ -607,7 +608,7 @@ final class ClientTest extends TestCase
 
     public function testRequestNextResponsePageLast(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(PaginationException::class);
         $this->expectExceptionMessage("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         $r = self::$cl->request([
             "COMMAND" => "QueryDomainList",
