@@ -1,3 +1,17 @@
+# [17.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.5...v17.0.0) (2026-07-20)
+
+
+### Bug Fixes
+
+* **response:** return null from getNextPageNumber on last page ([8a732de](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8a732de0b9e2fae88f3c0bc8ae023cb43264ba09))
+
+
+### BREAKING CHANGES
+
+* **response:** getNextPageNumber() now returns null on the last page
+instead of the current (last) page number. Callers relying on the previous
+clamped value must switch to hasNextPage() or handle the null sentinel.
+
 ## [16.0.5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v16.0.4...v16.0.5) (2026-07-17)
 
 

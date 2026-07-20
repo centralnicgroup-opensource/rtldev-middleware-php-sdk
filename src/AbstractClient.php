@@ -28,7 +28,7 @@ abstract class AbstractClient
      * Current module version.
      * Kept in sync automatically by semantic-release — see .releaserc.json.
      */
-    private const string VERSION = "16.0.5";
+    private const string VERSION = "17.0.0";
 
     /**
      * context data for the client
