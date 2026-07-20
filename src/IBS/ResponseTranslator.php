@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
+use CNIC\AbstractResponseTranslator;
 use CNIC\IBS\ResponseTemplateManager as RTM;
 
 /**
@@ -16,13 +17,12 @@ use CNIC\IBS\ResponseTemplateManager as RTM;
  *
  * @package CNIC\IBS
  */
-final class ResponseTranslator
+final class ResponseTranslator extends AbstractResponseTranslator
 {
     // NOTE: IBS has no brand-specific message rewrites yet, so both maps below are
-    // intentionally empty. While they stay empty, translate() returns via the early
-    // exit in the "$descriptionRegexMap === [] && $descriptionRawPatternMap === []"
-    // branch and findMatch() is never reached — it is kept for structural parity with
-    // CNR\ResponseTranslator and becomes live as soon as an entry is added here.
+    // intentionally empty. While they stay empty the two rewrite loops in the shared
+    // translate() pipeline iterate over nothing and findMatch() is never reached — the
+    // maps become live as soon as an entry is added here.
 
     /**
      * plain-string description keys for translation; keys are preg_quote'd before matching
@@ -37,117 +37,52 @@ final class ResponseTranslator
     private static array $descriptionRawPatternMap = [];
 
     /**
-     * translate a raw api response
-     * @param string $raw API raw response
-     * @param array<string, string> $cmd requested API command
-     * @param array{CONNECTION_URL?: string} $ph list of place holder vars
-     * @psalm-suppress UnusedParam $cmd kept for API consistency with CNR\ResponseTranslator
+     * The IBS static template container.
+     * @return array<string>
      */
-    public static function translate(string $raw, array $cmd, array $ph = []): string
+    #[\Override]
+    protected static function templates(): array
     {
-        $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
-        // Hint: Empty API Response (replace {CONNECTION_URL} later)
-
-        // curl error handling
-        $httperror = "";
-        $isHTTPError = substr($newraw, 0, 10) === "httperror|";
-        if ($isHTTPError) {
-            $parts = explode("|", $newraw, 2);
-            $newraw = $parts[0];
-            $httperror = $parts[1] ?? "";
-        }
-
-        // Explicit call for a static template
-        if (RTM::hasTemplate($newraw)) {
-            // don't use getTemplate as it leads to endless loop as of again
-            // creating a response instance
-            $newraw = RTM::$templates[$newraw];
-            if ($isHTTPError && strlen($httperror)) {
-                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $httperror . ")", $newraw) ?? $newraw;
-            }
-        }
-
-        // Missing or empty status in API Response
-        if (
-            (
-                (!preg_match("/\"status\":/i", $newraw) && !preg_match("/^status=/im", $newraw)) // missing status
-                || preg_match("/\"status\":\s*\"\"/i", $newraw) // empty status (JSON)
-                || preg_match("/^status=\r?$/im", $newraw) // empty status (plain text)
-                // do not check for message as it is optional in success cases
-            )
-            && RTM::hasTemplate("invalid")
-        ) {
-            $newraw = RTM::$templates["invalid"];
-        }
-
-        if (self::$descriptionRegexMap === [] && self::$descriptionRawPatternMap === []) {
-            return self::replacePlaceholders($newraw, $ph);
-        }
-
-        // generic API response description rewrite
-        $data = false;
-        foreach (self::$descriptionRegexMap as $regex => $val) {
-            $data = self::findMatch(preg_quote($regex, "/"), $newraw, $val);
-            if ($data) {
-                break;
-            }
-        }
-        if (!$data) {
-            foreach (self::$descriptionRawPatternMap as $pattern => $val) {
-                $data = self::findMatch($pattern, $newraw, $val);
-                if ($data) {
-                    break;
-                }
-            }
-        }
-
-        return self::replacePlaceholders($newraw, $ph);
+        return RTM::$templates;
     }
 
     /**
-     * Finds a match in the given text and performs replacements based on patterns and placeholders.
-     *
-     * This function searches for a specified regular expression pattern in the provided text and
-     * performs replacements based on the matched pattern, command data, and placeholder values.
-     *
-     * @param string $regex The regular expression pattern to search for.
-     * @param string $newraw The input text where the match will be searched for and replacements applied.
-     * @param string $val The value to be used in replacement if a match is found.
-     * @return bool Returns true if replacements were performed, false otherwise.
+     * @return array<string, string>
      */
-    private static function findMatch(string $regex, string &$newraw, string $val): bool
+    #[\Override]
+    protected static function descriptionRegexMap(): array
     {
-        // match the response for given description
-        // NOTE: we match if the description starts with the given description
-        // it would also match if it is followed by additional text
-        $qregex = "/message\s*=\s*" . $regex . "([^\\r\\n]+)?/i";
-        $return = false;
-
-        if (preg_match($qregex, $newraw)) {
-            // If $newraw matches $qregex, replace with "message=" . $val
-            $tmp = preg_replace($qregex, "message=" . $val, $newraw);
-            if ($tmp !== null && strcmp($tmp, $newraw) !== 0) {
-                $newraw = $tmp;
-                $return = true;
-            }
-        }
-
-        return $return;
+        return self::$descriptionRegexMap;
     }
 
     /**
-     * Replace placeholder vars like {CONNECTION_URL} in a string
-     * @param string $raw input string
-     * @param array{CONNECTION_URL?: string} $ph placeholder key-value pairs
+     * @return array<string, string>
      */
-    protected static function replacePlaceholders(string $raw, array $ph): string
+    #[\Override]
+    protected static function descriptionRawPatternMap(): array
     {
-        if (preg_match("/\{[A-Z][A-Z0-9_]*\}/", $raw)) {
-            foreach ($ph as $key => $val) {
-                $raw = preg_replace("/\{" . preg_quote($key, "/") . "\}/", $val, $raw) ?? $raw;
-            }
-            $raw = preg_replace("/\s?\{[A-Z][A-Z0-9_]*\}/", "", $raw) ?? $raw;
-        }
-        return $raw;
+        return self::$descriptionRawPatternMap;
+    }
+
+    /**
+     * IBS carries the human-readable text in the message field.
+     */
+    #[\Override]
+    protected static function fieldName(): string
+    {
+        return "message";
+    }
+
+    /**
+     * IBS falls back to the "invalid" template when status is missing (JSON or
+     * plain) or present but empty. message is optional in success cases and is
+     * deliberately not checked.
+     */
+    #[\Override]
+    protected static function hasMissingRequiredFields(string $raw): bool
+    {
+        return (!preg_match("/\"status\":/i", $raw) && !preg_match("/^status=/im", $raw)) // missing status
+            || preg_match("/\"status\":\s*\"\"/i", $raw) === 1 // empty status (JSON)
+            || preg_match("/^status=\r?$/im", $raw) === 1; // empty status (plain text)
     }
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
+use CNIC\AbstractResponseTranslator;
 use CNIC\CNR\ResponseTemplateManager as RTM;
 
 /**
@@ -16,7 +17,7 @@ use CNIC\CNR\ResponseTemplateManager as RTM;
  *
  * @package CNIC\CNR
  */
-final class ResponseTranslator
+final class ResponseTranslator extends AbstractResponseTranslator
 {
     /**
      * plain-string description keys for translation; keys are preg_quote'd before matching
@@ -43,143 +44,51 @@ final class ResponseTranslator
     ];
 
     /**
-     * translate a raw api response
-     * @param string $raw API raw response
-     * @param array<string, string> $cmd requested API command
-     * @param array{CONNECTION_URL?: string} $ph list of place holder vars
+     * The CNR static template container.
+     * @return array<string>
      */
-    public static function translate(string $raw, array $cmd, array $ph = []): string
+    #[\Override]
+    protected static function templates(): array
     {
-        $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
-        // Hint: Empty API Response (replace {CONNECTION_URL} later)
-
-        // curl error handling
-        $httperror = "";
-        $isHTTPError = substr($newraw, 0, 10) === "httperror|";
-        if ($isHTTPError) {
-            $parts = explode("|", $newraw, 2);
-            $newraw = $parts[0];
-            $httperror = $parts[1] ?? "";
-        }
-
-        // Explicit call for a static template
-        if (RTM::hasTemplate($newraw)) {
-            // don't use getTemplate as it leads to endless loop as of again
-            // creating a response instance
-            $newraw = RTM::$templates[$newraw];
-            if ($isHTTPError && strlen($httperror)) {
-                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $httperror . ")", $newraw) ?? $newraw;
-            }
-        }
-
-        // Missing CODE or DESCRIPTION in API Response
-        if (
-            (
-                !preg_match("/description[\s]*=/i", $newraw) // missing description
-                || preg_match("/description[\s]*=\r\n/i", $newraw) // empty description
-                || !preg_match("/code[\s]*=/i", $newraw) // missing code
-            )
-            && RTM::hasTemplate("invalid")
-        ) {
-            $newraw = RTM::$templates["invalid"];
-        }
-
-        // generic API response description rewrite
-        $data = false;
-        foreach (self::$descriptionRegexMap as $regex => $val) {
-            $data = self::findMatch(preg_quote($regex, "/"), $newraw, $val, $cmd);
-            if ($data) {
-                break;
-            }
-        }
-        if (!$data) {
-            foreach (self::$descriptionRawPatternMap as $pattern => $val) {
-                $data = self::findMatch($pattern, $newraw, $val, $cmd);
-                if ($data) {
-                    break;
-                }
-            }
-        }
-
-        return self::replacePlaceholders($newraw, $ph);
+        return RTM::$templates;
     }
 
     /**
-     * Finds a match in the given text and performs replacements based on patterns and placeholders.
-     *
-     * This function searches for a specified regular expression pattern in the provided text and
-     * performs replacements based on the matched pattern, command data, and placeholder values.
-     *
-     * @param string $regex The regular expression pattern to search for.
-     * @param string $newraw The input text where the match will be searched for and replacements applied.
-     * @param string $val The value to be used in replacement if a match is found.
-     * @param array<string, string> $cmd The command data containing replacements, if applicable.
+     * @return array<string, string>
      */
-    private static function findMatch(string $regex, string &$newraw, string $val, array $cmd): bool
+    #[\Override]
+    protected static function descriptionRegexMap(): array
     {
-        // match the response for given description
-        // NOTE: we match if the description starts with the given description
-        // it would also match if it is followed by additional text
-        $qregex = "/description\s*=\s*" . $regex . "([^\\r\\n]+)?/i";
-        $return = false;
-
-        if (preg_match($qregex, $newraw)) {
-            // If "COMMAND" exists in $cmd, replace "{COMMAND}" in $val
-            if (isset($cmd["COMMAND"])) {
-                $val = str_replace("{COMMAND}", $cmd["COMMAND"], $val);
-            }
-
-            // If $newraw matches $qregex, replace with "description=" . $val
-            $tmp = preg_replace($qregex, "description=" . $val, $newraw);
-            if ($tmp !== null && $tmp !== $newraw) {
-                $newraw = $tmp;
-                $return = true;
-            }
-        }
-
-        return $return;
+        return self::$descriptionRegexMap;
     }
 
     /**
-     * Replace known placeholders in DESCRIPTION while preserving literal brace content.
-     *
-     * @param string $raw input response
-     * @param array{CONNECTION_URL?: string} $ph placeholder key-value pairs
+     * @return array<string, string>
      */
-    protected static function replacePlaceholders(string $raw, array $ph): string
+    #[\Override]
+    protected static function descriptionRawPatternMap(): array
     {
-        $tmp = preg_replace_callback(
-            '/^(description\s*=\s*)(.*)$/im',
-            static function ($matches) use ($ph) {
-                $description = $matches[2];
+        return self::$descriptionRawPatternMap;
+    }
 
-                if (strpos($description, '{') === false) {
-                    return $matches[0];
-                }
+    /**
+     * CNR carries the human-readable text in the DESCRIPTION field.
+     */
+    #[\Override]
+    protected static function fieldName(): string
+    {
+        return "description";
+    }
 
-                $description = preg_replace_callback(
-                    '/\{([^}]+)\}/',
-                    static function ($tokenMatches) use ($ph) {
-                        $token = $tokenMatches[1];
-
-                        if (array_key_exists($token, $ph)) {
-                            return $ph[$token];
-                        }
-
-                        if (preg_match('/^[A-Z][A-Z0-9_]*$/', $token) === 1) {
-                            return '';
-                        }
-
-                        return $tokenMatches[0];
-                    },
-                    $description
-                );
-
-                return $matches[1] . ($description ?? $matches[2]);
-            },
-            $raw
-        );
-
-        return $tmp ?? $raw;
+    /**
+     * CNR falls back to the "invalid" template when CODE or DESCRIPTION is
+     * missing, or DESCRIPTION is present but empty.
+     */
+    #[\Override]
+    protected static function hasMissingRequiredFields(string $raw): bool
+    {
+        return !preg_match("/description[\s]*=/i", $raw) // missing description
+            || preg_match("/description[\s]*=\r\n/i", $raw) === 1 // empty description
+            || !preg_match("/code[\s]*=/i", $raw); // missing code
     }
 }
