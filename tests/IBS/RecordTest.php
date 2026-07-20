@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CNICTEST\IBS;
 
-use CNIC\CNR\Record;
+use CNIC\IBS\Record;
 use CNIC\IBS\Response as R;
 use PHPUnit\Framework\TestCase;
 
@@ -85,6 +85,9 @@ final class RecordTest extends TestCase
     {
         $rec = $this->buildDomainInfoResponse()->getRecord(0);
         $this->assertNotNull($rec);
+        // IBS\Response must build IBS\Record (not the CNR base) — guards the
+        // newRecord() factory-hook wiring so IBS-specific record behaviour runs.
+        $this->assertInstanceOf(Record::class, $rec);
         // all scalar fields present at index 0
         $this->assertSame("ibstest.com", $rec->getDataByKey("domain"));
         $this->assertSame("2026-02-20", $rec->getDataByKey("expirationdate"));

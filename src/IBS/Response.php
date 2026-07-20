@@ -12,6 +12,7 @@ namespace CNIC\IBS;
 use CNIC\CNR\Response as CNRResponse;
 use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Column as IBSColumn;
+use CNIC\IBS\Record as IBSRecord;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\ResponseInterface;
@@ -223,6 +224,11 @@ class Response extends CNRResponse implements ResponseInterface
 
     /**
      * Add a column to the column list
+     *
+     * IBS uses its own standalone Column (mixed-typed JSON values) rather than
+     * CNR's string-only Column, and the two have divergent constructor types —
+     * so this stays a full override rather than a shared newColumn() factory
+     * hook (unlike newRecord(), where both brands share array<string,mixed>).
      * @param string $key column name
      * @param array<array-key, mixed> $data array of column data
      */
@@ -234,6 +240,16 @@ class Response extends CNRResponse implements ResponseInterface
         $this->columnkeys[] = $key;
         $this->columnindex[$key] ??= count($this->columns) - 1;
         return $this;
+    }
+
+    /**
+     * Instantiate the IBS record type so IBS-specific record behaviour applies.
+     * @param array<string,mixed> $h row hash data
+     */
+    #[\Override]
+    protected function newRecord(array $h): IBSRecord
+    {
+        return new IBSRecord($h);
     }
 
     /**

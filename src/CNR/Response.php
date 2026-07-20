@@ -338,13 +338,28 @@ class Response implements ResponseInterface
     }
 
     /**
+     * Instantiate the record type for this brand.
+     *
+     * Factory hook for addRecord(): the base builds a CNR\Record. A brand that
+     * needs record-level behaviour of its own (IBS) overrides only this method
+     * so its Record subclass is actually used. Records share one shape across
+     * brands (array<string,mixed>), so unlike columns — where CNR is string[]
+     * and IBS mixed — a single type-clean factory hook fits here.
+     * @param array<string,mixed> $h row hash data
+     */
+    protected function newRecord(array $h): Record
+    {
+        return new Record($h);
+    }
+
+    /**
      * Add a record to the record list
      * @param array<string,mixed> $h row hash data
      */
     #[\Override]
     public function addRecord(array $h): static
     {
-        $this->records[] = new Record($h);
+        $this->records[] = $this->newRecord($h);
         return $this;
     }
 
