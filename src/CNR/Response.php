@@ -330,7 +330,23 @@ class Response implements ResponseInterface
     #[\Override]
     public function addColumn(string $key, array $data): static
     {
-        $col = new Column($key, $data);
+        return $this->registerColumn(new Column($key, $data));
+    }
+
+    /**
+     * Register an already-constructed column into the list bookkeeping.
+     *
+     * The bookkeeping ($columns/$columnkeys/$columnindex) is identical for every
+     * brand; only the concrete Column type differs. Rather than a param-typed
+     * newColumn() factory — which cannot stay type-clean under PHPStan L9 / Psalm
+     * L1, because CNR\Column takes string[] while IBS\Column takes mixed[] and a
+     * shared factory would have to narrow one into the other — each brand's
+     * addColumn() builds its own correctly-typed Column locally and hands the
+     * finished instance here, so this shared helper never sees the brand types.
+     */
+    protected function registerColumn(ColumnInterface $col): static
+    {
+        $key = $col->getKey();
         $this->columns[] = $col;
         $this->columnkeys[] = $key;
         $this->columnindex[$key] ??= count($this->columns) - 1;
