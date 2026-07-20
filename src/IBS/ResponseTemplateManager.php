@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
+use CNIC\AbstractResponseTemplateManager;
 use CNIC\IBS\ResponseParser as RP;
 
 /**
@@ -18,7 +19,7 @@ use CNIC\IBS\ResponseParser as RP;
  * @package CNIC\IBS
  * @final
  */
-final class ResponseTemplateManager
+final class ResponseTemplateManager extends AbstractResponseTemplateManager
 {
     /**
      * template container
@@ -39,86 +40,51 @@ final class ResponseTemplateManager
 
     /**
      * Generate API response template string for given status and description
-     * @param string $status API response code
+     * @param string $code API response status
      * @param string $description API response description
      */
-    public static function generateTemplate(string $status, string $description): string
+    #[\Override]
+    public static function generateTemplate(string $code, string $description): string
     {
-        return "status=$status\r\nmessage=$description\r\n";
-    }
-
-    /**
-     * Add response template to template container
-     * @param string $id template id
-     * @param string $plain API plain response or API response code (when providing $descr)
-     * @param string|null $descr API response description
-     */
-    public static function addTemplate(string $id, string $plain, ?string $descr = null): self
-    {
-        self::$templates[$id] = is_null($descr) ? $plain : self::generateTemplate($plain, $descr);
-        return new self();
+        return "status=$code\r\nmessage=$description\r\n";
     }
 
     /**
      * Get response template instance from template container
      * @param string $id template id
      */
+    #[\Override]
     public static function getTemplate(string $id): Response
     {
-        if (self::hasTemplate($id)) {
-            return new Response($id);
-        }
-        return new Response("notfound");
+        return static::createResponse(static::hasTemplate($id) ? $id : "notfound");
     }
 
     /**
-     * Return all available response templates
-     * @return array<mixed>
+     * Create an IBS Response instance from a template id or raw response.
      */
-    public static function getTemplates(): array
+    #[\Override]
+    protected static function createResponse(string $raw): Response
     {
-        $tpls = [];
-        foreach (self::$templates as $key => $raw) {
-            $tpls[$key] = new Response($raw);
-        }
-        return $tpls;
+        return new Response($raw);
     }
 
     /**
-     * Check if given template exists in template container
-     * @param string $id template id
+     * Parse a plain API response into its hash form using the IBS parser.
+     * @return array<string, mixed>
      */
-    public static function hasTemplate(string $id): bool
+    #[\Override]
+    protected static function parseResponse(string $plain): array
     {
-        return array_key_exists($id, self::$templates);
+        return RP::parse($plain);
     }
 
     /**
-     * Check if given API response hash matches a given template by code and description
-     * @param array<string, mixed> $tpl api response hash
-     * @param string $id template id
+     * IBS compares templates on the status and message hash keys.
+     * @return array{0: string, 1: string}
      */
-    public static function isTemplateMatchHash(array $tpl, string $id): bool
+    #[\Override]
+    protected static function matchKeys(): array
     {
-        $h = self::getTemplate($id)->getHash();
-        return (
-            ($h["status"] === $tpl["status"]) &&
-            ($h["message"] === $tpl["message"])
-        );
-    }
-
-    /**
-     * Check if given API plain response matches a given template by code and description
-     * @param string $plain API plain response
-     * @param string $id template id
-     */
-    public static function isTemplateMatchPlain(string $plain, string $id): bool
-    {
-        $h = self::getTemplate($id)->getHash();
-        $tpl = RP::parse($plain);
-        return (
-            ($h["status"] === $tpl["status"]) &&
-            ($h["message"] === $tpl["message"])
-        );
+        return ["status", "message"];
     }
 }
