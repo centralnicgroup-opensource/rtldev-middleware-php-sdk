@@ -1,3 +1,10 @@
+# [17.3.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.2.0...v17.3.0) (2026-07-20)
+
+
+### Features
+
+* **exception:** add additive CNIC\Exception hierarchy ([b7a00f6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b7a00f63fef215ac4ee157b38829b7d2de8aca1c))
+
 # [17.2.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.1.0...v17.2.0) (2026-07-20)
 
 
