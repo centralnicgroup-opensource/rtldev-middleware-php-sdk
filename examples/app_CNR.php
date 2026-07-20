@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use CNIC\ClientFactory;
+use CNIC\CNR\SessionClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -27,6 +28,10 @@ print_r($r->getHash());
 // --- SESSION BASED API COMMUNICATION ---
 echo "--- SESSION-BASED API COMMUNICATION ----\n";
 $cl = ClientFactory::getClient("CNR"); // fka RRPproxy
+// The factory returns the shared CNIC\AbstractClient contract. Session handling
+// (login/logout/saveSession) is CNR-specific, so narrow to the concrete
+// SessionClient before using it — the SDK guarantees the CNR arm is one.
+assert($cl instanceof SessionClient);
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setCredentials($user, $password);
 $r = $cl->login();

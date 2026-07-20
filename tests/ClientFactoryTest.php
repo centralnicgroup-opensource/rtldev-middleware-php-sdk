@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CNICTEST;
 
+use CNIC\AbstractClient;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\SessionClient as CNRSessionClient;
 use CNIC\IBS\SessionClient as IBSSessionClient;
@@ -12,6 +13,15 @@ use PHPUnit\Framework\TestCase;
 
 final class ClientFactoryTest extends TestCase
 {
+    public function testReturnsSharedAbstractClientType(): void
+    {
+        // The factory declares the shared AbstractClient contract rather than a
+        // brand-specific union, so every arm is assignable to the common type.
+        $this->assertInstanceOf(AbstractClient::class, CF::getClient("CNR"));
+        $this->assertInstanceOf(AbstractClient::class, CF::getClient("IBS"));
+        $this->assertInstanceOf(AbstractClient::class, CF::getClient("MONIKER"));
+    }
+
     public function testReturnsCnrClient(): void
     {
         $this->assertInstanceOf(CNRSessionClient::class, CF::getClient("CNR"));

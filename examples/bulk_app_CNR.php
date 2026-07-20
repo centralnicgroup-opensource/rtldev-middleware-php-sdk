@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use CNIC\ClientFactory;
+use CNIC\CNR\SessionClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -50,6 +51,9 @@ echo "Time: $end1 seconds\n";
 echo "--- SESSION-BASED API COMMUNICATION ----\n";
 
 $cl = ClientFactory::getClient("CNR"); // fka RRPproxy
+// Session handling (login/logout) is CNR-specific; narrow the shared
+// CNIC\AbstractClient contract to the concrete SessionClient before using it.
+assert($cl instanceof SessionClient);
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setRoleCredentials($user, $role, $rolepassword);
 $r = $cl->login();
