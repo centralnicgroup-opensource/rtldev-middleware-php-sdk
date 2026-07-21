@@ -526,20 +526,21 @@ class Response implements ResponseInterface
     #[\Override]
     public function getListHash(): array
     {
+        // Resolve the pagination-stripped column set once (regex runs a single
+        // time inside getColumnKeys(true)); reuse it to filter every row via
+        // array_intersect_key instead of a per-cell preg_match. Record data keys
+        // are always a subset of the column keys (see assembleRecords()), so this
+        // yields output identical to unsetting each pagination-matching cell.
+        $columns = $this->getColumnKeys(true);
+        $keepKeys = array_flip($columns);
         $lh = [];
         foreach ($this->records as $rec) {
-            $data = $rec->getData();
-            foreach (array_keys($data) as $col) {
-                if ((bool)preg_match($this->paginationkeys, $col)) {
-                    unset($data[$col]);
-                }
-            }
-            $lh[] = $data;
+            $lh[] = array_intersect_key($rec->getData(), $keepKeys);
         }
         return [
             "LIST" => $lh,
             "meta" => [
-                "columns" => $this->getColumnKeys(true),
+                "columns" => $columns,
                 "pg" => $this->getPagination()
             ]
         ];
