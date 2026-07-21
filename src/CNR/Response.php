@@ -471,15 +471,27 @@ class Response implements ResponseInterface
     }
 
     /**
+     * Coerce a raw pagination column value to a base-10 integer.
+     *
+     * getDataByIndex() is typed mixed on ColumnInterface (IBS columns may
+     * carry nested arrays/objects); the pagination columns FIRST/LAST/TOTAL/
+     * LIMIT always hold a scalar numeric string, so anything non-scalar (incl.
+     * a missing value) yields null and lets the caller fall back.
+     */
+    private function columnInt(mixed $value): ?int
+    {
+        return is_scalar($value) ? intval($value, 10) : null;
+    }
+
+    /**
      * Get Index of first row in this response
      */
     #[\Override]
     public function getFirstRecordIndex(): ?int
     {
         $col = $this->getColumn("FIRST");
-        if ($col instanceof Column) {
-            $f = $col->getDataByIndex(0);
-            return $f === null ? 0 : intval($f, 10);
+        if ($col instanceof ColumnInterface) {
+            return $this->columnInt($col->getDataByIndex(0)) ?? 0;
         }
         if ($this->getRecordsCount() !== 0) {
             return 0;
@@ -494,10 +506,10 @@ class Response implements ResponseInterface
     public function getLastRecordIndex(): ?int
     {
         $col = $this->getColumn("LAST");
-        if ($col instanceof Column) {
-            $l = $col->getDataByIndex(0);
+        if ($col instanceof ColumnInterface) {
+            $l = $this->columnInt($col->getDataByIndex(0));
             if ($l !== null) {
-                return intval($l, 10);
+                return $l;
             }
         }
         $c = $this->getRecordsCount();
@@ -664,10 +676,10 @@ class Response implements ResponseInterface
     public function getRecordsTotalCount(): int
     {
         $col = $this->getColumn("TOTAL");
-        if ($col instanceof Column) {
-            $t = $col->getDataByIndex(0);
+        if ($col instanceof ColumnInterface) {
+            $t = $this->columnInt($col->getDataByIndex(0));
             if ($t !== null) {
-                return intval($t, 10);
+                return $t;
             }
         }
         return $this->getRecordsCount();
@@ -681,10 +693,10 @@ class Response implements ResponseInterface
     public function getRecordsLimitation(): int
     {
         $col = $this->getColumn("LIMIT");
-        if ($col instanceof Column) {
-            $l = $col->getDataByIndex(0);
+        if ($col instanceof ColumnInterface) {
+            $l = $this->columnInt($col->getDataByIndex(0));
             if ($l !== null) {
-                return intval($l, 10);
+                return $l;
             }
         }
         return $this->getRecordsCount();
