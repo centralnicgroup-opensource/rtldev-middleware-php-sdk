@@ -77,10 +77,19 @@ final class CommandFormatter
     {
         $priority = self::getPropertiesPriority();
 
+        // Decorate-sort-undecorate: resolve each key's priority exactly once
+        // (O(n) findPriority calls) into a cache, then have the comparator read
+        // the cached ints instead of re-scanning ~65 regex patterns on every
+        // one of the ~2*n*log(n) comparisons.
+        $keyPriority = [];
+        foreach (array_keys($command) as $key) {
+            $keyPriority[$key] = self::findPriority($key, $priority);
+        }
+
         // Sort the command array based on priority
-        uksort($command, function (string $a, string $b) use ($priority) {
-            $priorityA = self::findPriority($a, $priority);
-            $priorityB = self::findPriority($b, $priority);
+        uksort($command, function (string $a, string $b) use ($keyPriority) {
+            $priorityA = $keyPriority[$a];
+            $priorityB = $keyPriority[$b];
 
             return $priorityA === $priorityB ? strcmp($a, $b) : $priorityA - $priorityB;
         });
