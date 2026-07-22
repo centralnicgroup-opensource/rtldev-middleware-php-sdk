@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CNICTEST\IBS;
 
-use CNIC\Exception\UnsupportedFeatureException;
+use CNIC\ExtendedResponseInterface;
 use CNIC\IBS\Response as R;
+use CNIC\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -252,45 +253,29 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(100005, $r->getCode());
     }
 
-    // --- not-supported / not-implemented contract methods ---
+    // --- interface segregation: CNR-only capabilities are absent on IBS ---
 
-    public function testGetQueuetimeThrows(): void
+    public function testImplementsCoreButNotExtendedInterface(): void
     {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->getQueuetime();
+        // Reflection (runtime bool) rather than instanceof, so the assertion
+        // reflects the actual class contract instead of being folded away as a
+        // statically-known narrowing by the analysers.
+        $rc = new \ReflectionClass(R::class);
+        // IBS fulfils the universal contract ...
+        $this->assertTrue($rc->implementsInterface(ResponseInterface::class));
+        // ... but not the richer CNR-only one (telemetry/transient-status/list-hash).
+        $this->assertFalse($rc->implementsInterface(ExtendedResponseInterface::class));
     }
 
-    public function testGetRuntimeThrows(): void
+    public function testExtendedCapabilityMethodsAreNotDeclared(): void
     {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->getRuntime();
-    }
-
-    public function testIsTmpErrorThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->isTmpError();
-    }
-
-    public function testIsPendingThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->isPending();
-    }
-
-    public function testGetListHashThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not implemented.");
-        $r->getListHash();
+        // The formerly implement-and-throw methods no longer exist on IBS at all;
+        // consumers narrow to ExtendedResponseInterface (CNR) before calling them.
+        foreach (["getQueuetime", "getRuntime", "isTmpError", "isPending", "getListHash"] as $method) {
+            $this->assertFalse(
+                method_exists(R::class, $method),
+                "IBS\\Response should not declare {$method}()"
+            );
+        }
     }
 }
