@@ -8,6 +8,7 @@ Issues, tasks, stories, and PRDs for this repo live in **Jira Cloud**, project *
 - **Project:** `RSRMID`
 - **Component:** `PHP-SDK` (id `10232`)
 - **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
+- **Default parent epic:** `RSRMID-976` ("$3rd party module tech debt") — set as the `parent` on new issues by default, unless a more specific epic clearly applies.
 - **Required fields on create:**
   - Work Category `customfield_12383` (select): Strategic `13284`, Maintain Revenue/BAU `13285`, Tech Debt `13286`, Security `13287`
   - Business Unit `customfield_10027` (multi-checkbox): CentralNic Reseller `10187` (default)
@@ -17,7 +18,7 @@ Issues, tasks, stories, and PRDs for this repo live in **Jira Cloud**, project *
 ## Conventions
 
 - **Descriptions must be ADF** (Atlassian Document Format, JSON) — never markdown. Markdown renders literal `\n` instead of line breaks.
-- **Create an issue:** `createJiraIssue` with the project, issue type, component, and both required custom fields above.
+- **Create an issue:** `createJiraIssue` with the project, issue type, component, both required custom fields above, and `parent` = `RSRMID-976` (the default epic) unless a more specific one applies.
 - **Read an issue:** `getJiraIssue` (add `fields`/`expand` as needed); `searchJiraIssuesUsingJql` for lists (e.g. `project = RSRMID AND component = PHP-SDK AND statusCategory != Done`).
 - **Comment:** `addCommentToJiraIssue`.
 - **Edit / set fields:** `editJiraIssue`.
