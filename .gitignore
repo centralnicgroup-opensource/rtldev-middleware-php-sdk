@@ -16,9 +16,11 @@ reports
 # (used for setting secrets for local testing)
 env.sh
 
-# generated API documentation — published to the gh-pages branch on release,
-# regenerated locally via `composer docs` (served with `composer docs:serve`)
-docs/
+# generated API documentation (Doctum + UML) — published to the gh-pages branch
+# on release, regenerated locally via `composer docs` (served with
+# `composer docs:serve`). Only the generated output dir is ignored; the rest of
+# docs/ (e.g. tracked `docs/agents/` and `docs/adr/`) is version-controlled.
+/docs/api/
 
 # uml diagram related
 # (plantuml.jar now lives under tools/, covered below)

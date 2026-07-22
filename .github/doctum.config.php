@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Doctum\Doctum;
 use Doctum\RemoteRepository\GitHubRemoteRepository;
 use Symfony\Component\Finder\Finder;
@@ -14,7 +16,7 @@ $iterator = Finder::create()
 
 return new Doctum($iterator, [
     'title'             => 'PHP SDK by CNIC',
-    'build_dir'         => __DIR__ . '/../docs',
+    'build_dir'         => __DIR__ . '/../docs/api',
     'cache_dir'         => __DIR__ . '/../build/api-cache',
     'source_dir'        => __DIR__ . '/../',
     'remote_repository' => new GitHubRemoteRepository('centralnicgroup-opensource/rtldev-middleware-php-sdk', dirname(__DIR__)),

@@ -15,7 +15,7 @@ set -euo pipefail
 
 REPO_SLUG="centralnicgroup-opensource/rtldev-middleware-php-sdk"
 BRANCH="gh-pages"
-SRC_DIR="docs"
+SRC_DIR="docs/api"
 
 : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set to publish documentation}"
 
