@@ -3,5 +3,9 @@ node_modules/
 reports/
 docs/
 build/
+# vendored agent skills + their lockfile — not ours to reformat (would break skills-lock hashes)
+.agents/
+.claude/skills/
 pnpm-lock.yaml
+skills-lock.json
 *.php
