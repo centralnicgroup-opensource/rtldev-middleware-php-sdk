@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Record as CNRRecord;
+use CNIC\AbstractRecord;
 use CNIC\RecordInterface;
 
 /**
@@ -18,6 +18,6 @@ use CNIC\RecordInterface;
  * @psalm-api
  * @package CNIC\IBS
  */
-class Record extends CNRRecord implements RecordInterface
+class Record extends AbstractRecord implements RecordInterface
 {
 }
