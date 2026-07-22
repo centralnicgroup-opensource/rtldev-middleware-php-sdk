@@ -60,7 +60,7 @@
     }
   },
   "scripts": {
-    "docs": "rm -rf build/api-cache docs; test -f tools/doctum.phar || (mkdir -p tools && wget -q --timeout=30 --tries=3 https://doctum.long-term.support/releases/5.6/doctum.phar -O tools/doctum.phar && echo 'bd9fee08e7672ffdafae294cb064c71b3f6582992a5f87ac9ac9b2bcd44a5fce  tools/doctum.phar' | sha256sum -c && chmod +x tools/doctum.phar); php tools/doctum.phar update .github/doctum.config.php",
+    "docs": "rm -rf build/api-cache docs/api; test -f tools/doctum.phar || (mkdir -p tools && wget -q --timeout=30 --tries=3 https://doctum.long-term.support/releases/5.6/doctum.phar -O tools/doctum.phar && echo 'bd9fee08e7672ffdafae294cb064c71b3f6582992a5f87ac9ac9b2bcd44a5fce  tools/doctum.phar' | sha256sum -c && chmod +x tools/doctum.phar); php tools/doctum.phar update .github/doctum.config.php",
     "codefix": "phpcbf --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "phpcs": "phpcs --ignore=\"*/vendor/*\" --standard=.github/linters/phpcs.xml -q src tests",
     "lint": [
@@ -76,11 +76,11 @@
     "psalm:colored": "psalm --config=.github/linters/psalm.xml --no-cache --threads=1 --show-info=true",
     "rector": "rector process --config .github/linters/rector.php --dry-run",
     "rector:fix": "rector process --config .github/linters/rector.php",
-    "docs:serve": "php -S 0.0.0.0:8000 -t docs",
+    "docs:serve": "php -S 0.0.0.0:8000 -t docs/api",
     "demo:cnr": "@php examples/app_CNR.php",
     "demo:ibs": "@php examples/app_IBS.php",
     "demo:moniker": "@php examples/app_MONIKER.php",
-    "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test -f tools/plantuml.jar || (mkdir -p tools && wget -q --timeout=30 --tries=3 https://github.com/plantuml/plantuml/releases/download/v1.2026.6/plantuml-1.2026.6.jar -O tools/plantuml.jar && echo '89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690  tools/plantuml.jar' | sha256sum -c); tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ > ./docs/uml.puml; java -jar tools/plantuml.jar ./docs/uml.puml -o uml_diagram"
+    "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test -f tools/plantuml.jar || (mkdir -p tools && wget -q --timeout=30 --tries=3 https://github.com/plantuml/plantuml/releases/download/v1.2026.6/plantuml-1.2026.6.jar -O tools/plantuml.jar && echo '89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690  tools/plantuml.jar' | sha256sum -c); mkdir -p ./docs/api; tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ > ./docs/api/uml.puml; java -jar tools/plantuml.jar ./docs/api/uml.puml -o uml_diagram"
   },
   "scripts-descriptions": {
     "docs": "Generate API documentation with Doctum",

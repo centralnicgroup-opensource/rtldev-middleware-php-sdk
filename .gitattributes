@@ -2,6 +2,7 @@
 # If a file or directory is not excluded using the export-ignore attribute, it will be included in the archive by default.
 
 # directories to exclude
+.agents export-ignore
 .claude export-ignore
 .devcontainer export-ignore
 .github export-ignore
