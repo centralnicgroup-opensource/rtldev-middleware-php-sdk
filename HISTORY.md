@@ -1,3 +1,20 @@
+# [18.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.3.1...v18.0.0) (2026-07-22)
+
+
+### Features
+
+* **response:** segregate ResponseInterface and un-sibling IBS from CNR ([dbaaf6e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/dbaaf6ea7a742396df5e55bc7baea796d2dbb65e))
+
+
+### BREAKING CHANGES
+
+* **response:** getQueuetime(), getRuntime(), isTmpError(), isPending() and
+getListHash() are no longer part of CNIC\ResponseInterface. Consumers holding
+the core interface (e.g. the AbstractClient::request() return type) must narrow
+via `instanceof CNIC\ExtendedResponseInterface` before calling them; consumers
+holding the concrete CNR\Client/CNR\Response are unaffected. IBS\Response no
+longer extends CNR\Response and IBS\Record no longer extends CNR\Record.
+
 ## [17.3.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.3.0...v17.3.1) (2026-07-20)
 
 
