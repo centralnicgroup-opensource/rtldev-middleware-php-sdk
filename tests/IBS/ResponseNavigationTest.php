@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CNICTEST\IBS;
 
-use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Response as R;
 use PHPUnit\Framework\TestCase;
 
@@ -252,45 +251,20 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(100005, $r->getCode());
     }
 
-    // --- not-supported / not-implemented contract methods ---
+    // --- interface segregation: CNR-only capabilities are absent on IBS ---
 
-    public function testGetQueuetimeThrows(): void
+    public function testExtendedCapabilityMethodsAreNotDeclared(): void
     {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->getQueuetime();
-    }
-
-    public function testGetRuntimeThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->getRuntime();
-    }
-
-    public function testIsTmpErrorThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->isTmpError();
-    }
-
-    public function testIsPendingThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not supported");
-        $r->isPending();
-    }
-
-    public function testGetListHashThrows(): void
-    {
-        $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Not implemented.");
-        $r->getListHash();
+        // The formerly implement-and-throw methods no longer exist on IBS at all;
+        // consumers narrow to ExtendedResponseInterface (CNR) before calling them.
+        // (That IBS\Response implements the core ResponseInterface but not
+        // ExtendedResponseInterface is a compile-time fact the static analysers
+        // already prove, so it is deliberately not re-asserted here.)
+        foreach (["getQueuetime", "getRuntime", "isTmpError", "isPending", "getListHash"] as $method) {
+            $this->assertFalse(
+                method_exists(R::class, $method),
+                "IBS\\Response should not declare {$method}()"
+            );
+        }
     }
 }

@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\CNR\Response as CNRResponse;
-use CNIC\Exception\UnsupportedFeatureException;
+use CNIC\AbstractResponse;
 use CNIC\IBS\Column as IBSColumn;
 use CNIC\IBS\Record as IBSRecord;
 use CNIC\IBS\ResponseParser as RP;
@@ -20,17 +19,23 @@ use CNIC\ResponseInterface;
 /**
  * IBS Response
  *
- * Extends CNR\Response and only overrides what genuinely differs for the IBS
- * platform: the JSON-shaped response parsing (the translate() and populate()
- * constructor hooks), the status/code/description accessors, the IBS column
- * type, the not-supported contract methods and the flat (single-page)
- * pagination model. The constructor itself and every other accessor and the
- * record-cursor navigation are inherited unchanged from CNR\Response.
+ * Extends the shared AbstractResponse and supplies only what differs for the
+ * IBS platform: the JSON-shaped response parsing (the translate() and
+ * populate() hooks), the status/code/description accessors, the IBS column
+ * type and the flat (single-page) pagination model. The constructor,
+ * column/record bookkeeping, record-cursor navigation and derived pagination
+ * are inherited from AbstractResponse.
+ *
+ * IBS does NOT provide the CNR-only telemetry/transient-status/list-hash
+ * capabilities, so — unlike the previous design, which inherited them from
+ * CNR\Response and had to throw — those methods are simply absent here. They
+ * live on CNR\Response via CNIC\ExtendedResponseInterface; consumers narrow to
+ * that interface before using them.
  *
  * @psalm-api
  * @package CNIC\IBS
  */
-class Response extends CNRResponse implements ResponseInterface
+class Response extends AbstractResponse implements ResponseInterface
 {
     /**
      * Regex for the count/metadata column keys IBS emits alongside a list.
@@ -155,26 +160,6 @@ class Response extends CNRResponse implements ResponseInterface
     }
 
     /**
-     * Get Queuetime of API response
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function getQueuetime(): float
-    {
-        throw new UnsupportedFeatureException("Not supported");
-    }
-
-    /**
-     * Get Runtime of API response
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function getRuntime(): float
-    {
-        throw new UnsupportedFeatureException("Not supported");
-    }
-
-    /**
      * Check if current API response represents an error case.
      *
      * FAILURE is the only IBS status that signals an error. Every other status
@@ -200,26 +185,6 @@ class Response extends CNRResponse implements ResponseInterface
     public function isSuccess(): bool
     {
         return !$this->isError();
-    }
-
-    /**
-     * Check if current API response represents a temporary error case
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function isTmpError(): bool
-    {
-        throw new UnsupportedFeatureException("Not supported");
-    }
-
-    /**
-     * Check if current operation is returned as pending
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function isPending(): bool
-    {
-        throw new UnsupportedFeatureException("Not supported");
     }
 
     /**
@@ -290,16 +255,6 @@ class Response extends CNRResponse implements ResponseInterface
             return $c - 1;
         }
         return null;
-    }
-
-    /**
-     * Get Response as List Hash including useful meta data for tables
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function getListHash(): array
-    {
-        throw new UnsupportedFeatureException("Not implemented.");
     }
 
     /**
