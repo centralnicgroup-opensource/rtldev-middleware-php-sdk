@@ -145,6 +145,20 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(0, $r->getLastRecordIndex());
     }
 
+    public function testGetLastRecordIndexIsNullWhenNoRecords(): void
+    {
+        // A response whose every column is an empty list assembles to zero
+        // records. With no rows there is no meaningful last index, so
+        // getLastRecordIndex() returns null instead of underflowing to -1 —
+        // keeping the pagination block coherent for the empty case. The sole
+        // "status" column being an empty list still satisfies the translator's
+        // status-present check (so the invalid-response template is NOT applied)
+        // yet contributes no rows.
+        $r = new R('{"status":[]}', self::JSONCMD);
+        $this->assertEquals(0, $r->getRecordsCount());
+        $this->assertNull($r->getLastRecordIndex());
+    }
+
     // --- column access ---
 
     public function testGetColumnIndex(): void
