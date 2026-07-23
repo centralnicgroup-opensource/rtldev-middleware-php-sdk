@@ -166,6 +166,21 @@ final class ClientTest extends TestCase
         $this->assertEquals($url, self::$cl->getLiveUrl());
     }
 
+    /**
+     * The base URL now carries only host + trailing slash; the script path is
+     * the default `$path` appended by AbstractClient::performRequest(). Lock the
+     * realign + concatenation so neither drifts back into the SocketConfig URL.
+     * Exercised on OT&E to avoid a LIVE production call — the connection URL is
+     * recorded on the Response regardless of the HTTP outcome (RSRMID-2909).
+     */
+    public function testRequestResolvesConnectionUrl(): void
+    {
+        $cl = new SessionClient();
+        $cl->setCredentials(self::$user, self::$pw)->useOTESystem();
+        $r = $cl->request(["COMMAND" => "StatusAccount"]);
+        $this->assertEquals("https://api-ote.rrpproxy.net/api/call.cgi", $r->getRequestURL());
+    }
+
     public function testGetSystem(): void
     {
         // LIVE is the default; isOTE() must agree with getSystem()

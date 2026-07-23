@@ -92,23 +92,60 @@ abstract class AbstractClient
 
     /**
      * Perform API request using the given command.
-     * Each client implements its own command serialisation and response type.
      *
-     * Endpoint routing differs by brand and is intentionally not part of this
-     * contract. CNR talks to a single fixed endpoint — the full script path
-     * (e.g. `/api/call.cgi`) is baked into the configured URL and only the
-     * hostname changes between OT&E and LIVE — so CNR needs no per-request path.
-     * IBS/Moniker instead expose many endpoints under one host, where the path
-     * selects the operation, so {@see \CNIC\IBS\Client::request()} widens this
-     * signature with an optional `string $path` supplied per call. That widening
-     * is deliberate and accepted by PHPStan (L9) and Psalm (L1); the trade-off is
-     * that `$path` is reachable only through the concrete IBS/Moniker type, not
-     * through this abstract. Keeping `$path` off the shared contract is by design:
-     * CNR must never accept a per-request path, so it is not hoisted here.
+     * The shared request lifecycle lives in {@see performRequest()}; each brand's
+     * public `request()` is a thin wrapper that pins its default `$path` and
+     * declares a concrete Response return type. Every brand accepts an optional
+     * `$path` appended to the configured base URL to select the endpoint: for
+     * IBS/Moniker the path selects the operation (e.g. `Domain/Create`); for CNR
+     * it defaults to the single fixed script path (`api/call.cgi`) and rarely
+     * varies. The signature is symmetric across all brands.
      *
      * @param array<string, scalar|scalar[]|null> $cmd API command
+     * @param string $path path segment appended to the base URL to select the endpoint
      */
-    abstract public function request(array $cmd = []): ResponseInterface;
+    abstract public function request(array $cmd = [], string $path = ""): ResponseInterface;
+
+    /**
+     * Shared request lifecycle (template method). Brands vary it through two
+     * hooks — {@see buildCommand()} (command flattening) and {@see newResponse()}
+     * (covariant Response factory) — plus the {@see $curlopts} property for any
+     * brand-mandatory cURL options.
+     *
+     * @param array<string, scalar|scalar[]|null> $cmd API command
+     * @param string $path path segment appended to the base URL to select the endpoint
+     */
+    protected function performRequest(array $cmd, string $path = ""): ResponseInterface
+    {
+        $mycmd = $this->autoIDNConvert($this->buildCommand($cmd));
+        $cfg = ["CONNECTION_URL" => $this->socketURL . $path];
+        $data = $this->getPOSTData($mycmd);
+        [$raw, $error] = $this->executeCurl($data, $cfg);
+        $response = $this->newResponse($raw, $mycmd, $cfg);
+        if ($this->debugMode) {
+            $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
+        }
+        return $response;
+    }
+
+    /**
+     * Flatten and normalise the given command into wire form.
+     * Brand-specific: CNR flattens as-is; IBS injects `ResponseFormat=JSON`.
+     *
+     * @param array<string, scalar|scalar[]|null> $cmd API command
+     * @return array<string, string>
+     */
+    abstract protected function buildCommand(array $cmd): array;
+
+    /**
+     * Instantiate the brand Response for the given raw payload.
+     * Return type is covariant so each brand pins its concrete Response.
+     *
+     * @param string $raw raw API response payload
+     * @param array<string, string> $cmd flattened command that produced the response
+     * @param array{CONNECTION_URL: string} $cfg connection config used for the request
+     */
+    abstract protected function newResponse(string $raw, array $cmd, array $cfg): ResponseInterface;
 
     /**
      * Instantiate the SocketConfig for this client.
