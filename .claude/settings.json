@@ -35,5 +35,16 @@
       "Bash(git show *)",
       "Bash(git stash list *)"
     ]
+  },
+  "enabledPlugins": {
+    "mattpocock-skills@mattpocock": true
+  },
+  "extraKnownMarketplaces": {
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    }
   }
 }
