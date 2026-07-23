@@ -58,7 +58,10 @@ abstract class AbstractClient
     protected string $ua = "";
 
     /**
-     * additional curl options to use
+     * Live cURL options bag applied to every request. Initialised in the
+     * constructor from {@see getDefaultCurlOpts()} (brand defaults) and then
+     * mutated by {@see setProxy()}/{@see setReferer()}/{@see setExtraCurlOptions()};
+     * {@see resetCurlOptions()} restores it to the brand defaults.
      * @var array<int, mixed>
      */
     protected array $curlopts = [];
@@ -86,6 +89,7 @@ abstract class AbstractClient
     {
         $this->transport = new HttpTransport();
         $this->socketConfig = $this->newSocketConfig();
+        $this->curlopts = $this->getDefaultCurlOpts();
         $this->useLIVESystem();
         $this->setDefaultLogger();
     }
@@ -236,6 +240,44 @@ abstract class AbstractClient
             $this->ua = "PHP-SDK (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $this->getVersion() . ") php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
         }
         return $this->ua;
+    }
+
+    /**
+     * Brand-default cURL options for this client, used to seed and to reset the
+     * live {@see $curlopts} bag. The base client has none; brands that carry a
+     * mandatory transport setting (e.g. IBS/Moniker forcing IPv4 resolution)
+     * override this. Kept separate from the live bag so {@see resetCurlOptions()}
+     * can restore the defaults instead of wiping them.
+     * @return array<int, mixed>
+     */
+    protected function getDefaultCurlOpts(): array
+    {
+        return [];
+    }
+
+    /**
+     * Merge additional cURL options into the live bag, overriding existing
+     * values on key collision (including brand defaults). Use
+     * {@see resetCurlOptions()} to restore the brand defaults afterwards.
+     * @param array<int, mixed> $opts cURL options keyed by CURLOPT_* constant
+     */
+    public function setExtraCurlOptions(array $opts): static
+    {
+        $this->curlopts = $opts + $this->curlopts;
+        return $this;
+    }
+
+    /**
+     * Restore the live cURL options bag to the brand defaults
+     * ({@see getDefaultCurlOpts()}), discarding any options previously set via
+     * {@see setExtraCurlOptions()}/{@see setProxy()}/{@see setReferer()}. Does
+     * NOT clear the bag to an empty array — brand-mandatory options (e.g.
+     * IBS/Moniker's IPv4 resolution) are preserved.
+     */
+    public function resetCurlOptions(): static
+    {
+        $this->curlopts = $this->getDefaultCurlOpts();
+        return $this;
     }
 
     /**

@@ -25,11 +25,15 @@ class Client extends AbstractClient
 {
     /**
      * Brand-mandatory cURL options. IBS/Moniker force IPv4 resolution
-     * ({@see CURLOPT_IPRESOLVE}); merged over the transport defaults by
-     * {@see \CNIC\AbstractClient::executeCurl()}.
-     * @var array<int, mixed>
+     * ({@see CURLOPT_IPRESOLVE}); this seeds the live {@see \CNIC\AbstractClient::$curlopts}
+     * bag and is restored by {@see \CNIC\AbstractClient::resetCurlOptions()}.
+     * @return array<int, mixed>
      */
-    protected array $curlopts = [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4];
+    #[\Override]
+    protected function getDefaultCurlOpts(): array
+    {
+        return [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4];
+    }
 
     /**
      * Instantiate IBS SocketConfig
