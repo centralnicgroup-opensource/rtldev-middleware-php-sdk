@@ -24,6 +24,14 @@ use CNIC\IBS\SocketConfig;
 class Client extends AbstractClient
 {
     /**
+     * Brand-mandatory cURL options. IBS/Moniker force IPv4 resolution
+     * ({@see CURLOPT_IPRESOLVE}); merged over the transport defaults by
+     * {@see \CNIC\AbstractClient::executeCurl()}.
+     * @var array<int, mixed>
+     */
+    protected array $curlopts = [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4];
+
+    /**
      * Instantiate IBS SocketConfig
      */
     #[\Override]
@@ -94,17 +102,12 @@ class Client extends AbstractClient
     /**
      * Perform API request using the given command.
      *
-     * Unlike CNR — which targets a single fixed endpoint baked into the
-     * configured URL — the IBS/Moniker platform exposes many endpoints under one
-     * host, where the path selects the operation (e.g. `Domain/Create`,
-     * `Domain/Info`). The base host is configured on the SocketConfig
-     * (`liveUrl`/`oteUrl`, host only, with a trailing slash); the per-operation
-     * path is appended here and therefore must be supplied per request.
-     *
-     * This is why the signature widens {@see \CNIC\AbstractClient::request()}
-     * with an optional `$path`: it is deliberate and accepted by both static
-     * analysers. Consumers that need `$path` must hold the concrete
-     * IBS/Moniker `Client` type — the abstract contract intentionally omits it.
+     * The IBS/Moniker platform exposes many endpoints under one host, where the
+     * path selects the operation (e.g. `Domain/Create`, `Domain/Info`). The base
+     * host is configured on the SocketConfig (`liveUrl`/`oteUrl`, host only, with
+     * a trailing slash); the per-operation path is appended by
+     * {@see \CNIC\AbstractClient::performRequest()} and therefore must be
+     * supplied per request.
      *
      * @param array<string, scalar|scalar[]|null> $cmd API command to request
      * @param string $path Path segment appended to the base URL to select the endpoint
@@ -112,16 +115,32 @@ class Client extends AbstractClient
     #[\Override]
     public function request(array $cmd = [], string $path = ""): Response
     {
-        $mycmd = CommandFormatter::flattenCommand($cmd + ["ResponseFormat" => "JSON"], false);
-        $mycmd = $this->autoIDNConvert($mycmd);
-        $cfg = ["CONNECTION_URL" => $this->socketURL . $path];
-        $data = $this->getPOSTData($mycmd);
-        [$raw, $error] = $this->executeCurl($data, $cfg, [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
-        $response = new Response($raw, $mycmd, $cfg, $this->context);
-        if ($this->debugMode) {
-            $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
-        }
-        return $response;
+        $r = $this->performRequest($cmd, $path);
+        assert($r instanceof Response);
+        return $r;
+    }
+
+    /**
+     * Flatten the given command into wire form, injecting the JSON response format.
+     * @param array<string, scalar|scalar[]|null> $cmd API command
+     * @return array<string, string>
+     */
+    #[\Override]
+    protected function buildCommand(array $cmd): array
+    {
+        return CommandFormatter::flattenCommand($cmd + ["ResponseFormat" => "JSON"], false);
+    }
+
+    /**
+     * Instantiate an IBS Response for the given raw payload.
+     * @param string $raw raw API response payload
+     * @param array<string, string> $cmd flattened command that produced the response
+     * @param array{CONNECTION_URL: string} $cfg connection config used for the request
+     */
+    #[\Override]
+    protected function newResponse(string $raw, array $cmd, array $cfg): Response
+    {
+        return new Response($raw, $cmd, $cfg, $this->context);
     }
 
     /**

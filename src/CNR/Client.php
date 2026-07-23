@@ -45,20 +45,37 @@ class Client extends AbstractClient
     /**
      * Perform API request using the given command
      * @param array<string, scalar|scalar[]|null> $cmd API command to request (optional for session login)
+     * @param string $path endpoint path appended to the base URL (defaults to the CNR script path)
      */
     #[\Override]
-    public function request(array $cmd = []): Response
+    public function request(array $cmd = [], string $path = "api/call.cgi"): Response
     {
-        $mycmd = CommandFormatter::flattenCommand($cmd);
-        $mycmd = $this->autoIDNConvert($mycmd);
-        $cfg = ["CONNECTION_URL" => $this->socketURL];
-        $data = $this->getPOSTData($mycmd);
-        [$raw, $error] = $this->executeCurl($data, $cfg);
-        $response = new Response($raw, $mycmd, $cfg, $this->context);
-        if ($this->debugMode) {
-            $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
-        }
-        return $response;
+        $r = $this->performRequest($cmd, $path);
+        assert($r instanceof Response);
+        return $r;
+    }
+
+    /**
+     * Flatten the given command into wire form (CNR uppercase key/value pairs).
+     * @param array<string, scalar|scalar[]|null> $cmd API command
+     * @return array<string, string>
+     */
+    #[\Override]
+    protected function buildCommand(array $cmd): array
+    {
+        return CommandFormatter::flattenCommand($cmd);
+    }
+
+    /**
+     * Instantiate a CNR Response for the given raw payload.
+     * @param string $raw raw API response payload
+     * @param array<string, string> $cmd flattened command that produced the response
+     * @param array{CONNECTION_URL: string} $cfg connection config used for the request
+     */
+    #[\Override]
+    protected function newResponse(string $raw, array $cmd, array $cfg): Response
+    {
+        return new Response($raw, $cmd, $cfg, $this->context);
     }
 
     /**

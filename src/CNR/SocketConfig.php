@@ -18,8 +18,8 @@ use CNIC\AbstractSocketConfig;
  */
 final class SocketConfig extends AbstractSocketConfig
 {
-    protected string $oteUrl = "https://api-ote.rrpproxy.net/api/call.cgi";
-    protected string $liveUrl = "https://api.rrpproxy.net/api/call.cgi";
+    protected string $oteUrl = "https://api-ote.rrpproxy.net/";
+    protected string $liveUrl = "https://api.rrpproxy.net/";
     protected int $socketTimeout = 300;
     protected bool $needsIDNConvert = true;
     protected string $roleSeparator = ":";

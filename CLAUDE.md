@@ -21,9 +21,9 @@ Compact summary below; the **full deep dive** (per-class detail, design rational
 **Load-bearing "do NOT" directives (rationale in the deep-dive doc — do not undo these):**
 
 - Do **not** re-add the 5 CNR-only methods (`getQueuetime`/`getRuntime`/`isTmpError`/`isPending`/`getListHash`) to the core `ResponseInterface` — they live on `ExtendedResponseInterface` (CNR only); narrow via `instanceof \CNIC\ExtendedResponseInterface` to use them.
-- Do **not** "align" the `request()` signatures by hoisting `$path` onto the abstract — IBS/Moniker's `request($cmd, $path = "")` widening is deliberate; CNR must never accept a per-request path.
+- Do **not** reimplement the `request()` lifecycle per brand — it is a template method on `AbstractClient::performRequest()`. The public `request(array $cmd = [], string $path = "")` signature is **symmetric across all brands** (CNR just defaults `$path` to `api/call.cgi`); vary a brand only through the `buildCommand()`/`newResponse()` hooks and the `$curlopts` property. (Ref: RSRMID-2909, which deliberately dropped the earlier "CNR must never accept a per-request path" rule.)
 - Do **not** "symmetrise" columns onto a `newColumn()` factory like records — it is infeasible under PHPStan L9 / Psalm L1; keep the `registerColumn(ColumnInterface)` shape.
-- `ClientFactory::getClient()` returns the shared `AbstractClient` — reach brand-specific capabilities (CNR `login()`/`logout()`/`saveSession()`, IBS/Moniker `request($cmd, $path)`) by narrowing to the concrete type.
+- `ClientFactory::getClient()` returns the shared `AbstractClient` — reach brand-specific capabilities (CNR `login()`/`logout()`/`saveSession()`) by narrowing to the concrete type.
 
 ## Coding Standards
 
