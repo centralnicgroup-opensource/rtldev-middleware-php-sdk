@@ -47,10 +47,10 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
-    "@team-internet/semantic-release-plugins": "^1.0.7",
+    "@team-internet/semantic-release-plugins": "^1.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.6",
     "semantic-release": "^25.0.8"
   },
   "lint-staged": {
