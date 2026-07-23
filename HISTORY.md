@@ -1,3 +1,10 @@
+# [18.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v18.0.0...v18.1.0) (2026-07-23)
+
+
+### Features
+
+* **client:** add setExtraCurlOptions()/resetCurlOptions() for per-client cURL tuning ([c9bda1c](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/c9bda1c0f60a7b38479bbd38a045eb61a1919707))
+
 # [18.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v17.3.1...v18.0.0) (2026-07-22)
 
 
