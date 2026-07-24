@@ -17,6 +17,7 @@ This module is a connector library for the insanely fast CNIC Backend APIs (Cent
   - [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
   - [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
 - [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
+- [Migration Guide](MIGRATION.md) — how to upgrade across major versions
 
 ## Usage
 
