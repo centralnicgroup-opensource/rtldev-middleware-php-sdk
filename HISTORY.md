@@ -1,3 +1,19 @@
+# [19.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v18.1.0...v19.0.0) (2026-07-24)
+
+
+### Features
+
+* **client:** segregate CNR-only capabilities off AbstractClient ([5acd031](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/5acd0319bfb4767e7c2a90c66bce9b9bcf58c3b0))
+
+
+### BREAKING CHANGES
+
+* **client:** setRoleCredentials() removed from the shared AbstractClient;
+it now lives on the CNR-only RoleCredentialsInterface (narrow via instanceof).
+ClientFactory::getClient(string) removed in favour of typed constructors
+cnr()/ibs()/moniker(); the Registrar enum and UnknownRegistrarException are
+removed with it.
+
 # [18.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v18.0.0...v18.1.0) (2026-07-23)
 
 
