@@ -9,6 +9,8 @@ use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\Response as R;
 use CNIC\IBS\SessionClient;
+use CNICTEST\Support\Cassettes;
+use CNICTEST\Support\CassetteTransport;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
@@ -16,6 +18,14 @@ final class ClientTest extends TestCase
     public static SessionClient $cl;
     public static string $user;
     public static string $pw;
+    /**
+     * @var CassetteTransport record/replay transport driving the request() path
+     */
+    public static CassetteTransport $tape;
+    /**
+     * @var string absolute path to this brand's cassette directory
+     */
+    public static string $cassetteDir;
 
     #[\Override]
     public static function setUpBeforeClass(): void
@@ -23,18 +33,29 @@ final class ClientTest extends TestCase
         $cl = CF::getClient("IBS");
         \assert($cl instanceof SessionClient);
         self::$cl = $cl;
+        self::$cassetteDir = __DIR__ . "/cassettes";
+        self::$tape = Cassettes::attach($cl, self::$cassetteDir);
 
-        self::$user = (string) getenv("RTLDEV_MW_CI_USER_IBS");
-        self::$pw = (string) getenv("RTLDEV_MW_CI_USERPASSWORD_IBS");
-        if (self::$user === "" || self::$pw === "") {
-            self::markTestSkipped("IBS credentials not set (RTLDEV_MW_CI_USER_IBS / RTLDEV_MW_CI_USERPASSWORD_IBS).");
+        if (Cassettes::isRecording()) {
+            // Record mode makes real OTE calls, so real credentials are required.
+            self::$user = (string) getenv("RTLDEV_MW_CI_USER_IBS");
+            self::$pw = (string) getenv("RTLDEV_MW_CI_USERPASSWORD_IBS");
+            if (self::$user === "" || self::$pw === "") {
+                self::markTestSkipped("Recording needs RTLDEV_MW_CI_USER_IBS / RTLDEV_MW_CI_USERPASSWORD_IBS.");
+            }
+            return;
         }
+
+        // Replay mode (default): deterministic dummy credentials — the transport
+        // is served from committed cassettes, so credentials are never sent.
+        self::$user = "test.user";
+        self::$pw = "test.pw";
     }
 
     #[\Override]
     protected function tearDown(): void
     {
-        sleep(2);
+        Cassettes::throttle(); // record mode only; replay is offline
         parent::tearDown();
     }
 
@@ -168,10 +189,15 @@ final class ClientTest extends TestCase
 
     public function testRequestCurlExecFail(): void
     {
-        self::$cl->setCredentials(self::$user, self::$pw)
-            ->useOTESystem()
-            ->setURL("http://gregeragregaegaegag.com/geragaerg/");
-        $r = self::$cl->request(["domain" => "tronexats.com"], "Domain/Info");
+        // HTTP communication failure. Driven by a hand-authored `conn-error`
+        // cassette via a dedicated replay-only transport, so a record run never
+        // overwrites the fixture with a resolver-dependent message (RSRMID-2910).
+        $cl = CF::getClient("IBS");
+        $tape = new CassetteTransport(null, self::$cassetteDir, false);
+        $cl->setTransport($tape);
+        $tape->useCassette("conn-error");
+        $cl->useOTESystem();
+        $r = $cl->request(["domain" => "tronexats.com"], "Domain/Info");
         $this->assertInstanceOf(R::class, $r);
         $this->assertFalse($r->isSuccess());
         $this->assertStringContainsString("Command failed due to HTTP communication error", $r->getDescription());
@@ -179,6 +205,7 @@ final class ClientTest extends TestCase
 
     public function testRequestSuccessDbg(): void
     {
+        self::$tape->useCassette("request-success-dbg");
         self::$cl->enableDebugMode()
             ->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
@@ -189,6 +216,7 @@ final class ClientTest extends TestCase
 
     public function testRequestSuccessNoDbg(): void
     {
+        self::$tape->useCassette("request-success-nodbg");
         self::$cl->disableDebugMode();
         $r = self::$cl->request(["domain" => "tronexats.com"], "Domain/Check");
         $this->assertInstanceOf(R::class, $r);
