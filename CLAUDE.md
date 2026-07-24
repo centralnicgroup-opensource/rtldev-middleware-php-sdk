@@ -11,19 +11,20 @@ This is the **PHP SDK** for Team Internet backend APIs (CentralNic Reseller, Int
 Compact summary below; the **full deep dive** (per-class detail, design rationale, RSRMID history) is in [docs/agents/architecture.md](docs/agents/architecture.md) — read it before changing anything structural.
 
 - **Namespace root:** `CNIC\` mapped to `src/` (PSR-4). Brand sub-namespaces: `CNR`, `IBS`, `MONIKER`.
-- **Shared abstracts (in `CNIC\`):** `AbstractClient`, `AbstractSocketConfig`, `HttpTransport` (cURL layer), `AbstractResponseTemplateManager`, `AbstractResponseTranslator`, `AbstractResponse` (core contract, template-method constructor), `AbstractRecord`. Enums: `Registrar` (string-backed brand id) and `System` (`OTE`/`LIVE`).
+- **Shared abstracts (in `CNIC\`):** `AbstractClient`, `AbstractSocketConfig`, `HttpTransport` (cURL layer), `AbstractResponseTemplateManager`, `AbstractResponseTranslator`, `AbstractResponse` (core contract, template-method constructor), `AbstractRecord`. Enum: `System` (`OTE`/`LIVE`).
 - **Brands are siblings, not parent/child:** `CNR\Response`/`IBS\Response` both extend `AbstractResponse`; `CNR\Record`/`IBS\Record` both extend `AbstractRecord`. `MONIKER\Client extends IBS\Client` (same platform; only `SocketConfig` differs) and MONIKER reuses IBS's Response/Record. `IBS\Column` is standalone (not a `CNR\Column` subclass) because IBS carries mixed-typed JSON values.
 - **Response construction is a template method:** `AbstractResponse::__construct()` is the skeleton; brands implement the `translate()`/`populate()`/`newRecord()` hooks. Add a brand or change parsing by implementing hooks — never reimplement the constructor.
 - **Config-driven:** each `SocketConfig` (extends `AbstractSocketConfig`) carries endpoints/params/flags as typed properties (no more `config.json`).
-- **Type-hint against interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `ExtendedResponseInterface`, `LoggerInterface`. Use `LoggerInterface` not `Logger`, `ResponseInterface` not `Response`.
+- **Type-hint against interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `ExtendedResponseInterface`, `RoleCredentialsInterface`, `LoggerInterface`. Use `LoggerInterface` not `Logger`, `ResponseInterface` not `Response`.
 - **Public API symbols** are annotated `@psalm-api` to suppress unused-symbol warnings.
 
 **Load-bearing "do NOT" directives (rationale in the deep-dive doc — do not undo these):**
 
 - Do **not** re-add the 5 CNR-only methods (`getQueuetime`/`getRuntime`/`isTmpError`/`isPending`/`getListHash`) to the core `ResponseInterface` — they live on `ExtendedResponseInterface` (CNR only); narrow via `instanceof \CNIC\ExtendedResponseInterface` to use them.
+- Do **not** re-add `setRoleCredentials()` to `AbstractClient` — it is CNR-only (depends on the CNR role separator; inheriting it on IBS/Moniker would forge a garbage login) and lives on `RoleCredentialsInterface` (CNR only); narrow via `instanceof \CNIC\RoleCredentialsInterface` to use it. This is the client-tree twin of the `ExtendedResponseInterface` rule above. `getSession()`/`setSession()`/`useHighPerformanceConnectionSetup()` deliberately **stay** on `AbstractClient` (harmless/brand-agnostic there). (Ref: RSRMID-2911.)
 - Do **not** reimplement the `request()` lifecycle per brand — it is a template method on `AbstractClient::performRequest()`. The public `request(array $cmd = [], string $path = "")` signature is **symmetric across all brands** (CNR just defaults `$path` to `api/call.cgi`); vary a brand only through the `buildCommand()`/`newResponse()` hooks and the `$curlopts` property. (Ref: RSRMID-2909, which deliberately dropped the earlier "CNR must never accept a per-request path" rule.)
 - Do **not** "symmetrise" columns onto a `newColumn()` factory like records — it is infeasible under PHPStan L9 / Psalm L1; keep the `registerColumn(ColumnInterface)` shape.
-- `ClientFactory::getClient()` returns the shared `AbstractClient` — reach brand-specific capabilities (CNR `login()`/`logout()`/`saveSession()`) by narrowing to the concrete type.
+- `ClientFactory` exposes **typed named constructors** — `cnr()`/`ibs()`/`moniker()`, each returning the concrete brand `SessionClient` — not a string-dispatch `getClient(string)`. The returned client is fully typed, so brand-specific capabilities (CNR `login()`/`logout()`/`saveSession()`/`setRoleCredentials()`) are available directly, with no narrowing on the normal path. The old `Registrar` enum and `UnknownRegistrarException` were removed with `getClient()`. (Ref: RSRMID-2911.)
 
 ## Coding Standards
 
@@ -48,7 +49,7 @@ Compact summary below; the **full deep dive** (per-class detail, design rational
 ### Class Patterns
 
 - Setters use fluent interface (return `$this`)
-- **Exceptions:** throw an exception from the `CNIC\Exception` hierarchy — a class extending the base `CnicException` (which extends `\Exception`). Reuse the existing types where they fit — `UnsupportedFeatureException` (capability not available on this platform/response), `UnknownRegistrarException` (unresolvable registrar identifier), `PaginationException` (list-pagination misuse) — and add a new `CnicException` subclass when a genuinely distinct failure mode arises, rather than reaching for a bare `\Exception`. The hierarchy is **additive and non-breaking**: because every class ultimately extends `\Exception`, existing `catch (\Exception)` consumer code keeps working, so introducing or extending it needs no `BREAKING CHANGE`/major bump. (Ref: RSRMID-2895.) Do **not** create parallel ad-hoc exception types outside `CNIC\Exception`.
+- **Exceptions:** throw an exception from the `CNIC\Exception` hierarchy — a class extending the base `CnicException` (which extends `\Exception`). Reuse the existing types where they fit — `UnsupportedFeatureException` (capability not available on this platform/response), `PaginationException` (list-pagination misuse) — and add a new `CnicException` subclass when a genuinely distinct failure mode arises, rather than reaching for a bare `\Exception`. The hierarchy is **additive and non-breaking**: because every class ultimately extends `\Exception`, existing `catch (\Exception)` consumer code keeps working, so introducing or extending it needs no `BREAKING CHANGE`/major bump. (Ref: RSRMID-2895.) Do **not** create parallel ad-hoc exception types outside `CNIC\Exception`.
 - Password fields must be sanitized before logging: `$cmd["PASSWORD"] = "***"`
 
 ### File Header
@@ -130,27 +131,27 @@ Short reminders; full detail in the linked docs.
 
 ## Important Files
 
-| Path                                      | Purpose                                                  |
-| ----------------------------------------- | -------------------------------------------------------- |
-| `src/AbstractSocketConfig.php`            | Shared abstract base for all SocketConfig classes        |
-| `src/AbstractResponseTemplateManager.php` | Shared base for brand ResponseTemplateManager classes    |
-| `src/AbstractResponseTranslator.php`      | Shared translate()/findMatch()/placeholder pipeline      |
-| `src/AbstractResponse.php`                | Shared base for brand Response classes (core contract)   |
-| `src/AbstractRecord.php`                  | Shared base for brand Record classes                     |
-| `src/ResponseInterface.php`               | Universal Response contract (all brands)                 |
-| `src/ExtendedResponseInterface.php`       | CNR-only capabilities (telemetry/status/list-hash)       |
-| `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)   |
-| `src/Exception/CnicException.php`         | Base of the additive `CNIC\Exception` hierarchy          |
-| `src/Registrar.php`                       | `Registrar` enum — string-backed, used by ClientFactory  |
-| `src/System.php`                          | `System` enum — string-backed `OTE`/`LIVE` client system |
-| `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)        |
-| `src/IBS/SocketConfig.php`                | IBS API endpoints and settings (typed properties)        |
-| `src/MONIKER/SocketConfig.php`            | Moniker API endpoints and settings (typed properties)    |
-| `.github/linters/phpcs.xml`               | CodeSniffer PSR-12 config                                |
-| `.github/linters/phpstan.neon`            | PHPStan level 9 (strictest) config                       |
-| `.github/linters/psalm.xml`               | Psalm level 1 (strictest) config                         |
-| `.github/phpunit.xml`                     | PHPUnit configuration                                    |
-| `env.example.sh`                          | Template for required env variables (copy to `env.sh`)   |
+| Path                                      | Purpose                                                     |
+| ----------------------------------------- | ----------------------------------------------------------- |
+| `src/AbstractSocketConfig.php`            | Shared abstract base for all SocketConfig classes           |
+| `src/AbstractResponseTemplateManager.php` | Shared base for brand ResponseTemplateManager classes       |
+| `src/AbstractResponseTranslator.php`      | Shared translate()/findMatch()/placeholder pipeline         |
+| `src/AbstractResponse.php`                | Shared base for brand Response classes (core contract)      |
+| `src/AbstractRecord.php`                  | Shared base for brand Record classes                        |
+| `src/ResponseInterface.php`               | Universal Response contract (all brands)                    |
+| `src/ExtendedResponseInterface.php`       | CNR-only Response capabilities (telemetry/status/list-hash) |
+| `src/RoleCredentialsInterface.php`        | CNR-only client capability (`setRoleCredentials()`)         |
+| `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)      |
+| `src/Exception/CnicException.php`         | Base of the additive `CNIC\Exception` hierarchy             |
+| `src/System.php`                          | `System` enum — string-backed `OTE`/`LIVE` client system    |
+| `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)           |
+| `src/IBS/SocketConfig.php`                | IBS API endpoints and settings (typed properties)           |
+| `src/MONIKER/SocketConfig.php`            | Moniker API endpoints and settings (typed properties)       |
+| `.github/linters/phpcs.xml`               | CodeSniffer PSR-12 config                                   |
+| `.github/linters/phpstan.neon`            | PHPStan level 9 (strictest) config                          |
+| `.github/linters/psalm.xml`               | Psalm level 1 (strictest) config                            |
+| `.github/phpunit.xml`                     | PHPUnit configuration                                       |
+| `env.example.sh`                          | Template for required env variables (copy to `env.sh`)      |
 
 ## Atlassian / JIRA
 

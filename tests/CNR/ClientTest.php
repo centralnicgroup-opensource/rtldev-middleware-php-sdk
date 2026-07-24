@@ -13,6 +13,7 @@ use CNIC\CNR\ResponseTemplateManager as RTM;
 use CNIC\CNR\SessionClient;
 use CNIC\Exception\PaginationException;
 use CNIC\IDNA\Factory\ConverterFactory;
+use CNIC\RoleCredentialsInterface;
 use CNIC\System;
 use CNICTEST\Support\Cassettes;
 use CNICTEST\Support\CassetteTransport;
@@ -53,11 +54,9 @@ final class ClientTest extends TestCase
     #[\Override]
     public static function setUpBeforeClass(): void
     {
-        $cl = CF::getClient("CNR");
-        \assert($cl instanceof SessionClient);
-        self::$cl = $cl;
+        self::$cl = CF::cnr();
         self::$cassetteDir = __DIR__ . "/cassettes";
-        self::$tape = Cassettes::attach($cl, self::$cassetteDir);
+        self::$tape = Cassettes::attach(self::$cl, self::$cassetteDir);
 
         if (Cassettes::isRecording()) {
             // Record mode: real OTE calls, so real credentials are required.
@@ -341,6 +340,14 @@ final class ClientTest extends TestCase
             "COMMAND" => "StatusAccount"
         ]);
         $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
+    }
+
+    public function testImplementsRoleCredentialsInterface(): void
+    {
+        // Role credentials are a CNR-only capability, segregated onto
+        // RoleCredentialsInterface (mirrors ExtendedResponseInterface). The CNR
+        // client implements the seam; IBS/Moniker deliberately do not.
+        $this->assertInstanceOf(RoleCredentialsInterface::class, self::$cl);
     }
 
     public function testSetRoleCredentialsSet(): void
@@ -840,7 +847,7 @@ final class ClientTest extends TestCase
      */
     public function testHighPerformanceSetupRewritesOnlyHostAndScheme(): void
     {
-        $cl = CF::getClient("CNR");
+        $cl = CF::cnr();
         $cl->setURL("https://api.example.com:8443/api.example.com/call.cgi?foo=bar");
         $cl->useHighPerformanceConnectionSetup();
         $this->assertSame(

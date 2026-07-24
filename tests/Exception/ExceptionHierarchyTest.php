@@ -6,7 +6,6 @@ namespace CNICTEST\Exception;
 
 use CNIC\Exception\CnicException;
 use CNIC\Exception\PaginationException;
-use CNIC\Exception\UnknownRegistrarException;
 use CNIC\Exception\UnsupportedFeatureException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +22,6 @@ final class ExceptionHierarchyTest extends TestCase
     public function testSubclassesExtendCnicBase(): void
     {
         $this->assertInstanceOf(CnicException::class, new UnsupportedFeatureException("boom"));
-        $this->assertInstanceOf(CnicException::class, new UnknownRegistrarException("boom"));
         $this->assertInstanceOf(CnicException::class, new PaginationException("boom"));
     }
 
@@ -40,7 +38,6 @@ final class ExceptionHierarchyTest extends TestCase
     public function testSubclassesRemainSplExceptions(): void
     {
         $this->assertInstanceOf(\Exception::class, new UnsupportedFeatureException("boom"));
-        $this->assertInstanceOf(\Exception::class, new UnknownRegistrarException("boom"));
         $this->assertInstanceOf(\Exception::class, new PaginationException("boom"));
     }
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use CNIC\ClientFactory;
-use CNIC\MONIKER\Client;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -17,11 +16,7 @@ if ($user === false || $password === false) {
 
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n\n";
-$cl = ClientFactory::getClient("MONIKER");
-// The factory returns the shared CNIC\AbstractClient contract. The per-request
-// endpoint path (request($cmd, $path)) is IBS/Moniker-specific, so narrow to
-// the concrete Client before using it — the SDK guarantees the Moniker arm is one.
-assert($cl instanceof Client);
+$cl = ClientFactory::moniker();
 $cl->useOTESystem()//LIVE System would be used otherwise by default
    ->setCredentials($user, $password)
    ->enableDebugMode();

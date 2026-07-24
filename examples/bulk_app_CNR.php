@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use CNIC\ClientFactory;
-use CNIC\CNR\SessionClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -23,7 +22,7 @@ if ($rolepassword === false) {
     die("Please provide environment variables RTLDEV_MW_CI_ROLEPASSWORD_CNR.\n");
 }
 
-$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
+$cl = ClientFactory::cnr(); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setRoleCredentials($user, $role, $rolepassword);
 
@@ -50,10 +49,9 @@ echo "Time: $end1 seconds\n";
 // --- SESSION BASED API COMMUNICATION ---
 echo "--- SESSION-BASED API COMMUNICATION ----\n";
 
-$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
-// Session handling (login/logout) is CNR-specific; narrow the shared
-// CNIC\AbstractClient contract to the concrete SessionClient before using it.
-assert($cl instanceof SessionClient);
+// cnr() returns a fully-typed CNR\SessionClient, so session handling
+// (login/logout) and role credentials are available directly — no narrowing.
+$cl = ClientFactory::cnr(); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setRoleCredentials($user, $role, $rolepassword);
 $r = $cl->login();

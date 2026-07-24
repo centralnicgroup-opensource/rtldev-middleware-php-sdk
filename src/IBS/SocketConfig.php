@@ -21,6 +21,9 @@ class SocketConfig extends AbstractSocketConfig
     protected string $oteUrl = "https://testapi.internet.bs/";
     protected string $liveUrl = "https://api.internet.bs/";
     protected int $socketTimeout = 300;
+    // IBS/Moniker convert IDNs server-side; this false flag makes the shared
+    // AbstractClient::autoIDNConvert() short-circuit and pass the command through
+    // verbatim, so no brand-level override is needed.
     protected bool $needsIDNConvert = false;
 
     /**

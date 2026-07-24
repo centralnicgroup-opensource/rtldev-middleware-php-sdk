@@ -34,7 +34,7 @@ final class TransportSeamTest extends TestCase
 
     public function testSetTransportInjectsAndIsFluent(): void
     {
-        $cl = CF::getClient("CNR");
+        $cl = CF::cnr();
         $fake = new class implements TransportInterface {
             /**
              * @param array<int, mixed> $options
