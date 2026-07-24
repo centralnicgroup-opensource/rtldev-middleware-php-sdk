@@ -77,11 +77,13 @@ namespace CNIC\<SubNamespace>;
 - **No real API calls in unit tests** — all API responses are template-driven
 - **Functional tests (`tests/Functional/`) are the one deliberate exception** — they drive `HttpTransport` against a local PHP built-in HTTP server over loopback (no external API) to assert wire-level behaviour that templates cannot, such as per-call cURL options not leaking across the reused handle. They start the server in `setUpBeforeClass()` and `markTestSkipped()` if it cannot bind a port, so a locked-down runner never turns them red.
 - **MONIKER test files may mirror IBS test files and import IBS classes directly** — this is intentional. MONIKER and IBS share the same API platform and data format; only the brand URL and credentials differ. Do not flag this duplication as a coverage gap or suggest MONIKER-specific response/parser tests.
+- **`request()`-path tests are cassette-driven (record/replay) — [RSRMID-2910].** The brand `ClientTest`s drive the full `request()`/`login()`/`logout()`/pagination lifecycle through a `CNICTEST\Support\CassetteTransport` injected via `AbstractClient::setTransport()` (the `TransportInterface` seam). **Replay is the default** (`composer test`): each live call is served from a committed JSON cassette under `tests/<Brand>/cassettes/` — fully offline, no credentials, no network, no `sleep()`. **Recording** (`composer test:record`, i.e. `RTLDEV_MW_RECORD=1`) does the real OT&E calls via a nested `HttpTransport`, captures the wire bytes (pre-`translate()`), and rewrites the cassettes; it needs `RTLDEV_MW_CI_*` creds and keeps the `sleep(2)` throttle. A cassette is a **bare JSON array** of `{"raw","error"}` exchanges (ordered — one operation may drive several `post()` calls, e.g. pagination). Each `request()` assertion selects its cassette with `self::$tape->useCassette("<name>")`. Connection-failure (`code=421`) is a **hand-authored `conn-error.json` fixture** served through a dedicated replay-only transport, so a record run never overwrites it with a resolver-dependent message. `tests/` is `export-ignore`d, so cassettes never ship to Packagist. Re-record only when the exercised API behaviour changes, and spot-check the `git diff` (no scrubbing — rely on OT&E-test-account discipline).
 
 ### Running Tests
 
 ```bash
-composer test          # PHPUnit with coverage (.github/phpunit.xml)
+composer test          # PHPUnit with coverage (.github/phpunit.xml) — cassette replay, fully offline
+composer test:record   # Re-record request() cassettes against OT&E (needs RTLDEV_MW_CI_* creds)
 composer lint          # phpcs + phpstan + psalm + shellcheck
 composer codefix       # Auto-fix coding standard violations (phpcbf)
 composer phpstan       # PHPStan static analysis only
