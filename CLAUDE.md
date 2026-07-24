@@ -120,9 +120,11 @@ Short reminders; full detail in the linked docs.
   feat(client): remove deprecated setProxy() method
 
   BREAKING CHANGE: setProxy() has been removed; use HttpTransport::withProxy() instead.
+
+  See [MIGRATION.md → v20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2000)
   ```
 
-  **Whenever you introduce a breaking change (a `BREAKING CHANGE:` commit), you MUST also extend [MIGRATION.md](MIGRATION.md)** in the same change: add a `→ vX.0.0` section documenting _what changed / what to respect / before→after code_, and update the compatibility-at-a-glance table. The guide is the consumer-facing upgrade path — a breaking change that lands without a migration entry is incomplete. (`MIGRATION.md` is `export-ignore`d, so it never ships to Packagist; edit it freely.)
+  **Whenever you introduce a breaking change (a `BREAKING CHANGE:` commit), you MUST also extend [MIGRATION.md](MIGRATION.md)** in the same change: add a `→ vX.0.0` section documenting _what changed / what to respect / before→after code_, and update the compatibility-at-a-glance table. The guide is the consumer-facing upgrade path — a breaking change that lands without a migration entry is incomplete. (`MIGRATION.md` is `export-ignore`d, so it never ships to Packagist; edit it freely.) **Additionally, add a direct link to the relevant `MIGRATION.md` section in the commit message footer** (as shown in the example above), so anyone reading the commit can jump straight to the upgrade path.
 
 - **Branch creation:** always branch from an up-to-date default branch. Before `git checkout -b`, run `git checkout master && git pull --ff-only` so the new branch starts from the latest `origin/master`. Branching from a stale local `master` (or another feature branch) risks re-doing work that already landed upstream.
 - **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821/short-description` (see [docs/agents/issue-tracker.md](docs/agents/issue-tracker.md) for the Jira side)
