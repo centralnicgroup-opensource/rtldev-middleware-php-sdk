@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\MONIKER\SocketConfig | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
+        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../doctum.js"></script>
+        <script async defer src="../../js/bootstrap.min.js"></script>
+        <script async defer src="../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_MONIKER_SocketConfig" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                    <li><a href="../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/MONIKER.html">MONIKER</a></li><li class="backslash">\</li><li>SocketConfig</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>SocketConfig    
+            </h1>
+    </div>
+
+    
+    <p>final         class
+    <strong>SocketConfig</strong>        extends <a href="../../CNIC/IBS/SocketConfig.html"><abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/MONIKER/SocketConfig.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Moniker SocketConfig — same API platform as IBS; only the endpoints differ.</p></p>                    </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_login">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$login</td>
+                <td class="last"><p>account name</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_login">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_pw">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$pw</td>
+                <td class="last"><p>account password</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_pw">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_oteUrl">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$oteUrl</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_liveUrl">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$liveUrl</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_socketTimeout">
+                                        protected                                        int
+                                                                                
+                                    </td>
+                <td>$socketTimeout</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../CNIC/IBS/SocketConfig.html#property_socketTimeout">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_needsIDNConvert">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$needsIDNConvert</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../CNIC/IBS/SocketConfig.html#property_needsIDNConvert">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_roleSeparator">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$roleSeparator</td>
+                <td class="last"><p>Separator character for role credentials</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_roleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_sensitiveFields">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$sensitiveFields</td>
+                <td class="last"><p>IBS carries sensitive data under lower-/camel-case command keys. Mirrors
+{<a href="../../CNIC/IBS/Response.html">\CNIC\IBS\Response::$sensitiveFields}.</a></p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/IBS/SocketConfig.html#property_sensitiveFields">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></small></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setLogin">setLogin</a>(string $value)
+        
+                                            <p><p>Set account name to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLogin">getLogin</a>()
+        
+                                            <p><p>Get current login</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setPassword">setPassword</a>(string $value)
+        
+                                            <p><p>Set account password to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSession">getSession</a>()
+        
+                                            <p><p>Get API Session ID in use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setSession">setSession</a>(string $value = &quot;&quot;)
+        
+                                            <p><p>Set API Session ID to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setPersistent">setPersistent</a>(bool $value = false)
+        
+                                            <p><p>Add persistent parameter to request (request API session)</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPersistent">getPersistent</a>()
+        
+                                            <p><p>Get persistent parameter</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getOTEUrl">getOTEUrl</a>()
+        
+                                            <p><p>Get OT&amp;E endpoint URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLiveUrl">getLiveUrl</a>()
+        
+                                            <p><p>Get LIVE endpoint URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSocketTimeout">getSocketTimeout</a>()
+        
+                                            <p><p>Get socket timeout in seconds</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNeedsIDNConvert">getNeedsIDNConvert</a>()
+        
+                                            <p><p>Get whether IDN conversion is needed</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getNeedsIDNConvert">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRoleSeparator">getRoleSeparator</a>()
+        
+                                            <p><p>Get role separator character</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getRoleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_maskSensitiveCommand">maskSensitiveCommand</a>(array $command)
+        
+                                            <p><p>Mask the values of the brand's sensitive command keys (see
+$sensitiveFields) so command-level secrets — e.g. a domain transfer
+authorization code — never reach the debug log in cleartext. Matching is
+case-insensitive to stay robust against casing differences between what a
+brand documents and what it actually sends. <code>null</code> values are left
+untouched (they are dropped from the request, not logged).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_maskSensitiveCommand">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPOSTDataParams">getPOSTDataParams</a>(array $command, bool $secured)
+        
+                                            <p><p>Get POST data container of connection data</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/IBS/SocketConfig.html#method_getPOSTDataParams">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPOSTData">getPOSTData</a>(array $command = [], bool $secured = false)
+        
+                                            <p><p>Create POST data string out of connection data</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_setLogin">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L72">at line 72</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setLogin</strong>(string $value)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set account name to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>account name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLogin">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L81">at line 81</a></div>
+        <code>                    string
+    <strong>getLogin</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get current login</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setPassword">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L90">at line 90</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setPassword</strong>(string $value)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set account password to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>account password</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSession">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L99">at line 99</a></div>
+        <code>                    string
+    <strong>getSession</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API Session ID in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSession">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setSession">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L108">at line 108</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setSession</strong>(string $value = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set API Session ID to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td><p>API Session ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setPersistent">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L116">at line 116</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setPersistent</strong>(bool $value = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add persistent parameter to request (request API session)</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPersistent">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getPersistent">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L124">at line 124</a></div>
+        <code>                    bool
+    <strong>getPersistent</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get persistent parameter</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getOTEUrl">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L132">at line 132</a></div>
+        <code>                    string
+    <strong>getOTEUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get OT&amp;E endpoint URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLiveUrl">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L140">at line 140</a></div>
+        <code>                    string
+    <strong>getLiveUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get LIVE endpoint URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSocketTimeout">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L148">at line 148</a></div>
+        <code>                    int
+    <strong>getSocketTimeout</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get socket timeout in seconds</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNeedsIDNConvert">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getNeedsIDNConvert">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L156">at line 156</a></div>
+        <code>                    bool
+    <strong>getNeedsIDNConvert</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get whether IDN conversion is needed</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRoleSeparator">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getRoleSeparator">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L164">at line 164</a></div>
+        <code>                    string
+    <strong>getRoleSeparator</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get role separator character</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_maskSensitiveCommand">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_maskSensitiveCommand">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L179">at line 179</a></div>
+        <code>            protected        array
+    <strong>maskSensitiveCommand</strong>(array $command)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Mask the values of the brand's sensitive command keys (see
+$sensitiveFields) so command-level secrets — e.g. a domain transfer
+authorization code — never reach the debug log in cleartext. Matching is
+case-insensitive to stay robust against casing differences between what a
+brand documents and what it actually sends. <code>null</code> values are left
+untouched (they are dropped from the request, not logged).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$command</td>
+                <td><p>API Command to mask</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPOSTDataParams">
+        <div class="location">in <a href="../../CNIC/IBS/SocketConfig.html#method_getPOSTDataParams">
+<abbr title="CNIC\IBS\SocketConfig">SocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L52">at line 52</a></div>
+        <code>            protected        array
+    <strong>getPOSTDataParams</strong>(array $command, bool $secured)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get POST data container of connection data</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$command</td>
+                <td><p>API Command to request</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$secured</td>
+                <td><p>if password has to be returned &quot;hidden&quot;</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPOSTData">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L204">at line 204</a></div>
+        <code>                    string
+    <strong>getPOSTData</strong>(array $command = [], bool $secured = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create POST data string out of connection data</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$command</td>
+                <td><p>API Command to request</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$secured</td>
+                <td><p>if password has to be returned &quot;hidden&quot;</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>POST data string</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

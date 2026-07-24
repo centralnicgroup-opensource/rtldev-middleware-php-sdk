@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\AbstractResponseTranslator | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../fonts/doctum-font.css">
+        <script src="../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../doctum.js"></script>
+        <script async defer src="../js/bootstrap.min.js"></script>
+        <script async defer src="../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_AbstractResponseTranslator" data-root-path="../" data-search-index-url="../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../classes.html">Classes</a></li>
+                    <li><a href="../namespaces.html">Namespaces</a></li>
+                    <li><a href="../interfaces.html">Interfaces</a></li>
+                    <li><a href="../traits.html">Traits</a></li>
+                    <li><a href="../doc-index.html">Index</a></li>
+                    <li><a href="../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../CNIC.html">CNIC</a></li><li class="backslash">\</li><li>AbstractResponseTranslator</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>AbstractResponseTranslator    
+            </h1>
+    </div>
+
+    
+    <p>    abstract     class
+    <strong>AbstractResponseTranslator</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Shared base for all registrar ResponseTranslator implementations.</p></p>            <p><p>The translate()/findMatch() pipeline is identical across brands: empty-&gt;&quot;empty&quot;,
+&quot;httperror|&quot; splitting, static-template lookup with {HTTPERROR} injection,
+invalid-template fallback, the two description-map rewrite loops, findMatch(),
+and placeholder replacement. Only a few narrow points differ, supplied by the
+abstract hooks below:</p>
+<ul>
+<li>the static template container (templates())</li>
+<li>the two description rewrite maps (descriptionRegexMap()/descriptionRawPatternMap())</li>
+<li>the response field carrying the human-readable text (fieldName():
+&quot;description&quot; for CNR, &quot;message&quot; for IBS)</li>
+<li>the &quot;missing/empty required field&quot; check that triggers the invalid fallback
+(hasMissingRequiredFields(): CODE/DESCRIPTION for CNR, status for IBS)</li>
+</ul>
+<p>Placeholder stripping is deliberately unified on the per-field, per-token callback
+(formerly CNR-only): unknown {UPPER} tokens are removed only inside the
+human-readable field, leaving {UPPER} content in other data fields untouched. The
+former IBS behaviour stripped such tokens globally across the whole response, which
+risked corrupting legitimate data fields — replacePlaceholders() below is the single
+correct behaviour for both brands. (Ref: RSRMID-2893.)</p></p>        </div>
+            
+        
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_templates">templates</a>()
+        
+                                            <p><p>The brand's static template container (id =&gt; raw template string).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_descriptionRegexMap">descriptionRegexMap</a>()
+        
+                                            <p><p>plain-string description keys for translation; keys are preg_quote'd before matching</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_descriptionRawPatternMap">descriptionRawPatternMap</a>()
+        
+                                            <p><p>raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fieldName">fieldName</a>()
+        
+                                            <p><p>Name of the response field carrying the human-readable text
+(&quot;description&quot; for CNR, &quot;message&quot; for IBS).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasMissingRequiredFields">hasMissingRequiredFields</a>(string $raw)
+        
+                                            <p><p>Whether the raw response is missing or has an empty required field
+(CNR: CODE/DESCRIPTION, IBS: status) and should therefore fall back to the
+&quot;invalid&quot; template.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_translate">translate</a>(string $raw, array $cmd, array $ph = [])
+        
+                                            <p><p>translate a raw api response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_replacePlaceholders">replacePlaceholders</a>(string $raw, array $ph)
+        
+                                            <p><p>Replace known placeholders in the human-readable field while preserving
+literal brace content and unknown-token content in other fields.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_templates">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L42">at line 42</a></div>
+        <code>    abstract    static    protected        array
+    <strong>templates</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The brand's static template container (id =&gt; raw template string).</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_descriptionRegexMap">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L48">at line 48</a></div>
+        <code>    abstract    static    protected        array
+    <strong>descriptionRegexMap</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>plain-string description keys for translation; keys are preg_quote'd before matching</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_descriptionRawPatternMap">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L54">at line 54</a></div>
+        <code>    abstract    static    protected        array
+    <strong>descriptionRawPatternMap</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fieldName">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L60">at line 60</a></div>
+        <code>    abstract    static    protected        string
+    <strong>fieldName</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Name of the response field carrying the human-readable text
+(&quot;description&quot; for CNR, &quot;message&quot; for IBS).</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasMissingRequiredFields">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L68">at line 68</a></div>
+        <code>    abstract    static    protected        bool
+    <strong>hasMissingRequiredFields</strong>(string $raw)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the raw response is missing or has an empty required field
+(CNR: CODE/DESCRIPTION, IBS: status) and should therefore fall back to the
+&quot;invalid&quot; template.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td><p>API raw response (already normalised)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_translate">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L76">at line 76</a></div>
+        <code>        static            string
+    <strong>translate</strong>(string $raw, array $cmd, array $ph = [])
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>translate a raw api response</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td><p>API raw response</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>requested API command</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$ph</td>
+                <td><p>list of place holder vars</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_replacePlaceholders">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTranslator.php#L175">at line 175</a></div>
+        <code>        static    protected        string
+    <strong>replacePlaceholders</strong>(string $raw, array $ph)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Replace known placeholders in the human-readable field while preserving
+literal brace content and unknown-token content in other fields.</p></p>                <p><p>Operates line-by-line on the brand's field (see fieldName()): provided
+placeholders are substituted, unknown {UPPER} tokens are stripped, and any
+other brace content (e.g. lowercase %{i} in SPF records) is left untouched.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td><p>input response</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$ph</td>
+                <td><p>placeholder key-value pairs</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
