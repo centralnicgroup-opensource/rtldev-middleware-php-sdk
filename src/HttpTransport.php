@@ -15,7 +15,7 @@ namespace CNIC;
  *
  * @package CNIC
  */
-final class HttpTransport
+final class HttpTransport implements TransportInterface
 {
     private ?\CurlHandle $handle = null;
 
@@ -25,6 +25,7 @@ final class HttpTransport
      * @param array<int, mixed> $options additional cURL options merged over the defaults
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
      */
+    #[\Override]
     public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
     {
         if (!$this->handle instanceof \CurlHandle) {
@@ -78,6 +79,7 @@ final class HttpTransport
     /**
      * Close and reset the cURL handle.
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle = null; // CurlHandle freed automatically by GC (curl_close deprecated since PHP 8.5)

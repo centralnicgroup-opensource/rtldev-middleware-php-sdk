@@ -80,14 +80,14 @@ abstract class AbstractClient
     /**
      * HTTP transport layer
      */
-    protected HttpTransport $transport;
+    protected TransportInterface $transport;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->transport = new HttpTransport();
+        $this->transport = $this->newTransport();
         $this->socketConfig = $this->newSocketConfig();
         $this->curlopts = $this->getDefaultCurlOpts();
         $this->useLIVESystem();
@@ -156,6 +156,28 @@ abstract class AbstractClient
      * Subclasses return their own SocketConfig subtype.
      */
     abstract protected function newSocketConfig(): AbstractSocketConfig;
+
+    /**
+     * Instantiate the HTTP transport for this client. Mirrors
+     * {@see newSocketConfig()} — the default is the production cURL transport;
+     * override or {@see setTransport()} to inject a test double so the
+     * request() lifecycle can run offline.
+     */
+    protected function newTransport(): TransportInterface
+    {
+        return new HttpTransport();
+    }
+
+    /**
+     * Inject a custom HTTP transport (e.g. a record/replay cassette transport
+     * for offline tests) in place of the default {@see HttpTransport}.
+     * @psalm-api
+     */
+    public function setTransport(TransportInterface $transport): static
+    {
+        $this->transport = $transport;
+        return $this;
+    }
 
     /**
      * Set the default logger for this client.
