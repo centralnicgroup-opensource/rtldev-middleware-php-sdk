@@ -7,13 +7,30 @@ use CNIC\CNR\SessionClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$user = getenv('RTLDEV_MW_CI_USER_CNR');
-$password = getenv('RTLDEV_MW_CI_USERPASSWORD_CNR');
+// --- AUTHENTICATION ---
+// CNR supports two credential styles:
+//
+//   1. Account login  — the plain account id together with the account
+//      password (a single-user, full-access login).
+//
+//   2. Role login      — a so-called "User" in the CNR Web Interface. The
+//      login is a string composed of the CNR account id, a ":" separator and
+//      the role/user id (e.g. "myaccount:myrole"); authentication then uses
+//      that role user's *own* password, not the account password. Roles let
+//      you grant scoped, per-user access under one account.
+//
+// This example uses the role login. A customer may equally use the account
+// login by passing the account id and account password instead.
+$account = getenv('RTLDEV_MW_CI_USER_CNR');
+$role = getenv('RTLDEV_MW_CI_ROLE_CNR');
+$password = getenv('RTLDEV_MW_CI_ROLEPASSWORD_CNR');
 
-if ($user === false || $password === false) {
-    echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR and RTLDEV_MW_CI_USERPASSWORD_CNR.\n";
+if ($account === false || $role === false || $password === false) {
+    echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR, RTLDEV_MW_CI_ROLE_CNR and RTLDEV_MW_CI_ROLEPASSWORD_CNR.\n";
     exit(1);
 }
+// Compose the role login "<account id>:<role id>".
+$user = $account . ":" . $role;
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n";
 $cl = ClientFactory::getClient("CNR"); // fka RRPproxy
