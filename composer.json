@@ -70,6 +70,7 @@
       "@shellcheck"
     ],
     "test": "XDEBUG_MODE=coverage phpunit --configuration .github/phpunit.xml",
+    "test:record": "RTLDEV_MW_RECORD=1 XDEBUG_MODE=off phpunit --no-coverage --configuration .github/phpunit.xml",
     "shellcheck": "find . -name '*.sh' -not -path '*/vendor/*' -not -path '*/node_modules/*' -not -path '*/.husky/_/*' | xargs shellcheck",
     "phpstan": "phpstan analyse -c .github/linters/phpstan.neon",
     "psalm": "psalm --config=.github/linters/psalm.xml --no-cache --threads=1 --monochrome --show-info=true",
@@ -88,6 +89,7 @@
     "phpcs": "Check coding standards (PSR-12) with PHP_CodeSniffer",
     "lint": "Run all linters (phpcs, phpstan, psalm, shellcheck)",
     "test": "Run the PHPUnit test suite with coverage",
+    "test:record": "Re-record the request() cassettes against OT&E (needs RTLDEV_MW_CI_* credentials); replay is the default in composer test",
     "shellcheck": "Lint shell scripts with shellcheck",
     "phpstan": "Run PHPStan static analysis (level 9)",
     "psalm": "Run Psalm static analysis (monochrome)",
