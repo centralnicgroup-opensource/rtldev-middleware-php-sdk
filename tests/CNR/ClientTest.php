@@ -14,11 +14,21 @@ use CNIC\CNR\SessionClient;
 use CNIC\Exception\PaginationException;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\System;
+use CNICTEST\Support\Cassettes;
+use CNICTEST\Support\CassetteTransport;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
 {
     public static SessionClient $cl;
+    /**
+     * @var CassetteTransport record/replay transport driving the request() path
+     */
+    public static CassetteTransport $tape;
+    /**
+     * @var string absolute path to this brand's cassette directory
+     */
+    public static string $cassetteDir;
     /**
      * @var string user name (with role as we don't know the account pw)
      */
@@ -46,33 +56,40 @@ final class ClientTest extends TestCase
         $cl = CF::getClient("CNR");
         \assert($cl instanceof SessionClient);
         self::$cl = $cl;
-        self::$user = (string) getenv("RTLDEV_MW_CI_USER_CNR");
-        if (self::$user === "") {
-            echo "Please provide environment variables RTLDEV_MW_CI_USER_CNR.\n";
-            exit(1);
+        self::$cassetteDir = __DIR__ . "/cassettes";
+        self::$tape = Cassettes::attach($cl, self::$cassetteDir);
+
+        if (Cassettes::isRecording()) {
+            // Record mode: real OTE calls, so real credentials are required.
+            // Never exit(1) — a missing-cred record run skips cleanly (RSRMID-2910).
+            self::$user = (string) getenv("RTLDEV_MW_CI_USER_CNR");
+            self::$role = (string) getenv("RTLDEV_MW_CI_ROLE_CNR");
+            self::$rolepw = (string) getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR");
+            if (self::$user === "" || self::$role === "" || self::$rolepw === "") {
+                self::markTestSkipped(
+                    "Recording needs RTLDEV_MW_CI_USER_CNR / RTLDEV_MW_CI_ROLE_CNR / RTLDEV_MW_CI_ROLEPASSWORD_CNR."
+                );
+            }
+            // qmtest pass is unknown, we emulate it via role
+            self::$userNoRole = self::$user;
+            self::$pw = self::$rolepw;
+            self::$user .= ":" . self::$role;
+            return;
         }
 
-        self::$role = (string) getenv("RTLDEV_MW_CI_ROLE_CNR");
-        if (self::$role === "") {
-            echo "Please provide environment variables RTLDEV_MW_CI_ROLE_CNR.\n";
-            exit(1);
-        }
-
-        // qmtest pass is unknown, we emulate it via role
-        self::$userNoRole = self::$user;
-        self::$pw = self::$rolepw = (string) getenv("RTLDEV_MW_CI_ROLEPASSWORD_CNR");
-        self::$user .= ":" . self::$role;
-
-        if (self::$rolepw === "") {
-            echo "Please provide environment variables RTLDEV_MW_CI_ROLEPASSWORD_CNR.\n";
-            exit(1);
-        }
+        // Replay mode (default): deterministic dummy credentials. The transport
+        // is served from committed cassettes, so credentials are never sent; the
+        // fixed values only keep the getPOSTData() masking assertions stable.
+        self::$userNoRole = "test.user";
+        self::$role = "test.role";
+        self::$pw = self::$rolepw = "test.pw";
+        self::$user = self::$userNoRole . ":" . self::$role;
     }
 
     #[\Override]
     protected function tearDown(): void
     {
-        sleep(2);
+        Cassettes::throttle(); // record mode only; replay needs no delay
         parent::tearDown();
     }
 
@@ -176,6 +193,8 @@ final class ClientTest extends TestCase
     public function testRequestResolvesConnectionUrl(): void
     {
         $cl = new SessionClient();
+        $tape = Cassettes::attach($cl, self::$cassetteDir);
+        $tape->useCassette("resolve-connection-url");
         $cl->setCredentials(self::$user, self::$pw)->useOTESystem();
         $r = $cl->request(["COMMAND" => "StatusAccount"]);
         $this->assertEquals("https://api-ote.rrpproxy.net/api/call.cgi", $r->getRequestURL());
@@ -229,6 +248,8 @@ final class ClientTest extends TestCase
         // use a dedicated client so credential/context state does not leak
         // into the shared static client used by the other tests
         $cl = new SessionClient();
+        $tape = Cassettes::attach($cl, self::$cassetteDir);
+        $tape->useCassette("set-context");
         $context = ["traceId" => "abc123", "attempt" => 1];
         $cls = $cl->setContext($context);
         $this->assertInstanceOf(CL::class, $cls);
@@ -342,6 +363,7 @@ final class ClientTest extends TestCase
 
     public function testLoginCredsOk(): void
     {
+        self::$tape->useCassette("login-creds-ok");
         self::$cl->useOTESystem()->setCredentials(self::$user, self::$pw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
@@ -353,6 +375,7 @@ final class ClientTest extends TestCase
 
     public function testLoginRoleCredsOk(): void
     {
+        self::$tape->useCassette("login-role-creds-ok");
         self::$cl->setRoleCredentials(self::$userNoRole, self::$role, self::$rolepw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
@@ -376,6 +399,7 @@ final class ClientTest extends TestCase
 
     public function testLogoutOk(): void
     {
+        self::$tape->useCassette("logout-ok");
         self::$cl->setCredentials(self::$user, self::$pw);
         $r = self::$cl->login();
         $this->assertInstanceOf(R::class, $r);
@@ -387,17 +411,28 @@ final class ClientTest extends TestCase
 
     public function testLogoutFail(): void
     {
+        self::$tape->useCassette("logout-fail");
         $r = self::$cl->logout();
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isError(), true);
     }
 
+    /**
+     * HTTP communication failure maps to code 421. Driven by a hand-authored
+     * `conn-error` cassette (a captured `httperror|…` tuple), so the exact
+     * failure and description are exercised offline — replacing the former
+     * bogus-host integration test. Always replay: a dedicated replay-only
+     * transport means a record run never overwrites the fixture with a
+     * resolver-dependent message (RSRMID-2910).
+     */
     public function testRequestCurlExecFail2(): void
     {
-        self::$cl->setCredentials(self::$user, self::$pw)
-            ->useOTESystem()
-            ->setURL("http://gregeragregaegaegag.com/geragaerg/call.cgi");
-        $r = self::$cl->request([
+        $cl = new SessionClient();
+        $tape = new CassetteTransport(null, self::$cassetteDir, false);
+        $cl->setTransport($tape);
+        $tape->useCassette("conn-error");
+        $cl->useOTESystem();
+        $r = $cl->request([
             "COMMAND" => "StatusAccount"
         ]);
         $this->assertInstanceOf(R::class, $r);
@@ -408,6 +443,7 @@ final class ClientTest extends TestCase
 
     public function testRequestFlattenCommand(): void
     {
+        self::$tape->useCassette("flatten-command");
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem(); // re-reads the correct OTE URL from settings
         $r = self::$cl->request([
@@ -544,6 +580,7 @@ final class ClientTest extends TestCase
 
     public function testRequestAutomaticIdnConvert(): void
     {
+        self::$tape->useCassette("idn-convert");
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
         $r = self::$cl->request([
@@ -571,6 +608,7 @@ final class ClientTest extends TestCase
 
     public function testRequestAutomaticIdnConvert1a(): void
     {
+        self::$tape->useCassette("idn-convert-1a");
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
         $r = self::$cl->request([
@@ -593,6 +631,7 @@ final class ClientTest extends TestCase
 
     public function testRequestAutomaticIdnConvert2(): void
     {
+        self::$tape->useCassette("idn-convert-2");
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
         $r = self::$cl->request([
@@ -614,6 +653,7 @@ final class ClientTest extends TestCase
 
     public function testRequestCodeTmpErrorDbg(): void
     {
+        self::$tape->useCassette("code-tmperror-dbg");
         self::$cl->enableDebugMode()
             ->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
@@ -627,6 +667,7 @@ final class ClientTest extends TestCase
 
     public function testRequestCodeTmpErrorNoDbg(): void
     {
+        self::$tape->useCassette("code-tmperror-nodbg");
         self::$cl->disableDebugMode();
         $r = self::$cl->request(["COMMAND" => "StatusAccount"]);
         $this->assertInstanceOf(R::class, $r);
@@ -638,6 +679,7 @@ final class ClientTest extends TestCase
 
     public function testRequestNextResponsePageNoLast(): void
     {
+        self::$tape->useCassette("next-page-no-last");
         $r = self::$cl->request([
             "COMMAND" => "QueryDomainList",
             "LIMIT" => 2,
@@ -661,6 +703,7 @@ final class ClientTest extends TestCase
 
     public function testRequestNextResponsePageLast(): void
     {
+        self::$tape->useCassette("next-page-last");
         $this->expectException(PaginationException::class);
         $this->expectExceptionMessage("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         $r = self::$cl->request([
@@ -675,6 +718,7 @@ final class ClientTest extends TestCase
 
     public function testRequestNextResponsePageNoFirst(): void
     {
+        self::$tape->useCassette("next-page-no-first");
         self::$cl->disableDebugMode();
         $r = self::$cl->request([
             "COMMAND" => "QueryDomainList",
@@ -745,6 +789,7 @@ final class ClientTest extends TestCase
 
     public function testRequestAllResponsePagesOk(): void
     {
+        self::$tape->useCassette("all-pages");
         self::$cl->setCredentials(self::$user, self::$pw)
             ->useOTESystem();
         $pages = self::$cl->requestAllResponsePages([
@@ -866,6 +911,7 @@ final class ClientTest extends TestCase
             "LOVE" => "PHP"
         ];
 
+        self::$tape->useCassette("sort-command-params");
         $response = self::$cl->request($params);
         $expected = [
             "COMMAND" => "AddDomains",
