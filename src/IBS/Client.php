@@ -11,7 +11,6 @@ namespace CNIC\IBS;
 
 use CNIC\AbstractClient;
 use CNIC\CommandFormatter;
-use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Logger as L;
 use CNIC\IBS\Response;
 use CNIC\IBS\SocketConfig;
@@ -52,55 +51,6 @@ class Client extends AbstractClient
     {
         $this->logger = new L();
         return $this;
-    }
-
-    /**
-     * Get the API Session ID that is currently set
-     * Note: not supported.
-     *
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function getSession(): ?string
-    {
-        throw new UnsupportedFeatureException("Feature `API Session` Not supported.");
-    }
-
-    /**
-     * Set an API session id to be used for API communication
-     *
-     * @param string $value API session id (optional, for reset)
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function setSession(string $value = ""): static
-    {
-        throw new UnsupportedFeatureException("Feature `API Session` not supported.");
-    }
-
-    /**
-     * Set Role Credentials to be used for API communication
-     * Note: not supported.
-     *
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
-    {
-        throw new UnsupportedFeatureException("Feature `User Role` not supported.");
-    }
-
-    /**
-     * Auto convert API command parameters to punycode, if necessary.
-     * Note: IBS handles IDN conversion server-side.
-     *
-     * @param array<string, string> $cmd API command
-     * @return array<string, string>
-     */
-    #[\Override]
-    protected function autoIDNConvert(array $cmd): array
-    {
-        return $cmd;
     }
 
     /**
@@ -145,17 +95,5 @@ class Client extends AbstractClient
     protected function newResponse(string $raw, array $cmd, array $cfg): Response
     {
         return new Response($raw, $cmd, $cfg, $this->context);
-    }
-
-    /**
-     * Activate High Performance Setup
-     * Note: not supported.
-     *
-     * @throws UnsupportedFeatureException
-     */
-    #[\Override]
-    public function useHighPerformanceConnectionSetup(): static
-    {
-        throw new UnsupportedFeatureException("Feature `High Performance Connection Setup` not supported.");
     }
 }

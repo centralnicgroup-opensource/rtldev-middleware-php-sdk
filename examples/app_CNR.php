@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use CNIC\ClientFactory;
-use CNIC\CNR\SessionClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -33,7 +32,7 @@ if ($account === false || $role === false || $password === false) {
 $user = $account . ":" . $role;
 // --- SESSIONLESS API COMMUNICATION ---
 echo "--- SESSION-LESS API COMMUNICATION ----\n";
-$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
+$cl = ClientFactory::cnr(); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setCredentials($user, $password);
 $r = $cl->request([
@@ -55,11 +54,9 @@ echo "--- SESSION-BASED API COMMUNICATION ----\n";
 $store = []; // stands in for $_SESSION
 
 // ---- Request #1: log in and persist the session -------------------------
-$cl = ClientFactory::getClient("CNR"); // fka RRPproxy
-// The factory returns the shared CNIC\AbstractClient contract. Session handling
-// (login/logout/saveSession) is CNR-specific, so narrow to the concrete
-// SessionClient before using it — the SDK guarantees the CNR arm is one.
-assert($cl instanceof SessionClient);
+// cnr() returns a fully-typed CNR\SessionClient, so CNR-specific session
+// handling (login/logout/saveSession) is available directly — no narrowing.
+$cl = ClientFactory::cnr(); // fka RRPproxy
 $cl->useOTESystem() //LIVE System would be used otherwise by default
     ->setCredentials($user, $password);
 $r = $cl->login();
@@ -71,8 +68,7 @@ if ($r->isSuccess()) {
     echo "SESSION SAVED (id: " . ($store["socketcfg"]["session"] ?? "n/a") . ").\n";
 
     // ---- Request #2: a brand-new process rebuilds from $_SESSION --------
-    $cl = ClientFactory::getClient("CNR");
-    assert($cl instanceof SessionClient);
+    $cl = ClientFactory::cnr();
     // No login() and no password needed — reuseSession() restores the account
     // login and the session id straight from $_SESSION. Point at the same
     // system the session was created on (OT&E here).

@@ -29,16 +29,12 @@ final class AbstractClientIDNTest extends TestCase
 
     private function cnr(): CNRClient
     {
-        $cl = CF::getClient("CNR");
-        \assert($cl instanceof CNRClient);
-        return $cl;
+        return CF::cnr();
     }
 
     private function ibs(): IBSClient
     {
-        $cl = CF::getClient("IBS");
-        \assert($cl instanceof IBSClient);
-        return $cl;
+        return CF::ibs();
     }
 
     /**

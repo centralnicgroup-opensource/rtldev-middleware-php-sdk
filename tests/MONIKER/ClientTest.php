@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CNICTEST\MONIKER;
 
 use CNIC\ClientFactory as CF;
-use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\Response as R;
 use CNIC\MONIKER\SessionClient;
+use CNIC\RoleCredentialsInterface;
 use CNICTEST\Support\Cassettes;
 use CNICTEST\Support\CassetteTransport;
 use PHPUnit\Framework\TestCase;
@@ -30,11 +30,9 @@ final class ClientTest extends TestCase
     #[\Override]
     public static function setUpBeforeClass(): void
     {
-        $cl = CF::getClient("MONIKER");
-        \assert($cl instanceof SessionClient);
-        self::$cl = $cl;
+        self::$cl = CF::moniker();
         self::$cassetteDir = __DIR__ . "/cassettes";
-        self::$tape = Cassettes::attach($cl, self::$cassetteDir);
+        self::$tape = Cassettes::attach(self::$cl, self::$cassetteDir);
 
         if (Cassettes::isRecording()) {
             // Record mode makes real OTE calls, so real credentials are required.
@@ -141,32 +139,40 @@ final class ClientTest extends TestCase
         $this->assertEquals("tld=nl", $tmp);
     }
 
-    public function testGetSessionThrows(): void
+    public function testSessionAccessorsAreHarmlessNoOps(): void
     {
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Feature `API Session` Not supported.");
-        self::$cl->getSession();
+        // IBS/Moniker have no API session concept. Rather than the former
+        // present-and-throwing overrides, the client inherits the shared base
+        // accessors, which are harmless: getSession() reports null and
+        // setSession() is a fluent no-op (the SocketConfig has nothing to store).
+        $this->assertNull(self::$cl->getSession());
+        $this->assertInstanceOf(IBSClient::class, self::$cl->setSession("test"));
+        $this->assertNull(self::$cl->getSession());
     }
 
-    public function testSetSessionThrows(): void
+    public function testDoesNotSupportRoleCredentials(): void
     {
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Feature `API Session` not supported.");
-        self::$cl->setSession("test");
+        // Role credentials are CNR-only (RoleCredentialsInterface): the role
+        // separator is empty here, so inheriting the behaviour would forge a
+        // garbage login. IBS/Moniker therefore do NOT implement the seam — the
+        // method is absent, not present-and-throwing.
+        $this->assertFalse(
+            (new \ReflectionClass(self::$cl))->implementsInterface(RoleCredentialsInterface::class)
+        );
     }
 
-    public function testSetRoleCredentialsThrows(): void
+    public function testUseHighPerformanceConnectionSetupRewritesHostAndScheme(): void
     {
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Feature `User Role` not supported.");
-        self::$cl->setRoleCredentials("uid", "role", "pw");
-    }
-
-    public function testUseHighPerformanceConnectionSetupThrows(): void
-    {
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("Feature `High Performance Connection Setup` not supported.");
-        self::$cl->useHighPerformanceConnectionSetup();
+        // High-performance setup is brand-agnostic (a pure scheme+host rewrite
+        // to loopback), so IBS/Moniker may opt in, supplying their own local
+        // proxy. Only the scheme and host change; port, path and query survive.
+        $cl = CF::moniker();
+        $cl->setURL("https://api.example.com:8443/api.example.com/x?foo=bar");
+        $cl->useHighPerformanceConnectionSetup();
+        $this->assertSame(
+            "http://127.0.0.1:8443/api.example.com/x?foo=bar",
+            $cl->getURL()
+        );
     }
 
     public function testSetProxy(): void
@@ -192,7 +198,7 @@ final class ClientTest extends TestCase
         // HTTP communication failure. Driven by a hand-authored `conn-error`
         // cassette via a dedicated replay-only transport, so a record run never
         // overwrites the fixture with a resolver-dependent message (RSRMID-2910).
-        $cl = CF::getClient("MONIKER");
+        $cl = CF::moniker();
         $tape = new CassetteTransport(null, self::$cassetteDir, false);
         $cl->setTransport($tape);
         $tape->useCassette("conn-error");

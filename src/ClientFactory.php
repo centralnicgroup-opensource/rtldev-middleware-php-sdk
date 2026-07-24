@@ -9,15 +9,32 @@ declare(strict_types=1);
 
 namespace CNIC;
 
-use CNIC\AbstractClient;
 use CNIC\CNR\SessionClient;
-use CNIC\Exception\UnknownRegistrarException;
 use CNIC\IBS\SessionClient as IBSSessionClient;
 use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
-use CNIC\Registrar;
 
 /**
  * ClientFactory
+ *
+ * Typed named constructors for each supported registrar brand. Each returns the
+ * concrete brand SessionClient, fully typed, so every capability that brand
+ * supports — shared (credentials, referer, user-agent, proxy, logging,
+ * OT&E/LIVE switching, `request($cmd, $path)`) and brand-specific alike — is
+ * available directly, with no `assert`/`instanceof` narrowing for the normal
+ * path:
+ *
+ * - {@see cnr()} yields a {@see \CNIC\CNR\SessionClient} with CNR session
+ *   handling (`login()`/`logout()`/`saveSession()`) and role credentials
+ *   (`setRoleCredentials()`, from {@see \CNIC\RoleCredentialsInterface}).
+ * - {@see ibs()}/{@see moniker()} yield the IBS/Moniker SessionClient; those
+ *   platforms have no session or role-credential concept, so those methods are
+ *   simply absent rather than present-and-throwing.
+ *
+ * All further configuration — credentials, referer, user-agent, proxy, logging
+ * and OT&E/sandbox mode — is the caller's responsibility via the client's fluent
+ * setters. This keeps the SDK platform-agnostic and transport-faithful: the
+ * caller normalizes input (e.g. HTML-entity decoding of WHMCS-stored passwords)
+ * before handing it to the client.
  *
  * @psalm-api
  * @package CNIC
@@ -25,39 +42,26 @@ use CNIC\Registrar;
 class ClientFactory
 {
     /**
-     * Returns the registrar-specific Client instance.
-     *
-     * The factory resolves the registrar identifier to its Client subtype only.
-     * All further configuration — credentials, referer, user-agent, proxy,
-     * logging and OT&E/sandbox mode — is the caller's responsibility via the
-     * client's fluent setters. This keeps the SDK platform-agnostic and
-     * transport-faithful: the caller normalizes input (e.g. HTML-entity
-     * decoding of WHMCS-stored passwords) before handing it to the client.
-     *
-     * The declared return type is the shared {@see AbstractClient} base rather
-     * than a `SessionClient|IBSSessionClient|MONIKERSessionClient` union. A
-     * single common type is what consumers can reason about cleanly: every
-     * shared operation (credentials, referer, user-agent, proxy, logging,
-     * OT&E/LIVE switching, and the base `request(array $cmd)`) is available
-     * directly. Brand-specific capabilities are intentionally *not* on the
-     * shared contract and must be reached by narrowing to the concrete type —
-     * e.g. CNR session handling (`login()`/`logout()`/`saveSession()`) via
-     * `instanceof \CNIC\CNR\SessionClient`, or the IBS/Moniker per-request
-     * endpoint path (`request($cmd, $path)`) via `instanceof \CNIC\IBS\Client`.
-     * This narrowing is unavoidable for those methods under any common type,
-     * since they do not exist on all arms; the union only made the base type
-     * itself harder to consume.
-     *
-     * @param string $registrar Registrar identifier (CNR, CNIC, IBS, MONIKER; case-insensitive)
-     * @throws UnknownRegistrarException if the registrar is not supported
+     * CentralNic Reseller (CNR, fka RRPproxy) client.
      */
-    public static function getClient(string $registrar): AbstractClient
+    public static function cnr(): SessionClient
     {
-        return match (Registrar::tryFrom(strtoupper($registrar))) {
-            Registrar::CNR, Registrar::CNIC => new SessionClient(),
-            Registrar::IBS                  => new IBSSessionClient(),
-            Registrar::MONIKER              => new MONIKERSessionClient(),
-            null                            => throw new UnknownRegistrarException("Registrar `{$registrar}` not supported."),
-        };
+        return new SessionClient();
+    }
+
+    /**
+     * Internet.bs (IBS) client.
+     */
+    public static function ibs(): IBSSessionClient
+    {
+        return new IBSSessionClient();
+    }
+
+    /**
+     * Moniker client (same platform as IBS; only the endpoints differ).
+     */
+    public static function moniker(): MONIKERSessionClient
+    {
+        return new MONIKERSessionClient();
     }
 }

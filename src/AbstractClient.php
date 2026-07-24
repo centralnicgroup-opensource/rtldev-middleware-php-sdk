@@ -393,21 +393,6 @@ abstract class AbstractClient
     }
 
     /**
-     * Set Role Credentials to be used for API communication
-     * @param string $uid account name (optional, for reset)
-     * @param string $role role user id (optional, for reset)
-     * @param string $pw role user password (optional, for reset)
-     */
-    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
-    {
-        $login = $uid;
-        if ($role !== '') {
-            $login .= $this->socketConfig->getRoleSeparator() . $role;
-        }
-        return $this->setCredentials($login, $pw);
-    }
-
-    /**
      * Activate High Performance Setup
      */
     public function useHighPerformanceConnectionSetup(): static

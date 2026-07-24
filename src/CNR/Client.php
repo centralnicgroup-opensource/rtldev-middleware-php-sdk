@@ -14,6 +14,7 @@ use CNIC\CNR\Logger as L;
 use CNIC\CNR\Response;
 use CNIC\CommandFormatter;
 use CNIC\Exception\PaginationException;
+use CNIC\RoleCredentialsInterface;
 
 /**
  * CNR API Client
@@ -21,7 +22,7 @@ use CNIC\Exception\PaginationException;
  * @psalm-api
  * @package CNIC\CNR
  */
-class Client extends AbstractClient
+class Client extends AbstractClient implements RoleCredentialsInterface
 {
     /**
      * Instantiate CNR SocketConfig
@@ -76,6 +77,27 @@ class Client extends AbstractClient
     protected function newResponse(string $raw, array $cmd, array $cfg): Response
     {
         return new Response($raw, $cmd, $cfg, $this->context);
+    }
+
+    /**
+     * Set Role Credentials to be used for API communication.
+     *
+     * CNR-only capability (see {@see \CNIC\RoleCredentialsInterface}): a role
+     * login is the account id, the `":"` role separator and the role user id,
+     * authenticated with that role user's own password.
+     *
+     * @param string $uid account name (optional, for reset)
+     * @param string $role role user id (optional, for reset)
+     * @param string $pw role user password (optional, for reset)
+     */
+    #[\Override]
+    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
+    {
+        $login = $uid;
+        if ($role !== '') {
+            $login .= $this->socketConfig->getRoleSeparator() . $role;
+        }
+        return $this->setCredentials($login, $pw);
     }
 
     /**
