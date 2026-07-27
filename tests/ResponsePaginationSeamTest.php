@@ -25,8 +25,12 @@ use ReflectionMethod;
  * would return exactly what IBS\Response returns today), so no behavioural
  * test can ever detect the erosion — only reflection can.
  *
- * Deleting or weakening this test is therefore a deliberate act: it requires
- * reopening the RSRMID-2912 conversation, not a passing cleanup.
+ * Deleting or weakening this test is therefore a deliberate act, not a passing
+ * cleanup: reopen the decision first. It was taken on RSRMID-2912 (declined,
+ * now closed as Cancelled since the refactor was never implemented) and is
+ * recorded in full in docs/agents/architecture.md; RSRMID-2918 is the live
+ * issue that delivered this guard. The one condition that would justify
+ * revisiting it is a third, genuinely non-paginating brand arriving.
  */
 final class ResponsePaginationSeamTest extends TestCase
 {
