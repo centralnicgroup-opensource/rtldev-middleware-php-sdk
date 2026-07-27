@@ -18,22 +18,17 @@ use CNIC\IBS\SocketConfig;
 /**
  * IBS API Client
  *
+ * Carries no transport defaults of its own: this client used to seed
+ * CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 via getDefaultCurlOpts(), forcing IPv4
+ * name resolution for every IBS/Moniker integration. That was one customer's
+ * network workaround hard-coded into the library; callers who need it set it
+ * themselves with setExtraCurlOptions(). Do not re-add a brand default here —
+ * transport tuning is the caller's decision. (Ref: RSRMID-2915, RSRMID-2913.)
+ *
  * @package CNIC\IBS
  */
 class Client extends AbstractClient
 {
-    /**
-     * Brand-mandatory cURL options. IBS/Moniker force IPv4 resolution
-     * ({@see CURLOPT_IPRESOLVE}); this seeds the live {@see \CNIC\AbstractClient::$curlopts}
-     * bag and is restored by {@see \CNIC\AbstractClient::resetCurlOptions()}.
-     * @return array<int, mixed>
-     */
-    #[\Override]
-    protected function getDefaultCurlOpts(): array
-    {
-        return [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4];
-    }
-
     /**
      * Instantiate IBS SocketConfig
      */

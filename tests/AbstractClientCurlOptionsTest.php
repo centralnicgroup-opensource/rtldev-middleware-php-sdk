@@ -13,6 +13,7 @@ use CNIC\AbstractClient;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CNRClient;
 use CNIC\IBS\Client as IBSClient;
+use CNIC\MONIKER\Client as MonikerClient;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -54,11 +55,31 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $this->assertSame([], $this->curlopts($this->cnr()));
     }
 
-    public function testIbsDefaultCurlOptsForcesIpv4(): void
+    /**
+     * IBS/Moniker must ship NO transport defaults either (RSRMID-2915).
+     *
+     * IBS used to seed CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4, a workaround for
+     * a handful of customers whose hosts misbehaved over IPv6. Hard-coding one
+     * network's workaround into every integration is the wrong altitude —
+     * choosing a resolution mode is the caller's call, via
+     * setExtraCurlOptions(). Every brand now starts from an empty bag.
+     */
+    public function testIbsDefaultCurlOptsIsEmpty(): void
     {
+        $this->assertSame([], $this->curlopts($this->ibs()));
+    }
+
+    /**
+     * The removed default must remain reachable as an explicit opt-in, since
+     * that is the migration path handed to affected integrations.
+     */
+    public function testIpv4CanStillBeForcedExplicitly(): void
+    {
+        $cl = $this->ibs();
+        $cl->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $this->assertSame(
             [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4],
-            $this->curlopts($this->ibs())
+            $this->curlopts($cl)
         );
     }
 
@@ -77,9 +98,14 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $this->assertSame("10.0.0.1", $cl->getProxy());
     }
 
-    public function testSetExtraCurlOptionsUserValueWinsOverBrandDefault(): void
+    /**
+     * A caller's value must win on key collision. Set up the collision
+     * explicitly now that no brand seeds one for us (RSRMID-2915).
+     */
+    public function testSetExtraCurlOptionsUserValueWinsOnCollision(): void
     {
         $cl = $this->ibs();
+        $cl->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $cl->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V6]);
         $this->assertSame(CURL_IPRESOLVE_V6, $this->curlopts($cl)[CURLOPT_IPRESOLVE]);
     }
@@ -99,18 +125,45 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $this->assertNull($cl->getProxy());
     }
 
-    public function testResetCurlOptionsPreservesIbsForcedIpv4(): void
+    /**
+     * reset() discards caller options and restores the brand default — which,
+     * since RSRMID-2915, is empty for IBS/Moniker too. Note the consequence for
+     * anyone migrating: an explicitly opted-in IPRESOLVE is caller state, so
+     * resetCurlOptions() drops it and it must be set again.
+     */
+    public function testResetCurlOptionsRestoresIbsEmptyDefault(): void
     {
         $cl = $this->ibs();
-        $cl->setExtraCurlOptions([CURLOPT_TIMEOUT => 5, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V6]);
+        $cl->setExtraCurlOptions([CURLOPT_TIMEOUT => 5, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $cl->resetCurlOptions();
 
-        // reset restores the brand default — it must NOT wipe the bag to []
-        // and silently drop IBS/Moniker's mandatory IPv4 resolution.
-        $this->assertSame(
-            [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4],
-            $this->curlopts($cl)
-        );
+        $this->assertSame([], $this->curlopts($cl));
+    }
+
+    /**
+     * The getDefaultCurlOpts() hook itself stays — it is the seam a brand or a
+     * subclass can still use, and resetCurlOptions() is defined in terms of it.
+     * Only IBS's override was removed, so every brand must now resolve to the
+     * base's empty default.
+     *
+     * This bans overrides unconditionally on purpose: the bar is a genuinely
+     * protocol-mandatory option, not a workaround for one environment's
+     * networking (which is what the removed IPv4 default was). If a future brand
+     * clears that bar, updating this test is part of the change — and the commit
+     * doing so should say why the option is mandatory.
+     */
+    public function testNoBrandOverridesTheDefaultCurlOptsHook(): void
+    {
+        foreach ([CNRClient::class, IBSClient::class, MonikerClient::class] as $brand) {
+            $declaring = (new \ReflectionMethod($brand, "getDefaultCurlOpts"))
+                ->getDeclaringClass()->getName();
+            $this->assertSame(
+                AbstractClient::class,
+                $declaring,
+                "{$brand} must inherit the empty default cURL options from AbstractClient; "
+                . "{$declaring} overrides getDefaultCurlOpts() — see RSRMID-2915"
+            );
+        }
     }
 
     public function testResetCurlOptionsIsFluent(): void

@@ -10,20 +10,20 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 
 ## Version compatibility at a glance
 
-| From → To | PHP required | Headline breaking change                                           | Consumer action                                           |
-| --------- | ------------ | ------------------------------------------------------------------ | --------------------------------------------------------- |
-| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                    | Bump your runtime                                         |
-| → v10.0.0 | 8.1+         | cURL handle cached/reused                                          | Call `close()` in sessionless flows                       |
-| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                         | None (additive)                                           |
-| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                        | Migrate off HEXONET                                       |
-| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                   | Re-test IBS/Moniker data handling                         |
-| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string     | Bump runtime; stop subclassing finals                     |
-| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                       | Retype loggers; guard session calls                       |
-| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                     | Configure the client yourself                             |
-| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                  | Handle the `null` sentinel                                |
-| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`            | Narrow via `ExtendedResponseInterface`                    |
-| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                | Use `cnr()`/`ibs()`/`moniker()`                           |
-| → v20.0.0 | 8.3+         | `ResponseInterface::getColumnKeys()` declares its `bool` parameter | Add the parameter if you implement the interface yourself |
+| From → To | PHP required | Headline breaking change                                                          | Consumer action                                                                                                |
+| --------- | ------------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                   | Bump your runtime                                                                                              |
+| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                         | Call `close()` in sessionless flows                                                                            |
+| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                        | None (additive)                                                                                                |
+| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                       | Migrate off HEXONET                                                                                            |
+| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                  | Re-test IBS/Moniker data handling                                                                              |
+| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                    | Bump runtime; stop subclassing finals                                                                          |
+| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                      | Retype loggers; guard session calls                                                                            |
+| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                    | Configure the client yourself                                                                                  |
+| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                 | Handle the `null` sentinel                                                                                     |
+| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                           | Narrow via `ExtendedResponseInterface`                                                                         |
+| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                               | Use `cnr()`/`ibs()`/`moniker()`                                                                                |
+| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
 
 Two things to respect throughout:
 
@@ -285,11 +285,32 @@ if ($cl instanceof \CNIC\RoleCredentialsInterface) {
 
 ---
 
-## → v20.0.0 — `ResponseInterface` matches its implementation
+## → v20.0.0 — IBS/Moniker no longer force IPv4; `ResponseInterface` matches its implementation
 
-Two changes to the `CNIC\ResponseInterface` contract, both consequences of the same underlying problem: the interface had drifted out of step with the class that implements it. **Only the first can affect your code, and only if you implement the interface yourself.**
+Three changes. **If you use IBS or Moniker, read change 1 — it is the only one that alters runtime behaviour, and it is the one that can affect a working integration.** Changes 2 and 3 are contract corrections on `ResponseInterface` that only matter if you implement that interface yourself.
 
-### 1. `getColumnKeys()` declares its `bool` parameter
+### 1. IBS/Moniker no longer force IPv4 name resolution
+
+**What changed:** the IBS and Moniker clients used to seed a brand-default cURL option forcing IPv4 (`CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4`) on every request. That default is gone; all brands now start with an empty cURL option bag.
+
+It existed as a workaround for a small number of customers whose hosts had trouble reaching the API over IPv6. The library is known to work without it, and hard-coding one network's workaround into every integration is the wrong altitude — choosing a resolution mode belongs to the caller.
+
+**What to respect:** if your host genuinely needs forced IPv4 — for example you saw IPv6 connect timeouts against the IBS/Moniker API before — set it explicitly after constructing the client:
+
+```php
+$client = \CNIC\ClientFactory::ibs();          // or ::moniker()
+$client->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
+```
+
+`setExtraCurlOptions()` (added in v19 via RSRMID-2913) is the supported way to do this. Be aware of its actual reach: an option is applied only if the transport does not already set that key itself. `CURLOPT_IPRESOLVE` is not one it sets, so the snippet above genuinely takes effect — but the transport's own keys win on collision, so `CURLOPT_TIMEOUT`, `CURLOPT_CONNECTTIMEOUT`, `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST`, `CURLOPT_HTTPHEADER`, `CURLOPT_USERAGENT`, `CURLOPT_POSTFIELDS` and `CURLOPT_URL` passed this way are ignored on the wire. (That is what stops a stray option disabling TLS verification; use `setSocketTimeout()` for timeouts.)
+
+**One subtlety worth knowing:** an option you set this way is _caller_ state, so `resetCurlOptions()` discards it — whereas the old forced IPv4 was a brand default and survived a reset. If you call `resetCurlOptions()`, re-apply your options afterwards.
+
+**How to tell whether this affects you:** it only matters if your host resolves the API hostname to an IPv6 address _and_ that path is broken. If your integration works today on a dual-stack or IPv4-only host, expect no change. If in doubt, add the option — it is a no-op on an IPv4-only host.
+
+The remaining two changes are contract corrections on `CNIC\ResponseInterface`, both consequences of the same underlying problem: the interface had drifted out of step with the class that implements it. **Neither affects callers — only code that implements the interface itself.**
+
+### 2. `getColumnKeys()` declares its `bool` parameter
 
 **What changed:** `CNIC\ResponseInterface::getColumnKeys()` was declared without a parameter, while the implementation (`AbstractResponse::getColumnKeys(bool $filterPaginationKeys = false)`) has always accepted one. The interface now matches the implementation:
 
@@ -346,7 +367,7 @@ final class MyResponse implements \CNIC\ResponseInterface
 
 Extending `CNIC\AbstractResponse` (as `CNR\Response` and `IBS\Response` do) requires no change — it already had the parameter.
 
-### 2. `__construct()` is no longer declared on the interface
+### 3. `__construct()` is no longer declared on the interface
 
 **What changed:** `ResponseInterface` used to declare a constructor:
 

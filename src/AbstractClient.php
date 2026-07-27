@@ -266,10 +266,16 @@ abstract class AbstractClient
 
     /**
      * Brand-default cURL options for this client, used to seed and to reset the
-     * live {@see $curlopts} bag. The base client has none; brands that carry a
-     * mandatory transport setting (e.g. IBS/Moniker forcing IPv4 resolution)
-     * override this. Kept separate from the live bag so {@see resetCurlOptions()}
-     * can restore the defaults instead of wiping them.
+     * live {@see $curlopts} bag.
+     *
+     * **No brand currently overrides this, and new overrides should be resisted.**
+     * IBS/Moniker used to force IPv4 resolution here; that shipped one customer's
+     * network workaround to every integration, and was removed in RSRMID-2915 so
+     * transport tuning stays the caller's decision via {@see setExtraCurlOptions()}.
+     * The hook is kept because it is the seam {@see resetCurlOptions()} is defined
+     * in terms of — reset restores these defaults rather than blindly wiping the
+     * bag — and because a genuinely protocol-mandatory option could still warrant
+     * one. A default that merely papers over one environment's networking does not.
      * @return array<int, mixed>
      */
     protected function getDefaultCurlOpts(): array
@@ -281,6 +287,15 @@ abstract class AbstractClient
      * Merge additional cURL options into the live bag, overriding existing
      * values on key collision (including brand defaults). Use
      * {@see resetCurlOptions()} to restore the brand defaults afterwards.
+     *
+     * Reach, so callers are not misled: the bag is merged *under* the option set
+     * {@see HttpTransport::post()} applies itself, so an option only reaches the
+     * wire if the transport does not set that key. Ignored on collision:
+     * CURLOPT_URL, CURLOPT_POST, CURLOPT_HEADER, CURLOPT_RETURNTRANSFER,
+     * CURLOPT_POSTFIELDS, CURLOPT_TIMEOUT, CURLOPT_CONNECTTIMEOUT,
+     * CURLOPT_USERAGENT, CURLOPT_HTTPHEADER, CURLOPT_SSL_VERIFYPEER and
+     * CURLOPT_SSL_VERIFYHOST — the last two meaning this setter cannot be used
+     * to weaken TLS verification. Use setSocketTimeout() for timeouts.
      * @param array<int, mixed> $opts cURL options keyed by CURLOPT_* constant
      */
     public function setExtraCurlOptions(array $opts): static
@@ -292,9 +307,14 @@ abstract class AbstractClient
     /**
      * Restore the live cURL options bag to the brand defaults
      * ({@see getDefaultCurlOpts()}), discarding any options previously set via
-     * {@see setExtraCurlOptions()}/{@see setProxy()}/{@see setReferer()}. Does
-     * NOT clear the bag to an empty array — brand-mandatory options (e.g.
-     * IBS/Moniker's IPv4 resolution) are preserved.
+     * {@see setExtraCurlOptions()}/{@see setProxy()}/{@see setReferer()}.
+     *
+     * It restores the defaults rather than clearing the bag, so a brand default
+     * would survive a reset. Since RSRMID-2915 no brand declares one, so this
+     * currently empties the bag for every brand — including IBS/Moniker, which
+     * previously kept their forced IPv4 resolution here. An explicitly opted-in
+     * option is caller state and is therefore discarded: set it again after
+     * calling this.
      */
     public function resetCurlOptions(): static
     {
