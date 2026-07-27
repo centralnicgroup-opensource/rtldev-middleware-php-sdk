@@ -8,6 +8,7 @@ use CNIC\CNR\Response as CNRResponse;
 use CNIC\IBS\Response as IBSResponse;
 use CNIC\ResponseInterface;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Locks the ResponseInterface contract from a consumer's seat (RSRMID-2918).
@@ -94,5 +95,29 @@ final class ResponseInterfaceConsumerTest extends TestCase
 
         $this->assertContains("domain", $filtered);
         $this->assertNotContains("domaincount", $filtered, "IBS pagination key must be stripped");
+    }
+
+    /**
+     * ResponseInterface must not declare a constructor.
+     *
+     * The other half of the same drift: construction is the job of the brand
+     * factory hooks (AbstractClient::newResponse(),
+     * AbstractResponseTemplateManager::createResponse()), each of which builds
+     * its own concrete Response — nothing constructs through this interface. A
+     * __construct() declaration here constrains nobody, because PHP exempts
+     * constructors from signature-compatibility checks, which is exactly how it
+     * drifted unnoticed: it declared 3 parameters while AbstractResponse had
+     * grown a 4th ($context).
+     *
+     * Reflection is the only possible guard — PHP will never complain about the
+     * mismatch, and no behavioural test can see it either. (RSRMID-2918.)
+     */
+    public function testTheInterfaceDeclaresNoConstructor(): void
+    {
+        $this->assertFalse(
+            (new ReflectionClass(ResponseInterface::class))->hasMethod("__construct"),
+            "ResponseInterface must not declare __construct() — construction belongs to the "
+            . "brand factory hooks, and PHP does not enforce constructor signatures anyway"
+        );
     }
 }

@@ -10,20 +10,20 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 
 ## Version compatibility at a glance
 
-| From → To | PHP required | Headline breaking change                                               | Consumer action                              |
-| --------- | ------------ | ---------------------------------------------------------------------- | -------------------------------------------- |
-| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                        | Bump your runtime                            |
-| → v10.0.0 | 8.1+         | cURL handle cached/reused                                              | Call `close()` in sessionless flows          |
-| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                             | None (additive)                              |
-| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                            | Migrate off HEXONET                          |
-| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                       | Re-test IBS/Moniker data handling            |
-| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string         | Bump runtime; stop subclassing finals        |
-| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                           | Retype loggers; guard session calls          |
-| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                         | Configure the client yourself                |
-| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                      | Handle the `null` sentinel                   |
-| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                | Narrow via `ExtendedResponseInterface`       |
-| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                    | Use `cnr()`/`ibs()`/`moniker()`              |
-| → v20.0.0 | 8.3+         | `ResponseInterface::getColumnKeys()` now declares its `bool` parameter | Only if you implement the interface yourself |
+| From → To | PHP required | Headline breaking change                                           | Consumer action                                           |
+| --------- | ------------ | ------------------------------------------------------------------ | --------------------------------------------------------- |
+| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                    | Bump your runtime                                         |
+| → v10.0.0 | 8.1+         | cURL handle cached/reused                                          | Call `close()` in sessionless flows                       |
+| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                         | None (additive)                                           |
+| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                        | Migrate off HEXONET                                       |
+| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                   | Re-test IBS/Moniker data handling                         |
+| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string     | Bump runtime; stop subclassing finals                     |
+| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                       | Retype loggers; guard session calls                       |
+| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                     | Configure the client yourself                             |
+| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                  | Handle the `null` sentinel                                |
+| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`            | Narrow via `ExtendedResponseInterface`                    |
+| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                | Use `cnr()`/`ibs()`/`moniker()`                           |
+| → v20.0.0 | 8.3+         | `ResponseInterface::getColumnKeys()` declares its `bool` parameter | Add the parameter if you implement the interface yourself |
 
 Two things to respect throughout:
 
@@ -285,7 +285,11 @@ if ($cl instanceof \CNIC\RoleCredentialsInterface) {
 
 ---
 
-## → v20.0.0 — `ResponseInterface::getColumnKeys()` declares its `bool` parameter
+## → v20.0.0 — `ResponseInterface` matches its implementation
+
+Two changes to the `CNIC\ResponseInterface` contract, both consequences of the same underlying problem: the interface had drifted out of step with the class that implements it. **Only the first can affect your code, and only if you implement the interface yourself.**
+
+### 1. `getColumnKeys()` declares its `bool` parameter
 
 **What changed:** `CNIC\ResponseInterface::getColumnKeys()` was declared without a parameter, while the implementation (`AbstractResponse::getColumnKeys(bool $filterPaginationKeys = false)`) has always accepted one. The interface now matches the implementation:
 
@@ -341,6 +345,43 @@ final class MyResponse implements \CNIC\ResponseInterface
 ```
 
 Extending `CNIC\AbstractResponse` (as `CNR\Response` and `IBS\Response` do) requires no change — it already had the parameter.
+
+### 2. `__construct()` is no longer declared on the interface
+
+**What changed:** `ResponseInterface` used to declare a constructor:
+
+```php
+// BEFORE (≤ v19)
+public function __construct(string $raw, array $cmd, array $ph = []);
+
+// AFTER (v20) — removed from the interface entirely
+```
+
+**What to respect: nothing, unless you _reflect_ on the interface** (see the caveat at the end of this sub-section). No call you make and no class you write needs changing.
+
+The declaration never did anything. PHP exempts constructors from signature-compatibility checks, so it constrained no implementer — which is exactly how it drifted: it declared 3 parameters while `AbstractResponse::__construct()` had grown a 4th (`$context`), and nothing complained for as long as that was true. Removing it is a _relaxation_ of the contract, so no existing implementation stops satisfying the interface.
+
+Nor does construction move: it was never done through this type. Responses are built by the brand factory hooks — `AbstractClient::newResponse()` and `AbstractResponseTemplateManager::createResponse()` — each of which instantiates its own concrete `Response`. The interface now describes only what a response can be _asked_, which is all a consumer ever needs from it.
+
+```php
+// Unchanged, and still the supported way to obtain a response:
+$r = $cl->request(["COMMAND" => "StatusAccount"]);   // returns ResponseInterface
+
+// If you build responses directly, keep naming the concrete class — as the SDK does:
+$r = new \CNIC\CNR\Response($raw);
+```
+
+Verified rather than assumed: instantiating through a `class-string<ResponseInterface>` with either 3 or 4 arguments passes PHPStan level 9 and Psalm level 1 identically before and after this change.
+
+**The one caveat — reflection on the interface itself.** If you inspect `ResponseInterface` reflectively (a DI container autowiring by interface, a doc generator, a test that asserts the contract), the constructor is now absent:
+
+```php
+$ctor = (new ReflectionClass(\CNIC\ResponseInterface::class))->getConstructor();
+// ≤ v19: ReflectionMethod
+// v20:   null   <-- ->getParameters() on this now raises a TypeError
+```
+
+Guard the call (`if ($ctor !== null)`) or reflect on the concrete `CNIC\CNR\Response` / `CNIC\IBS\Response`, which is where the real constructor has always lived. This is the only way the change can be observed from outside the SDK.
 
 ---
 
