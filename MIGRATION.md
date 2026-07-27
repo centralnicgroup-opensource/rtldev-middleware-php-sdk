@@ -302,7 +302,11 @@ $client = \CNIC\ClientFactory::ibs();          // or ::moniker()
 $client->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
 ```
 
-`setExtraCurlOptions()` (added in v19 via RSRMID-2913) is the supported way to do this. Be aware of its actual reach: an option is applied only if the transport does not already set that key itself. `CURLOPT_IPRESOLVE` is not one it sets, so the snippet above genuinely takes effect — but the transport's own keys win on collision, so `CURLOPT_TIMEOUT`, `CURLOPT_CONNECTTIMEOUT`, `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST`, `CURLOPT_HTTPHEADER`, `CURLOPT_USERAGENT`, `CURLOPT_POSTFIELDS` and `CURLOPT_URL` passed this way are ignored on the wire. (That is what stops a stray option disabling TLS verification; use `setSocketTimeout()` for timeouts.)
+`setExtraCurlOptions()` (added in v19 via RSRMID-2913) is the supported way to do this. **Be aware of its actual reach:** an option only reaches the wire if the transport does not already set that key itself. `CURLOPT_IPRESOLVE` is not one it sets, so the snippet above genuinely takes effect — but the transport's own values win on collision, so these are silently ignored when passed this way:
+
+`CURLOPT_URL`, `CURLOPT_POST`, `CURLOPT_POSTFIELDS`, `CURLOPT_RETURNTRANSFER`, `CURLOPT_HEADER`, `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST`, `CURLOPT_TIMEOUT`, `CURLOPT_CONNECTTIMEOUT`, `CURLOPT_USERAGENT`, `CURLOPT_HTTPHEADER`.
+
+The first five keep the request envelope intact (overriding them would break response handling) and the next two stop this setter being used to weaken TLS verification. For the user agent, use `setUserAgent()`. **The request timeout, however, currently has no public setter at all** — it comes from a protected `$socketTimeout` (300s) and `CURLOPT_TIMEOUT` passed here is discarded, so it cannot be changed from outside the SDK. That is a known gap rather than an intended limit; an earlier version of this guide wrongly suggested a `setSocketTimeout()` method, which does not exist.
 
 **One subtlety worth knowing:** an option you set this way is _caller_ state, so `resetCurlOptions()` discards it — whereas the old forced IPv4 was a brand default and survived a reset. If you call `resetCurlOptions()`, re-apply your options afterwards.
 

@@ -295,7 +295,16 @@ abstract class AbstractClient
      * CURLOPT_POSTFIELDS, CURLOPT_TIMEOUT, CURLOPT_CONNECTTIMEOUT,
      * CURLOPT_USERAGENT, CURLOPT_HTTPHEADER, CURLOPT_SSL_VERIFYPEER and
      * CURLOPT_SSL_VERIFYHOST — the last two meaning this setter cannot be used
-     * to weaken TLS verification. Use setSocketTimeout() for timeouts.
+     * to weaken TLS verification.
+     *
+     * For the user agent use {@see setUserAgent()}. The request timeout has no
+     * public setter at all today: it comes from AbstractSocketConfig's protected
+     * $socketTimeout (300s) and CURLOPT_TIMEOUT passed here is discarded, so it
+     * cannot currently be changed from outside the SDK. That is a known gap, not
+     * a deliberate limit, and the silent discard above wants a decision of its
+     * own — either document transport-wins as intended (it does protect the
+     * request envelope and TLS verification) or let callers override the
+     * non-protected keys and fail loudly on the rest.
      * @param array<int, mixed> $opts cURL options keyed by CURLOPT_* constant
      */
     public function setExtraCurlOptions(array $opts): static
