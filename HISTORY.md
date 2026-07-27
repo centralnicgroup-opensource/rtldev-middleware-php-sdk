@@ -1,3 +1,35 @@
+# [20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v19.1.0...v20.0.0) (2026-07-27)
+
+
+### Bug Fixes
+
+* **response:** declare the filter parameter on ResponseInterface::getColumnKeys() ([4b3ff7b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/4b3ff7b7304a7e689f2a73a3931f31b0331d065a))
+* **response:** drop the misleading __construct() declaration from ResponseInterface ([7c72d47](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/7c72d47d389e601d1f76ac715800064ce893f55c))
+
+
+### Features
+
+* **client:** drop the IBS/Moniker forced-IPv4 cURL default ([10fe8e4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/10fe8e4da35ec1af97bef4531cc681e6e2e5266a))
+
+
+### BREAKING CHANGES
+
+* **client:** IBS and Moniker clients no longer force IPv4 name resolution
+(CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4) by default. If your host requires it,
+call $client->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4])
+after constructing the client. CNR is unaffected.
+
+See [MIGRATION.md → v20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2000--ibsmoniker-no-longer-force-ipv4-responseinterface-matches-its-implementation)
+
+Ref: RSRMID-2915, RSRMID-2913
+* **response:** ResponseInterface::getColumnKeys() now declares
+bool $filterPaginationKeys = false. Classes implementing ResponseInterface
+directly must add the parameter or they no longer satisfy the interface.
+Callers are unaffected (the default is unchanged), and so is anything
+extending CNIC\AbstractResponse.
+
+See [MIGRATION.md → v20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2000--ibsmoniker-no-longer-force-ipv4-responseinterface-matches-its-implementation)
+
 # [19.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v19.0.0...v19.1.0) (2026-07-27)
 
 
