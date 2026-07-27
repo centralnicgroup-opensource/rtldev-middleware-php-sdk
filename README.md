@@ -27,6 +27,47 @@ Find a demo app for the Brand of choice in the examples folder that should help 
 
 e.g. `examples/app_CNR.php` etc.
 
+## Date & time values
+
+The APIs declare their date columns in **UTC** and emit two shapes: a full timestamp (`2026-07-25 07:46:34`, optionally with a fractional-second part, as CNR sends) and a bare calendar date (`2030-07-17`, as internet.bs/Moniker send). `CNIC\ApiDateTime` parses both into one flat, immutable struct:
+
+```php
+use CNIC\ApiDateTime;
+
+$dt = ApiDateTime::from("2026-07-25 07:46:34");
+$dt->ts;             // 1784965594
+$dt->date;           // "2026-07-25"
+$dt->dateTime;       // "2026-07-25 07:46:34"
+$dt->tz;             // "UTC"
+$dt->isDateOnly();   // false
+$dt->toArray();      // ready for json_encode()
+```
+
+| Field      | Type           | CNR `2026-07-25 07:46:34` | internet.bs / Moniker `2030-07-17` |
+| ---------- | -------------- | ------------------------- | ---------------------------------- |
+| `ts`       | `int\|null`    | `1784965594`              | **`null`** — exact instant unknown |
+| `date`     | `string`       | `2026-07-25`              | `2030-07-17`                       |
+| `dateTime` | `string\|null` | `2026-07-25 07:46:34`     | **`null`**                         |
+| `tz`       | `string`       | `UTC`                     | `UTC`                              |
+
+A bare calendar date names no instant, so `ts` and `dateTime` are **both null** for one — deliberately, rather than defaulting to midnight, which would be a fabricated instant indistinguishable from a real one. `date` is always populated, so there is unconditionally something to print; `$dt->ts === null` (or `isDateOnly()`) is the unambiguous test.
+
+Parsing is strict. Values PHP's own date handling would silently roll over into a _different_ instant — `2026-02-30` becoming `2026-03-02`, `2026-13-45` becoming `2027-02-14`, `0000-00-00` becoming `-0001-11-30` — are refused with a `CNIC\Exception\InvalidDateTimeException`, as are offset-bearing values (never silently relabelled UTC). Use `ApiDateTime::tryFrom()` when a `null` is preferable to an exception:
+
+```php
+ApiDateTime::tryFrom(null);          // null
+ApiDateTime::tryFrom("2026-02-30");  // null — refused, not coerced
+```
+
+> [!NOTE]
+> This is a **parser, not a formatter**. Responses are not rewritten: `getPlain()`, `getHash()` and `getListHash()` keep returning the raw API strings, and this type is opt-in at the point where a value is actually used. There is no locale formatting and no `ext-intl` dependency — presenting a value in the viewer's timezone is a display concern for the consuming application:
+>
+> ```php
+> (new \DateTimeImmutable("@{$dt->ts}"))->setTimezone(new \DateTimeZone("Europe/Berlin"));
+> ```
+
+Run `composer demo:datetime` for a runnable tour — it needs no credentials and makes no API calls.
+
 ## Dev Container
 
 If you want to contribute, we recommend using Visual Studio Code and to follow the below setup instructions:
@@ -66,6 +107,8 @@ To run the demo application, follow these steps:
    composer demo:ibs
    # Moniker
    composer demo:moniker
+   # ApiDateTime parser — no credentials or network needed
+   composer demo:datetime
    ```
 
    These are thin wrappers around plain PHP, so you can also run the examples directly without any tooling, e.g. `php -f examples/app_CNR.php`.
@@ -80,6 +123,8 @@ To run the demo application, follow these steps:
    examples/app_IBS.php
    # Moniker
    examples/app_MONIKER.php
+   # ApiDateTime parser
+   examples/datetime.php
    ```
 
 ## CI / Testing

@@ -81,6 +81,7 @@
     "demo:cnr": "@php examples/app_CNR.php",
     "demo:ibs": "@php examples/app_IBS.php",
     "demo:moniker": "@php examples/app_MONIKER.php",
+    "demo:datetime": "@php examples/datetime.php",
     "generate-uml": "test -f tools/php-class-diagram/vendor/bin/php-class-diagram || (mkdir -p tools/php-class-diagram && composer require --working-dir=tools/php-class-diagram smeghead/php-class-diagram:^1.5); test -f tools/plantuml.jar || (mkdir -p tools && wget -q --timeout=30 --tries=3 https://github.com/plantuml/plantuml/releases/download/v1.2026.6/plantuml-1.2026.6.jar -O tools/plantuml.jar && echo '89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690  tools/plantuml.jar' | sha256sum -c); mkdir -p ./docs/api; tools/php-class-diagram/vendor/bin/php-class-diagram --jig-diagram src/ > ./docs/api/uml.puml; java -jar tools/plantuml.jar ./docs/api/uml.puml -o uml_diagram"
   },
   "scripts-descriptions": {
@@ -100,6 +101,7 @@
     "demo:cnr": "Run the CentralNic Reseller (CNR) demo application",
     "demo:ibs": "Run the Internet.bs (IBS) demo application",
     "demo:moniker": "Run the Moniker demo application",
+    "demo:datetime": "Run the ApiDateTime parser demo (no credentials or network needed)",
     "generate-uml": "Generate a UML class diagram (php-class-diagram + PlantUML)"
   },
   "config": {

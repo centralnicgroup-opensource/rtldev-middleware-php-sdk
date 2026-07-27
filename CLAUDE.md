@@ -24,6 +24,7 @@ Compact summary below; the **full deep dive** (per-class detail, design rational
 - Do **not** re-add `setRoleCredentials()` to `AbstractClient` — it is CNR-only (depends on the CNR role separator; inheriting it on IBS/Moniker would forge a garbage login) and lives on `RoleCredentialsInterface` (CNR only); narrow via `instanceof \CNIC\RoleCredentialsInterface` to use it. This is the client-tree twin of the `ExtendedResponseInterface` rule above. `getSession()`/`setSession()`/`useHighPerformanceConnectionSetup()` deliberately **stay** on `AbstractClient` (harmless/brand-agnostic there). (Ref: RSRMID-2911.)
 - Do **not** reimplement the `request()` lifecycle per brand — it is a template method on `AbstractClient::performRequest()`. The public `request(array $cmd = [], string $path = "")` signature is **symmetric across all brands** (CNR just defaults `$path` to `api/call.cgi`); vary a brand only through the `buildCommand()`/`newResponse()` hooks and the `$curlopts` property. (Ref: RSRMID-2909, which deliberately dropped the earlier "CNR must never accept a per-request path" rule.)
 - Do **not** "symmetrise" columns onto a `newColumn()` factory like records — it is infeasible under PHPStan L9 / Psalm L1; keep the `registerColumn(ColumnInterface)` shape.
+- Do **not** rewrite date columns in the response data, and do **not** grow `CNIC\ApiDateTime` into a formatter — it is an opt-in, UTC-only **parser**: `getPlain()`/`getHash()`/`getListHash()` keep returning raw API strings; no `in($tz)`, no locale formatting, no `ext-intl`, no view-layer markup helpers (localization is a frontend concern, tracked in RSRMID-2916). Do **not** make `dateTime` fall back to `date` for date-only values — `ts` and `dateTime` are null _together_. (Ref: RSRMID-2318.)
 - `ClientFactory` exposes **typed named constructors** — `cnr()`/`ibs()`/`moniker()`, each returning the concrete brand `SessionClient` — not a string-dispatch `getClient(string)`. The returned client is fully typed, so brand-specific capabilities (CNR `login()`/`logout()`/`saveSession()`/`setRoleCredentials()`) are available directly, with no narrowing on the normal path. The old `Registrar` enum and `UnknownRegistrarException` were removed with `getClient()`. (Ref: RSRMID-2911.)
 
 ## Coding Standards
@@ -146,6 +147,7 @@ Short reminders; full detail in the linked docs.
 | `src/ExtendedResponseInterface.php`       | CNR-only Response capabilities (telemetry/status/list-hash) |
 | `src/RoleCredentialsInterface.php`        | CNR-only client capability (`setRoleCredentials()`)         |
 | `src/HttpTransport.php`                   | Low-level cURL HTTP transport (extracted from clients)      |
+| `src/ApiDateTime.php`                     | Immutable UTC-only parser for API date/time values          |
 | `src/Exception/CnicException.php`         | Base of the additive `CNIC\Exception` hierarchy             |
 | `src/System.php`                          | `System` enum — string-backed `OTE`/`LIVE` client system    |
 | `src/CNR/SocketConfig.php`                | CNR API endpoints and settings (typed properties)           |
