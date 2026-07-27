@@ -20,11 +20,21 @@ namespace CNIC;
  *
  *   - wire hooks: {@see translate()} / {@see populate()} (protected),
  *   - record factory: {@see newRecord()} (protected),
- *   - status/code accessors and the pagination primitives declared on
+ *   - the status/code accessors and addColumn declared on
  *     {@see ResponseInterface} (getCode/getDescription/isError/isSuccess,
- *     addColumn, getCurrentPageNumber, getFirstRecordIndex, getLastRecordIndex,
+ *     addColumn) — each reads a different wire shape, and addColumn additionally
+ *     has to build its brand's own Column type (see registerColumn()),
+ *   - the pagination primitives, likewise declared on {@see ResponseInterface}
+ *     (getCurrentPageNumber, getFirstRecordIndex, getLastRecordIndex,
  *     getRecordsTotalCount, getRecordsLimitation, hasNextPage, hasPreviousPage),
- *     which remain abstract here and are supplied per brand.
+ *     which this base deliberately does NOT implement — not even as single-page
+ *     defaults — so a brand that forgets pagination fails at declaration time
+ *     instead of silently answering "one page, no next page".
+ *
+ * None of the members in those last two groups is declared abstract *here*: they
+ * are interface methods this base simply never implements, so every concrete
+ * brand must supply them. See docs/agents/architecture.md for why the pagination
+ * seam is drawn there. (Ref: RSRMID-2904, RSRMID-2912 declined, RSRMID-2918.)
  *
  * CNR\Response and IBS\Response both extend this as siblings — mirroring the
  * AbstractClient / AbstractSocketConfig / AbstractResponseTemplateManager /
