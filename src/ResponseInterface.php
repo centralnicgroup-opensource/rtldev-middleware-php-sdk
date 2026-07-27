@@ -12,19 +12,25 @@ namespace CNIC;
 /**
  * Common Response Interface
  *
+ * The universal contract every brand Response fully supports. It describes what
+ * a response can be asked, not how it is built: construction is deliberately
+ * NOT part of this interface. Responses are created by the brand factory hooks
+ * (AbstractClient::newResponse() and AbstractResponseTemplateManager::
+ * createResponse()), each of which instantiates its own concrete Response, so
+ * nothing in the SDK — or in a consumer — ever constructs through this type.
+ *
+ * A __construct() declaration here was actively misleading: PHP does not apply
+ * signature-compatibility rules to constructors, so it constrained nobody, and
+ * it silently drifted out of step with the implementation (it declared 3
+ * parameters while AbstractResponse had grown a 4th, $context). Do not re-add
+ * it — put construction concerns on the factory hooks instead. (Ref:
+ * RSRMID-2918.)
+ *
  * @psalm-api
  * @package CNIC
  */
 interface ResponseInterface
 {
-    /**
-     * Constructor
-     * @param string $raw API plain response
-     * @param array<string, string> $cmd API command used within this request
-     * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
-     */
-    public function __construct(string $raw, array $cmd, array $ph = []);
-
     /**
      * Get API response code
      * @return int API response code
