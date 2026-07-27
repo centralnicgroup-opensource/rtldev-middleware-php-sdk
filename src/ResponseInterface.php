@@ -99,9 +99,22 @@ interface ResponseInterface
 
     /**
      * Get Column Names
+     *
+     * Pass true to strip the pagination/metadata columns the brand's list
+     * endpoints emit alongside the real data (CNR: TOTAL, FIRST, LAST, COUNT,
+     * LIMIT; IBS: the total_ prefixed keys and domaincount), leaving only the
+     * columns a caller wants to render. Which keys count as pagination is
+     * brand-specific — see the $paginationkeys property on each brand's
+     * Response.
+     *
+     * The parameter is declared here, not only on the implementation, because
+     * consumers are expected to type against this interface: an interface
+     * declaration narrower than the implementation makes the capability
+     * unreachable to exactly those consumers. (Ref: RSRMID-2918.)
+     * @param bool $filterPaginationKeys strip pagination columns
      * @return string[] Array of Column Names
      */
-    public function getColumnKeys(): array;
+    public function getColumnKeys(bool $filterPaginationKeys = false): array;
 
     /**
      * Get List of Columns
