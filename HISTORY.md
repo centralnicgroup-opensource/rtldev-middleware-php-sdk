@@ -1,3 +1,10 @@
+# [19.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v19.0.0...v19.1.0) (2026-07-27)
+
+
+### Features
+
+* **datetime:** add UTC-only ApiDateTime parser for API date values ([de9354b](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/de9354be018143597b8ffddd3e6a6414d16e5ab6))
+
 # [19.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v18.1.0...v19.0.0) (2026-07-24)
 
 
