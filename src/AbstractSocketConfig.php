@@ -51,11 +51,6 @@ abstract class AbstractSocketConfig
     protected bool $needsIDNConvert = false;
 
     /**
-     * Separator character for role credentials
-     */
-    protected string $roleSeparator = "";
-
-    /**
      * Command parameter keys whose values carry sensitive data (account
      * password, domain authorization code, ...) and must be masked in the
      * "secured" POST body used for debug logging. Matching is case-insensitive
@@ -93,39 +88,6 @@ abstract class AbstractSocketConfig
     {
         $this->pw = $value;
         return $this;
-    }
-
-    /**
-     * Get API Session ID in use
-     */
-    public function getSession(): string
-    {
-        return "";
-    }
-
-    /**
-     * Set API Session ID to use
-     * @param string $value API Session ID
-     */
-    public function setSession(string $value = ""): static
-    {
-        return $this;
-    }
-
-    /**
-     * Add persistent parameter to request (request API session)
-     */
-    public function setPersistent(bool $value = false): static
-    {
-        return $this;
-    }
-
-    /**
-     * Get persistent parameter
-     */
-    public function getPersistent(): bool
-    {
-        return false;
     }
 
     /**
@@ -190,14 +152,6 @@ abstract class AbstractSocketConfig
     }
 
     /**
-     * Get role separator character
-     */
-    public function getRoleSeparator(): string
-    {
-        return $this->roleSeparator;
-    }
-
-    /**
      * Mask the values of the brand's sensitive command keys (see
      * $sensitiveFields) so command-level secrets — e.g. a domain transfer
      * authorization code — never reach the debug log in cleartext. Matching is
@@ -227,17 +181,20 @@ abstract class AbstractSocketConfig
     abstract protected function getPOSTDataParams(array $command, bool $secured): array;
 
     /**
-     * Create POST data string out of connection data
+     * Create POST data string out of connection data.
+     *
+     * Purely the encoding step: every parameter, including brand-specific ones,
+     * comes from {@see getPOSTDataParams()}. It used to append CNR's
+     * `persistent=1` here, gated on a `getPersistent()` stub that no brand but
+     * CNR could ever answer truthfully — a CNR wire parameter reaching every
+     * brand's request builder. That moved to CNR's own getPOSTDataParams() in
+     * RSRMID-2920; do not reintroduce brand knowledge at this level.
      * @param array<string, string|null> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */
     public function getPOSTData(array $command = [], bool $secured = false): string
     {
-        $params = $this->getPOSTDataParams($command, $secured);
-        if ($this->getPersistent()) {
-            $params["persistent"] = "1";
-        }
-        return http_build_query($params);
+        return http_build_query($this->getPOSTDataParams($command, $secured));
     }
 }

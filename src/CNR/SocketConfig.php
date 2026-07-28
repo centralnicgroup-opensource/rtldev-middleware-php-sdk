@@ -14,6 +14,20 @@ use CNIC\AbstractSocketConfig;
 /**
  * CNR SocketConfig
  *
+ * Owns the three settings that are CNR platform concepts rather than shared
+ * transport configuration, and that RSRMID-2920 moved down here off
+ * {@see AbstractSocketConfig}:
+ *
+ * - the **API session id** and the **`persistent` flag** that requests one.
+ *   These used to exist twice — as null-object stubs on the shared base and as
+ *   real state here — so `setSession()` on an IBS/Moniker client looked accepted
+ *   (the setter is fluent) and was discarded. They now exist only here, which
+ *   makes the mismatch a call-site type error instead of a silent no-op.
+ * - the **role separator**, whose single consumer is
+ *   {@see \CNIC\CNR\Client::setRoleCredentials()} — itself already CNR-only via
+ *   {@see \CNIC\RoleCredentialsInterface}. Keeping the separator on the shared
+ *   base left half of that split behind.
+ *
  * @package CNIC\CNR
  */
 final class SocketConfig extends AbstractSocketConfig
@@ -22,7 +36,11 @@ final class SocketConfig extends AbstractSocketConfig
     protected string $liveUrl = "https://api.rrpproxy.net/";
     protected int $socketTimeout = 300;
     protected bool $needsIDNConvert = true;
-    protected string $roleSeparator = ":";
+
+    /**
+     * Separator between the account id and the role user id in a role login
+     */
+    private string $roleSeparator = ":";
 
     /**
      * CNR carries sensitive data under upper-case command keys. Mirrors
@@ -84,13 +102,17 @@ final class SocketConfig extends AbstractSocketConfig
             }
             $params[$this->parameters["command"]] = substr($newcommand, 0, -1);
         }
+        // Appended last so the encoded body is byte-identical to what the shared
+        // getPOSTData() used to produce when it owned this branch (RSRMID-2920).
+        if ($this->getPersistent()) {
+            $params["persistent"] = "1";
+        }
         return $params;
     }
 
     /**
      * Add persistent parameter to request (request API session)
      */
-    #[\Override]
     public function setPersistent(bool $value = false): static
     {
         $this->persistent = $value;
@@ -100,7 +122,6 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Get persistent parameter returned
      */
-    #[\Override]
     public function getPersistent(): bool
     {
         return $this->persistent;
@@ -109,10 +130,17 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Get API Session ID in use
      */
-    #[\Override]
     public function getSession(): string
     {
         return $this->session;
+    }
+
+    /**
+     * Get the separator between account id and role user id in a role login
+     */
+    public function getRoleSeparator(): string
+    {
+        return $this->roleSeparator;
     }
 
     /**
@@ -143,7 +171,6 @@ final class SocketConfig extends AbstractSocketConfig
      * Set API Session ID to use
      * @param string $value API Session ID
      */
-    #[\Override]
     public function setSession(string $value = ""): static
     {
         $this->session = $value;

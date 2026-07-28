@@ -22,6 +22,16 @@ use CNIC\System;
  * Concrete subclasses provide the request() implementation, the default
  * logger, and the appropriate SocketConfig subtype.
  *
+ * Only capabilities every brand can actually honour live here. In particular
+ * `getSession()`/`setSession()` do **not** — API sessions are a CNR concept, and
+ * these sat here until v22 forwarding to null-object stubs on
+ * {@see AbstractSocketConfig}, so `setSession()` on an IBS/Moniker client looked
+ * accepted and was discarded. They now live on {@see \CNIC\CNR\Client} beside the
+ * state they read. Do not hoist them (or role credentials, see
+ * {@see \CNIC\RoleCredentialsInterface}) back up: a capability a brand cannot
+ * honour belongs off the shared surface, not on it returning a constant.
+ * (Ref: RSRMID-2920, reversing the RSRMID-2911 sub-decision that kept them here.)
+ *
  * @psalm-api
  * @package CNIC
  */
@@ -226,15 +236,6 @@ abstract class AbstractClient
     }
 
     /**
-     * Get the API Session ID that is currently set
-     */
-    public function getSession(): ?string
-    {
-        $sessid = $this->socketConfig->getSession();
-        return ($sessid === "" ? null : $sessid);
-    }
-
-    /**
      * Get the API connection url that is currently set
      */
     public function getURL(): string
@@ -432,16 +433,6 @@ abstract class AbstractClient
     public function setURL(string $value): static
     {
         $this->socketURL = $value;
-        return $this;
-    }
-
-    /**
-     * Set an API session id to be used for API communication
-     * @param string $value API session id (optional, for reset)
-     */
-    public function setSession(string $value = ""): static
-    {
-        $this->socketConfig->setSession($value);
         return $this;
     }
 

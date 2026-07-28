@@ -6,8 +6,8 @@ namespace CNICTEST;
 
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\SessionClient as CNRSessionClient;
-use CNIC\IBS\SessionClient as IBSSessionClient;
-use CNIC\MONIKER\SessionClient as MONIKERSessionClient;
+use CNIC\IBS\Client as IBSClient;
+use CNIC\MONIKER\Client as MONIKERClient;
 use PHPUnit\Framework\TestCase;
 
 final class ClientFactoryTest extends TestCase
@@ -17,13 +17,20 @@ final class ClientFactoryTest extends TestCase
         $this->assertInstanceOf(CNRSessionClient::class, CF::cnr());
     }
 
-    public function testIbsReturnsIbsSessionClient(): void
+    /**
+     * IBS/Moniker return the plain brand Client, not a "SessionClient": those
+     * platforms have no session lifecycle, and the empty subclasses that used to
+     * carry the name were removed in RSRMID-2920. assertSame on the class name
+     * rather than assertInstanceOf, so re-introducing a subclass would fail here
+     * instead of passing by inheritance.
+     */
+    public function testIbsReturnsIbsClient(): void
     {
-        $this->assertInstanceOf(IBSSessionClient::class, CF::ibs());
+        $this->assertSame(IBSClient::class, CF::ibs()::class);
     }
 
-    public function testMonikerReturnsMonikerSessionClient(): void
+    public function testMonikerReturnsMonikerClient(): void
     {
-        $this->assertInstanceOf(MONIKERSessionClient::class, CF::moniker());
+        $this->assertSame(MONIKERClient::class, CF::moniker()::class);
     }
 }

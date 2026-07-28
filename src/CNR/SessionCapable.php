@@ -11,9 +11,19 @@ namespace CNIC\CNR;
 
 /**
  * Provides session-based API communication methods.
- * Use this trait in SessionClient classes whose underlying API supports
- * persistent sessions (login/logout lifecycle).
  *
+ * CNR-only, and only usable on a {@see Client} — besides the shared client
+ * members (`request()`, `close()`, `setCredentials()`, `$socketConfig`) the trait
+ * reads CNR's session state through {@see Client::cnrConfig()} and
+ * {@see Client::setSession()}. The `@psalm-require-extends` tag below makes that
+ * host requirement enforceable instead of a comment (PHPStan honours the same
+ * tag, and rejects a second phpstan-prefixed copy of it): composing this trait into
+ * anything but a `CNR\Client` is a static analysis error rather than a fatal on
+ * first call. It is scoped to this namespace on purpose: the IBS/Moniker platform
+ * has no login/logout lifecycle, and the empty `SessionClient` subclasses that
+ * used to advertise one were removed in RSRMID-2920.
+ *
+ * @psalm-require-extends Client
  * @package CNIC\CNR
  */
 trait SessionCapable
@@ -23,13 +33,13 @@ trait SessionCapable
      */
     public function login(): Response
     {
-        $this->socketConfig->setPersistent(true);
+        $this->cnrConfig()->setPersistent(true);
         $rr = $this->request();
         if ($rr->isSuccess()) {
             $col = $rr->getColumn("SESSIONID");
             $this->setSession($col instanceof Column ? $col->getData()[0] : "");
         }
-        $this->socketConfig->setPersistent(false);
+        $this->cnrConfig()->setPersistent(false);
         return $rr;
     }
 
@@ -55,7 +65,7 @@ trait SessionCapable
     {
         $session["socketcfg"] = [
             "login"   => $this->socketConfig->getLogin(),
-            "session" => $this->socketConfig->getSession()
+            "session" => $this->cnrConfig()->getSession()
         ];
         return $this;
     }

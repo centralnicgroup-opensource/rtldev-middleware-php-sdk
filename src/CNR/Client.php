@@ -14,10 +14,19 @@ use CNIC\CNR\Logger as L;
 use CNIC\CNR\Response;
 use CNIC\CommandFormatter;
 use CNIC\Exception\PaginationException;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\RoleCredentialsInterface;
 
 /**
  * CNR API Client
+ *
+ * Home of the two capabilities the CNR platform has and the flat IBS/Moniker
+ * platform does not: **API sessions** (`getSession()`/`setSession()`, plus
+ * `login()`/`logout()` via the {@see SessionCapable} trait on
+ * {@see SessionClient}) and **role credentials**
+ * ({@see \CNIC\RoleCredentialsInterface}). Both read state that only
+ * {@see SocketConfig} carries, which is why they live here rather than on
+ * {@see AbstractClient} — see the note there (RSRMID-2920).
  *
  * @psalm-api
  * @package CNIC\CNR
@@ -31,6 +40,60 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     protected function newSocketConfig(): SocketConfig
     {
         return new SocketConfig();
+    }
+
+    /**
+     * The CNR SocketConfig, narrowed from the shared {@see AbstractSocketConfig}
+     * type of {@see AbstractClient::$socketConfig}.
+     *
+     * The one narrowing point for CNR's platform-specific config state (session,
+     * persistent, role separator). A typed property cannot be re-declared with a
+     * narrower type in PHP, so the covariant {@see newSocketConfig()} factory
+     * cannot inform the property's type — this accessor carries that knowledge
+     * instead, in exactly one place, rather than each caller asserting.
+     *
+     * The guard is unreachable in practice, since newSocketConfig() above is the
+     * only writer and it is covariant. It throws rather than `assert()`ing
+     * because `assert()` is compiled out when `zend.assertions` is disabled,
+     * which would turn a subclass that returned the wrong config into an
+     * undefined-method fatal instead of a named SDK exception.
+     * @throws UnsupportedFeatureException if a subclass supplied a non-CNR config
+     */
+    protected function cnrConfig(): SocketConfig
+    {
+        if (!$this->socketConfig instanceof SocketConfig) {
+            throw new UnsupportedFeatureException(
+                "CNR session and role handling require a CNIC\\CNR\\SocketConfig, got "
+                . $this->socketConfig::class . "."
+            );
+        }
+        return $this->socketConfig;
+    }
+
+    /**
+     * Get the API Session ID that is currently set, or null when there is none.
+     *
+     * CNR-only (RSRMID-2920): IBS/Moniker have no session concept, and this used
+     * to sit on {@see AbstractClient} reporting a hard-coded null for them.
+     */
+    public function getSession(): ?string
+    {
+        $sessid = $this->cnrConfig()->getSession();
+        return $sessid === "" ? null : $sessid;
+    }
+
+    /**
+     * Set an API session id to be used for API communication.
+     *
+     * Setting a session clears the stored password: the two are alternative
+     * credentials on the wire, and CNR's SocketConfig treats the newer one as
+     * authoritative (see {@see SocketConfig::setSession()}).
+     * @param string $value API session id (optional, for reset)
+     */
+    public function setSession(string $value = ""): static
+    {
+        $this->cnrConfig()->setSession($value);
+        return $this;
     }
 
     /**
@@ -95,7 +158,7 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     {
         $login = $uid;
         if ($role !== '') {
-            $login .= $this->socketConfig->getRoleSeparator() . $role;
+            $login .= $this->cnrConfig()->getRoleSeparator() . $role;
         }
         return $this->setCredentials($login, $pw);
     }
