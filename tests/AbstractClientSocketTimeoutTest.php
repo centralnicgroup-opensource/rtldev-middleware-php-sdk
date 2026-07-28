@@ -12,6 +12,7 @@ namespace CNICTEST;
 use CNIC\AbstractClient;
 use CNIC\ClientFactory as CF;
 use CNIC\Exception\InvalidConfigurationException;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNICTEST\Support\SpyTransport;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -19,12 +20,15 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for the request timeout setter (RSRMID-2919).
  *
- * Until now the request timeout could not be changed from outside the SDK at
+ * Before v21 the request timeout could not be changed from outside the SDK at
  * all: $socketTimeout is a protected property on AbstractSocketConfig with only
- * a getter, the SocketConfig has no public accessor on the client, and
+ * a getter, the SocketConfig had no public accessor on the client, and
  * CURLOPT_TIMEOUT passed through setExtraCurlOptions() was discarded by the
  * transport. Closing that gap is independent of the precedence decision, so it
  * is tested separately from the cURL option bag.
+ *
+ * RSRMID-2921 then removed the precedence question altogether by removing the
+ * second route — see testTheOptionBagIsNoLongerASecondRouteToTheTimeout() below.
  *
  * The assertions go through a spy TransportInterface (the RSRMID-2910 seam) so
  * they check the timeout that actually reaches the transport, not merely the
@@ -104,23 +108,34 @@ final class AbstractClientSocketTimeoutTest extends TestCase
     }
 
     /**
-     * Two routes now lead to the request timeout. They are not in conflict —
-     * both are caller-initiated — but the precedence is documented, so pin it:
-     * the client hands the config's value to the transport as the $timeout
-     * argument and the bag's CURLOPT_TIMEOUT alongside it, and the transport
-     * lets the caller's option win (asserted on the wire in
-     * {@see \CNICTEST\Functional\HttpTransportTest}).
+     * There is exactly **one** route to the request timeout.
+     *
+     * v21 shipped two — this setter and `CURLOPT_TIMEOUT` in the option bag, with
+     * the bag winning — and the resulting precedence took 22 lines of prose on
+     * `AbstractClient` to explain. RSRMID-2921 closed the second route: the bag
+     * rejects the key and names this setter, so `getSocketTimeout()` and the value
+     * handed to the transport cannot differ.
+     *
+     * A caller who genuinely wants the option rather than the intent can still
+     * drive {@see \CNIC\HttpTransport} directly; the guard is on the *config*,
+     * which is the object that would otherwise hold two answers.
      */
-    public function testBothTimeoutRoutesReachTheTransport(): void
+    public function testTheOptionBagIsNoLongerASecondRouteToTheTimeout(): void
     {
         $spy = new SpyTransport();
         $cl = CF::cnr();
-        $cl->setTransport($spy)->useOTESystem();
-        $cl->setSocketTimeout(7)->setExtraCurlOptions([CURLOPT_TIMEOUT => 3]);
-        $cl->request(["COMMAND" => "StatusAccount"]);
+        $cl->setTransport($spy)->useOTESystem()->setSocketTimeout(7);
 
+        try {
+            $cl->setExtraCurlOptions([CURLOPT_TIMEOUT => 3]);
+            $this->fail("expected UnsupportedFeatureException");
+        } catch (UnsupportedFeatureException $e) {
+            $this->assertStringContainsString("setSocketTimeout()", $e->getMessage());
+        }
+
+        $cl->request(["COMMAND" => "StatusAccount"]);
         $this->assertSame(7, $spy->timeout);
-        $this->assertSame(3, $spy->options[CURLOPT_TIMEOUT] ?? null);
+        $this->assertArrayNotHasKey(CURLOPT_TIMEOUT, $spy->options);
     }
 
     /**

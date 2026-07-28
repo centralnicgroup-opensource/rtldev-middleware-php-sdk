@@ -199,6 +199,14 @@ final class ClientTest extends TestCase
         $this->assertEquals("https://api-ote.rrpproxy.net/api/call.cgi", $r->getRequestURL());
     }
 
+    /**
+     * Since RSRMID-2921 the system is *derived* from the configured URL rather
+     * than stored beside it, which is what stops the two disagreeing — and why
+     * getSystem() is nullable: an unrecognised endpoint has no honest
+     * OT&E-or-LIVE answer. Both halves are covered brand-wide in
+     * CNICTEST\AbstractClientConfigDriftTest; this keeps the statement next to
+     * the rest of the CNR client's contract.
+     */
     public function testGetSystem(): void
     {
         // LIVE is the default; isOTE() must agree with getSystem()
@@ -831,13 +839,20 @@ final class ClientTest extends TestCase
 
     public function testUseHighPerformanceConnectionSetup(): void
     {
-        $oldurl = self::$cl->getURL();
+        // A fresh client, not the shared static one: since RSRMID-2921 the
+        // high-performance route is a sticky flag on the config rather than a
+        // one-off URL rewrite, so there is nothing to restore afterwards — and
+        // leaving it on would silently redirect every later test on self::$cl to
+        // loopback. That stickiness is the point (it no longer costs the caller
+        // isOTE()); the cost is that this test may not share a client.
+        $cl = CF::cnr();
+        $oldurl = $cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
         if (is_string($hostname) && $hostname !== "") {
             $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
             $newurl = str_replace("https://", "http://", $newurl);
-            self::$cl->useHighPerformanceConnectionSetup();
-            $this->assertEquals(self::$cl->getURL(), $newurl);
+            $cl->useHighPerformanceConnectionSetup();
+            $this->assertEquals($cl->getURL(), $newurl);
         }
     }
 

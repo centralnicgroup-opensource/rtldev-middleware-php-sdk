@@ -47,6 +47,12 @@ final class SpyTransport implements TransportInterface
     /** @var array<int, mixed> cURL option bag handed over by the client */
     public array $options = [];
 
+    /** Connection URL handed over by the client; empty until the first call. */
+    public string $url = "";
+
+    /** User agent handed over by the client; empty until the first call. */
+    public string $userAgent = "";
+
     /**
      * @param string $raw canned wire response to return (defaults to a CNR success)
      */
@@ -61,7 +67,9 @@ final class SpyTransport implements TransportInterface
     #[\Override]
     public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
     {
+        $this->url = $url;
         $this->timeout = $timeout;
+        $this->userAgent = $userAgent;
         $this->options = $options;
         return [$this->raw, null];
     }

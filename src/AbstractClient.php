@@ -22,6 +22,24 @@ use CNIC\System;
  * Concrete subclasses provide the request() implementation, the default
  * logger, and the appropriate SocketConfig subtype.
  *
+ * ## Where configuration lives (RSRMID-2921)
+ *
+ * Not here. Connection configuration has one home — {@see AbstractSocketConfig}
+ * — reachable through {@see getSocketConfig()}. This class used to keep its own
+ * copies of part of it (`$socketURL`, `$system`, the `$curlopts` bag) alongside
+ * the config's endpoints and timeout, with nothing tying the two sets together;
+ * three defects followed from the split, and the full account is in the config's
+ * class docblock. What is left here is client *behaviour*: the logger and debug
+ * flag, the response context, the transport instance, and the SDK's own identity
+ * (`VERSION`/`$ua`, which is versioned with this class and released from it).
+ *
+ * The configuration methods below are forwarders, and deliberately kept: they are
+ * the documented ergonomic surface (`$cl->useOTESystem()->setCredentials(...)`)
+ * and they now read and write the config's state rather than a copy of it, so a
+ * forwarder cannot disagree with the config. What `getSocketConfig()` changes is
+ * that a *new* setting no longer needs one — the accessor's absence is why ~26 of
+ * these accumulated and why this was the repo's highest-churn file.
+ *
  * Only capabilities every brand can actually honour live here. In particular
  * `getSession()`/`setSession()` do **not** — API sessions are a CNR concept, and
  * these sat here until v22 forwarding to null-object stubs on
@@ -50,12 +68,8 @@ abstract class AbstractClient
     protected array $context = [];
 
     /**
-     * API connection url
-     */
-    protected string $socketURL = "";
-
-    /**
-     * Object covering API connection data
+     * Object covering API connection data — the one home for connection
+     * configuration; see {@see getSocketConfig()}.
      */
     protected AbstractSocketConfig $socketConfig;
 
@@ -65,29 +79,20 @@ abstract class AbstractClient
     protected bool $debugMode = false;
 
     /**
-     * user agent
+     * User agent sent with every request. Empty until {@see setUserAgent()} is
+     * called; while it is empty {@see getUserAgent()} derives the SDK default.
+     *
+     * Client state rather than connection configuration: it identifies this
+     * library (and the platform embedding it) and is built from {@see VERSION},
+     * which semantic-release rewrites in this file.
      */
     protected string $ua = "";
-
-    /**
-     * Live cURL options bag applied to every request. Initialised in the
-     * constructor from {@see getDefaultCurlOpts()} (brand defaults) and then
-     * mutated by {@see setProxy()}/{@see setReferer()}/{@see setExtraCurlOptions()};
-     * {@see resetCurlOptions()} restores it to the brand defaults.
-     * @var array<int, mixed>
-     */
-    protected array $curlopts = [];
 
     /**
      * logger instance for debug mode
      * @psalm-suppress PropertyNotSetInConstructor — set via abstract setDefaultLogger() called in __construct()
      */
     protected LoggerInterface $logger;
-
-    /**
-     * API system the client is connected to (defaults to LIVE)
-     */
-    protected System $system = System::LIVE;
 
     /**
      * HTTP transport layer
@@ -100,10 +105,30 @@ abstract class AbstractClient
     public function __construct()
     {
         $this->transport = $this->newTransport();
+        // Seeds itself: the config's constructor selects LIVE (the default
+        // system) and the brand's default cURL options. The client used to call
+        // useLIVESystem() here to initialise its own URL copy — there is no copy
+        // to initialise any more.
         $this->socketConfig = $this->newSocketConfig();
-        $this->curlopts = $this->getDefaultCurlOpts();
-        $this->useLIVESystem();
         $this->setDefaultLogger();
+    }
+
+    /**
+     * The connection configuration this client uses.
+     *
+     * Added in RSRMID-2921 as the missing piece that made ~26 forwarding methods
+     * the *only* way to reach a configuration value, and this the highest-churn
+     * file in the repo: every new setting needed a hand-written forwarder or was
+     * unreachable from outside. It is also the seam that lets configuration be
+     * built and asserted without constructing a client.
+     *
+     * Brands narrow the return type covariantly where they have their own config
+     * capabilities — {@see \CNIC\CNR\Client::getSocketConfig()} returns the CNR
+     * config, which is the one place the invariant property type is narrowed.
+     */
+    public function getSocketConfig(): AbstractSocketConfig
+    {
+        return $this->socketConfig;
     }
 
     /**
@@ -123,10 +148,12 @@ abstract class AbstractClient
     abstract public function request(array $cmd = [], string $path = ""): ResponseInterface;
 
     /**
-     * Shared request lifecycle (template method). Brands vary it through two
-     * hooks — {@see buildCommand()} (command flattening) and {@see newResponse()}
-     * (covariant Response factory) — plus the {@see $curlopts} property for any
-     * brand-mandatory cURL options.
+     * Shared request lifecycle (template method). Brands vary it through exactly
+     * two hooks — {@see buildCommand()} (command flattening) and
+     * {@see newResponse()} (covariant Response factory) — plus their
+     * {@see newSocketConfig()} subtype, which is where any brand-mandatory cURL
+     * option would go now that the bag lives on the config (RSRMID-2921). No
+     * brand declares one.
      *
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @param string $path path segment appended to the base URL to select the endpoint
@@ -134,7 +161,7 @@ abstract class AbstractClient
     protected function performRequest(array $cmd, string $path = ""): ResponseInterface
     {
         $mycmd = $this->autoIDNConvert($this->buildCommand($cmd));
-        $cfg = ["CONNECTION_URL" => $this->socketURL . $path];
+        $cfg = ["CONNECTION_URL" => $this->socketConfig->getURL() . $path];
         $data = $this->getPOSTData($mycmd);
         [$raw, $error] = $this->executeCurl($data, $cfg);
         $response = $this->newResponse($raw, $mycmd, $cfg);
@@ -240,22 +267,17 @@ abstract class AbstractClient
      */
     public function getURL(): string
     {
-        return $this->socketURL;
+        return $this->socketConfig->getURL();
     }
 
     /**
      * Set the request timeout in seconds (default 300).
      *
-     * The supported way to change the timeout, added in RSRMID-2919 to close a
-     * gap: the value lives on the SocketConfig, which has no public accessor
-     * here, so before this setter existed an integrator had no way to shorten
-     * or lengthen a request at all — and CURLOPT_TIMEOUT handed to
-     * {@see setExtraCurlOptions()} was discarded by the transport.
-     *
-     * Both routes now work. They are independent, and on collision the cURL
-     * option bag wins, because the transport applies the caller's options over
-     * the timeout the client passes it. Prefer this setter: it is the intent,
-     * not the mechanism.
+     * The **only** way to change the timeout. Added in RSRMID-2919 to close a gap
+     * — the value was unreachable from outside the SDK — and made the single
+     * route in RSRMID-2921, which stopped the option bag offering a second one:
+     * `CURLOPT_TIMEOUT` there is now rejected ({@see setExtraCurlOptions()})
+     * rather than quietly overriding what {@see getSocketTimeout()} reports.
      *
      * @param int $seconds timeout in seconds (0 = no timeout, per cURL)
      * @throws InvalidConfigurationException on a negative value
@@ -288,83 +310,48 @@ abstract class AbstractClient
     }
 
     /**
-     * Get the user agent string
+     * Get the user agent string — the one set via {@see setUserAgent()}, or the
+     * SDK default when none was.
+     *
+     * A pure read. It used to memoise the default into {@see $ua} on first call,
+     * which meant a getter performing a write in the middle of a request; there
+     * is nothing to memoise — the value is a handful of constants and one
+     * `php_uname()` call.
      */
     public function getUserAgent(): string
     {
-        if ($this->ua === '') {
-            $this->ua = "PHP-SDK (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $this->getVersion() . ") php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
+        if ($this->ua !== '') {
+            return $this->ua;
         }
-        return $this->ua;
+        return "PHP-SDK (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $this->getVersion() . ") php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
     }
 
     /**
-     * Brand-default cURL options for this client, used to seed and to reset the
-     * live {@see $curlopts} bag.
-     *
-     * **No brand currently overrides this, and new overrides should be resisted.**
-     * IBS/Moniker used to force IPv4 resolution here; that shipped one customer's
-     * network workaround to every integration, and was removed in RSRMID-2915 so
-     * transport tuning stays the caller's decision via {@see setExtraCurlOptions()}.
-     * The hook is kept because it is the seam {@see resetCurlOptions()} is defined
-     * in terms of — reset restores these defaults rather than blindly wiping the
-     * bag — and because a genuinely protocol-mandatory option could still warrant
-     * one. A default that merely papers over one environment's networking does not.
-     * @return array<int, mixed>
-     */
-    protected function getDefaultCurlOpts(): array
-    {
-        return [];
-    }
-
-    /**
-     * Merge additional cURL options into the live bag, overriding existing
-     * values on key collision (including brand defaults). Use
-     * {@see resetCurlOptions()} to restore the brand defaults afterwards.
-     *
-     * Reach (RSRMID-2919): what you set here reaches the wire. The bag is
-     * applied *over* the defaults {@see HttpTransport::post()} sets, so an
-     * option of yours wins on collision — CURLOPT_TIMEOUT, CONNECTTIMEOUT and
-     * USERAGENT included, all of which used to be discarded silently.
-     *
-     * Two exceptions:
-     * - {@see HttpTransport::PROTECTED_OPTIONS} — CURLOPT_URL, POST, POSTFIELDS,
-     *   RETURNTRANSFER, HEADER (the request envelope the response parser is
-     *   written against) and CURLOPT_SSL_VERIFYPEER/SSL_VERIFYHOST (TLS
-     *   verification is not weakenable through a convenience bag). Passing one
-     *   raises {@see \CNIC\Exception\UnsupportedFeatureException} on the next
-     *   request — loudly, rather than being ignored.
-     * - CURLOPT_HTTPHEADER is merged by header name rather than replacing the
-     *   transport's list, so your headers are added while
-     *   Content-Type/Content-Length/Connection survive. A header of yours with
-     *   the same name as one of the transport's replaces it.
-     *
-     * For the user agent prefer {@see setUserAgent()} and for the request
-     * timeout {@see setSocketTimeout()} — both express the intent rather than
-     * the mechanism. Where they overlap with an option set here, the bag wins.
+     * Merge additional cURL options into the bag, overriding existing values on
+     * key collision. Forwards to {@see AbstractSocketConfig::setExtraCurlOptions()},
+     * whose docblock carries the detail: what reaches the wire, and the two sets
+     * of keys that are refused — the SDK-managed settings
+     * ({@see AbstractSocketConfig::MANAGED_OPTIONS}, rejected here and now) and
+     * the transport's own ({@see HttpTransport::PROTECTED_OPTIONS}, rejected on
+     * the next request).
      * @param array<int, mixed> $opts cURL options keyed by CURLOPT_* constant
+     * @throws UnsupportedFeatureException if $opts contains an SDK-managed option
      */
     public function setExtraCurlOptions(array $opts): static
     {
-        $this->curlopts = $opts + $this->curlopts;
+        $this->socketConfig->setExtraCurlOptions($opts);
         return $this;
     }
 
     /**
-     * Restore the live cURL options bag to the brand defaults
-     * ({@see getDefaultCurlOpts()}), discarding any options previously set via
-     * {@see setExtraCurlOptions()}/{@see setProxy()}/{@see setReferer()}.
-     *
-     * It restores the defaults rather than clearing the bag, so a brand default
-     * would survive a reset. Since RSRMID-2915 no brand declares one, so this
-     * currently empties the bag for every brand — including IBS/Moniker, which
-     * previously kept their forced IPv4 resolution here. An explicitly opted-in
-     * option is caller state and is therefore discarded: set it again after
-     * calling this.
+     * Restore the cURL option bag to the brand defaults, discarding anything
+     * previously handed to {@see setExtraCurlOptions()}. Options only — the proxy
+     * and referer are separate state and survive; see
+     * {@see AbstractSocketConfig::resetCurlOptions()}.
      */
     public function resetCurlOptions(): static
     {
-        $this->curlopts = $this->getDefaultCurlOpts();
+        $this->socketConfig->resetCurlOptions();
         return $this;
     }
 
@@ -374,11 +361,7 @@ abstract class AbstractClient
      */
     public function setProxy(string $proxy = ""): static
     {
-        if ($proxy === '') {
-            unset($this->curlopts[CURLOPT_PROXY]);
-        } else {
-            $this->curlopts[CURLOPT_PROXY] = $proxy;
-        }
+        $this->socketConfig->setProxy($proxy);
         return $this;
     }
 
@@ -387,10 +370,7 @@ abstract class AbstractClient
      */
     public function getProxy(): ?string
     {
-        if (array_key_exists(CURLOPT_PROXY, $this->curlopts) && is_string($this->curlopts[CURLOPT_PROXY])) {
-            return $this->curlopts[CURLOPT_PROXY];
-        }
-        return null;
+        return $this->socketConfig->getProxy();
     }
 
     /**
@@ -399,11 +379,7 @@ abstract class AbstractClient
      */
     public function setReferer(string $referer = ""): static
     {
-        if ($referer === '') {
-            unset($this->curlopts[CURLOPT_REFERER]);
-        } else {
-            $this->curlopts[CURLOPT_REFERER] = $referer;
-        }
+        $this->socketConfig->setReferer($referer);
         return $this;
     }
 
@@ -412,10 +388,7 @@ abstract class AbstractClient
      */
     public function getReferer(): ?string
     {
-        if (array_key_exists(CURLOPT_REFERER, $this->curlopts) && is_string($this->curlopts[CURLOPT_REFERER])) {
-            return $this->curlopts[CURLOPT_REFERER];
-        }
-        return null;
+        return $this->socketConfig->getReferer();
     }
 
     /**
@@ -432,12 +405,20 @@ abstract class AbstractClient
      */
     public function setURL(string $value): static
     {
-        $this->socketURL = $value;
+        $this->socketConfig->setURL($value);
         return $this;
     }
 
     /**
-     * Set Credentials to be used for API communication
+     * Set Credentials to be used for API communication.
+     *
+     * On CNR this **discards any active API session**, which was true before
+     * RSRMID-2921 too but stated nowhere: `CNR\SocketConfig::setLogin()`/
+     * `setPassword()` clear the session id, because a session and a password are
+     * alternative credentials on the wire and the newer one is authoritative. The
+     * invariant is deliberate — `CNR\SessionCapable::reuseSession()` depends on
+     * it, restoring the login first and the session second — so it is documented
+     * rather than removed. Set the session *after* the credentials, never before.
      * @param string $uid account name (optional, for reset)
      * @param string $pw account password (optional, for reset)
      */
@@ -449,24 +430,18 @@ abstract class AbstractClient
     }
 
     /**
-     * Activate High Performance Setup
+     * Activate High Performance Setup — route requests through the co-located
+     * proxy on loopback.
+     *
+     * Brand-agnostic and therefore shared (RSRMID-2911). Since RSRMID-2921 it
+     * records a flag on the config instead of rewriting the URL once, so the
+     * selected system survives it: {@see isOTE()} used to flip to false here,
+     * because the rewritten loopback URL no longer matched the OT&E endpoint. See
+     * {@see AbstractSocketConfig::useHighPerformanceConnectionSetup()}.
      */
     public function useHighPerformanceConnectionSetup(): static
     {
-        $parts = parse_url($this->getURL());
-        if (isset($parts["host"]) && $parts["host"] !== '') {
-            // Route to the co-located high-performance proxy on loopback.
-            // The https->http downgrade is deliberate and safe: the request never
-            // leaves the host — it targets a trusted local socket — so credentials
-            // in the POST body are not exposed on the wire. Rebuild from the URL
-            // components so only the host (and scheme) are swapped; a blind
-            // str_replace would also clobber a hostname recurring in path/query.
-            $url = "http://127.0.0.1"
-                . (isset($parts["port"]) ? ":" . $parts["port"] : "")
-                . ($parts["path"] ?? "")
-                . (isset($parts["query"]) ? "?" . $parts["query"] : "");
-            $this->setURL($url);
-        }
+        $this->socketConfig->useHighPerformanceConnectionSetup();
         return $this;
     }
 
@@ -530,24 +505,30 @@ abstract class AbstractClient
     /**
      * Delegate cURL execution to the transport layer.
      *
-     * Two unions decide which cURL option wins, and both put the more specific
-     * value on the left (PHP's + keeps the left operand on a duplicate key):
-     * per-call extras beat the client's live bag here, and the whole lot beats
-     * the transport's own defaults in {@see HttpTransport::post()}.
+     * The configured options are handed over as they are, and beat the
+     * transport's own defaults in {@see HttpTransport::post()} (PHP's `+` keeps
+     * the left operand on a duplicate key).
+     *
+     * It used to take a third `$extraCurlOpts` argument merged in *over* the
+     * configured options. Nothing in the SDK ever passed it, and as a route into
+     * the option set that skipped {@see AbstractSocketConfig::MANAGED_OPTIONS} it
+     * was a way for a subclass to put a second answer behind `getProxy()` — the
+     * defect this ticket exists to close. Dropped in RSRMID-2921: a per-request
+     * option belongs on the config before the request, or on a transport the
+     * caller drives themselves.
      * @param string $data serialized POST payload
      * @param array{CONNECTION_URL: string} $cfg connection config
-     * @param array<int, mixed> $extraCurlOpts additional cURL options, overriding the client's bag
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
      * @throws UnsupportedFeatureException if a transport-owned option was set
      */
-    protected function executeCurl(string $data, array $cfg, array $extraCurlOpts = []): array
+    protected function executeCurl(string $data, array $cfg): array
     {
         return $this->transport->post(
             $cfg["CONNECTION_URL"],
             $data,
             $this->socketConfig->getSocketTimeout(),
             $this->getUserAgent(),
-            $extraCurlOpts + $this->curlopts
+            $this->socketConfig->getCurlOptions()
         );
     }
 
@@ -560,7 +541,14 @@ abstract class AbstractClient
     }
 
     /**
-     * Get LIVE system URL
+     * Get LIVE system URL.
+     *
+     * There is deliberately no matching `getOTEUrl()` here. The asymmetry is
+     * pre-existing — this forwarder is the one the SDK has always had, and it is
+     * half of what made drift 2 visible — and RSRMID-2921 did not add its twin: a
+     * change whose point is that a configuration value no longer needs a
+     * hand-written forwarder should not open with a new one. Read the OT&E
+     * endpoint from {@see getSocketConfig()}.
      */
     public function getLiveUrl(): string
     {
@@ -568,19 +556,26 @@ abstract class AbstractClient
     }
 
     /**
-     * Get the API system the client is currently connected to
+     * Get the API system in use, or null when the configured URL is neither of
+     * the brand's two known endpoints.
+     *
+     * Derived from the URL rather than stored beside it (RSRMID-2921), which is
+     * what makes it impossible for the two to disagree — and why the return type
+     * is nullable: after a `setURL()` to some other host there is no honest
+     * OT&E-or-LIVE answer to give. See
+     * {@see AbstractSocketConfig::getSystem()}.
      */
-    public function getSystem(): System
+    public function getSystem(): ?System
     {
-        return $this->system;
+        return $this->socketConfig->getSystem();
     }
 
     /**
-     * Check whether the client is connected to the OT&E system
+     * Check whether the OT&E system is in use
      */
     public function isOTE(): bool
     {
-        return $this->system === System::OTE;
+        return $this->socketConfig->isOTE();
     }
 
     /**
@@ -588,8 +583,8 @@ abstract class AbstractClient
      */
     public function useOTESystem(): static
     {
-        $this->system = System::OTE;
-        return $this->setURL($this->socketConfig->getOTEUrl());
+        $this->socketConfig->useOTESystem();
+        return $this;
     }
 
     /**
@@ -597,8 +592,8 @@ abstract class AbstractClient
      */
     public function useLIVESystem(): static
     {
-        $this->system = System::LIVE;
-        return $this->setURL($this->socketConfig->getLiveUrl());
+        $this->socketConfig->useLIVESystem();
+        return $this;
     }
 
     /**
