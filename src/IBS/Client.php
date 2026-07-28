@@ -22,8 +22,10 @@ use CNIC\IBS\SocketConfig;
  * CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 via getDefaultCurlOpts(), forcing IPv4
  * name resolution for every IBS/Moniker integration. That was one customer's
  * network workaround hard-coded into the library; callers who need it set it
- * themselves with setExtraCurlOptions(). Do not re-add a brand default here —
- * transport tuning is the caller's decision. (Ref: RSRMID-2915, RSRMID-2913.)
+ * themselves with setExtraCurlOptions(). Do not re-add a brand default — not
+ * here, and not on {@see SocketConfig}, where the hook moved with the option bag
+ * in RSRMID-2921. Transport tuning is the caller's decision.
+ * (Ref: RSRMID-2915, RSRMID-2913.)
  *
  * @package CNIC\IBS
  */

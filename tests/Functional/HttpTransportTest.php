@@ -195,6 +195,12 @@ final class HttpTransportTest extends TestCase
     /**
      * CURLOPT_USERAGENT was another silently-dropped key. It has a public
      * alternative (setUserAgent()), but the bag must not lie about it either.
+     *
+     * Asserted against the transport directly, which is the only route left: the
+     * *client's* bag refuses CURLOPT_USERAGENT since RSRMID-2921, because the
+     * config would then hold two answers for one question. The transport owns
+     * neither the user agent nor the timeout, so it still accepts both and lets
+     * the caller win — which is what this pins.
      */
     public function testCallerUserAgentOverridesTheTransportArgument(): void
     {

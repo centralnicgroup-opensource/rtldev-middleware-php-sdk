@@ -26,6 +26,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
 | → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw       | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
 | → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
+| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                  | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters    |
 
 Two things to respect throughout:
 
@@ -571,6 +572,8 @@ $cl = ClientFactory::moniker();  // -> CNIC\MONIKER\Client
 
 One note for anyone **subclassing `CNR\Client`**: PHP typed properties are invariant, so the inherited `$socketConfig` stays declared as `AbstractSocketConfig`, and the session and role-credential methods narrow it through a single new protected accessor, `cnrConfig()`. Nothing is required of you — `newSocketConfig()` is typed to return the `final CNR\SocketConfig`, so an override cannot supply anything else, and the accessor's `instanceof` guard exists to satisfy static analysis rather than to describe a reachable failure.
 
+> **`cnrConfig()` was renamed in v23** to the public, covariant `getSocketConfig()`. See [→ v23.0.0](#-v2300).
+
 ### Why the methods are absent rather than throwing
 
 This is a deliberate reversal of a v19 sub-decision, and it settles a policy the two preceding majors disagreed on. v19 chose silent no-ops for a capability a brand cannot honour and called them harmless. v21 chose the opposite for cURL options — `UnsupportedFeatureException`, "rather than being ignored". v22 picks the answer that is better than either where the type system can express it:
@@ -580,6 +583,114 @@ This is a deliberate reversal of a v19 sub-decision, and it settles a policy the
 - **Never no-op.** A fluent setter that discards its argument is indistinguishable from one that works.
 
 The practical consequence for you: brand capability differences now show up in your editor and in PHPStan/Psalm output, rather than at runtime or not at all.
+
+---
+
+## → v23.0.0 — connection configuration has one home
+
+**What changed:** connection configuration was split between the client and its `SocketConfig`, with nothing keeping the two copies in step. It now lives entirely on the `SocketConfig`, reachable through a new public `getSocketConfig()`. Three defects went with the split; each is now impossible to express rather than fixed.
+
+Everything you call on the client still exists — `setURL()`, `useOTESystem()`, `setProxy()`, `setCredentials()` and the rest are unchanged forwarders, and `$cl->useOTESystem()->setCredentials($u, $p)` is still the idiomatic call. Four narrower things changed, below.
+
+### 1. `getSystem()` returns `?System` — the system is derived from the URL
+
+**What changed:** the client no longer stores which system you selected. It derives it by comparing the configured URL against the brand's OT&E and LIVE endpoints, so the two can no longer disagree. A URL that is neither returns `null`.
+
+```php
+// BEFORE (v22): the flag and the URL parted company, permanently
+$cl->useOTESystem()->setURL("https://staging.example/");
+$cl->isOTE();      // true   <- wrong; requests go to staging.example
+$cl->getSystem();  // System::OTE
+
+// AFTER (v23)
+$cl->useOTESystem()->setURL("https://staging.example/");
+$cl->isOTE();      // false
+$cl->getSystem();  // null   <- the SDK has no name for this endpoint
+```
+
+**What to respect:** if you read `getSystem()`, handle `null`. A `match` on it needs a default arm, and passing the result somewhere typed `System` is now a PHPStan/Psalm error — which is the point: the value was previously wrong rather than absent.
+
+```php
+// BEFORE
+$label = $cl->getSystem()->value;
+
+// AFTER — one of:
+$label = $cl->getSystem()?->value ?? "CUSTOM";
+$label = ($cl->getSystem() ?? System::LIVE)->value;
+```
+
+`isOTE()` still returns `bool` and needs no change, but its answer is now honest after a `setURL()`. If you were relying on it staying `true` across a custom URL, that reliance was on the defect.
+
+### 2. High-performance routing is a flag, not a one-off URL rewrite
+
+**What changed:** `useHighPerformanceConnectionSetup()` used to rewrite the stored URL to loopback once. It now records the intent and applies the rewrite whenever the URL is read.
+
+Two consequences: your selected system survives it (previously the rewritten URL no longer matched the OT&E endpoint, so `isOTE()` was lost), and the routing survives a later `useOTESystem()`/`useLIVESystem()`/`setURL()` — routing through a local proxy is a statement about _how_ to reach the endpoint, not _which_ endpoint.
+
+```php
+// BEFORE (v22)
+$cl->useOTESystem()->useHighPerformanceConnectionSetup();
+$cl->getURL();   // http://127.0.0.1/
+$cl->useLIVESystem();
+$cl->getURL();   // https://api.rrpproxy.net/   <- routing silently undone
+
+// AFTER (v23)
+$cl->useOTESystem()->useHighPerformanceConnectionSetup();
+$cl->isOTE();    // true (was effectively lost before)
+$cl->useLIVESystem();
+$cl->getURL();   // http://127.0.0.1/           <- still routed
+```
+
+**What to respect:** if you switched systems after enabling high-performance mode and depended on that switch turning it off, switch it on again after — or, better, enable it last. There is no disable method; construct a fresh client if you need one without it. Read the state with `$cl->getSocketConfig()->usesHighPerformanceConnectionSetup()`.
+
+### 3. Four cURL options now raise instead of being set through the bag
+
+**What changed:** `CURLOPT_TIMEOUT`, `CURLOPT_USERAGENT`, `CURLOPT_PROXY` and `CURLOPT_REFERER` each have a setter that owns them, so `setExtraCurlOptions()` refuses them with `UnsupportedFeatureException`, naming the setter to use. Previously the bag value quietly beat the setter on the wire while the getter kept reporting what the setter had stored — two answers behind one question.
+
+```php
+// BEFORE (v21–v22): worked, and silently outranked setSocketTimeout()/setProxy()
+$cl->setExtraCurlOptions([
+    CURLOPT_TIMEOUT   => 5,
+    CURLOPT_PROXY     => "http://proxy.example:3128",
+    CURLOPT_REFERER   => "https://my.app/",
+    CURLOPT_USERAGENT => "MyPlatform/1.0",
+]);
+
+// AFTER (v23) — one setter each
+$cl->setSocketTimeout(5)
+   ->setProxy("http://proxy.example:3128")
+   ->setReferer("https://my.app/")
+   ->setUserAgent("MyPlatform", "1.0");
+```
+
+**What to respect:** grep your integration for those four constants. The rejection is **eager** — it throws from `setExtraCurlOptions()` itself, not on the next request — so a misconfiguration surfaces at setup. Every other option (`CURLOPT_CONNECTTIMEOUT`, `CURLOPT_IPRESOLVE`, `CURLOPT_HTTPHEADER`, …) is unaffected and still reaches the wire exactly as in v21. The transport's own protected set is unchanged too, and still rejected on the next request rather than at the setter — see [→ v21.0.0](#-v2100).
+
+If you genuinely want the raw option rather than the intent, drive `CNIC\HttpTransport::post()` directly; it owns none of the four and accepts all of them.
+
+### 4. `resetCurlOptions()` no longer forgets your proxy and referer
+
+**What changed:** the proxy and the referer were stored as cURL bag keys, so `resetCurlOptions()` — whose job is restoring _option_ defaults — discarded them. They are separate state now.
+
+```php
+$cl->setProxy("http://proxy.example:3128")->resetCurlOptions();
+$cl->getProxy();   // BEFORE: null      AFTER: "http://proxy.example:3128"
+```
+
+**What to respect:** if you were re-applying `setProxy()`/`setReferer()` after every `resetCurlOptions()`, that is now redundant but harmless. If you were relying on the reset to clear them, call `setProxy()`/`setReferer()` with no argument — the documented reset for both.
+
+### For subclassers
+
+- **`CNR\Client::cnrConfig()` (protected, v22) is now `getSocketConfig()` (public).** It is the covariant override of the base accessor, still the single point that narrows the invariant `$socketConfig` property to `CNR\SocketConfig`. Rename your calls; there is no alias, deliberately — two methods narrowing the same property would be two places to keep in step.
+- **`AbstractClient::getDefaultCurlOpts()` moved to `AbstractSocketConfig`**, with the option bag it seeds. If you overrode it on a client subclass, move the override to your `SocketConfig` subclass. (No brand in the SDK overrides it, and the bar for doing so is a protocol-mandatory option — see [→ v20.0.0](#-v2000).)
+- **`AbstractClient` no longer declares `$socketURL`, `$system` or `$curlopts`.** A subclass reading them gets an undefined-property error; read through `getSocketConfig()` instead.
+- **`AbstractSocketConfig` now has a constructor** that seeds the active URL from `$liveUrl` and the option bag from `getDefaultCurlOpts()`. If your config subclass declares one, call `parent::__construct()` — without it the client starts with an empty URL.
+- **`getUserAgent()` is a pure read.** It used to memoise the SDK default into `$ua` on first call; a subclass that inspected `$ua` to detect "has a UA been set" still works, and now gets the right answer.
+- **`AbstractClient::executeCurl()` lost its third parameter.** `executeCurl(string $data, array $cfg, array $extraCurlOpts = [])` is now `executeCurl(string $data, array $cfg)`. Nothing in the SDK ever passed the third argument, and as an option route that skipped the managed-option check it was a way to put a second answer behind `getProxy()`. Configure the option before the request, or drive `HttpTransport::post()` yourself.
+- **No `getOTEUrl()` was added on the client**, despite `getLiveUrl()` existing. Read it from `getSocketConfig()->getOTEUrl()`.
+
+### One behaviour deliberately unchanged
+
+`setCredentials()` still discards an active CNR session — a session and a password are alternative credentials on the wire and CNR treats the newer one as authoritative. That was true before and undocumented; it is now stated on the method and pinned by a test, because `reuseSession()` depends on the ordering (credentials first, session second).
 
 ---
 

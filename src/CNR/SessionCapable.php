@@ -13,9 +13,10 @@ namespace CNIC\CNR;
  * Provides session-based API communication methods.
  *
  * CNR-only, and only usable on a {@see Client} — besides the shared client
- * members (`request()`, `close()`, `setCredentials()`, `$socketConfig`) the trait
- * reads CNR's session state through {@see Client::cnrConfig()} and
- * {@see Client::setSession()}. The `@psalm-require-extends` tag below makes that
+ * members (`request()`, `close()`, `setCredentials()`) the trait reads CNR's
+ * session state through {@see Client::getSocketConfig()} (covariantly narrowed to
+ * {@see SocketConfig} there) and {@see Client::setSession()}. The
+ * `@psalm-require-extends` tag below makes that
  * host requirement enforceable instead of a comment (PHPStan honours the same
  * tag, and rejects a second phpstan-prefixed copy of it): composing this trait into
  * anything but a `CNR\Client` is a static analysis error rather than a fatal on
@@ -33,13 +34,13 @@ trait SessionCapable
      */
     public function login(): Response
     {
-        $this->cnrConfig()->setPersistent(true);
+        $this->getSocketConfig()->setPersistent(true);
         $rr = $this->request();
         if ($rr->isSuccess()) {
             $col = $rr->getColumn("SESSIONID");
             $this->setSession($col instanceof Column ? $col->getData()[0] : "");
         }
-        $this->cnrConfig()->setPersistent(false);
+        $this->getSocketConfig()->setPersistent(false);
         return $rr;
     }
 
@@ -64,14 +65,19 @@ trait SessionCapable
     public function saveSession(array &$session): static
     {
         $session["socketcfg"] = [
-            "login"   => $this->socketConfig->getLogin(),
-            "session" => $this->cnrConfig()->getSession()
+            "login"   => $this->getSocketConfig()->getLogin(),
+            "session" => $this->getSocketConfig()->getSession()
         ];
         return $this;
     }
 
     /**
-     * Rebuild connection settings from a PHP session object
+     * Rebuild connection settings from a PHP session object.
+     *
+     * The two calls are ordered, not interchangeable: `setCredentials()` clears
+     * the session id (a session and a password are alternative credentials, and
+     * CNR's SocketConfig treats the newer one as authoritative), so restoring the
+     * session second is what makes this work.
      *
      * @param array<string,mixed> $session php session object ($_SESSION)
      */

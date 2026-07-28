@@ -52,6 +52,13 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * cannot inform the property's type — this accessor carries that knowledge
      * instead, in exactly one place, rather than each caller asserting.
      *
+     * It is the covariant override of {@see AbstractClient::getSocketConfig()},
+     * having been the protected `cnrConfig()` until RSRMID-2921 gave the base a
+     * public accessor: two methods narrowing the same property would be two
+     * places to keep in step, and the CNR config is exactly what a CNR consumer
+     * should get back. Consumers holding `CNR\Client` therefore reach
+     * `getSession()`/`setPersistent()` with no narrowing of their own.
+     *
      * The guard is unreachable in practice, since newSocketConfig() above is the
      * only writer and it is covariant. It throws rather than `assert()`ing
      * because `assert()` is compiled out when `zend.assertions` is disabled,
@@ -59,7 +66,8 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * undefined-method fatal instead of a named SDK exception.
      * @throws UnsupportedFeatureException if a subclass supplied a non-CNR config
      */
-    protected function cnrConfig(): SocketConfig
+    #[\Override]
+    public function getSocketConfig(): SocketConfig
     {
         if (!$this->socketConfig instanceof SocketConfig) {
             throw new UnsupportedFeatureException(
@@ -78,7 +86,7 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      */
     public function getSession(): ?string
     {
-        $sessid = $this->cnrConfig()->getSession();
+        $sessid = $this->getSocketConfig()->getSession();
         return $sessid === "" ? null : $sessid;
     }
 
@@ -92,7 +100,7 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      */
     public function setSession(string $value = ""): static
     {
-        $this->cnrConfig()->setSession($value);
+        $this->getSocketConfig()->setSession($value);
         return $this;
     }
 
@@ -158,7 +166,7 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     {
         $login = $uid;
         if ($role !== '') {
-            $login .= $this->cnrConfig()->getRoleSeparator() . $role;
+            $login .= $this->getSocketConfig()->getRoleSeparator() . $role;
         }
         return $this->setCredentials($login, $pw);
     }
