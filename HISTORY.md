@@ -1,3 +1,21 @@
+# [21.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v20.0.0...v21.0.0) (2026-07-28)
+
+
+### Features
+
+* **client:** let caller cURL options reach the wire, reject the ones the transport owns ([b3c20ff](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b3c20ff69d7ba31bdef9f0f9fda1fb27df8347e5))
+
+
+### BREAKING CHANGES
+
+* **client:** cURL options passed to setExtraCurlOptions() now take effect
+instead of being silently discarded, and seven transport-owned options plus the
+transport's four header lines raise UnsupportedFeatureException instead of being
+ignored. Audit what you pass: an option set long ago that never did anything
+will now do what it says.
+
+See [MIGRATION.md → v21.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2100)
+
 # [20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v19.1.0...v20.0.0) (2026-07-27)
 
 
