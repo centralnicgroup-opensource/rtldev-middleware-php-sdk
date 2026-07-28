@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC;
 
+use CNIC\Exception\InvalidConfigurationException;
+
 /**
  * Shared base for all registrar SocketConfig implementations.
  * Concrete subclasses provide getPOSTDataParams() and their own
@@ -148,6 +150,35 @@ abstract class AbstractSocketConfig
     public function getSocketTimeout(): int
     {
         return $this->socketTimeout;
+    }
+
+    /**
+     * Set the socket timeout in seconds — the ceiling on a whole API request.
+     *
+     * Added in RSRMID-2919: the timeout was previously unreachable from outside
+     * the SDK. This property had only a getter, the SocketConfig has no public
+     * accessor on the client, and CURLOPT_TIMEOUT routed through
+     * {@see AbstractClient::setExtraCurlOptions()} was discarded by the
+     * transport. Prefer {@see AbstractClient::setSocketTimeout()}, which
+     * delegates here.
+     *
+     * 0 carries cURL's meaning — no timeout — and is passed through unchanged.
+     * A negative value is rejected rather than forwarded: cURL refuses it by
+     * returning `false` from `curl_setopt()`, whose result `curl_setopt_array()`
+     * does not surface, so it would be dropped without a signal — the same
+     * silent divergence this setter was added (RSRMID-2919) to end.
+     * @param int $value timeout in seconds (0 = no timeout)
+     * @throws InvalidConfigurationException on a negative value
+     */
+    public function setSocketTimeout(int $value): static
+    {
+        if ($value < 0) {
+            throw new InvalidConfigurationException(
+                "Socket timeout must be 0 (no timeout) or a positive number of seconds, got {$value}."
+            );
+        }
+        $this->socketTimeout = $value;
+        return $this;
     }
 
     /**
