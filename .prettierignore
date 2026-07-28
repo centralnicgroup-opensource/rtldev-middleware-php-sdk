@@ -5,3 +5,10 @@ docs/
 build/
 pnpm-lock.yaml
 *.php
+
+# Generated and owned by semantic-release (@semantic-release/changelog), which
+# commits it through @semantic-release/git and therefore never passes it through
+# lint-staged. So the copy in git is unformatted, and any human commit that
+# touches the file made lint-staged's "**/*" rule reflow the whole changelog —
+# 500 lines of churn to edit two. Left alone instead.
+HISTORY.md

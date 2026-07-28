@@ -3,7 +3,7 @@
 
 ### Features
 
-* **config:** give connection configuration one home on the SocketConfig ([e3bb8ae](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e3bb8ae2d626afa1991c6a379809195feb3e1feb)), closes [hi#performance](https://github.com/hi/issues/performance) [Hi#performance](https://github.com/Hi/issues/performance)
+* **config:** give connection configuration one home on the SocketConfig ([e3bb8ae](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e3bb8ae2d626afa1991c6a379809195feb3e1feb))
 
 
 ### BREAKING CHANGES
@@ -213,7 +213,7 @@ clamped value must switch to hasNextPage() or handle the null sentinel.
 
 ### Bug Fixes
 
-* **client:** scope high-performance URL rewrite to host and scheme ([b16f3df](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b16f3dfcb4e9dfa4653955924559ab036c13c385)), closes [hi#performance](https://github.com/hi/issues/performance)
+* **client:** scope high-performance URL rewrite to host and scheme ([b16f3df](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b16f3dfcb4e9dfa4653955924559ab036c13c385))
 * **http:** reset reused cURL handle per call to stop option leakage ([8ec9f92](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8ec9f92c66d2520c42c0bd6533cc5f47fae834fa))
 * **ibs:** compute getLastRecordIndex per-instance and harden status access ([cb5a177](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/cb5a177de62dec48acd7ae640e69c65132935c0e))
 * **translator:** preserve full cURL error text containing a pipe ([fa44c9f](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/fa44c9ff2ce605fb8ee1419d4f64262ba28c1346))
