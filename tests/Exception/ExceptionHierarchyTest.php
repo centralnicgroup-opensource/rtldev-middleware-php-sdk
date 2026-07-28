@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CNICTEST\Exception;
 
 use CNIC\Exception\CnicException;
+use CNIC\Exception\InvalidConfigurationException;
 use CNIC\Exception\InvalidDateTimeException;
 use CNIC\Exception\PaginationException;
 use CNIC\Exception\UnsupportedFeatureException;
@@ -25,6 +26,7 @@ final class ExceptionHierarchyTest extends TestCase
         $this->assertInstanceOf(CnicException::class, new UnsupportedFeatureException("boom"));
         $this->assertInstanceOf(CnicException::class, new PaginationException("boom"));
         $this->assertInstanceOf(CnicException::class, new InvalidDateTimeException("boom"));
+        $this->assertInstanceOf(CnicException::class, new InvalidConfigurationException("boom"));
     }
 
     public function testBaseExtendsSplException(): void
@@ -42,5 +44,6 @@ final class ExceptionHierarchyTest extends TestCase
         $this->assertInstanceOf(\Exception::class, new UnsupportedFeatureException("boom"));
         $this->assertInstanceOf(\Exception::class, new PaginationException("boom"));
         $this->assertInstanceOf(\Exception::class, new InvalidDateTimeException("boom"));
+        $this->assertInstanceOf(\Exception::class, new InvalidConfigurationException("boom"));
     }
 }

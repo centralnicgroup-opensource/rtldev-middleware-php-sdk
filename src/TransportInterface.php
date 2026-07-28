@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace CNIC;
 
+use CNIC\Exception\UnsupportedFeatureException;
+
 /**
  * Contract for the low-level HTTP transport used by {@see AbstractClient}.
  *
@@ -25,12 +27,23 @@ interface TransportInterface
     /**
      * Execute a POST request and return the raw response.
      *
+     * $options carries the caller's transport tuning (see
+     * {@see AbstractClient::setExtraCurlOptions()}). Since RSRMID-2919 the
+     * contract is that a caller's option **wins** over the implementation's own
+     * default for the same key — an implementation that must own a key is
+     * required to reject it by throwing {@see UnsupportedFeatureException},
+     * naming what it refused, rather than quietly ignoring it. Which keys those
+     * are is implementation-specific: for the production transport they are
+     * {@see HttpTransport::PROTECTED_OPTIONS}, while a test double typically
+     * owns none and simply records what it was given.
+     *
      * @param string $url request URL
      * @param string $data serialized POST payload
      * @param int $timeout socket timeout in seconds
      * @param string $userAgent user agent header value
-     * @param array<int, mixed> $options additional cURL options merged over the defaults
+     * @param array<int, mixed> $options additional cURL options, overriding the implementation's defaults
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
+     * @throws UnsupportedFeatureException if $options contains an option the implementation owns
      */
     public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array;
 

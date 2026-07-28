@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace CNIC;
 
 use CNIC\AbstractSocketConfig;
+use CNIC\Exception\InvalidConfigurationException;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\LoggerInterface;
 use CNIC\ResponseInterface;
@@ -241,6 +243,37 @@ abstract class AbstractClient
     }
 
     /**
+     * Set the request timeout in seconds (default 300).
+     *
+     * The supported way to change the timeout, added in RSRMID-2919 to close a
+     * gap: the value lives on the SocketConfig, which has no public accessor
+     * here, so before this setter existed an integrator had no way to shorten
+     * or lengthen a request at all — and CURLOPT_TIMEOUT handed to
+     * {@see setExtraCurlOptions()} was discarded by the transport.
+     *
+     * Both routes now work. They are independent, and on collision the cURL
+     * option bag wins, because the transport applies the caller's options over
+     * the timeout the client passes it. Prefer this setter: it is the intent,
+     * not the mechanism.
+     *
+     * @param int $seconds timeout in seconds (0 = no timeout, per cURL)
+     * @throws InvalidConfigurationException on a negative value
+     */
+    public function setSocketTimeout(int $seconds): static
+    {
+        $this->socketConfig->setSocketTimeout($seconds);
+        return $this;
+    }
+
+    /**
+     * Get the request timeout in seconds currently configured.
+     */
+    public function getSocketTimeout(): int
+    {
+        return $this->socketConfig->getSocketTimeout();
+    }
+
+    /**
      * Set a custom user agent (for platforms that use this SDK)
      * @param string $str user agent label
      * @param string $rv user agent revision
@@ -288,23 +321,26 @@ abstract class AbstractClient
      * values on key collision (including brand defaults). Use
      * {@see resetCurlOptions()} to restore the brand defaults afterwards.
      *
-     * Reach, so callers are not misled: the bag is merged *under* the option set
-     * {@see HttpTransport::post()} applies itself, so an option only reaches the
-     * wire if the transport does not set that key. Ignored on collision:
-     * CURLOPT_URL, CURLOPT_POST, CURLOPT_HEADER, CURLOPT_RETURNTRANSFER,
-     * CURLOPT_POSTFIELDS, CURLOPT_TIMEOUT, CURLOPT_CONNECTTIMEOUT,
-     * CURLOPT_USERAGENT, CURLOPT_HTTPHEADER, CURLOPT_SSL_VERIFYPEER and
-     * CURLOPT_SSL_VERIFYHOST — the last two meaning this setter cannot be used
-     * to weaken TLS verification.
+     * Reach (RSRMID-2919): what you set here reaches the wire. The bag is
+     * applied *over* the defaults {@see HttpTransport::post()} sets, so an
+     * option of yours wins on collision — CURLOPT_TIMEOUT, CONNECTTIMEOUT and
+     * USERAGENT included, all of which used to be discarded silently.
      *
-     * For the user agent use {@see setUserAgent()}. The request timeout has no
-     * public setter at all today: it comes from AbstractSocketConfig's protected
-     * $socketTimeout (300s) and CURLOPT_TIMEOUT passed here is discarded, so it
-     * cannot currently be changed from outside the SDK. That is a known gap, not
-     * a deliberate limit, and the silent discard above wants a decision of its
-     * own — either document transport-wins as intended (it does protect the
-     * request envelope and TLS verification) or let callers override the
-     * non-protected keys and fail loudly on the rest.
+     * Two exceptions:
+     * - {@see HttpTransport::PROTECTED_OPTIONS} — CURLOPT_URL, POST, POSTFIELDS,
+     *   RETURNTRANSFER, HEADER (the request envelope the response parser is
+     *   written against) and CURLOPT_SSL_VERIFYPEER/SSL_VERIFYHOST (TLS
+     *   verification is not weakenable through a convenience bag). Passing one
+     *   raises {@see \CNIC\Exception\UnsupportedFeatureException} on the next
+     *   request — loudly, rather than being ignored.
+     * - CURLOPT_HTTPHEADER is merged by header name rather than replacing the
+     *   transport's list, so your headers are added while
+     *   Content-Type/Content-Length/Connection survive. A header of yours with
+     *   the same name as one of the transport's replaces it.
+     *
+     * For the user agent prefer {@see setUserAgent()} and for the request
+     * timeout {@see setSocketTimeout()} — both express the intent rather than
+     * the mechanism. Where they overlap with an option set here, the bag wins.
      * @param array<int, mixed> $opts cURL options keyed by CURLOPT_* constant
      */
     public function setExtraCurlOptions(array $opts): static
@@ -502,10 +538,16 @@ abstract class AbstractClient
 
     /**
      * Delegate cURL execution to the transport layer.
+     *
+     * Two unions decide which cURL option wins, and both put the more specific
+     * value on the left (PHP's + keeps the left operand on a duplicate key):
+     * per-call extras beat the client's live bag here, and the whole lot beats
+     * the transport's own defaults in {@see HttpTransport::post()}.
      * @param string $data serialized POST payload
      * @param array{CONNECTION_URL: string} $cfg connection config
-     * @param array<int, mixed> $extraCurlOpts additional cURL options merged over the defaults
+     * @param array<int, mixed> $extraCurlOpts additional cURL options, overriding the client's bag
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
+     * @throws UnsupportedFeatureException if a transport-owned option was set
      */
     protected function executeCurl(string $data, array $cfg, array $extraCurlOpts = []): array
     {

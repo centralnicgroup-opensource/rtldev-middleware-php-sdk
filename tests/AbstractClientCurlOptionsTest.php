@@ -24,6 +24,15 @@ use PHPUnit\Framework\TestCase;
  * protected $curlopts bag. The bag is read back via reflection (the same
  * pattern used by AbstractClientIDNTest) so the tests do not depend on the
  * key-specific getProxy()/getReferer() accessors alone.
+ *
+ * Scope note (RSRMID-2919): "in the bag" is not "on the wire", and this file
+ * only proves the former. Every assertion here passed while the transport was
+ * silently discarding half the options it was handed, which is precisely how
+ * that went unnoticed for two releases. Assertions about what actually reaches
+ * cURL belong in CNICTEST\HttpTransportCurlOptionsTest (the rejection guard,
+ * offline) and CNICTEST\Functional\HttpTransportTest (the effective merge, over
+ * a loopback socket). Keep it that way — do not "strengthen" a test here into
+ * implying wire behaviour it cannot observe.
  */
 final class AbstractClientCurlOptionsTest extends TestCase
 {

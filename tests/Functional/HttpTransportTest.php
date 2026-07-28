@@ -130,6 +130,84 @@ final class HttpTransportTest extends TestCase
         $t->close();
     }
 
+    /**
+     * RSRMID-2919: a caller-supplied CURLOPT_TIMEOUT must actually reach the
+     * wire. This is the sharpest case of the old silent-discard bug — the
+     * transport passed its own $timeout on the left of the array union, so the
+     * caller's value never applied and there was no other way to change it.
+     *
+     * Asserting the *effect* rather than the option value: the endpoint stalls
+     * for 2s, the caller asks for a 1s timeout, so a working override aborts the
+     * request. Under the old behaviour the transport's 30s won and the response
+     * arrived normally.
+     */
+    public function testCallerSuppliedTimeoutTakesEffectOnTheWire(): void
+    {
+        $t = new HttpTransport();
+        [$raw, $error] = $t->post(self::$url . "?delay=2", "x=1", 30, "UA", [CURLOPT_TIMEOUT => 1]);
+        $t->close();
+
+        $this->assertStringStartsWith("httperror|", $raw, "the caller's 1s timeout did not reach the wire");
+        $this->assertIsString($error);
+        $this->assertNotSame("", $error);
+    }
+
+    /**
+     * The counterpart: with no caller override the transport's own timeout is
+     * still what applies, so the same stalling endpoint responds normally.
+     */
+    public function testTransportTimeoutStillAppliesWithoutACallerOverride(): void
+    {
+        $t = new HttpTransport();
+        [$raw, $error] = $t->post(self::$url . "?delay=1", "x=1", 30, "UA");
+        $t->close();
+
+        $this->assertNull($error);
+        $d = (array) json_decode($raw, true);
+        $this->assertSame("x=1", $d["body"] ?? null);
+    }
+
+    /**
+     * CURLOPT_HTTPHEADER needs merge semantics, not override: the transport's
+     * own entries carry Content-Type/Content-Length/Connection, so replacing the
+     * array wholesale would break the request. A caller adding e.g. a
+     * correlation-ID header must get their entry *appended*.
+     */
+    public function testCallerHeadersAreAppendedToTheTransportHeaders(): void
+    {
+        $t = new HttpTransport();
+        [$raw] = $t->post(self::$url, "x=1", 30, "UA", [
+            CURLOPT_HTTPHEADER => ["X-Correlation-Id: abc-123"],
+        ]);
+        $t->close();
+
+        /** @var array{headers?: array<string, string>} $d */
+        $d = (array) json_decode($raw, true);
+        $headers = $d["headers"] ?? [];
+
+        $this->assertSame("abc-123", $headers["x-correlation-id"] ?? null, "caller header did not reach the wire");
+        // the transport's own entries must survive the merge
+        $this->assertSame("application/x-www-form-urlencoded", $headers["content-type"] ?? null);
+        $this->assertSame("3", $headers["content-length"] ?? null);
+        $this->assertSame("keep-alive", $headers["connection"] ?? null);
+    }
+
+    /**
+     * CURLOPT_USERAGENT was another silently-dropped key. It has a public
+     * alternative (setUserAgent()), but the bag must not lie about it either.
+     */
+    public function testCallerUserAgentOverridesTheTransportArgument(): void
+    {
+        $t = new HttpTransport();
+        [$raw] = $t->post(self::$url, "x=1", 30, "UA-from-argument", [
+            CURLOPT_USERAGENT => "UA-from-options",
+        ]);
+        $t->close();
+
+        $d = (array) json_decode($raw, true);
+        $this->assertSame("UA-from-options", $d["ua"] ?? null);
+    }
+
     public function testPostReturnsHttpErrorTupleOnConnectionFailure(): void
     {
         // Allocate then immediately release a loopback port so that nothing is

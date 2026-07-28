@@ -24,6 +24,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                           | Narrow via `ExtendedResponseInterface`                                                                         |
 | → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                               | Use `cnr()`/`ibs()`/`moniker()`                                                                                |
 | → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
+| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw       | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
 
 Two things to respect throughout:
 
@@ -306,7 +307,9 @@ $client->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
 
 `CURLOPT_URL`, `CURLOPT_POST`, `CURLOPT_POSTFIELDS`, `CURLOPT_RETURNTRANSFER`, `CURLOPT_HEADER`, `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST`, `CURLOPT_TIMEOUT`, `CURLOPT_CONNECTTIMEOUT`, `CURLOPT_USERAGENT`, `CURLOPT_HTTPHEADER`.
 
-The first five keep the request envelope intact (overriding them would break response handling) and the next two stop this setter being used to weaken TLS verification. For the user agent, use `setUserAgent()`. **The request timeout, however, currently has no public setter at all** — it comes from a protected `$socketTimeout` (300s) and `CURLOPT_TIMEOUT` passed here is discarded, so it cannot be changed from outside the SDK. That is a known gap rather than an intended limit; an earlier version of this guide wrongly suggested a `setSocketTimeout()` method, which does not exist.
+The first five keep the request envelope intact (overriding them would break response handling) and the next two stop this setter being used to weaken TLS verification. For the user agent, use `setUserAgent()`. **In v20 the request timeout has no public setter at all** — it comes from a protected `$socketTimeout` (300s) and `CURLOPT_TIMEOUT` passed here is discarded, so on this version it cannot be changed from outside the SDK. That was a gap rather than an intended limit; an earlier revision of this guide suggested a `setSocketTimeout()` method that did not yet exist at the time.
+
+> **Everything in this sub-section describes v20 only, and v21 changes it.** The silent discard was the defect and was fixed there: your options now reach the wire, seven of the eleven keys above raise instead of being ignored, and the timeout gap is closed with a real `setSocketTimeout()`. If you are upgrading past v20, read [→ v21.0.0](#-v2100) and treat that as current. This text is kept as it stood so a v19 → v20 upgrade still reads correctly.
 
 **One subtlety worth knowing:** an option you set this way is _caller_ state, so `resetCurlOptions()` discards it — whereas the old forced IPv4 was a brand default and survived a reset. If you call `resetCurlOptions()`, re-apply your options afterwards.
 
@@ -407,6 +410,92 @@ $ctor = (new ReflectionClass(\CNIC\ResponseInterface::class))->getConstructor();
 ```
 
 Guard the call (`if ($ctor !== null)`) or reflect on the concrete `CNIC\CNR\Response` / `CNIC\IBS\Response`, which is where the real constructor has always lived. This is the only way the change can be observed from outside the SDK.
+
+---
+
+## → v21.0.0 — `setExtraCurlOptions()` reaches the wire; transport-owned options throw
+
+**Read this if you call `setExtraCurlOptions()`.** If you do not, nothing here affects you: the default transport behaviour is unchanged, and the new timeout setter is purely additive.
+
+### 1. Your cURL options now take effect
+
+**What changed:** `setExtraCurlOptions()` used to be a half-truth. The value you passed landed in the client's option bag — so it read back correctly, and looked applied — and was then silently dropped one layer lower, because the transport merged its own defaults _over_ yours. Eleven keys never reached cURL. The order is reversed: **your options now win over the transport's defaults.**
+
+The clearest case: you asked for a 5s timeout and got 300s, with no exception, no warning, and nothing to inspect that would tell you.
+
+```php
+$client->setExtraCurlOptions([CURLOPT_TIMEOUT => 5]);
+
+// ≤ v20: the request still ran with the transport's 300s. Silently.
+// v21:   the request times out after 5s, as asked.
+```
+
+Keys that were ignored before and now apply: `CURLOPT_TIMEOUT`, `CURLOPT_CONNECTTIMEOUT`, `CURLOPT_USERAGENT`, `CURLOPT_HTTPHEADER`.
+
+**What to respect:** audit what you pass. This is the risk in this upgrade — an option you set long ago, saw no effect from, and left in place will now start doing what it says. That is especially worth checking for `CURLOPT_TIMEOUT` (a short value that was harmless while ignored can start aborting slow commands) and `CURLOPT_CONNECTTIMEOUT`. Options that already worked — `CURLOPT_IPRESOLVE`, `CURLOPT_PROXY`, `CURLOPT_REFERER`, `CURLOPT_CAINFO` and everything else the transport does not set — behave exactly as before.
+
+### 2. Seven options now raise instead of being ignored
+
+**What changed:** the options the transport genuinely must own are rejected loudly rather than discarded. Passing any of them to `setExtraCurlOptions()` raises `CNIC\Exception\UnsupportedFeatureException` on the next request, naming the offending constants:
+
+```php
+$client->setExtraCurlOptions([CURLOPT_RETURNTRANSFER => 0]);
+$client->request(["COMMAND" => "StatusAccount"]);
+// v21: CNIC\Exception\UnsupportedFeatureException
+//      "cURL option(s) owned by CNIC\HttpTransport cannot be overridden:
+//       CURLOPT_RETURNTRANSFER. ..."
+```
+
+The set is `CURLOPT_URL`, `CURLOPT_POST`, `CURLOPT_POSTFIELDS`, `CURLOPT_RETURNTRANSFER`, `CURLOPT_HEADER`, `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST` — readable programmatically as `array_keys(CNIC\HttpTransport::PROTECTED_OPTIONS)` (the constant maps each option to its constant name).
+
+The first five define the request envelope the response parser is written against (`CURLOPT_RETURNTRANSFER => 0`, for instance, makes `curl_exec()` return `true` and leaves the parser with nothing). The last two are TLS verification: disabling certificate checking is a deliberate, security-relevant act and is not something a generic convenience bag should be able to do. Both were already impossible — the difference is that you now find out.
+
+**What to respect:** if you were passing one of these, remove it. It was never having any effect, so removing it changes nothing about how your integration behaves — it only stops the exception. If you believe you need one, that is a conversation for an issue, not a workaround.
+
+**Where the exception surfaces:** at request time, not at `setExtraCurlOptions()` time, and before any connection is attempted. Wrap your first request in a smoke test after upgrading if you set options dynamically.
+
+### 3. `CURLOPT_HTTPHEADER` appends instead of replacing
+
+**What changed:** custom headers now reach the wire (they were previously ignored), and they are **appended** to the transport's header list rather than replacing it.
+
+```php
+$client->setExtraCurlOptions([
+    CURLOPT_HTTPHEADER => ["X-Correlation-Id: " . $requestId],
+]);
+// v21 wire headers: Expect:, Content-Type, Content-Length, Connection, X-Correlation-Id
+// ≤ v20: your header was dropped entirely.
+```
+
+**What to respect:** the transport's own four header lines — `Expect:`, `Content-Type`, `Content-Length`, `Connection` — are its to set, and restating one raises `UnsupportedFeatureException` (names matched case-insensitively):
+
+```php
+$client->setExtraCurlOptions([CURLOPT_HTTPHEADER => ["Content-Type: application/json"]]);
+$client->request([/* ... */]);
+// v21: CNIC\Exception\UnsupportedFeatureException
+//      "HTTP header(s) owned by CNIC\HttpTransport cannot be overridden: content-type. ..."
+```
+
+This follows the same rule as the protected options above: `Content-Type` and `Content-Length` are derived from the POST body, and `Connection` follows from the reused cURL handle, so overriding one corrupts the request exactly as overriding `CURLOPT_POSTFIELDS` would. Silently letting a wrong `Content-Length` through would be the same class of defect this release is fixing, and appending a second `Content-Type` would just move the decision to the server. Add your own headers freely; leave those four alone.
+
+### 4. New: the request timeout finally has a setter
+
+**What changed (additive, nothing breaks):** `setSocketTimeout()` and `getSocketTimeout()` on the client.
+
+Before v21 the request timeout could not be changed from outside the SDK **at all** — it came from a protected `$socketTimeout` (300s) with only a getter, the SocketConfig has no public accessor on the client, and the `CURLOPT_TIMEOUT` route was the one being discarded. There was no supported way to shorten or lengthen a request.
+
+```php
+$client = \CNIC\ClientFactory::cnr();
+$client->setSocketTimeout(30);        // seconds; 0 means no timeout, per cURL
+echo $client->getSocketTimeout();     // 30
+
+$client->setSocketTimeout(-1);        // CNIC\Exception\InvalidConfigurationException
+```
+
+Prefer this over `setExtraCurlOptions([CURLOPT_TIMEOUT => …])` — it states the intent rather than the mechanism. Both work; if you set both, the cURL option bag wins.
+
+A negative value is rejected rather than forwarded: cURL refuses it by returning `false` from `curl_setopt()`, which `curl_setopt_array()` does not surface, so passing it on would drop the setting with no signal — the very thing this release exists to stop. `CNIC\Exception\InvalidConfigurationException` is new in v21 and extends `CNIC\Exception\CnicException`, so existing `catch (\Exception)` code keeps catching it.
+
+> A note if you read the v20 documentation: it briefly told callers to use `setSocketTimeout()` for timeouts, at a point when no such method existed. That was corrected in the v20 line, and the method is real as of v21.
 
 ---
 
