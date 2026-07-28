@@ -1,3 +1,17 @@
+# [23.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v22.0.0...v23.0.0) (2026-07-28)
+
+
+### Features
+
+* **config:** give connection configuration one home on the SocketConfig ([e3bb8ae](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e3bb8ae2d626afa1991c6a379809195feb3e1feb)), closes [hi#performance](https://github.com/hi/issues/performance) [Hi#performance](https://github.com/Hi/issues/performance)
+
+
+### BREAKING CHANGES
+
+* **config:** connection configuration lives only on AbstractSocketConfig. getSystem() now returns ?System (derived from the URL, null for an unrecognised endpoint); CURLOPT_TIMEOUT/USERAGENT/PROXY/REFERER raise UnsupportedFeatureException when passed to setExtraCurlOptions(); resetCurlOptions() no longer clears the proxy/referer; useHighPerformanceConnectionSetup() is a sticky flag rather than a one-off URL rewrite; CNR\Client::cnrConfig() is now the public covariant getSocketConfig(); getDefaultCurlOpts() moved from AbstractClient to AbstractSocketConfig; AbstractClient::executeCurl() lost its unused third $extraCurlOpts parameter.
+
+See [MIGRATION.md → v23.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2300)
+
 # [22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v21.0.0...v22.0.0) (2026-07-28)
 
 
