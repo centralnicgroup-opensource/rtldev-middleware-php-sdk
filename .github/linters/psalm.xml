@@ -16,11 +16,13 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
-        <LessSpecificReturnStatement>
-            <errorLevel type="suppress">
-                <directory name="../../src" />
-            </errorLevel>
-        </LessSpecificReturnStatement>
+        <!-- The LessSpecificReturnStatement suppression for src/ that stood here
+             is gone: it existed because a `final` leaf in the client chain (the
+             empty IBS/MONIKER SessionClients) made Psalm resolve `static` in the
+             inherited fluent setters narrowly. Those classes were deleted in
+             RSRMID-2920 and the brand clients are deliberately non-final, so the
+             false positive has no source left. findUnusedBaselineEntry proved it
+             dead rather than us assuming. -->
         <!-- PHPUnit invokes test classes/methods via reflection; findUnusedCode
              cannot see this usage, so its dead-code reports are false positives
              in tests/. Suppress that family for tests/ only; src/ stays strict. -->

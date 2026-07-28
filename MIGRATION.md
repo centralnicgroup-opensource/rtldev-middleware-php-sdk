@@ -25,6 +25,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                               | Use `cnr()`/`ibs()`/`moniker()`                                                                                |
 | → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
 | → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw       | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
+| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
 
 Two things to respect throughout:
 
@@ -284,6 +285,8 @@ if ($cl instanceof \CNIC\RoleCredentialsInterface) {
 
 `getSession()` / `setSession()` / `useHighPerformanceConnectionSetup()` deliberately **remain** on `AbstractClient` (they are harmless and brand-agnostic) — they did not move.
 
+> **This last paragraph is true of v19–v21 only, and v22 reverses half of it.** `getSession()`/`setSession()` were _not_ harmless there: on IBS/Moniker they forwarded to null-object stubs, so `setSession("x")` looked accepted and was discarded. They moved to `CNR\Client` in v22 — see [→ v22.0.0](#-v2200). `useHighPerformanceConnectionSetup()` genuinely is brand-agnostic and stays put. The text above is kept as it stood so a v18 → v19 upgrade still reads correctly.
+
 ---
 
 ## → v20.0.0 — IBS/Moniker no longer force IPv4; `ResponseInterface` matches its implementation
@@ -496,6 +499,87 @@ Prefer this over `setExtraCurlOptions([CURLOPT_TIMEOUT => …])` — it states t
 A negative value is rejected rather than forwarded: cURL refuses it by returning `false` from `curl_setopt()`, which `curl_setopt_array()` does not surface, so passing it on would drop the setting with no signal — the very thing this release exists to stop. `CNIC\Exception\InvalidConfigurationException` is new in v21 and extends `CNIC\Exception\CnicException`, so existing `catch (\Exception)` code keeps catching it.
 
 > A note if you read the v20 documentation: it briefly told callers to use `setSocketTimeout()` for timeouts, at a point when no such method existed. That was corrected in the v20 line, and the method is real as of v21.
+
+---
+
+## → v22.0.0 — API sessions are CNR-only, enforced by type
+
+**Read this if you build an IBS or Moniker client, or if you name either brand's `SessionClient` type.** CNR code is unaffected: every session method is still there, on the same client, with the same behaviour and the same wire format.
+
+### 1. `getSession()` / `setSession()` are gone from IBS and Moniker
+
+**What changed:** both methods lived on the shared `AbstractClient` and were therefore inherited by every brand. They now live on **`CNIC\CNR\Client`** only.
+
+They were never functional on IBS/Moniker. Those platforms have no API session concept, so the methods forwarded to null-object stubs on `AbstractSocketConfig` that stored nothing. Because `setSession()` is fluent, it returned `$this` and looked accepted:
+
+```php
+$cl = \CNIC\ClientFactory::ibs();
+
+// ≤ v21: chainable, no error, no warning — and the value went nowhere.
+$cl->setSession("abc123")->request([/* ... */]);
+var_dump($cl->getSession());   // NULL, always
+
+// v22: Error — Call to undefined method CNIC\IBS\Client::setSession()
+```
+
+That shipped for six majors (v15–v21). The v19 guide called the pair "harmless"; it was not harmless, it was just quiet.
+
+**What to respect:** the failure mode is a **fatal `Error`**, not an exception — `try/catch (\Exception)` will **not** catch it, exactly as with the v15 session-method removal. Delete the calls; they were doing nothing. If you have brand-agnostic code that called them speculatively, narrow to the brand that has sessions:
+
+```php
+// BEFORE — called on whatever client was to hand
+$cl->setSession($storedSessionId);
+
+// AFTER — narrow first (a plain instanceof; there is no session interface)
+if ($cl instanceof \CNIC\CNR\Client) {
+    $cl->setSession($storedSessionId);
+}
+```
+
+On the normal path you need no check at all: `ClientFactory::cnr()` returns a fully-typed `CNR\SessionClient`, so `setSession()` is simply there.
+
+### 2. `IBS\SessionClient` and `MONIKER\SessionClient` are deleted
+
+**What changed:** both classes were empty subclasses named after a lifecycle their platform does not have — since v15 they added no method at all. They are removed, and the factory returns the plain brand client:
+
+```php
+// BEFORE (v19–v21)
+$cl = ClientFactory::ibs();      // -> CNIC\IBS\SessionClient
+$cl = ClientFactory::moniker();  // -> CNIC\MONIKER\SessionClient
+
+// AFTER (v22)
+$cl = ClientFactory::ibs();      // -> CNIC\IBS\Client
+$cl = ClientFactory::moniker();  // -> CNIC\MONIKER\Client
+```
+
+`CNIC\CNR\SessionClient` is untouched and remains what `cnr()` returns — it is now the only `SessionClient` in the SDK.
+
+**What to respect — two cases:**
+
+- **You name the type** in a property, parameter, return type, `instanceof` or `use` statement: retype to `CNIC\IBS\Client` / `CNIC\MONIKER\Client`. Grep for the two class names rather than waiting for a crash — a property or parameter typed against the deleted class raises a `TypeError` the moment a real client is assigned to it, but **`instanceof` against a class that no longer exists silently evaluates to `false`**, so a brand check written that way just stops matching. PHPStan/Psalm flag both.
+- **You obtain the client from the factory and never spell the type** (the common case): no action. The API surface of what you get back is identical apart from the two session methods in change 1.
+
+**The brand clients stay extensible.** `CNIC\MONIKER\Client` is the only class in the SDK that nothing internal extends any more, and sealing it would have been easy — but `CNR\Client` and `IBS\Client` are open only because something inside the SDK happens to extend them, which is no basis for letting extensibility differ per brand. If you subclass any brand client, that keeps working.
+
+### 3. `AbstractSocketConfig` lost five accessors
+
+**What changed:** `getSession()`, `setSession()`, `getPersistent()`, `setPersistent()` and `getRoleSeparator()` (plus the `$roleSeparator` property) are no longer on `CNIC\AbstractSocketConfig`. They exist only on `CNIC\CNR\SocketConfig`. Relatedly, the `persistent=1` request parameter is now emitted by CNR's own `getPOSTDataParams()` rather than by the shared `getPOSTData()`.
+
+**What to respect:** nothing, unless you **subclass `AbstractSocketConfig`** yourself — the client never exposes its config object publicly, so there is no call path to these from outside the SDK. If you do subclass it and were overriding or calling one of the five, note that the base no longer declares it: an `#[\Override]` attribute on such a method is now a compile-time error, and the shared `getPOSTData()` is purely the encoding step (every parameter, brand-specific ones included, comes from `getPOSTDataParams()`).
+
+**The encoded request body is unchanged.** CNR appends `persistent=1` last, so the bytes on the wire are byte-identical to v21 — asserted directly in the test suite. Nothing about CNR's session handshake moved.
+
+One note for anyone **subclassing `CNR\Client`**: PHP typed properties are invariant, so the inherited `$socketConfig` stays declared as `AbstractSocketConfig`, and the session and role-credential methods narrow it through a single new protected accessor, `cnrConfig()`. Nothing is required of you — `newSocketConfig()` is typed to return the `final CNR\SocketConfig`, so an override cannot supply anything else, and the accessor's `instanceof` guard exists to satisfy static analysis rather than to describe a reachable failure.
+
+### Why the methods are absent rather than throwing
+
+This is a deliberate reversal of a v19 sub-decision, and it settles a policy the two preceding majors disagreed on. v19 chose silent no-ops for a capability a brand cannot honour and called them harmless. v21 chose the opposite for cURL options — `UnsupportedFeatureException`, "rather than being ignored". v22 picks the answer that is better than either where the type system can express it:
+
+- **Prefer absence.** A method that does not exist is a static-analysis error at the call site — you find out while writing the code, not from a support ticket about a session that was never established.
+- **Throw where absence is impossible** — where the method must exist on a shared surface for other reasons. That is the v21 case.
+- **Never no-op.** A fluent setter that discards its argument is indistinguishable from one that works.
+
+The practical consequence for you: brand capability differences now show up in your editor and in PHPStan/Psalm output, rather than at runtime or not at all.
 
 ---
 

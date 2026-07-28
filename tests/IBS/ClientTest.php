@@ -7,7 +7,6 @@ namespace CNICTEST\IBS;
 use CNIC\ClientFactory as CF;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\Response as R;
-use CNIC\IBS\SessionClient;
 use CNIC\RoleCredentialsInterface;
 use CNICTEST\Support\Cassettes;
 use CNICTEST\Support\CassetteTransport;
@@ -15,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
 {
-    public static SessionClient $cl;
+    public static IBSClient $cl;
     public static string $user;
     public static string $pw;
     /**
@@ -139,15 +138,17 @@ final class ClientTest extends TestCase
         $this->assertEquals("domain=test.com", $tmp);
     }
 
-    public function testSessionAccessorsAreHarmlessNoOps(): void
+    public function testDoesNotSupportSessions(): void
     {
-        // IBS/Moniker have no API session concept. Rather than the former
-        // present-and-throwing overrides, the client inherits the shared base
-        // accessors, which are harmless: getSession() reports null and
-        // setSession() is a fluent no-op (the SocketConfig has nothing to store).
-        $this->assertNull(self::$cl->getSession());
-        $this->assertInstanceOf(IBSClient::class, self::$cl->setSession("test"));
-        $this->assertNull(self::$cl->getSession());
+        // IBS/Moniker have no API session concept, so the accessors are absent —
+        // not present-and-throwing (v15 and earlier), and not the fluent no-ops
+        // inherited from the shared base that v15..v21 shipped, where
+        // setSession("x") looked accepted and was discarded. The seam is asserted
+        // in full in CNICTEST\ClientSessionSeamTest; this keeps the brand-level
+        // statement next to the rest of the IBS client's contract.
+        $rc = new \ReflectionClass(self::$cl);
+        $this->assertFalse($rc->hasMethod("getSession"));
+        $this->assertFalse($rc->hasMethod("setSession"));
     }
 
     public function testDoesNotSupportRoleCredentials(): void
