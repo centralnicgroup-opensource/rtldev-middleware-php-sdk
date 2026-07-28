@@ -28,6 +28,7 @@ composer.lock export-ignore
 package.json export-ignore
 pnpm-lock.yaml export-ignore
 pnpm-workspace.yaml export-ignore
+*.html export-ignore
 *.sh export-ignore
 
 # fix language issue in github repo

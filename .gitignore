@@ -1,3 +1,4 @@
+/architecture-review-*.html
 /tests/logs/*.txt
 /tests/logs/*.log
 basic-test.php
