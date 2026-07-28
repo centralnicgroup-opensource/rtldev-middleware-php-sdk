@@ -1,3 +1,17 @@
+# [22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v21.0.0...v22.0.0) (2026-07-28)
+
+
+### Features
+
+* **client:** make API sessions a CNR-only capability by type ([b653bfb](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b653bfb2cddf61d986a15b4f4645a47905e8d491))
+
+
+### BREAKING CHANGES
+
+* **client:** API sessions are now CNR-only by type. `getSession()`/`setSession()` moved from `AbstractClient` to `CNR\Client`; `$session`/`$persistent`/`$roleSeparator` and their accessors moved from `AbstractSocketConfig` to `CNR\SocketConfig`; and the empty `IBS\SessionClient`/`MONIKER\SessionClient` are deleted, so `ClientFactory::ibs()`/`moniker()` return `IBS\Client`/`MONIKER\Client`. CNR is unaffected — same methods, same client, same wire format.
+
+See [MIGRATION.md → v22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2200)
+
 # [21.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v20.0.0...v21.0.0) (2026-07-28)
 
 
