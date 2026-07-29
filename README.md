@@ -17,15 +17,50 @@ This module is a connector library for the insanely fast CNIC Backend APIs (Cent
   - [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
   - [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
 - [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
-- [Migration Guide](MIGRATION.md) — how to upgrade across major versions
+- [Migration Guide](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md) — how to upgrade across major versions
 
 ## Usage
 
-`composer require centralnic-reseller/php-sdk`
+```sh
+composer require centralnic-reseller/php-sdk
+```
 
-Find a demo app for the Brand of choice in the examples folder that should help you with getting started.
+Idiomatic code for the **current** major, whatever that is when you read this — this section is kept up to date rather than pinned to the version that introduced the factory:
 
-e.g. `examples/app_CNR.php` etc.
+```php
+use CNIC\ClientFactory;
+
+// --- CNR (CentralNic Reseller, fka RRPproxy) ---
+$cl = ClientFactory::cnr();                // returns a fully-typed CNR\SessionClient
+$cl->useOTESystem()                        // omit for LIVE (the default)
+   ->setCredentials($user, $password);     // or ->setRoleCredentials($acct, $role, $pw)
+// CNR has one fixed script path, so request() defaults it — pass a command only.
+$r = $cl->request(["COMMAND" => "StatusAccount"]);
+if ($r->isSuccess()) {
+    print_r($r->getHash());
+}
+$cl->close();                              // release the cached cURL handle
+
+// --- IBS / Moniker (JSON API) ---
+$cl = ClientFactory::ibs();                // or ClientFactory::moniker()
+$cl->useOTESystem()->setCredentials($user, $password);
+// This platform exposes many endpoints under one host and the *path* selects the
+// operation, so pass it as the second argument — there is no default that works.
+$r = $cl->request(["domain" => "example.com"], "Domain/Check");
+if ($r->isSuccess()) {
+    print_r($r->getHash());
+}
+$cl->close();
+```
+
+Two brand differences the snippet is deliberately explicit about:
+
+- **The `$path` argument.** `request(array $cmd = [], string $path = "")` is symmetric across all brands, but only CNR has a meaningful default (`api/call.cgi`). On IBS/Moniker the path _is_ the operation, so omitting it sends the request to the bare host.
+- **Sessions and role logins are CNR-only, by type.** `login()`, `logout()`, `saveSession()`, `getSession()`/`setSession()` and `setRoleCredentials()` exist on the CNR client and **do not exist** on `IBS\Client`/`MONIKER\Client` — calling one is a static-analysis error at the call site, not a runtime surprise. See [Migration Guide → v22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2200).
+
+**Type against the interfaces, not the concrete classes.** Depending on `CNIC\ResponseInterface`, `CNIC\ColumnInterface`, `CNIC\RecordInterface` and `CNIC\LoggerInterface` is what keeps future majors from breaking you; code that reaches for `CNIC\CNR\Response` or uses `method_exists()` fallbacks is what does not survive them.
+
+For working, runnable examples per brand — including the CNR session flow (`saveSession()`/`reuseSession()` across two stateless requests) — see [`examples/app_CNR.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_CNR.php), [`examples/app_IBS.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_IBS.php) and [`examples/app_MONIKER.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_MONIKER.php). Those are not part of the Composer package — clone the repository to run them, as described under [Running the Demo Application](#running-the-demo-application).
 
 ## Date & time values
 
@@ -83,7 +118,7 @@ The devcontainer looks for an `env.sh` file in the workspace root and **automati
 1. **Every new integrated-terminal session** — the file is sourced via `~/.zshenv` so credentials are available as soon as you open a terminal, without a manual `source env.sh`.
 2. **PHPUnit runs triggered from the VSCode UI** — the PHPUnit wrapper script sources `env.sh` before invoking PHP, so IDE-triggered tests see the same variables as `composer test` does from the terminal.
 
-`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need — copy [`env.example.sh`](env.example.sh) as a starting point.
+`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need — copy [`env.example.sh`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/env.example.sh) as a starting point.
 
 > [!NOTE]
 > The auto-loading takes effect for **new** terminal sessions. If your terminal was already open when you created or updated `env.sh`, run `source env.sh` once in that session or open a new terminal.
