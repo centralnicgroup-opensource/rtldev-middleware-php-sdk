@@ -10,18 +10,19 @@ declare(strict_types=1);
 namespace CNIC;
 
 /**
- * Shared Record foundation
+ * Shared Record implementation
  *
- * Brand-neutral base for every registrar Record. Record data has one shape
- * across brands (array<string,mixed>), so all behaviour lives here and the
- * per-brand subclasses are empty markers instantiated by each Response's
- * newRecord() factory hook. CNR\Record and IBS\Record both extend this as
- * siblings — neither is-a the other.
+ * Brand-neutral record (row) of a list response. Record data has one shape
+ * across brands (array<string,mixed>) and no brand has ever needed to read a
+ * row differently, so there is exactly one Record and every Response's
+ * newRecord() factory hook returns it. The hook itself stays a per-brand
+ * declaration: a brand that genuinely needs different row behaviour implements
+ * RecordInterface and returns that from its own newRecord() instead.
  *
  * @psalm-api
  * @package CNIC
  */
-abstract class AbstractRecord implements RecordInterface
+class Record implements RecordInterface
 {
     /**
      * Constructor

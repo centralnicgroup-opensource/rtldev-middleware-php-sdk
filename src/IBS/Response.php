@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace CNIC\IBS;
 
 use CNIC\AbstractResponse;
-use CNIC\IBS\Column as IBSColumn;
-use CNIC\IBS\Record as IBSRecord;
+use CNIC\Column;
 use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
+use CNIC\Record;
 use CNIC\ResponseInterface;
 
 /**
@@ -21,10 +21,10 @@ use CNIC\ResponseInterface;
  *
  * Extends the shared AbstractResponse and supplies only what differs for the
  * IBS platform: the JSON-shaped response parsing (the translate() and
- * populate() hooks), the status/code/description accessors, the IBS column
- * type and the flat (single-page) pagination model. The constructor,
- * column/record bookkeeping, record-cursor navigation and derived pagination
- * are inherited from AbstractResponse.
+ * populate() hooks), the status/code/description accessors and the flat
+ * (single-page) pagination model. The constructor, column/record bookkeeping,
+ * record-cursor navigation and derived pagination are inherited from
+ * AbstractResponse.
  *
  * IBS does NOT provide the CNR-only telemetry/transient-status/list-hash
  * capabilities, so — unlike the previous design, which inherited them from
@@ -190,29 +190,29 @@ class Response extends AbstractResponse implements ResponseInterface
     /**
      * Add a column to the column list
      *
-     * IBS uses its own standalone Column (mixed-typed JSON values) rather than
-     * CNR's string-only Column, so it builds that type here and hands it to the
-     * shared registerColumn() bookkeeping in the base. The two Column
-     * constructors have divergent value types (string[] vs mixed[]), which is
-     * why a param-typed newColumn() factory would not stay type-clean — see
-     * registerColumn().
+     * IBS responses are JSON, so column values are arbitrary (nested arrays and
+     * objects included) and the shared CNIC\Column is used as-is. CNR narrows
+     * the same class to string values; that divergence in the *constructor*
+     * value type is why a param-typed newColumn() factory would not stay
+     * type-clean, and why this builds its column locally and hands the finished
+     * instance to the shared registerColumn() bookkeeping — see registerColumn().
      * @param string $key column name
      * @param array<array-key, mixed> $data array of column data
      */
     #[\Override]
     public function addColumn(string $key, array $data): static
     {
-        return $this->registerColumn(new IBSColumn($key, $data));
+        return $this->registerColumn(new Column($key, $data));
     }
 
     /**
-     * Instantiate the IBS record type so IBS-specific record behaviour applies.
+     * Instantiate the record type for this brand.
      * @param array<string,mixed> $h row hash data
      */
     #[\Override]
-    protected function newRecord(array $h): IBSRecord
+    protected function newRecord(array $h): Record
     {
-        return new IBSRecord($h);
+        return new Record($h);
     }
 
     /**

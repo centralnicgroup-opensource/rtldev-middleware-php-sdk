@@ -9,54 +9,22 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
-use CNIC\ColumnInterface;
+use CNIC\Column as BaseColumn;
 
 /**
  * CNR Column
  *
+ * CNR responses are plaintext, so every column value is a string. This subclass
+ * exists purely to say so: it binds the shared column's TValue to `string` and
+ * narrows `getDataByIndex()` from `mixed` to `?string` for callers holding a
+ * CNR-typed column. All behaviour is inherited — see {@see BaseColumn}.
+ *
+ * @extends BaseColumn<string>
  * @psalm-api
  * @package CNIC\CNR
  */
-class Column implements ColumnInterface
+class Column extends BaseColumn
 {
-    /**
-     * count of column data entries
-     */
-    public readonly int $length;
-
-    /**
-     * Constructor
-     *
-     * @param string $key Column Name
-     * @param string[] $data Column Data
-     * @psalm-suppress MoreSpecificImplementedParamType CNR columns are always string-valued
-     */
-    public function __construct(
-        private readonly string $key,
-        private readonly array $data
-    ) {
-        $this->length = count($data);
-    }
-
-    /**
-     * Get column name
-     */
-    #[\Override]
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
-    /**
-     * Get column data
-     * @return string[]
-     */
-    #[\Override]
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
     /**
      * Get column data at given index
      * @param integer $idx data index
@@ -64,15 +32,6 @@ class Column implements ColumnInterface
     #[\Override]
     public function getDataByIndex(int $idx): string|null
     {
-        return $this->hasDataIndex($idx) ? $this->data[$idx] : null;
-    }
-
-    /**
-     * Check if column has a given data index
-     * @param integer $idx data index
-     */
-    private function hasDataIndex(int $idx): bool
-    {
-        return ($idx >= 0 && $idx < $this->length);
+        return parent::getDataByIndex($idx);
     }
 }

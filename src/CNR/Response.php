@@ -15,6 +15,7 @@ use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
 use CNIC\ColumnInterface;
 use CNIC\ExtendedResponseInterface;
+use CNIC\Record;
 
 /**
  * CNR Response
@@ -173,7 +174,7 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     }
 
     /**
-     * Instantiate the CNR record type.
+     * Instantiate the record type for this brand.
      * @param array<string,mixed> $h row hash data
      */
     #[\Override]
