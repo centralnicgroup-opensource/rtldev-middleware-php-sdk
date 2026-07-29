@@ -27,6 +27,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw       | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
 | → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
 | → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                  | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters    |
+| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module         | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                       |
 
 Two things to respect throughout:
 
@@ -691,6 +692,67 @@ $cl->getProxy();   // BEFORE: null      AFTER: "http://proxy.example:3128"
 ### One behaviour deliberately unchanged
 
 `setCredentials()` still discards an active CNR session — a session and a password are alternative credentials on the wire and CNR treats the newer one as authoritative. That was true before and undocumented; it is now stated on the method and pinned by a test, because `reuseSession()` depends on the ordering (credentials first, session second).
+
+---
+
+## → v24.0.0 — CNR IDN command rewriting is its own module
+
+**What changed:** the SDK converts the IDN parameters of an outbound CNR command to punycode before sending it. Those rules used to live on the shared `AbstractClient`, as a protected `autoIDNConvert()` switched on by a `needsIDNConvert` flag on the `SocketConfig` — a flag only CNR ever set. They now live in `CNIC\CNR\IDNCommandRewriter`, called from `CNR\Client`'s own `buildCommand()` hook.
+
+**If you just use the SDK, there is nothing to do.** The conversion is unchanged and still automatic — same parameters, same results, byte-identical requests on the wire. `IDNConvert()` is untouched:
+
+```php
+// Unchanged in v24: automatic on the request path…
+$r = $cl->request(["COMMAND" => "StatusDomain", "OBJECTID" => "dömäin.com", "OBJECTCLASS" => "DOMAIN"]);
+$r->getCommand()["OBJECTID"];   // "xn--dmin-moa0i.com"
+
+// …and still available explicitly for a list of names you hold yourself.
+$cl->IDNConvert(["münchen.de", "example.com"]);
+```
+
+Three things were removed. Each is only reachable from code that reached into the SDK's internals:
+
+| Removed                                      | Was                                           | Now                                                                        |
+| -------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------- |
+| `AbstractClient::autoIDNConvert()`           | `protected`, called by `performRequest()`     | `CNIC\CNR\IDNCommandRewriter::rewrite($cmd)` — `public static`             |
+| `AbstractSocketConfig::getNeedsIDNConvert()` | `public`, answered `true` on CNR only         | nothing; the brand's `buildCommand()` decides, so there is no flag to read |
+| `$needsIDNConvert` (property, all 3 configs) | `protected`, set `true` on `CNR\SocketConfig` | nothing                                                                    |
+
+**What to respect** if you did any of the following:
+
+- **You called the rules yourself** (via reflection, or from a subclass). Call the module directly — no client needed, which is the point of the change:
+
+  ```php
+  use CNIC\CNR\IDNCommandRewriter;
+
+  // BEFORE (v23): reachable only through a client, and only via reflection
+  $m = new \ReflectionMethod($cl, "autoIDNConvert");
+  $m->setAccessible(true);
+  $wire = $m->invoke($cl, ["NAMESERVER0" => "ns1.münchen.de"]);
+
+  // AFTER (v24)
+  $wire = IDNCommandRewriter::rewrite(["NAMESERVER0" => "ns1.münchen.de"]);
+  ```
+
+- **You overrode `autoIDNConvert()`** on a client subclass to change or disable the rewriting. The override is now dead code — nothing calls it. Override `buildCommand()` instead and choose there whether to call the rewriter:
+
+  ```php
+  final class MyClient extends \CNIC\CNR\Client
+  {
+      #[\Override]
+      protected function buildCommand(array $cmd): array
+      {
+          // no IDN rewriting at all — or wrap the call, or add your own rules
+          return \CNIC\CommandFormatter::flattenCommand($cmd);
+      }
+  }
+  ```
+
+- **You read `getNeedsIDNConvert()`** to find out whether a client converts. There is no flag to read; the answer is the brand. `$cl instanceof \CNIC\CNR\Client` is the honest test, and it is the one the SDK itself now makes structurally.
+
+- **You set `$needsIDNConvert = true`** on your own `SocketConfig` subclass to get the conversion on IBS/Moniker. It never did anything useful — those platforms convert IDNs server-side, which is why the flag was false for them — and the property no longer exists, so PHP will report the declaration as unused rather than fail. If you have an IBS/Moniker command you believe needs client-side conversion, call `IDNCommandRewriter::rewrite()` on it yourself before passing it to `request()`, but check with support first.
+
+**Why this happened:** 37 lines of CNR-specific domain regex on a base class shared with IBS and Moniker, gated by a flag whose only job was to disable them for two brands out of three — the same pattern v19 removed for role credentials and v20 for the IBS IPv4 default. It was also untestable in place: the only way to reach the rules was `ReflectionMethod::setAccessible()` on a constructed client. They now have a public surface, a direct test, and no shared-base footprint.
 
 ---
 

@@ -31,10 +31,13 @@
                 <directory name="../../tests" />
             </errorLevel>
         </UnusedClass>
-        <UnusedMethodCall>
-            <errorLevel type="suppress">
-                <directory name="../../tests" />
-            </errorLevel>
-        </UnusedMethodCall>
+        <!-- The UnusedMethodCall suppression for tests/ is gone for the same
+             reason: its only trigger was `ReflectionMethod::setAccessible()`,
+             whose return value is discarded, in the two IDN tests that reached
+             past the client to get at the CNR command-rewrite rules. RSRMID-2922
+             gave those rules a public surface, so those calls are gone; the
+             reflection that remains in tests/ reads its return values and cannot
+             raise this. Psalm's own UnusedIssueHandlerSuppression reported the
+             entry dead rather than us assuming. -->
     </issueHandlers>
 </psalm>

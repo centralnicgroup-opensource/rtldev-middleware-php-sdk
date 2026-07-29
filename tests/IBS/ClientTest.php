@@ -230,14 +230,26 @@ final class ClientTest extends TestCase
         $this->assertTrue($r->isSuccess(), $r->getDescription());
     }
 
-    public function testAutoIDNConvertReturnsCommandUnchanged(): void
+    public function testBuildCommandLeavesIdnValuesUnchanged(): void
     {
-        // IBS handles IDN conversion server-side — the SDK must not alter command params
-        $cmd = ["domain" => "dömäin.com", "ResponseFormat" => "JSON"];
-        $method = (new \ReflectionClass(self::$cl))->getMethod("autoIDNConvert");
-        $method->setAccessible(true);
-        /** @var array<string> $result */
-        $result = $method->invoke(self::$cl, $cmd);
-        $this->assertSame($cmd, $result);
+        // IBS handles IDN conversion server-side — the SDK must not alter command
+        // params. Asserted through a probe subclass exposing the buildCommand()
+        // hook rather than by reflecting on a private method (RSRMID-2922): what
+        // matters is the hook's output, and the hook is the brand's own.
+        $probe = new class extends IBSClient {
+            /**
+             * @param array<string, scalar|scalar[]|null> $cmd
+             * @return array<string, string>
+             */
+            public function exposeBuildCommand(array $cmd): array
+            {
+                return $this->buildCommand($cmd);
+            }
+        };
+
+        $this->assertSame(
+            ["domain" => "dömäin.com", "ResponseFormat" => "JSON"],
+            $probe->exposeBuildCommand(["domain" => "dömäin.com"])
+        );
     }
 }

@@ -35,7 +35,6 @@ final class SocketConfig extends AbstractSocketConfig
     protected string $oteUrl = "https://api-ote.rrpproxy.net/";
     protected string $liveUrl = "https://api.rrpproxy.net/";
     protected int $socketTimeout = 300;
-    protected bool $needsIDNConvert = true;
 
     /**
      * Separator between the account id and the role user id in a role login

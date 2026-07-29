@@ -73,6 +73,12 @@ class Client extends AbstractClient
 
     /**
      * Flatten the given command into wire form, injecting the JSON response format.
+     *
+     * Deliberately no IDN handling: the IBS/Moniker platform converts IDNs
+     * server-side, so the command reaches the wire with its unicode values intact.
+     * CNR's client-side rewrite is called from CNR's own hook and is not shared
+     * (RSRMID-2922) — this used to be expressed as `needsIDNConvert = false` on
+     * the config, i.e. a flag switching off code this brand never wanted.
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @return array<string, string>
      */
