@@ -83,7 +83,49 @@ final class ResponseParserSeamTest extends TestCase
         // CNR columns bind their value type to string, so a parser handing one a
         // number is contradicting the brand. Loud, not skipped or coerced — the
         // policy settled in RSRMID-2919/RSRMID-2920.
-        $rogue = new class implements ResponseParserInterface {
+        $this->expectException(UnsupportedFeatureException::class);
+        $this->expectExceptionMessage("PROPERTY[TOTAL] carries a int");
+        new CNRResponse("CODE=200\r\n", [], [], [], self::rogueParser(["TOTAL" => [42]]));
+    }
+
+    public function testCNRRejectsAColumnThatIsNotAListAtAll(): void
+    {
+        // The container is held to the same standard as the cells. Casting it
+        // instead — (array)"example.com" — would quietly build a one-cell column
+        // out of a bare string while a bare int still threw, i.e. coerce a bad
+        // container while refusing a bad cell.
+        $this->expectException(UnsupportedFeatureException::class);
+        $this->expectExceptionMessage("PROPERTY[DOMAIN] is a string");
+        new CNRResponse("CODE=200\r\n", [], [], [], self::rogueParser(["DOMAIN" => "example.com"]));
+    }
+
+    public function testCNRStillAcceptsAResponseWithoutAPropertyBlock(): void
+    {
+        // The strictness above is about the contents of a PROPERTY block that
+        // exists. A missing one is ordinary — most CNR responses have none — and
+        // must stay a zero-column, zero-record response, not an exception.
+        $r = new CNRResponse("CODE=200\r\n", [], [], [], self::rogueParser(null));
+
+        $this->assertSame(200, $r->getCode());
+        $this->assertSame([], $r->getColumns());
+        $this->assertSame(0, $r->getRecordsCount());
+    }
+
+    /**
+     * A parser returning a canned CNR hash with the given PROPERTY block
+     * (omitted entirely when null).
+     * @param array<string, mixed>|null $property
+     */
+    private static function rogueParser(?array $property): ResponseParserInterface
+    {
+        return new class ($property) implements ResponseParserInterface {
+            /**
+             * @param array<string, mixed>|null $property
+             */
+            public function __construct(private readonly ?array $property)
+            {
+            }
+
             /**
              * @param array<string, string> $cmd
              * @return array<string, mixed>
@@ -91,13 +133,13 @@ final class ResponseParserSeamTest extends TestCase
             #[\Override]
             public function parse(string $raw, array $cmd = []): array
             {
-                return ["CODE" => "200", "PROPERTY" => ["TOTAL" => [42]]];
+                $hash = ["CODE" => "200", "DESCRIPTION" => "ok"];
+                if ($this->property !== null) {
+                    $hash["PROPERTY"] = $this->property;
+                }
+                return $hash;
             }
         };
-
-        $this->expectException(UnsupportedFeatureException::class);
-        $this->expectExceptionMessage("PROPERTY[TOTAL] carries a int");
-        new CNRResponse("CODE=200\r\n", [], [], [], $rogue);
     }
 
     public function testBothBrandParsersImplementTheContract(): void

@@ -94,25 +94,39 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * here rather than read off the concrete parser's return type — which is
      * also why CNR\Column binds its value type to string in the first place.
      *
-     * A parser handing CNR a non-string cell is contradicting that binding, so
-     * it **throws** rather than skipping or coercing the cell: silently
-     * dropping data would be exactly the no-op this project ruled out in
+     * A parser handing CNR anything else is contradicting that binding, so both
+     * checks **throw** rather than skipping or coercing: silently dropping data
+     * would be exactly the no-op this project ruled out in
      * RSRMID-2919/RSRMID-2920, and coercing would invent a value the wire could
-     * never carry. Unreachable with either brand parser; reachable only from a
-     * substitute, where it is a programming error and should say so.
+     * never carry. The container is checked as strictly as the cells — an
+     * earlier draft cast it with (array), which quietly turned a bare string
+     * into a one-cell column while a bare int still threw one line later, i.e.
+     * it coerced a bad container while refusing a bad cell. Unreachable with
+     * either brand parser; reachable only from a substitute, where it is a
+     * programming error and should say so.
+     *
+     * Note the deliberate asymmetry with populate(): a *missing or non-array*
+     * PROPERTY block yields no columns rather than throwing, because that is
+     * what the is_array() guard did before the seam and real responses without
+     * columns rely on it. This is about the contents of a block that does exist.
      *
      * Written as an explicit loop rather than array_filter(..., "is_string"):
      * PHPStan narrows that form, Psalm does not (MixedReturnTypeCoercion), and
      * the loop leaves only the one MixedAssignment below to suppress — the same
      * trade already made in AbstractResponse::assembleRecords().
      * @return string[]
-     * @throws UnsupportedFeatureException if a cell is not a string
+     * @throws UnsupportedFeatureException if the entry is not a list, or a cell is not a string
      */
     private static function stringCells(string $key, mixed $values): array
     {
+        if (!is_array($values)) {
+            throw new UnsupportedFeatureException(
+                "CNR columns are string lists: PROPERTY[{$key}] is a " . get_debug_type($values) . "."
+            );
+        }
         $cells = [];
         /** @psalm-suppress MixedAssignment the loop variable is mixed by design; is_string() narrows it below */
-        foreach ((array)$values as $cell) {
+        foreach ($values as $cell) {
             if (!is_string($cell)) {
                 throw new UnsupportedFeatureException(
                     "CNR columns are string-valued: PROPERTY[{$key}] carries a " . get_debug_type($cell) . "."
