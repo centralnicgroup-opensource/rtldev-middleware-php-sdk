@@ -76,9 +76,20 @@ final class IDNCommandRewriter
      */
     public static function rewrite(array $cmd): array
     {
+        // @codeCoverageIgnoreStart
+        // Not dead code, and not the same case as HttpTransport's curl_init()
+        // guard: ext-intl is deliberately *not* a composer requirement, so this
+        // branch is reachable in a supported environment — it is what keeps an
+        // intl-less runtime getting an unconverted command instead of a fatal
+        // undefined-function error from the vendor converter. It cannot be
+        // exercised from this suite, which needs idn_to_ascii() for every other
+        // IDN assertion; reaching it would take a second PHPUnit process with the
+        // function disabled. (It used to be covered incidentally, when the guard
+        // also carried the needsIDNConvert flag that every IBS request took.)
         if (!function_exists("idn_to_ascii")) {
             return $cmd;
         }
+        // @codeCoverageIgnoreEnd
 
         $objectClass = $cmd["OBJECTCLASS"] ?? null;
         $toconvert = [];
