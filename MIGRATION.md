@@ -28,6 +28,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
 | → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                  | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters    |
 | → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module         | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                       |
+| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`            |
 
 Two things to respect throughout:
 
@@ -753,6 +754,75 @@ Three things were removed. Each is only reachable from code that reached into th
 - **You set `$needsIDNConvert = true`** on your own `SocketConfig` subclass to get the conversion on IBS/Moniker. It never did anything useful — those platforms convert IDNs server-side, which is why the flag was false for them — and the property no longer exists, so PHP will report the declaration as unused rather than fail. If you have an IBS/Moniker command you believe needs client-side conversion, call `IDNCommandRewriter::rewrite()` on it yourself before passing it to `request()`, but check with support first.
 
 **Why this happened:** 37 lines of CNR-specific domain regex on a base class shared with IBS and Moniker, gated by a flag whose only job was to disable them for two brands out of three — the same pattern v19 removed for role credentials and v20 for the IBS IPv4 default. It was also untestable in place: the only way to reach the rules was `ReflectionMethod::setAccessible()` on a constructed client. They now have a public surface, a direct test, and no shared-base footprint.
+
+---
+
+## → v25.0.0 — one shared `Record`, one shared `Column`
+
+**What changed:** the record and column layer had one class per brand where the brands did not actually differ.
+
+- `CNIC\CNR\Record` and `CNIC\IBS\Record` were byte-identical empty subclasses of `CNIC\AbstractRecord`. All three are gone, replaced by a single concrete **`CNIC\Record`**.
+- `CNIC\IBS\Column` and `CNIC\CNR\Column` each implemented `ColumnInterface` independently, duplicating the length field, the constructor, `getKey()` and `getData()`. That body now lives once in a concrete **`CNIC\Column`**, which IBS/Moniker use directly — `CNIC\IBS\Column` is gone. `CNIC\CNR\Column` **stays**, reduced to the one thing that is genuinely CNR's: it binds the column's value type to `string` and narrows `getDataByIndex()` to `?string`.
+
+**If you use the SDK through the interfaces, there is nothing to do.** `ResponseInterface` is unchanged; `getRecord()`/`getRecords()` still return `RecordInterface`, `getColumn()`/`getColumns()` still return `ColumnInterface`, and every method on them behaves identically:
+
+```php
+// Unchanged in v25
+$rec = $r->getRecord(0);              // RecordInterface
+$rec->getDataByKey("DOMAIN");
+$col = $r->getColumn("DOMAIN");       // ColumnInterface
+$col->getDataByIndex(0);
+$col->length;
+```
+
+| Removed               | Replace with                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `CNIC\AbstractRecord` | `CNIC\Record` (concrete — instantiate or extend it directly) |
+| `CNIC\CNR\Record`     | `CNIC\Record`                                                |
+| `CNIC\IBS\Record`     | `CNIC\Record`                                                |
+| `CNIC\IBS\Column`     | `CNIC\Column`                                                |
+
+**What to respect** if you did any of the following:
+
+- **You named a concrete record or column type** — in a type hint, an `instanceof`, or a `new`. Retype to the shared class:
+
+  ```php
+  // BEFORE (v24)
+  use CNIC\CNR\Record;
+  use CNIC\IBS\Column;
+
+  function handle(Record $rec): void { /* … */ }
+  if ($col instanceof Column) { /* … */ }
+
+  // AFTER (v25)
+  use CNIC\Column;
+  use CNIC\Record;
+
+  function handle(Record $rec): void { /* … */ }
+  if ($col instanceof Column) { /* … */ }
+  ```
+
+  Better still, type against the interfaces — `RecordInterface` / `ColumnInterface` — which have not changed and will not move again. Note that `CNR\Column` now **extends** `CNIC\Column`, so `$col instanceof \CNIC\Column` is true for every brand, CNR included.
+
+- **You extended `AbstractRecord`** to add your own record behaviour. Extend `CNIC\Record` instead — it is a plain concrete class, so nothing else about your subclass changes:
+
+  ```php
+  // BEFORE (v24)
+  final class MyRecord extends \CNIC\AbstractRecord {}
+  // AFTER (v25)
+  final class MyRecord extends \CNIC\Record {}
+  ```
+
+- **You built a Response subclass with its own `newRecord()` hook.** The hook's declaration on the base is unchanged (`abstract protected function newRecord(array $h): RecordInterface`); only the class the built-in brands return has changed, so if you returned `CNR\Record`/`IBS\Record`, return `CNIC\Record`.
+
+  Mind which class you extend, because return-type covariance binds you to the parent's declaration — this is not new, but the class it names has moved:
+
+  - extending **`CNR\Response` or `IBS\Response`**: their `newRecord()` is declared `: Record`, so your override must return `CNIC\Record` or a subclass of it. Previously it had to return the brand's `CNR\Record`/`IBS\Record` or a subclass — the same constraint, pointing at a different class. To ship your own record type from here, extend `CNIC\Record` rather than implementing `RecordInterface` from scratch.
+  - extending **`AbstractResponse`** directly (a new brand): the hook is only declared `: RecordInterface`, so any implementation of that interface is fair game. This is the seam for genuinely different record behaviour.
+
+- **You relied on the generic type of a column.** `CNIC\Column` is templated on its value type (`@template TValue`). Static analysis will now infer `Column<string>` for CNR and `Column<mixed>` for IBS/Moniker, so passing a non-string array to a CNR column is a reported error where it previously was not. That is stricter than before, and only affects analysis — no runtime behaviour changed.
+
+**Why this happened:** two of these classes carried no behaviour at all, and the column pair duplicated ~35 lines with three trivial differences, one of which (the bounds check) was written twice in two different styles. Every other layer in the SDK — Client, SocketConfig, Response, TemplateManager, Translator — already shares a base and lets a brand override only what differs; this was the last place in that layer that did not. Consolidating it also closed a real coverage gap: `CNR\Column`'s `getData()`, `getDataByIndex()` and bounds behaviour had no direct tests, and now inherit the full shared suite.
 
 ---
 

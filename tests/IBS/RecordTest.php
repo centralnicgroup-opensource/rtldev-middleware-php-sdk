@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace CNICTEST\IBS;
 
-use CNIC\IBS\Record;
 use CNIC\IBS\Response as R;
+use CNIC\Record;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * IBS record wiring.
+ *
+ * Record behaviour is shared and covered once in CNICTEST\RecordTest against
+ * CNIC\Record. What is left per brand is the newRecord() factory hook and how a
+ * real IBS JSON response splits into rows.
+ */
 final class RecordTest extends TestCase
 {
     // Mirrors record 0 built by IBS\Response from the domain info fixture.
@@ -46,47 +53,13 @@ final class RecordTest extends TestCase
         return new R((string) json_encode($data), $cmd);
     }
 
-    // --- Unit tests: Record class directly ---
-
-    public function testGetData(): void
-    {
-        $rec = new Record(self::DOMAIN_INFO_RECORD);
-        $this->assertSame(self::DOMAIN_INFO_RECORD, $rec->getData());
-    }
-
-    public function testGetDataByKeyFound(): void
-    {
-        $rec = new Record(self::DOMAIN_INFO_RECORD);
-        $this->assertSame("ibstest.com", $rec->getDataByKey("domain"));
-        $this->assertSame("EXPIRED", $rec->getDataByKey("domainstatus"));
-        $this->assertSame("2026-02-20", $rec->getDataByKey("expirationdate"));
-        $this->assertSame("ns1.ispapi.net", $rec->getDataByKey("nameserver"));
-    }
-
-    public function testGetDataByKeyReturnsNestedArray(): void
-    {
-        $rec      = new Record(self::DOMAIN_INFO_RECORD);
-        $contacts = $rec->getDataByKey("contacts");
-        $this->assertSame([
-            "registrant" => ["firstname" => "Middle", "lastname" => "Ware"],
-            "admin"      => ["firstname" => "Kai",    "lastname" => "Schwarz"],
-        ], $contacts);
-    }
-
-    public function testGetDataByKeyNotFound(): void
-    {
-        $rec = new Record(self::DOMAIN_INFO_RECORD);
-        $this->assertNull($rec->getDataByKey("nonexistent"));
-    }
-
     // --- Integration tests: records extracted from a real Response ---
 
     public function testRecord0FromDomainInfoResponse(): void
     {
         $rec = $this->buildDomainInfoResponse()->getRecord(0);
         $this->assertNotNull($rec);
-        // IBS\Response must build IBS\Record (not the CNR base) — guards the
-        // newRecord() factory-hook wiring so IBS-specific record behaviour runs.
+        // guards the newRecord() factory-hook wiring
         $this->assertInstanceOf(Record::class, $rec);
         // all scalar fields present at index 0
         $this->assertSame("ibstest.com", $rec->getDataByKey("domain"));

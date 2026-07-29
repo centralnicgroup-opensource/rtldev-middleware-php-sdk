@@ -23,7 +23,7 @@ namespace CNIC;
  *   - the status/code accessors and addColumn declared on
  *     {@see ResponseInterface} (getCode/getDescription/isError/isSuccess,
  *     addColumn) — each reads a different wire shape, and addColumn additionally
- *     has to build its brand's own Column type (see registerColumn()),
+ *     has to build its brand's own correctly-typed Column (see registerColumn()),
  *   - the pagination primitives, likewise declared on {@see ResponseInterface}
  *     (getCurrentPageNumber, getFirstRecordIndex, getLastRecordIndex,
  *     getRecordsTotalCount, getRecordsLimitation, hasNextPage, hasPreviousPage),
@@ -169,10 +169,13 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * Instantiate the record type for this brand.
      *
-     * Factory hook for addRecord(): each brand returns its own Record so
-     * brand-specific record behaviour applies. Records share one shape across
-     * brands (array<string,mixed>), so — unlike columns, where CNR is string[]
-     * and IBS mixed — a single type-clean factory hook fits here.
+     * Factory hook for addRecord(). Records share one shape across brands
+     * (array<string,mixed>), so every brand currently returns the same shared
+     * CNIC\Record — the hook stays abstract nonetheless, because it is the seam
+     * a brand needing genuinely different row behaviour would implement, and
+     * hard-coding the shared Record here would close it. (Unlike columns, whose
+     * value types diverge and so cannot use a param-typed factory at all — see
+     * registerColumn().)
      * @param array<string,mixed> $h row hash data
      */
     abstract protected function newRecord(array $h): RecordInterface;
@@ -266,9 +269,9 @@ abstract class AbstractResponse implements ResponseInterface
      * Register an already-constructed column into the list bookkeeping.
      *
      * The bookkeeping ($columns/$columnkeys/$columnindex) is identical for every
-     * brand; only the concrete Column type differs. Rather than a param-typed
+     * brand; what differs is the column's value type. Rather than a param-typed
      * newColumn() factory — which cannot stay type-clean under PHPStan L9 / Psalm
-     * L1, because CNR\Column takes string[] while IBS\Column takes mixed[] and a
+     * L1, because CNR columns take string[] while IBS columns take mixed[] and a
      * shared factory would have to narrow one into the other — each brand's
      * addColumn() builds its own correctly-typed Column locally and hands the
      * finished instance here, so this shared helper never sees the brand types.
