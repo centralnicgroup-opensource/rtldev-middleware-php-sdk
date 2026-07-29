@@ -1,3 +1,17 @@
+# [25.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v24.0.0...v25.0.0) (2026-07-29)
+
+
+### Features
+
+* **response:** collapse the duplicated Record and Column modules ([53260d7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/53260d7ffff9f6515199028ce8cced7098b78b36))
+
+
+### BREAKING CHANGES
+
+* **response:** CNIC\AbstractRecord, CNIC\CNR\Record, CNIC\IBS\Record and CNIC\IBS\Column have been removed. Use CNIC\Record and CNIC\Column; CNIC\CNR\Column remains and now extends CNIC\Column.
+
+See [MIGRATION.md → v25.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2500)
+
 # [24.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v23.0.0...v24.0.0) (2026-07-29)
 
 
