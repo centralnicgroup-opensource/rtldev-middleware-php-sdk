@@ -5,6 +5,21 @@ email, or any other method with the owners of this repository before making a ch
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+## Development
+
+Coding standards, testing conventions and the architecture are documented in [CLAUDE.md](CLAUDE.md) and [docs/agents/](docs/agents/). Run `composer lint` and `composer test` before opening a pull request.
+
+### Guard tests
+
+Settled structural decisions in this SDK are each locked by a **guard test** — the `tests/*SeamTest.php` files, plus a few named guards outside that glob. They exist because undoing one of those decisions is _behaviour-preserving on the day it lands_: base-class defaults would return exactly what the brand returns today, an inlined `new ResponseParser()` behaves identically to the injected one. No behavioural test can see that arrive, so the guards assert structure through reflection instead.
+
+Two rules follow, and they cut in opposite directions:
+
+- **Never delete or weaken a guard test to make a change pass.** A failing guard means you are undoing a decision, not fixing a test. Read the test's class docblock and the matching entry in [docs/agents/architecture.md](docs/agents/architecture.md) first; if the decision should genuinely be reopened, that is a discussion and a ticket, not a diff.
+- **A new guard test must carry its own rationale in its class docblock**, because that docblock is the only thing a future contributor is guaranteed to read before touching it. State four things: the directive, the failure mode it prevents, why the guard has to be structural rather than behavioural, and the one condition that would justify revisiting the decision. [tests/ResponsePaginationSeamTest.php](tests/ResponsePaginationSeamTest.php) is the reference example.
+
+Then prove the guard is not vacuous: apply the mutation it is supposed to refuse, confirm the guard fails, and confirm the rest of the suite stays green — that green suite is the whole argument for the test existing. Note that `.github/phpunit.xml` sets `stopOnDefect="true"`, so a plain `composer test` halts at the first failure; set the guard aside temporarily to observe the "nothing else fails" half.
+
 ## Code of Conduct
 
 ### Our Pledge
