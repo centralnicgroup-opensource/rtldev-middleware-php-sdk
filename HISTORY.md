@@ -1,3 +1,24 @@
+# [26.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v25.0.0...v26.0.0) (2026-07-29)
+
+
+### Bug Fixes
+
+* **response:** hold a CNR column entry to the same standard as its cells ([75b2164](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/75b2164fa507c7ae5ba663107814586cd50d3f46))
+
+
+### Features
+
+* **response:** give the response parsers an injection seam ([f413ff7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/f413ff7c7f6e8056a4f2245713b938415b210c8b))
+
+
+### BREAKING CHANGES
+
+* **response:** ResponseParser::parse() is no longer static and
+AbstractResponseTemplateManager::parseResponse() is replaced by
+newResponseParser().
+
+See [MIGRATION.md → v26.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2600)
+
 # [25.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v24.0.0...v25.0.0) (2026-07-29)
 
 
