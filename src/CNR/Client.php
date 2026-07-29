@@ -128,14 +128,22 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     }
 
     /**
-     * Flatten the given command into wire form (CNR uppercase key/value pairs).
+     * Flatten the given command into wire form (CNR uppercase key/value pairs)
+     * and convert its IDN parameters to punycode.
+     *
+     * The IDN rewrite is CNR's alone — IBS/Moniker convert server-side — and it
+     * runs here, in the brand hook, rather than on {@see AbstractClient}, where it
+     * used to sit behind a `needsIDNConvert` flag that no other brand set. See
+     * {@see IDNCommandRewriter} (RSRMID-2922). It must run *after* the flattening:
+     * the rules match wire keys (`NAMESERVER0`, `OBJECTID`), not the caller's
+     * nested, arbitrarily-cased input.
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @return array<string, string>
      */
     #[\Override]
     protected function buildCommand(array $cmd): array
     {
-        return CommandFormatter::flattenCommand($cmd);
+        return IDNCommandRewriter::rewrite(CommandFormatter::flattenCommand($cmd));
     }
 
     /**

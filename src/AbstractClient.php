@@ -155,12 +155,16 @@ abstract class AbstractClient
      * option would go now that the bag lives on the config (RSRMID-2921). No
      * brand declares one.
      *
+     * A third step, `autoIDNConvert()`, used to wrap the buildCommand() call from
+     * here. It was CNR domain knowledge on a shared class, so it moved into
+     * {@see \CNIC\CNR\IDNCommandRewriter} behind the hook (RSRMID-2922).
+     *
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @param string $path path segment appended to the base URL to select the endpoint
      */
     protected function performRequest(array $cmd, string $path = ""): ResponseInterface
     {
-        $mycmd = $this->autoIDNConvert($this->buildCommand($cmd));
+        $mycmd = $this->buildCommand($cmd);
         $cfg = ["CONNECTION_URL" => $this->socketConfig->getURL() . $path];
         $data = $this->getPOSTData($mycmd);
         [$raw, $error] = $this->executeCurl($data, $cfg);
@@ -446,7 +450,14 @@ abstract class AbstractClient
     }
 
     /**
-     * Convert domain names to idn + punycode if necessary
+     * Convert domain names to idn + punycode.
+     *
+     * Brand-agnostic and therefore shared, and part of the public surface since
+     * v7.1.0: a thin pass-through to the vendor converter for callers who want to
+     * normalise a name explicitly. The automatic rewrite of an outbound *command*
+     * is a different thing and is not here — which parameters carry a domain name
+     * is CNR knowledge, and it lives in {@see \CNIC\CNR\IDNCommandRewriter} since
+     * RSRMID-2922.
      * @param array<string> $domains list of domain names (or tlds)
      * @return array<int, array{idn: string|false, punycode: string|false}>
      */
@@ -455,51 +466,6 @@ abstract class AbstractClient
         /** @var array<int, array{idn: string|false, punycode: string|false}> $result */
         $result = ConverterFactory::convert($domains);
         return $result;
-    }
-
-    /**
-     * Auto convert API command parameters to punycode, if necessary.
-     * @param array<string, string> $cmd API command
-     * @return array<string, string>
-     */
-    protected function autoIDNConvert(array $cmd): array
-    {
-        if (
-            !$this->socketConfig->getNeedsIDNConvert()
-            || !function_exists("idn_to_ascii")
-        ) {
-            return $cmd;
-        }
-
-        $asciipattern = "/^[a-zA-Z0-9\.-]+$/i";
-        // DOMAIN params get auto-converted by API
-        // RSRBE-7149 for NS coverage
-        $keypattern = "/^(PARENTDOMAIN|NAMESERVER|NS|DNSZONE)([0-9]*)$/i";
-        $objclasspattern = "/^(DOMAIN(APPLICATION|BLOCKING)?|NAMESERVER|NS|DNSZONE)$/i";
-        $toconvert = [];
-        $idxs = [];
-        foreach ($cmd as $key => $val) {
-            if (
-                ((bool)preg_match($keypattern, $key)
-                    // RSRTPM-3167: OBJECTID is a PATTERN in CNR API and not supporting IDNs
-                    || ($key === "OBJECTID"
-                        && isset($cmd["OBJECTCLASS"])
-                        && (bool)preg_match($objclasspattern, $cmd["OBJECTCLASS"])
-                    )
-                )
-                && !(bool)preg_match($asciipattern, $val)
-            ) {
-                $toconvert[] = $val;
-                $idxs[] = $key;
-            }
-        }
-        if ($toconvert !== []) {
-            $results = $this->IDNConvert($toconvert);
-            foreach ($results as $idx => $row) {
-                $cmd[$idxs[$idx]] = (string)$row["punycode"];
-            }
-        }
-        return $cmd;
     }
 
     /**

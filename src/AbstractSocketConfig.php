@@ -161,11 +161,6 @@ abstract class AbstractSocketConfig
     protected int $socketTimeout = 300;
 
     /**
-     * Whether API command values need IDN conversion
-     */
-    protected bool $needsIDNConvert = false;
-
-    /**
      * Command parameter keys whose values carry sensitive data (account
      * password, domain authorization code, ...) and must be masked in the
      * "secured" POST body used for debug logging. Matching is case-insensitive
@@ -567,14 +562,6 @@ abstract class AbstractSocketConfig
         }
         $this->socketTimeout = $value;
         return $this;
-    }
-
-    /**
-     * Get whether IDN conversion is needed
-     */
-    public function getNeedsIDNConvert(): bool
-    {
-        return $this->needsIDNConvert;
     }
 
     /**
