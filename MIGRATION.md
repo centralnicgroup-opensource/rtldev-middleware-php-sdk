@@ -822,6 +822,30 @@ $col->length;
 
 - **You relied on the generic type of a column.** `CNIC\Column` is templated on its value type (`@template TValue`). Static analysis will now infer `Column<string>` for CNR and `Column<mixed>` for IBS/Moniker, so passing a non-string array to a CNR column is a reported error where it previously was not. That is stricter than before, and only affects analysis — no runtime behaviour changed.
 
+### Also in this release: `ColumnInterface` and `RecordInterface` no longer declare `__construct()`
+
+**No action required — this only relaxes the contract**, so any class that satisfied either interface before still satisfies it. It is listed here because it is technically an interface change and you may notice it via reflection.
+
+`ColumnInterface` declared `__construct(string $key, array $data)` and `RecordInterface` declared `__construct(array $data)`. Both are gone, following `ResponseInterface` in [→ v20.0.0](#-v2000). Nothing in the SDK constructs through these types — columns are built by each brand's `addColumn()` and records by its `newRecord()`, both naming a concrete class — so the declaration constrained implementers without giving callers anything. And it was a real constraint, not a decorative one: PHP fully enforces a constructor declared on an _interface_ (unlike one inherited from a parent class), so it ruled out, say, a column backed by a generator or a database cursor.
+
+If you implement either interface, you may now give your class whatever constructor suits it:
+
+```php
+// Still valid, unchanged
+final class MyColumn implements \CNIC\ColumnInterface
+{
+    public function __construct(string $key, array $data) { /* … */ }
+    // …
+}
+
+// Now also valid — previously a declaration-time fatal
+final class LazyColumn implements \CNIC\ColumnInterface
+{
+    public function __construct(private readonly string $key, private readonly \Closure $producer) {}
+    // …
+}
+```
+
 **Why this happened:** two of these classes carried no behaviour at all, and the column pair duplicated ~35 lines with three trivial differences, one of which (the bounds check) was written twice in two different styles. Every other layer in the SDK — Client, SocketConfig, Response, TemplateManager, Translator — already shares a base and lets a brand override only what differs; this was the last place in that layer that did not. Consolidating it also closed a real coverage gap: `CNR\Column`'s `getData()`, `getDataByIndex()` and bounds behaviour had no direct tests, and now inherit the full shared suite.
 
 ---

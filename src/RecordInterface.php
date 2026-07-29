@@ -12,25 +12,19 @@ namespace CNIC;
 /**
  * Common Record Interface
  *
+ * Declares what a record can be *asked*, not how it is built. The
+ * __construct(array $data) declaration this carried until RSRMID-2923 is
+ * deliberately gone, for the same reason as {@see ColumnInterface} and
+ * {@see ResponseInterface}: records are built by each Response's newRecord()
+ * hook, which names its concrete class, so nothing constructs through this type
+ * and the declaration only limited implementers to a plain array-backed row.
+ * Do not re-add it — guarded by tests/RecordColumnSeamTest.php.
+ *
  * @psalm-api
  * @package CNIC
  */
 interface RecordInterface
 {
-    /**
-     * Constructor
-     * e.g.
-     * <code>
-     * $data = [
-     *   "DOMAIN" => "mydomain.com",
-     *   "USER"   => "test.user",
-     *   // ... further column data ...
-     * ];
-     * </code>
-     * @param array<string, mixed> $data data object
-     */
-    public function __construct(array $data);
-
     /**
      * Get row data
      *
