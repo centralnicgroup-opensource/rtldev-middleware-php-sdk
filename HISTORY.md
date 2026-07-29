@@ -1,3 +1,17 @@
+# [24.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v23.0.0...v24.0.0) (2026-07-29)
+
+
+### Features
+
+* **client:** move CNR IDN command rewriting behind the brand hook ([9809aa5](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/9809aa571c537a7ef70e1cf7bfcd5242453c629d))
+
+
+### BREAKING CHANGES
+
+* **client:** AbstractClient::autoIDNConvert(), AbstractSocketConfig::getNeedsIDNConvert() and the $needsIDNConvert property on all three SocketConfigs have been removed. Automatic IDN conversion is unchanged for consumers; override CNR\Client::buildCommand() instead of autoIDNConvert(), and call CNIC\CNR\IDNCommandRewriter::rewrite() to reach the rules directly.
+
+See [MIGRATION.md → v24.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2400)
+
 # [23.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v22.0.0...v23.0.0) (2026-07-28)
 
 
