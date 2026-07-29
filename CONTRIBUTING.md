@@ -9,6 +9,14 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 Coding standards, testing conventions and the architecture are documented in [CLAUDE.md](CLAUDE.md) and [docs/agents/](docs/agents/). Run `composer lint` and `composer test` before opening a pull request.
 
+### Where a change gets documented
+
+[CLAUDE.md](CLAUDE.md) is a working brief, read in full on every task, so its size is a running cost — it stays at one imperative line per rule. The long-form material has fixed homes, and a change should land in them rather than in a new CLAUDE.md paragraph:
+
+- A **`BREAKING CHANGE:`** commit must extend [MIGRATION.md](MIGRATION.md) (the consumer upgrade path — a `→ vX.0.0` section plus its compatibility-table row, linked from the commit footer) and [docs/agents/architecture.md](docs/agents/architecture.md) (the decision record: what was rejected, the failure mode prevented, the guard test that locks it). Neither is a reason to touch CLAUDE.md.
+- Rationale, alternatives considered and ticket history go to `docs/agents/*.md` — architecture decisions to `architecture.md`, test-harness detail to `testing.md`, version/packaging/tooling policy to `project-policies.md`, CI and release to `ci-release.md`.
+- Edit CLAUDE.md only when a rule needed on _every_ task actually changes, and keep the pointer there rather than a summary: a summary next to its source is a second copy that drifts.
+
 ### Guard tests
 
 Settled structural decisions in this SDK are each locked by a **guard test** — the `tests/*SeamTest.php` files, plus a few named guards outside that glob. They exist because undoing one of those decisions is _behaviour-preserving on the day it lands_: base-class defaults would return exactly what the brand returns today, an inlined `new ResponseParser()` behaves identically to the injected one. No behavioural test can see that arrive, so the guards assert structure through reflection instead.
