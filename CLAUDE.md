@@ -96,8 +96,10 @@ namespace CNIC\<SubNamespace>;
 ```bash
 composer test          # PHPUnit with coverage (.github/phpunit.xml) — cassette replay, fully offline
 composer test:record   # Re-record request() cassettes against OT&E (needs RTLDEV_MW_CI_* creds)
-composer lint          # phpcs + phpstan + psalm + shellcheck
+composer lint          # prettier --check + phpcs + phpstan + psalm + shellcheck
 composer codefix       # Auto-fix coding standard violations (phpcbf)
+composer prettier      # Prettier format check only (Markdown/JSON/YAML)
+composer prettier:fix  # Auto-fix non-PHP formatting (prettier --write)
 composer phpstan       # PHPStan static analysis only
 composer psalm         # Psalm static analysis only (monochrome)
 composer psalm:colored # Psalm static analysis (colored output)
@@ -110,6 +112,8 @@ composer demo:moniker  # Run the Moniker demo app
 ```
 
 > **CI coverage:** `composer audit` is a pre-flight convenience command, not a `composer.json` script. Dependency CVE gating is already enforced on every PR by the shared `php-sdk-lint.yml` workflow (its `composer-audit` job runs `composer audit --no-dev`), which `.github/workflows/lint.yml` delegates to. There is no separate audit step to wire into this repo.
+>
+> **Prettier is in `composer lint` on purpose** (RSRMID-2923). It is a formatter, not a linter, but leaving it out kept biting: the only enforcement was lint-staged, which `--write`s staged files at commit time rather than failing, so a Markdown edit could look fine all through a task and then reformat itself under you at commit — or drift permanently in a file no commit happened to stage (`CONTRIBUTING.md` had drifted). The `lint` script therefore runs `prettier --check .` **first**, and it is the pinned `node_modules/.bin/prettier` rather than `npx`, so the version is the one in `pnpm-lock.yaml` (prettier's output changes between minors). Consequence to know: `composer lint` now needs the Node toolchain installed (`pnpm install`) — CI is unaffected because the shared workflow runs the PHP linters as separate jobs and never calls `composer lint`. Run `composer prettier:fix` to fix.
 
 ## Build, CI & Policies
 
