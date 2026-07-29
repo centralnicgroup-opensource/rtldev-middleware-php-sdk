@@ -14,8 +14,10 @@ use CNIC\CNR\Column;
 use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
 use CNIC\ColumnInterface;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\ExtendedResponseInterface;
 use CNIC\Record;
+use CNIC\ResponseParserInterface;
 
 /**
  * CNR Response
@@ -69,15 +71,56 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     #[\Override]
     protected function populate(): void
     {
-        $this->hash = RP::parse($this->raw);
-        $properties = $this->hash["PROPERTY"] ?? null;
-        if (is_array($properties)) {
-            $colKeys = array_map(strval(...), array_keys($properties));
-            foreach ($colKeys as $k) {
-                $this->addColumn($k, $properties[$k]);
+        $this->hash = $this->parser->parse($this->raw, $this->command);
+        // A PROPERTY that is absent or not an array yields no columns and no
+        // records — the same as the is_array() guard this replaced.
+        $properties = $this->getHashArray("PROPERTY");
+        if ($properties !== []) {
+            foreach (array_keys($properties) as $k) {
+                $key = strval($k);
+                $this->addColumn($key, self::stringCells($key, $properties[$k]));
             }
             $this->assembleRecords();
         }
+    }
+
+    /**
+     * Narrow one parsed PROPERTY entry to the string list a CNR Column takes.
+     *
+     * The CNR wire format is textual, so every cell of a real response is
+     * already a string and this rejects nothing. It exists because the parse
+     * step is a seam since RSRMID-2924: the contract returns
+     * array<string, mixed>, so the brand's own shape has to be re-established
+     * here rather than read off the concrete parser's return type — which is
+     * also why CNR\Column binds its value type to string in the first place.
+     *
+     * A parser handing CNR a non-string cell is contradicting that binding, so
+     * it **throws** rather than skipping or coercing the cell: silently
+     * dropping data would be exactly the no-op this project ruled out in
+     * RSRMID-2919/RSRMID-2920, and coercing would invent a value the wire could
+     * never carry. Unreachable with either brand parser; reachable only from a
+     * substitute, where it is a programming error and should say so.
+     *
+     * Written as an explicit loop rather than array_filter(..., "is_string"):
+     * PHPStan narrows that form, Psalm does not (MixedReturnTypeCoercion), and
+     * the loop leaves only the one MixedAssignment below to suppress — the same
+     * trade already made in AbstractResponse::assembleRecords().
+     * @return string[]
+     * @throws UnsupportedFeatureException if a cell is not a string
+     */
+    private static function stringCells(string $key, mixed $values): array
+    {
+        $cells = [];
+        /** @psalm-suppress MixedAssignment the loop variable is mixed by design; is_string() narrows it below */
+        foreach ((array)$values as $cell) {
+            if (!is_string($cell)) {
+                throw new UnsupportedFeatureException(
+                    "CNR columns are string-valued: PROPERTY[{$key}] carries a " . get_debug_type($cell) . "."
+                );
+            }
+            $cells[] = $cell;
+        }
+        return $cells;
     }
 
     /**
@@ -181,6 +224,15 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     protected function newRecord(array $h): Record
     {
         return new Record($h);
+    }
+
+    /**
+     * Instantiate the response parser for this brand.
+     */
+    #[\Override]
+    protected function newResponseParser(): ResponseParserInterface
+    {
+        return new RP();
     }
 
     /**

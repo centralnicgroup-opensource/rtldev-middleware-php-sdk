@@ -15,6 +15,7 @@ use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\Record;
 use CNIC\ResponseInterface;
+use CNIC\ResponseParserInterface;
 
 /**
  * IBS Response
@@ -85,7 +86,7 @@ class Response extends AbstractResponse implements ResponseInterface
     #[\Override]
     protected function populate(): void
     {
-        $this->hash = RP::parse($this->raw, $this->command);
+        $this->hash = $this->parser->parse($this->raw, $this->command);
         $colKeys = array_map(strval(...), array_keys($this->hash));
         foreach ($colKeys as $k) {
             $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
@@ -213,6 +214,15 @@ class Response extends AbstractResponse implements ResponseInterface
     protected function newRecord(array $h): Record
     {
         return new Record($h);
+    }
+
+    /**
+     * Instantiate the response parser for this brand (Moniker inherits it).
+     */
+    #[\Override]
+    protected function newResponseParser(): ResponseParserInterface
+    {
+        return new RP();
     }
 
     /**

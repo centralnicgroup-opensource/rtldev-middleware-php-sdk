@@ -5,30 +5,15 @@ declare(strict_types=1);
 namespace CNICTEST\IBS;
 
 use CNIC\IBS\Response as R;
-use CNIC\IBS\ResponseParser as RP;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Response-level behaviour for IBS. The parser has its own direct tests in
+ * ResponseParserTest.php (RSRMID-2924) — do not route parse assertions through
+ * a constructed Response again.
+ */
 final class ResponseTest extends TestCase
 {
-    // --- ResponseParser: JSON parsing ---
-
-    public function testParseResponseWithDates(): void
-    {
-        $raw = (string) json_encode([
-            "date" => "2021/12/31",
-            "expirydate" => "2026/12/31",
-            "paiduntil" => "2023/07/01",
-            "EXPIRATION" => "2024/05/02"
-        ]);
-        $expected = [
-            'date' => '2021-12-31',
-            'expirydate' => '2026-12-31',
-            'paiduntil' => '2023-07-01',
-            'EXPIRATION' => '2024-05-02'
-        ];
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
     public function testCommandSecureMasksSensitiveFields(): void
     {
         // password and the transfer auth code are sensitive; masking is case-insensitive
@@ -42,144 +27,7 @@ final class ResponseTest extends TestCase
         $this->assertEquals("***", $cmd["TransferAuthInfo"]);
     }
 
-    public function testParseResponseWithSpecialCharacters(): void
-    {
-        $input = [
-            "idcard" => "1122/23/12",
-            "key2"   => "value-with-spaces",
-            "key3"   => "value/with/slashes"
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithMultipleEqualSigns(): void
-    {
-        $input = [
-            "key1" => "value=with=multiple=equals",
-            "key2" => "=value2"
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithUtf8AndSpecialCharacters(): void
-    {
-        $input = [
-            'name' => 'José',
-            'emoji' => '😊',
-            'symbols' => '©™®'
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithNumericKeysAndValues(): void
-    {
-        $input = [
-            '123' => '456',
-            '789' => '012'
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithSingleValidLine(): void
-    {
-        $input = [
-            'key1' => 'value1'
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseNestedDateNormalization(): void
-    {
-        $raw = (string) json_encode([
-            "domain" => "ibstest.com",
-            "data" => [
-                "expirationdate" => "2026/02/20",
-                "nested" => ["paiduntil" => "2027/01/02"]
-            ]
-        ]);
-        $expected = [
-            "domain" => "ibstest.com",
-            "data" => [
-                "expirationdate" => "2026-02-20",
-                "nested" => ["paiduntil" => "2027-01-02"]
-            ]
-        ];
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseFormatCaseInsensitive(): void
-    {
-        // a lowercase "json" ResponseFormat is still treated as JSON
-        $result = RP::parse('{"status":"SUCCESS"}', ["ResponseFormat" => "json"]);
-        $this->assertSame(["status" => "SUCCESS"], $result);
-    }
-
-    // --- ResponseParser: plain text and invalid ---
-
-    public function testParsePlainTextResponse(): void
-    {
-        $raw = "status=FAILURE\r\nmessage=403 Forbidden\r\n";
-        $result = RP::parse($raw);
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('403 Forbidden', $result['message']);
-    }
-
-    public function testParseInvalidResponse(): void
-    {
-        $raw = "this is not valid at all";
-        $result = RP::parse($raw);
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
-    }
-
-    public function testParseEmptyStringIsInvalid(): void
-    {
-        $result = RP::parse("");
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
-    }
-
-    public function testParseScalarJsonIsInvalid(): void
-    {
-        // A bare valid JSON scalar (number, quoted string, boolean, float)
-        // decodes to a non-array value. It must not fatal in
-        // array_walk_recursive() but return the graceful invalid-response
-        // fallback, same as any other unparseable response.
-        foreach (["123", '"a string"', "true", "false", "1.5"] as $raw) {
-            $result = RP::parse($raw);
-            $this->assertSame('FAILURE', $result['status'], "raw: {$raw}");
-            $this->assertSame('423 Invalid API response. Contact Support', $result['message'], "raw: {$raw}");
-        }
-    }
-
-    public function testParseForcedPlainTextWithJsonPayload(): void
-    {
-        // an explicit non-JSON ResponseFormat forces the plain-text path,
-        // so a JSON payload (no "key=value" lines) is treated as invalid
-        $result = RP::parse('{"status":"SUCCESS"}', ["ResponseFormat" => "TEXT"]);
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
-    }
-
-    public function testParseNonEmptyCmdWithoutResponseFormat(): void
-    {
-        // a non-empty command without ResponseFormat also forces the plain-text path
-        $result = RP::parse('{"status":"SUCCESS"}', ["Command" => "QueryDomainList"]);
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
-    }
-
-    // --- Response class: construction and error templates ---
+    // --- construction and error templates ---
 
     public function testConstructorEmptyResponse(): void
     {
@@ -213,7 +61,7 @@ final class ResponseTest extends TestCase
         $this->assertStringContainsString("Empty API response", $r->getDescription());
     }
 
-    // --- Response class: JSON responses (with ResponseFormat=JSON command) ---
+    // --- JSON responses (with ResponseFormat=JSON command) ---
 
     public function testJsonSuccessResponse(): void
     {

@@ -11,6 +11,7 @@ namespace CNIC\IBS;
 
 use CNIC\AbstractResponseTemplateManager;
 use CNIC\IBS\ResponseParser as RP;
+use CNIC\ResponseParserInterface;
 
 /**
  * IBS ResponseTemplateManager
@@ -69,13 +70,12 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
     }
 
     /**
-     * Parse a plain API response into its hash form using the IBS parser.
-     * @return array<string, mixed>
+     * Instantiate the IBS response parser.
      */
     #[\Override]
-    protected static function parseResponse(string $plain): array
+    protected static function newResponseParser(): ResponseParserInterface
     {
-        return RP::parse($plain);
+        return new RP();
     }
 
     /**

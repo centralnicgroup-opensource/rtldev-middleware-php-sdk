@@ -10,25 +10,26 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 
 ## Version compatibility at a glance
 
-| From → To | PHP required | Headline breaking change                                                          | Consumer action                                                                                                |
-| --------- | ------------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                   | Bump your runtime                                                                                              |
-| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                         | Call `close()` in sessionless flows                                                                            |
-| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                        | None (additive)                                                                                                |
-| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                       | Migrate off HEXONET                                                                                            |
-| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                  | Re-test IBS/Moniker data handling                                                                              |
-| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                    | Bump runtime; stop subclassing finals                                                                          |
-| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                      | Retype loggers; guard session calls                                                                            |
-| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                    | Configure the client yourself                                                                                  |
-| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                 | Handle the `null` sentinel                                                                                     |
-| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                           | Narrow via `ExtendedResponseInterface`                                                                         |
-| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                               | Use `cnr()`/`ibs()`/`moniker()`                                                                                |
-| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
-| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw       | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
-| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
-| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                  | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters    |
-| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module         | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                       |
-| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`            |
+| From → To | PHP required | Headline breaking change                                                              | Consumer action                                                                                                |
+| --------- | ------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                       | Bump your runtime                                                                                              |
+| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                             | Call `close()` in sessionless flows                                                                            |
+| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                            | None (additive)                                                                                                |
+| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                           | Migrate off HEXONET                                                                                            |
+| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                      | Re-test IBS/Moniker data handling                                                                              |
+| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                        | Bump runtime; stop subclassing finals                                                                          |
+| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                          | Retype loggers; guard session calls                                                                            |
+| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                        | Configure the client yourself                                                                                  |
+| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                     | Handle the `null` sentinel                                                                                     |
+| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                               | Narrow via `ExtendedResponseInterface`                                                                         |
+| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                                   | Use `cnr()`/`ibs()`/`moniker()`                                                                                |
+| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter     | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
+| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw           | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
+| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                    | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
+| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                      | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters    |
+| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module             | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                       |
+| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed     | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`            |
+| → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager  |
 
 Two things to respect throughout:
 
@@ -847,6 +848,88 @@ final class LazyColumn implements \CNIC\ColumnInterface
 ```
 
 **Why this happened:** two of these classes carried no behaviour at all, and the column pair duplicated ~35 lines with three trivial differences, one of which (the bounds check) was written twice in two different styles. Every other layer in the SDK — Client, SocketConfig, Response, TemplateManager, Translator — already shares a base and lets a brand override only what differs; this was the last place in that layer that did not. Consolidating it also closed a real coverage gap: `CNR\Column`'s `getData()`, `getDataByIndex()` and bounds behaviour had no direct tests, and now inherit the full shared suite.
+
+---
+
+## → v26.0.0 — response parsing is a seam
+
+**What changed:** the step that turns a raw API response into its hash was a hard-wired static call (`RP::parse($this->raw)`) with a different signature per brand. It is now a contract, `CNIC\ResponseParserInterface`, with one signature, and the parser a Response uses can be replaced from the outside.
+
+- **`parse()` is an instance method.** `CNIC\CNR\ResponseParser` and `CNIC\IBS\ResponseParser` still exist and still behave identically — they are now instantiable classes implementing the new interface instead of static utilities.
+- **One signature for both brands:** `parse(string $raw, array $cmd = []): array`. CNR gained the second parameter and ignores it (its wire format is self-describing); IBS is unchanged.
+- **New optional constructor argument on every Response:** `__construct(string $raw, array $cmd = [], array $ph = [], array $context = [], ?ResponseParserInterface $parser = null)`. Pass nothing and you get the brand's own parser, exactly as before.
+- **New abstract hooks:** `AbstractResponse::newResponseParser()` and `AbstractResponseTemplateManager::newResponseParser()`. The latter **replaces** `AbstractResponseTemplateManager::parseResponse()`, which is gone.
+- **New:** `AbstractResponseTemplateManager::resetTemplates()` restores a brand's built-in templates (additive).
+
+**If you only use clients, responses and the interfaces, there is nothing to do.** Parsed output is byte-for-byte identical for every response the SDK handles — the cassette suite is the proof.
+
+**What to respect** if you did any of the following:
+
+- **You called `ResponseParser::parse()` directly.** Instantiate it:
+
+  ```php
+  // BEFORE (v25)
+  use CNIC\IBS\ResponseParser as RP;
+  $hash = RP::parse($raw, $cmd);
+
+  // AFTER (v26)
+  use CNIC\IBS\ResponseParser as RP;
+  $hash = (new RP())->parse($raw, $cmd);
+  ```
+
+  Better still, type the variable as `CNIC\ResponseParserInterface` so either brand's parser — or your own — fits.
+
+- **You wrote your own `Response` on top of `AbstractResponse`** (a new brand, or a customised one). Implement the new hook alongside `newRecord()`, and read the parser from `$this->parser` in `populate()` rather than naming a class:
+
+  ```php
+  // AFTER (v26)
+  #[\Override]
+  protected function newResponseParser(): \CNIC\ResponseParserInterface
+  {
+      return new MyResponseParser();
+  }
+
+  #[\Override]
+  protected function populate(): void
+  {
+      $this->hash = $this->parser->parse($this->raw, $this->command);
+      // … build columns/records from $this->hash
+  }
+  ```
+
+  Using `$this->parser` is what makes the injected substitute take effect; hard-coding `new MyResponseParser()` inside `populate()` compiles and passes its tests, and silently closes the seam back up.
+
+- **You supply a parser to a `CNR\Response`.** CNR columns are string-valued (`CNIC\CNR\Column` binds the shared column's value type to `string`), and the Response now checks that rather than inferring it from the concrete parser's return type. A `PROPERTY` cell that is not a string raises `CNIC\Exception\UnsupportedFeatureException` naming the column, instead of being silently dropped or coerced. The stock CNR parser cannot produce one, so this only affects your own.
+
+- **You extended `AbstractResponseTemplateManager`.** Replace your `parseResponse()` override with `newResponseParser()`:
+
+  ```php
+  // BEFORE (v25)
+  #[\Override]
+  protected static function parseResponse(string $plain): array
+  {
+      return MyResponseParser::parse($plain);
+  }
+
+  // AFTER (v26)
+  #[\Override]
+  protected static function newResponseParser(): \CNIC\ResponseParserInterface
+  {
+      return new MyResponseParser();
+  }
+  ```
+
+- **You register response templates in a long-lived process or across test classes.** `AbstractResponseTemplateManager::$templates` is public static state with process lifetime, so anything you add stays visible everywhere afterwards. `resetTemplates()` now gives you the way back to the brand's built-ins:
+
+  ```php
+  \CNIC\IBS\ResponseTemplateManager::addTemplate("mycase", "FAILURE", "…");
+  // … later, when the scenario is over
+  \CNIC\IBS\ResponseTemplateManager::resetTemplates();
+  ```
+
+  It is `addTemplate()`'s counterpart, not a general undo: it restores what the container held the first time you called `addTemplate()` on that class, it is per brand, and a direct assignment to the public `$templates` property is outside its reach. Register through `addTemplate()` and it will always take you back.
+
+**Why this happened:** both parsers were static and hard-wired into `populate()`, so nothing in the Response tree could be exercised without a full raw wire payload, and the CNR parser had no test of its own at all. Because the two signatures differed (CNR one parameter, IBS two), no shared contract was even expressible. Unifying them made the seam possible, and the seam is the one already proven here for the HTTP transport (`TransportInterface`, v-19-era RSRMID-2910): a factory hook for the default, an injection point for the substitute. Two real implementations — CNR's line-oriented format and IBS's JSON-with-plain-text-fallback — justify the abstraction; this is not a speculative one.
 
 ---
 
