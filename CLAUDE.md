@@ -150,6 +150,26 @@ Work is tracked in **Jira Cloud**, project `RSRMID`, component `PHP-SDK` — not
 
 All IDs, custom fields, transitions, account IDs and JQL examples: [docs/agents/issue-tracker.md](docs/agents/issue-tracker.md) — update that file, not this section.
 
+## Tool-Output Hygiene
+
+Every tool result is spent context, so prefer the bounded tool over the shell dump. A `PreToolUse` hook (`.claude/hooks/tool-output-hygiene.sh`) denies the three worst shapes and names the replacement — if it fires, take the replacement rather than working around it.
+
+- **Searching:** the **Grep** tool with `head_limit` — add `output_mode: "files_with_matches"` when only locations matter. Where Grep is absent from the toolset (it is in some SDK-launched sessions), a bounded shell search is the fallback: `… | head -30`, `-l`, `-c`. What is never acceptable is an unbounded `grep -rn`.
+- **Reading part of a file:** **Read** with `offset`/`limit`, never `sed -n '<from>,<to>p'` or a bare `cat`.
+- **Noisy commands:** bound the output at the source — `composer lint 2>&1 | tail -30`, `git diff --stat` before any full `git diff`.
+- **MCP calls:** batch field updates into a single `editJiraIssue`, and never re-fetch an issue or page you just mutated — the write response already confirms it.
+- `BASH_MAX_OUTPUT_LENGTH` / `MAX_MCP_OUTPUT_TOKENS` in `.claude/settings.json` only truncate; a truncated result is a signal you asked the wrong way, not a result to work from.
+
+## Model Routing
+
+Opus decides, Sonnet implements: plan and review in the main thread, hand the mechanical work down. Definitions live in `.claude/agents/`.
+
+- **Implementation** of an already-settled change goes to the `implementer` subagent (Sonnet). Trivial one-line edits stay inline — the delegation overhead outweighs the saving.
+- **Review** goes to the `reviewer` subagent (Opus, pinned so review quality never silently drops to a cheaper model), or stays in the main thread. Never route a review to Sonnet.
+- **Planning and architecture calls** stay on Opus; the built-in `Plan` agent inherits the session model, so it needs no pinning.
+- **Fan-out reads** — sweeping `src/` for a pattern, reading several `docs/agents/*.md` — go to `Explore` or `general-purpose`, so the file dumps land in the subagent's context instead of this one.
+- A subagent reports conclusions, not file contents. One that hands back a wall of source has defeated the point of delegating to it.
+
 ## Do NOT
 
 - Read, display, or expose the contents of `env.sh` — it contains secrets

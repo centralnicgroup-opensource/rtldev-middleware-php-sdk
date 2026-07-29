@@ -36,6 +36,25 @@
       "Bash(git stash list *)"
     ]
   },
+  "env": {
+    "BASH_MAX_OUTPUT_LENGTH": "30000",
+    "MAX_MCP_OUTPUT_TOKENS": "25000"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/tool-output-hygiene.sh\"",
+            "timeout": 5,
+            "statusMessage": "Checking tool-output hygiene"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "mattpocock-skills@mattpocock": true
   },
