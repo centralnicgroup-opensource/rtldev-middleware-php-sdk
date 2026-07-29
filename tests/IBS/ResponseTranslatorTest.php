@@ -73,7 +73,7 @@ final class ResponseTranslatorTest extends TestCase
     public function testStaticTemplateLookup(): void
     {
         $raw = RT::translate("403", []);
-        $hash = RP::parse($raw);
+        $hash = (new RP())->parse($raw);
         $this->assertSame("FAILURE", $hash["status"]);
         $this->assertSame("403 Forbidden", $hash["message"]);
     }
@@ -106,22 +106,22 @@ final class ResponseTranslatorTest extends TestCase
         $expected = "423 Invalid API response. Contact Support";
 
         // JSON without status field
-        $hash = RP::parse(RT::translate('{"somekey":"somevalue"}', []));
+        $hash = (new RP())->parse(RT::translate('{"somekey":"somevalue"}', []));
         $this->assertSame("FAILURE", $hash["status"], "json missing status");
         $this->assertSame($expected, $hash["message"], "json missing status");
 
         // plain text without status field
-        $hash = RP::parse(RT::translate("somekey=somevalue\r\n", []));
+        $hash = (new RP())->parse(RT::translate("somekey=somevalue\r\n", []));
         $this->assertSame("FAILURE", $hash["status"], "plain missing status");
         $this->assertSame($expected, $hash["message"], "plain missing status");
 
         // JSON with empty status
-        $hash = RP::parse(RT::translate('{"status":""}', []));
+        $hash = (new RP())->parse(RT::translate('{"status":""}', []));
         $this->assertSame("FAILURE", $hash["status"], "json empty status");
         $this->assertSame($expected, $hash["message"], "json empty status");
 
         // plain text with empty status
-        $hash = RP::parse(RT::translate("status=\r\n", []));
+        $hash = (new RP())->parse(RT::translate("status=\r\n", []));
         $this->assertSame("FAILURE", $hash["status"], "plain empty status");
         $this->assertSame($expected, $hash["message"], "plain empty status");
     }

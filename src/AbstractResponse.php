@@ -19,7 +19,7 @@ namespace CNIC;
  * to the concrete subclasses:
  *
  *   - wire hooks: {@see translate()} / {@see populate()} (protected),
- *   - record factory: {@see newRecord()} (protected),
+ *   - factories: {@see newRecord()} and {@see newResponseParser()} (protected),
  *   - the status/code accessors and addColumn declared on
  *     {@see ResponseInterface} (getCode/getDescription/isError/isSuccess,
  *     addColumn) — each reads a different wire shape, and addColumn additionally
@@ -133,18 +133,33 @@ abstract class AbstractResponse implements ResponseInterface
     protected string $requestUrl = "";
 
     /**
+     * The parser turning the translated raw response into {@see $hash}.
+     * Defaults to the brand's own via {@see newResponseParser()}; a substitute
+     * can be handed to the constructor. See {@see ResponseParserInterface}.
+     */
+    protected ResponseParserInterface $parser;
+
+    /**
      * Constructor
      * @param string $raw API plain response
      * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
+     * @param ResponseParserInterface|null $parser parser to use instead of the brand default (see newResponseParser())
      */
-    public function __construct(string $raw, array $cmd = [], array $ph = [], array $context = [])
-    {
+    public function __construct(
+        string $raw,
+        array $cmd = [],
+        array $ph = [],
+        array $context = [],
+        ?ResponseParserInterface $parser = null
+    ) {
         $cmd = $this->sanitizeCommand($cmd);
         $this->context = $context;
         $this->command = $cmd;
         $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
+        // Assigned before populate(), which is where the parser is used.
+        $this->parser = $parser ?? $this->newResponseParser();
         $this->raw = $this->translate($raw, $cmd, $ph);
         $this->populate();
     }
@@ -162,9 +177,21 @@ abstract class AbstractResponse implements ResponseInterface
      * Parse the translated response into the hash and build the column/record
      * lists from it. Brand-specific because each brand's parser returns a
      * different hash shape (CNR nests columns under PROPERTY, IBS is a flat
-     * key => value map). The sanitized command is available as $this->command.
+     * key => value map). The sanitized command is available as $this->command,
+     * and the parser — the brand default or the injected substitute — as
+     * $this->parser.
      */
     abstract protected function populate(): void;
+
+    /**
+     * Instantiate the response parser for this brand.
+     *
+     * Factory hook mirroring {@see newRecord()} and
+     * {@see \CNIC\AbstractClient::newTransport()}: it supplies the default, and
+     * the constructor's $parser argument overrides it — so a substitute parser
+     * needs neither reflection nor a subclass. (Ref: RSRMID-2924.)
+     */
+    abstract protected function newResponseParser(): ResponseParserInterface;
 
     /**
      * Instantiate the record type for this brand.
@@ -548,5 +575,18 @@ abstract class AbstractResponse implements ResponseInterface
         return array_key_exists($key, $this->hash) && is_string($this->hash[$key])
             ? $this->hash[$key]
             : $default;
+    }
+
+    /**
+     * Get an array value from the hash by key, returning an empty array if not
+     * found or not an array. The twin of {@see getHashString()} for the nested
+     * blocks a brand's populate() reads (e.g. CNR's PROPERTY).
+     * @return array<array-key, mixed>
+     */
+    protected function getHashArray(string $key): array
+    {
+        return array_key_exists($key, $this->hash) && is_array($this->hash[$key])
+            ? $this->hash[$key]
+            : [];
     }
 }

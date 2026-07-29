@@ -9,13 +9,21 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
+use CNIC\ResponseParserInterface;
+
 /**
  * IBS ResponseParser
  *
+ * Decodes the IBS/Moniker JSON payload, falling back to the plain-text
+ * `key=value` format the templates and non-JSON responses use. Instantiable and
+ * stateless — see {@see ResponseParserInterface} for why the parse step is a
+ * seam rather than a static call.
+ *
+ * @psalm-api
  * @package CNIC\IBS
  * @final
  */
-final class ResponseParser
+final class ResponseParser implements ResponseParserInterface
 {
     /**
      * Method to parse API response into associative array
@@ -23,7 +31,8 @@ final class ResponseParser
      * @param array<string, string> $cmd API command used within this request
      * @return array<string,mixed>
      */
-    public static function parse(string $raw, array $cmd = []): array
+    #[\Override]
+    public function parse(string $raw, array $cmd = []): array
     {
         $isJson = $cmd === [] || (isset($cmd["ResponseFormat"]) && strtoupper($cmd["ResponseFormat"]) === "JSON");
 

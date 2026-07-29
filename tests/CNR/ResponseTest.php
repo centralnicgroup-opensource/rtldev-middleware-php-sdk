@@ -421,4 +421,12 @@ final class ResponseTest extends TestCase
         $r = new R("[RESPONSE]\r\ncode=423\r\ndescription=Empty API response. Probably unreachable API end point\r\nEOF\r\n");
         $this->assertEquals(true, $r->isTmpError());
     }
+
+    #[\Override]
+    public static function tearDownAfterClass(): void
+    {
+        // Templates are process-wide static state — drop this class' own so
+        // they do not leak into later test classes (RSRMID-2924).
+        RTM::resetTemplates();
+    }
 }

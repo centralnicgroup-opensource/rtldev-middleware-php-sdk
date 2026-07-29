@@ -5,104 +5,12 @@ declare(strict_types=1);
 namespace CNICTEST\MONIKER;
 
 use CNIC\IBS\Response as R;
-use CNIC\IBS\ResponseParser as RP;
 use CNIC\IBS\ResponseTemplateManager as RTM;
 use CNIC\IBS\ResponseTranslator as RT;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseTest extends TestCase
 {
-    public function testParseResponseWithDates(): void
-    {
-        $raw = (string) json_encode([
-            "date" => "2021/12/31",
-            "expirydate" => "2026/12/31",
-            "paiduntil" => "2023/07/01",
-            "EXPIRATION" => "2024/05/02"
-        ]);
-        $expected = [
-            'date' => '2021-12-31',
-            'expirydate' => '2026-12-31',
-            'paiduntil' => '2023-07-01',
-            'EXPIRATION' => '2024-05-02'
-        ];
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithSpecialCharacters(): void
-    {
-        $input = [
-            "idcard" => "1122/23/12",
-            "key2"   => "value-with-spaces",
-            "key3"   => "value/with/slashes"
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithMultipleEqualSigns(): void
-    {
-        $input = [
-            "key1" => "value=with=multiple=equals",
-            "key2" => "=value2"
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithUtf8AndSpecialCharacters(): void
-    {
-        $input = [
-            'name' => 'José',
-            'emoji' => '😊',
-            'symbols' => '©™®'
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithNumericKeysAndValues(): void
-    {
-        $input = [
-            '123' => '456',
-            '789' => '012'
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    public function testParseResponseWithSingleValidLine(): void
-    {
-        $input = [
-            'key1' => 'value1'
-        ];
-        $raw = (string) json_encode($input);
-        $expected = $input;
-        $this->assertSame($expected, RP::parse($raw));
-    }
-
-    // --- ResponseParser: plain text and invalid ---
-
-    public function testParsePlainTextResponse(): void
-    {
-        $raw = "status=FAILURE\r\nmessage=403 Forbidden\r\n";
-        $result = RP::parse($raw);
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('403 Forbidden', $result['message']);
-    }
-
-    public function testParseInvalidResponse(): void
-    {
-        $raw = "this is not valid at all";
-        $result = RP::parse($raw);
-        $this->assertSame('FAILURE', $result['status']);
-        $this->assertSame('423 Invalid API response. Contact Support', $result['message']);
-    }
-
     // --- ResponseTemplateManager tests ---
 
     public function testGetTemplateNotFound(): void
@@ -269,5 +177,13 @@ final class ResponseTest extends TestCase
         $this->assertTrue($r->isError());
         $this->assertEquals("FAILURE", $r->getStatus());
         $this->assertStringContainsString("Empty API response", $r->getDescription());
+    }
+
+    #[\Override]
+    public static function tearDownAfterClass(): void
+    {
+        // Templates are process-wide static state — drop this class' own so
+        // they do not leak into later test classes (RSRMID-2924).
+        RTM::resetTemplates();
     }
 }

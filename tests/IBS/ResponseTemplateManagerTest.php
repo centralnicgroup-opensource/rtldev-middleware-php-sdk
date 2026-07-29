@@ -63,6 +63,19 @@ final class ResponseTemplateManagerTest extends TestCase
         ));
     }
 
+    public function testIsTemplateMatchPlainAgreesWithAResponseParsedOnTheOtherBranch(): void
+    {
+        // The manager parses with no command, which selects the JSON branch;
+        // this Response carries a command *without* ResponseFormat, so its own
+        // populate() takes the plain-text branch. That is the divergent pair —
+        // passing ResponseFormat=JSON here would put both on the same branch and
+        // prove nothing. Matching a template must not depend on which branch
+        // produced the hash. (Ref: RSRMID-2924.)
+        $r = new R("", ["Command" => "DomainInfo"]);
+        $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
+        $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
+    }
+
     public function testAddTemplate(): void
     {
         // providing template in plain text
@@ -89,5 +102,13 @@ final class ResponseTemplateManagerTest extends TestCase
         RTM::addTemplate("chainB", "FAILURE", "B")::addTemplate("chainC", "FAILURE", "C");
         $this->assertTrue(RTM::hasTemplate("chainB"));
         $this->assertTrue(RTM::hasTemplate("chainC"));
+    }
+
+    #[\Override]
+    public static function tearDownAfterClass(): void
+    {
+        // Templates are process-wide static state — drop this class' own so
+        // they do not leak into later test classes (RSRMID-2924).
+        RTM::resetTemplates();
     }
 }

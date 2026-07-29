@@ -996,4 +996,12 @@ final class ClientTest extends TestCase
         ];
         $this->assertEquals($expected, $response->getCommand());
     }
+
+    #[\Override]
+    public static function tearDownAfterClass(): void
+    {
+        // Templates are process-wide static state — drop this class' own so
+        // they do not leak into later test classes (RSRMID-2924).
+        RTM::resetTemplates();
+    }
 }

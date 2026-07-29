@@ -60,4 +60,12 @@ final class ResponseTemplateManagerTest extends TestCase
         $this->assertEquals($code, $tpl->getCode());
         $this->assertEquals($descr, $tpl->getDescription());
     }
+
+    #[\Override]
+    public static function tearDownAfterClass(): void
+    {
+        // Templates are process-wide static state — drop this class' own so
+        // they do not leak into later test classes (RSRMID-2924).
+        RTM::resetTemplates();
+    }
 }

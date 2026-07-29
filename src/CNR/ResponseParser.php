@@ -9,20 +9,35 @@ declare(strict_types=1);
 
 namespace CNIC\CNR;
 
+use CNIC\ResponseParserInterface;
+
 /**
  * CNR ResponseParser
  *
+ * Turns the line-oriented CNR wire format (`KEY=value`, with list columns under
+ * `PROPERTY[NAME][index]`) into the response hash. Instantiable and stateless —
+ * see {@see ResponseParserInterface} for why the parse step is a seam rather
+ * than a static call.
+ *
+ * @psalm-api
  * @package CNIC\CNR
  * @final
  */
-final class ResponseParser
+final class ResponseParser implements ResponseParserInterface
 {
     /**
      * Method to parse plain API response into js object
+     *
+     * The CNR wire format is self-describing, so $cmd is accepted only to keep
+     * the contract uniform across brands (IBS needs it to pick its JSON or
+     * plain-text branch) and is deliberately unused here.
+     *
      * @param string $raw API plain response
+     * @param array<string, string> $cmd API command used within this request (unused)
      * @return array<string, string|array<string, list<string>>>
      */
-    public static function parse(string $raw): array
+    #[\Override]
+    public function parse(string $raw, array $cmd = []): array
     {
         /** @var array<string, string|array<string, list<string>>> $hash */
         $hash = [];
