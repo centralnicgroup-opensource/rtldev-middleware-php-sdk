@@ -899,7 +899,19 @@ final class LazyColumn implements \CNIC\ColumnInterface
 
   Using `$this->parser` is what makes the injected substitute take effect; hard-coding `new MyResponseParser()` inside `populate()` compiles and passes its tests, and silently closes the seam back up.
 
-- **You supply a parser to a `CNR\Response`.** CNR columns are string-valued (`CNIC\CNR\Column` binds the shared column's value type to `string`), and the Response now checks that rather than inferring it from the concrete parser's return type. A `PROPERTY` cell that is not a string raises `CNIC\Exception\UnsupportedFeatureException` naming the column, instead of being silently dropped or coerced. The stock CNR parser cannot produce one, so this only affects your own.
+- **You supply a parser to a `CNR\Response`.** CNR columns are string-valued (`CNIC\CNR\Column` binds the shared column's value type to `string`), and the Response now checks that rather than inferring it from the concrete parser's return type. Each entry of your `PROPERTY` block must be a **list of strings**: a cell that is not a string, or an entry that is not a list, raises `CNIC\Exception\UnsupportedFeatureException` naming the column, instead of being silently dropped or coerced.
+
+  ```php
+  // Accepted
+  return ["CODE" => "200", "PROPERTY" => ["DOMAIN" => ["example.com"]]];
+
+  // Throws — not a list
+  return ["CODE" => "200", "PROPERTY" => ["DOMAIN" => "example.com"]];
+  // Throws — cell is not a string
+  return ["CODE" => "200", "PROPERTY" => ["TOTAL" => [42]]];
+  ```
+
+  Omitting `PROPERTY` altogether is fine and unchanged — that is an ordinary CNR response with no columns. The stock CNR parser cannot produce a violating shape, so this only affects your own.
 
 - **You extended `AbstractResponseTemplateManager`.** Replace your `parseResponse()` override with `newResponseParser()`:
 
