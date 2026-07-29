@@ -756,31 +756,42 @@ Three things were removed. Each is only reachable from code that reached into th
 
 ---
 
-## Reference: the canonical v19 usage
+## Reference: the canonical usage
 
-Bringing it together, here is idiomatic current-version code for each brand:
+Bringing it together, here is idiomatic code for the **current** major, whatever that is when you read this — this section is kept up to date rather than pinned to the version that introduced the factory:
 
 ```php
 use CNIC\ClientFactory;
 
 // --- CNR (CentralNic Reseller, fka RRPproxy) ---
-$cl = ClientFactory::cnr();
-$cl->useOTESystem()                       // omit for LIVE (the default)
-   ->setCredentials($user, $password);    // or ->setRoleCredentials($acct, $role, $pw)
+$cl = ClientFactory::cnr();                // returns a fully-typed CNR\SessionClient
+$cl->useOTESystem()                        // omit for LIVE (the default)
+   ->setCredentials($user, $password);     // or ->setRoleCredentials($acct, $role, $pw)
+// CNR has one fixed script path, so request() defaults it — pass a command only.
 $r = $cl->request(["COMMAND" => "StatusAccount"]);
 if ($r->isSuccess()) {
     print_r($r->getHash());
 }
-$cl->close();                             // release the cached cURL handle
+$cl->close();                              // release the cached cURL handle
 
-// --- IBS / Moniker (JSON API; no sessions, no roles) ---
-$cl = ClientFactory::ibs();               // or ClientFactory::moniker()
+// --- IBS / Moniker (JSON API) ---
+$cl = ClientFactory::ibs();                // or ClientFactory::moniker()
 $cl->useOTESystem()->setCredentials($user, $password);
-$r = $cl->request([/* ... */]);
+// This platform exposes many endpoints under one host and the *path* selects the
+// operation, so pass it as the second argument — there is no default that works.
+$r = $cl->request(["domain" => "example.com"], "Domain/Check");
+if ($r->isSuccess()) {
+    print_r($r->getHash());
+}
 $cl->close();
 ```
 
-For working, runnable examples per brand see [`examples/app_CNR.php`](examples/app_CNR.php), [`examples/app_IBS.php`](examples/app_IBS.php) and [`examples/app_MONIKER.php`](examples/app_MONIKER.php).
+Two brand differences the snippet is deliberately explicit about:
+
+- **The `$path` argument.** `request(array $cmd = [], string $path = "")` is symmetric across all brands, but only CNR has a meaningful default (`api/call.cgi`). On IBS/Moniker the path _is_ the operation, so omitting it sends the request to the bare host.
+- **Sessions and role logins are CNR-only, by type.** `login()`, `logout()`, `saveSession()`, `getSession()`/`setSession()` and `setRoleCredentials()` exist on the CNR client and **do not exist** on `IBS\Client`/`MONIKER\Client` — calling one is a static-analysis error at the call site, not a runtime surprise. See [→ v22.0.0](#-v2200).
+
+For working, runnable examples per brand — including the CNR session flow (`saveSession()`/`reuseSession()` across two stateless requests) — see [`examples/app_CNR.php`](examples/app_CNR.php), [`examples/app_IBS.php`](examples/app_IBS.php) and [`examples/app_MONIKER.php`](examples/app_MONIKER.php). Those run against OT&E with `composer demo:cnr` / `demo:ibs` / `demo:moniker`.
 
 ---
 
