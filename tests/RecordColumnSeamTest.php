@@ -7,8 +7,10 @@ namespace CNICTEST;
 use CNIC\CNR\Column as CNRColumn;
 use CNIC\CNR\Response as CNRResponse;
 use CNIC\Column;
+use CNIC\ColumnInterface;
 use CNIC\IBS\Response as IBSResponse;
 use CNIC\Record;
+use CNIC\RecordInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -144,6 +146,33 @@ final class RecordColumnSeamTest extends TestCase
         $this->assertInstanceOf(ReflectionNamedType::class, $type);
         $this->assertSame("string", $type->getName());
         $this->assertTrue($type->allowsNull());
+    }
+
+    /**
+     * Neither interface in this layer may declare a constructor.
+     *
+     * Same call as ResponseInterface in RSRMID-2918, extended to Column/Record
+     * in RSRMID-2923: nothing constructs through these types (columns come from
+     * a brand's addColumn(), records from its newRecord(), both naming concrete
+     * classes), so the declaration constrained every implementer for no caller's
+     * benefit — and PHP *does* enforce a constructor declared on an interface,
+     * unlike one inherited from a parent class, so the constraint was real. It
+     * ruled out any column or record not born from a plain (key, array) pair.
+     *
+     * Reflection is the only possible guard: re-adding the declaration would be
+     * legal PHP, since both built-in implementations happen to match it, so
+     * nothing would fail. Note hasMethod() is the right instrument here (these
+     * are interfaces, so there is no inherited-constructor confusion to avoid).
+     */
+    public function testNeitherInterfaceDeclaresAConstructor(): void
+    {
+        foreach ([ColumnInterface::class, RecordInterface::class] as $interface) {
+            $this->assertFalse(
+                (new ReflectionClass($interface))->hasMethod("__construct"),
+                "{$interface} must not declare __construct() — it describes what the thing can "
+                . "be asked, not how it is built (RSRMID-2923)"
+            );
+        }
     }
 
     /**

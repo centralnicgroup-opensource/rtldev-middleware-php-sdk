@@ -103,21 +103,31 @@ final class ResponseInterfaceConsumerTest extends TestCase
      * The other half of the same drift: construction is the job of the brand
      * factory hooks (AbstractClient::newResponse(),
      * AbstractResponseTemplateManager::createResponse()), each of which builds
-     * its own concrete Response — nothing constructs through this interface. A
-     * __construct() declaration here constrains nobody, because PHP exempts
-     * constructors from signature-compatibility checks, which is exactly how it
-     * drifted unnoticed: it declared 3 parameters while AbstractResponse had
-     * grown a 4th ($context).
+     * its own concrete Response — nothing constructs through this interface, so
+     * a __construct() declaration here constrains implementers for no caller's
+     * benefit.
      *
-     * Reflection is the only possible guard — PHP will never complain about the
-     * mismatch, and no behavioural test can see it either. (RSRMID-2918.)
+     * Note on the mechanism, corrected in RSRMID-2923: PHP **does** enforce a
+     * constructor declared on an *interface* (an incompatible implementation is
+     * a declaration-time fatal). The exemption applies to class-to-class
+     * inheritance only. This drift survived for a different reason — the
+     * interface declared 3 parameters and AbstractResponse had grown a 4th
+     * *optional* one ($context), and adding an optional parameter is legal
+     * widening. So the original rationale ("PHP exempts constructors, therefore
+     * the declaration constrains nobody") was wrong on both counts; the removal
+     * stands on the design ground above instead.
+     *
+     * Reflection is still the only possible guard: a re-add would be legal PHP
+     * (both implementations happen to match), so nothing else can see it.
+     * (RSRMID-2918, mechanism corrected in RSRMID-2923.)
      */
     public function testTheInterfaceDeclaresNoConstructor(): void
     {
         $this->assertFalse(
             (new ReflectionClass(ResponseInterface::class))->hasMethod("__construct"),
             "ResponseInterface must not declare __construct() — construction belongs to the "
-            . "brand factory hooks, and PHP does not enforce constructor signatures anyway"
+            . "brand factory hooks, and an interface should describe what a response can be "
+            . "asked, not how it is built"
         );
     }
 }
