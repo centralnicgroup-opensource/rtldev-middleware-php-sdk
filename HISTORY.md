@@ -1,3 +1,19 @@
+# [27.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v26.0.0...v27.0.0) (2026-07-30)
+
+
+### Features
+
+* **logger:** move the logger seam from the sink to the format ([aea79c9](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/aea79c9dc5a7d03d970d47d5c744b2826531d8bb))
+
+
+### BREAKING CHANGES
+
+* **logger:** LoggerInterface now declares format(): string alongside log(),
+and AbstractClient::setDefaultLogger() is replaced by the protected
+newLogger(LogSinkInterface) hook plus the public setLogSink().
+
+See [MIGRATION.md → v27.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2700)
+
 # [26.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v25.0.0...v26.0.0) (2026-07-29)
 
 
