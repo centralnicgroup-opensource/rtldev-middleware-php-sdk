@@ -32,10 +32,13 @@ interface LoggerInterface
     /**
      * Build the debug record for the given request/response pair.
      *
-     * Callers get the record as a string; nothing is written. Values are already
-     * masked by the time they arrive here — the response masks its own stored
-     * command ({@see AbstractResponse::sanitizeCommand()}) and the client passes
-     * a secured POST body — so implementations must not undo that.
+     * Callers get the record as a string; nothing is written. Both arguments are
+     * already masked when they arrive — the response masks its own stored
+     * command ({@see AbstractResponse::sanitizeCommand()}, so `getCommand()` and
+     * `getCommandPlain()` are safe) and the client passes a secured POST body —
+     * so implementations must not undo that. The exception is
+     * {@see ResponseInterface::getContext()}, which is caller-supplied and
+     * deliberately untouched: an implementation logging it masks it itself.
      *
      * @param string $post Post request data in string format (already secured)
      * @param ResponseInterface $r Response to log

@@ -32,9 +32,11 @@ use CNIC\ResponseInterface;
  *    ->setCustomLogger(new \MYCUSTOMNAMESPACE\Logger(new \MYCUSTOMNAMESPACE\FileSink("/var/log/cnic.log")));
  * ```
  *
- * Everything reaching `format()` is already masked — the response masks its own
- * stored command and the client passes a secured POST body — so do not reach
- * past `$r->getCommand()` for raw values when logging.
+ * Both arguments arrive masked: the response masks its own stored command (so
+ * `getCommand()` and `getCommandPlain()` are safe) and the client passes a
+ * secured POST body. The one thing that is **not** masked is
+ * `$r->getContext()` — that array is whatever you put there yourself, so if you
+ * log it, mask it yourself.
  *
  * @psalm-api
  * @package MYCUSTOMNAMESPACE
