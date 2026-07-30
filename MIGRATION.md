@@ -30,6 +30,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module             | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                       |
 | → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed     | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`            |
 | → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager  |
+| → v27.0.0 | 8.3+         | Loggers `format()` a record and a sink writes it; `setDefaultLogger()` removed        | Rename your `log()` body to `format()` and `return` the string; extend `CNIC\AbstractLogger`                   |
 
 Two things to respect throughout:
 
@@ -942,6 +943,88 @@ final class LazyColumn implements \CNIC\ColumnInterface
   It is `addTemplate()`'s counterpart, not a general undo: it restores what the container held the first time you called `addTemplate()` on that class, it is per brand, and a direct assignment to the public `$templates` property is outside its reach. Register through `addTemplate()` and it will always take you back.
 
 **Why this happened:** both parsers were static and hard-wired into `populate()`, so nothing in the Response tree could be exercised without a full raw wire payload, and the CNR parser had no test of its own at all. Because the two signatures differed (CNR one parameter, IBS two), no shared contract was even expressible. Unifying them made the seam possible, and the seam is the one already proven here for the HTTP transport (`TransportInterface`, v-19-era RSRMID-2910): a factory hook for the default, an injection point for the substitute. Two real implementations — CNR's line-oriented format and IBS's JSON-with-plain-text-fallback — justify the abstraction; this is not a speculative one.
+
+---
+
+## → v27.0.0 — the logger seam moved from the sink to the format
+
+**What changed:** `CNIC\LoggerInterface` used to be one method, `log(): void`, and every implementation ended in `echo`. The record itself — the only part that actually differs between brands — could not be obtained by anyone. It is now two halves:
+
+- **`format(string $post, ResponseInterface $r, ?string $error = null): string`** — new on `LoggerInterface`. Builds the debug record and **returns** it.
+- **`CNIC\LogSinkInterface::write(string $message): void`** — new. Decides where a record goes. `CNIC\EchoSink` is the shipped default and writes to standard output, exactly as before.
+- **`CNIC\AbstractLogger`** — new base class. Takes a sink (defaulting to `EchoSink`), implements `log()` as `sink->write(format(…))`, and leaves `format()` abstract. `log()` is `final`: a subclass that reintroduced it would silently ignore an injected sink.
+- **`AbstractClient::setLogSink(LogSinkInterface $sink)`** — new. Keeps the brand format, changes the destination.
+- **`AbstractClient::setDefaultLogger()` is gone**, replaced by the protected factory hook `newLogger(LogSinkInterface $sink): LoggerInterface`.
+
+**If you never wrote a logger, there is nothing to do.** `enableDebugMode()` emits the same bytes it always has — that is asserted per brand in the test suite.
+
+**What to respect** if you did any of the following:
+
+- **You wrote a custom logger.** Rename the body of `log()` to `format()`, return the string instead of echoing it, and extend `CNIC\AbstractLogger` — writing is inherited:
+
+  ```php
+  // BEFORE (v26)
+  final class MyLogger implements \CNIC\LoggerInterface
+  {
+      public function log(string $post, \CNIC\ResponseInterface $r, ?string $error = null): void
+      {
+          echo "[{$r->getCode()}] {$post}\n";
+      }
+  }
+
+  // AFTER (v27)
+  final class MyLogger extends \CNIC\AbstractLogger
+  {
+      #[\Override]
+      public function format(string $post, \CNIC\ResponseInterface $r, ?string $error = null): string
+      {
+          return "[{$r->getCode()}] {$post}\n";
+      }
+  }
+  ```
+
+  Implementing `LoggerInterface` directly still works and is the way to own the destination as well — but then you must supply **both** methods, and nothing calls `format()` for you.
+
+- **Your logger existed only to redirect output** (a file, a PSR-3 logger, the WHMCS or Blesta module log). Delete it and write a sink instead; you keep the brand's format for free, which is what you previously had to reimplement:
+
+  ```php
+  // AFTER (v27)
+  final class FileSink implements \CNIC\LogSinkInterface
+  {
+      public function __construct(private readonly string $path) {}
+
+      #[\Override]
+      public function write(string $message): void
+      {
+          file_put_contents($this->path, $message . PHP_EOL, FILE_APPEND);
+      }
+  }
+
+  $cl->enableDebugMode()->setLogSink(new FileSink("/var/log/cnic.log"));
+  ```
+
+  `setLogSink()` rebuilds the brand logger around your sink, so it also discards anything previously passed to `setCustomLogger()`. Pass a fresh `new \CNIC\EchoSink()` to get back to the stock behaviour.
+
+- **You called `setDefaultLogger()`.** It is gone. Use `setLogSink(new \CNIC\EchoSink())` — same effect, and it now says which destination it means.
+
+- **You subclassed a brand client and overrode `setDefaultLogger()`.** Override `newLogger()` instead:
+
+  ```php
+  // AFTER (v27)
+  #[\Override]
+  protected function newLogger(\CNIC\LogSinkInterface $sink): \CNIC\LoggerInterface
+  {
+      return new MyLogger($sink);
+  }
+  ```
+
+  Honour the `$sink` argument — that is what makes `setLogSink()` work for your subclass too.
+
+- **You subclassed `CNIC\CNR\Logger` or `CNIC\IBS\Logger`.** You could not: both are `final`, and remain so. They now extend `AbstractLogger` and declare `format()` only.
+
+- **You asserted on debug output with `ob_start()`.** Call `format()` and assert on the returned string, or hand the client a collecting sink. Output buffering is no longer needed to see what the SDK logs.
+
+**Why this happened:** the two brand loggers differed only in how they assembled the string — CNR joins command, POST body, error and plain response with newlines; IBS emits a labelled REQUEST/RESPONSE block with tab indentation — and then both did the identical thing with it. The seam was at the destination, which never varied, while the formatting, which does, was unreachable and (for CNR) untested. Moving the seam makes one formatter serve every sink instead of every sink carrying a copy of the format. Masking is unaffected and still happens upstream of the formatter: the response masks its own stored command and the client passes an already-secured POST body, so nothing new becomes obtainable except the record you asked for. (Ref: RSRMID-2925.)
 
 ---
 

@@ -9,33 +9,35 @@ declare(strict_types=1);
 
 namespace CNIC\IBS;
 
-use CNIC\LoggerInterface;
+use CNIC\AbstractLogger;
 use CNIC\ResponseInterface;
 
 /**
  * IBS Logger
  *
+ * Formatting only — the destination belongs to the sink the base class writes
+ * to (RSRMID-2925). Do not add a `log()` override here; it is final upstream.
+ *
  * @package CNIC\IBS
  */
-final class Logger implements LoggerInterface
+final class Logger extends AbstractLogger
 {
     /**
-     * Output/log given data
+     * Build the IBS debug record: a labelled REQUEST/RESPONSE block with the
+     * plain response indented by one tab per line.
      *
-     * @param string $post Post request data in string format
+     * @param string $post Post request data in string format (already secured)
      * @param ResponseInterface $r Response to log
      * @param string|null $error Error message (optional)
      */
     #[\Override]
-    public function log(string $post, ResponseInterface $r, ?string $error = null): void
+    public function format(string $post, ResponseInterface $r, ?string $error = null): string
     {
-        echo (
-            "R E Q U E S T\n" .
+        return "R E Q U E S T\n" .
             "\tAPI:  " . $r->getRequestURL() . "\n" .
             "\tPOST: " . $post . "\n\n" .
             "R E S P O N S E\n" .
             ($error !== null && $error !== '' ? "\tHTTP communication failed: " . $error . "\n" : "") .
-            "\t" . (preg_replace("/\n/", "\n\t", $r->getPlain()) ?? $r->getPlain())
-        );
+            "\t" . (preg_replace("/\n/", "\n\t", $r->getPlain()) ?? $r->getPlain());
     }
 }

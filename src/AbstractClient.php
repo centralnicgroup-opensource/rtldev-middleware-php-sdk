@@ -14,6 +14,7 @@ use CNIC\Exception\InvalidConfigurationException;
 use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\LoggerInterface;
+use CNIC\LogSinkInterface;
 use CNIC\ResponseInterface;
 use CNIC\System;
 
@@ -90,7 +91,6 @@ abstract class AbstractClient
 
     /**
      * logger instance for debug mode
-     * @psalm-suppress PropertyNotSetInConstructor — set via abstract setDefaultLogger() called in __construct()
      */
     protected LoggerInterface $logger;
 
@@ -110,7 +110,7 @@ abstract class AbstractClient
         // useLIVESystem() here to initialise its own URL copy — there is no copy
         // to initialise any more.
         $this->socketConfig = $this->newSocketConfig();
-        $this->setDefaultLogger();
+        $this->logger = $this->newLogger(new EchoSink());
     }
 
     /**
@@ -223,14 +223,33 @@ abstract class AbstractClient
     }
 
     /**
-     * Set the default logger for this client.
-     * Subclasses instantiate the appropriate Logger implementation.
+     * Instantiate the brand's logger, writing to the given sink. Mirrors
+     * {@see newTransport()}/{@see newSocketConfig()} — the factory hook that
+     * replaced the public `setDefaultLogger()` in RSRMID-2925, so the sink can
+     * be chosen without the brand's Logger class being named at the call site.
      */
-    abstract public function setDefaultLogger(): static;
+    abstract protected function newLogger(LogSinkInterface $sink): LoggerInterface;
 
     /**
-     * Set custom logger to use instead of the default one.
-     * Create your own class implementing \CNIC\LoggerInterface.
+     * Route debug output somewhere other than standard output, keeping this
+     * brand's format.
+     *
+     * This is the seam integrators want: the brand formatter is the part with
+     * the logic, the destination is the part that varies per host application.
+     * Passing a fresh {@see EchoSink} restores the shipped default, discarding
+     * any logger set via {@see setCustomLogger()}.
+     */
+    public function setLogSink(LogSinkInterface $sink): static
+    {
+        $this->logger = $this->newLogger($sink);
+        return $this;
+    }
+
+    /**
+     * Set custom logger to use instead of the default one — use this to replace
+     * the *format* as well as the destination. Create your own class extending
+     * \CNIC\AbstractLogger (format only) or implementing \CNIC\LoggerInterface
+     * (format and destination).
      */
     public function setCustomLogger(LoggerInterface $customLogger): static
     {

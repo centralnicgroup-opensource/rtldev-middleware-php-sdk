@@ -19,7 +19,7 @@ Facts below; the class inventory is derivable from `src/` and the **full deep di
 - **The `request()` lifecycle is a template method too** (`AbstractClient::performRequest()`), and public `request(array $cmd = [], string $path = "")` is symmetric across brands. Vary a brand only through `buildCommand()`/`newResponse()`/`newSocketConfig()`.
 - **Config-driven:** each `SocketConfig` (extends `AbstractSocketConfig`) carries endpoints/params/flags as typed properties (no `config.json`).
 - **Connection configuration lives on the `SocketConfig`, never on the client** — reach it via `AbstractClient::getSocketConfig()` (covariant `CNR\Client::getSocketConfig(): CNR\SocketConfig` is the one narrowing point).
-- **Type-hint against interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `ExtendedResponseInterface`, `RoleCredentialsInterface`, `ResponseParserInterface`, `TransportInterface`, `LoggerInterface`.
+- **Type-hint against interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `ExtendedResponseInterface`, `RoleCredentialsInterface`, `ResponseParserInterface`, `TransportInterface`, `LoggerInterface`, `LogSinkInterface`.
 - **An interface declaration must match its implementation's signature** — a parameter that exists only on the implementation is unreachable to the interface-typed consumers this project mandates. Adding one to the interface is **breaking**.
 - **Public API symbols** are annotated `@psalm-api` to suppress unused-symbol warnings.
 

@@ -14,6 +14,7 @@ use CNIC\CommandFormatter;
 use CNIC\IBS\Logger as L;
 use CNIC\IBS\Response;
 use CNIC\IBS\SocketConfig;
+use CNIC\LogSinkInterface;
 
 /**
  * IBS API Client
@@ -41,13 +42,12 @@ class Client extends AbstractClient
     }
 
     /**
-     * Set default IBS logger
+     * Instantiate the IBS logger writing to the given sink
      */
     #[\Override]
-    public function setDefaultLogger(): static
+    protected function newLogger(LogSinkInterface $sink): L
     {
-        $this->logger = new L();
-        return $this;
+        return new L($sink);
     }
 
     /**
