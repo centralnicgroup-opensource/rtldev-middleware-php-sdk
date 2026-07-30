@@ -15,6 +15,7 @@ use CNIC\CNR\Response;
 use CNIC\CommandFormatter;
 use CNIC\Exception\PaginationException;
 use CNIC\Exception\UnsupportedFeatureException;
+use CNIC\LogSinkInterface;
 use CNIC\RoleCredentialsInterface;
 
 /**
@@ -105,13 +106,12 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     }
 
     /**
-     * Set default CNR logger
+     * Instantiate the CNR logger writing to the given sink
      */
     #[\Override]
-    public function setDefaultLogger(): static
+    protected function newLogger(LogSinkInterface $sink): L
     {
-        $this->logger = new L();
-        return $this;
+        return new L($sink);
     }
 
     /**

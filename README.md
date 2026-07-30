@@ -60,6 +60,44 @@ Two brand differences the snippet is deliberately explicit about:
 
 **Type against the interfaces, not the concrete classes.** Depending on `CNIC\ResponseInterface`, `CNIC\ColumnInterface`, `CNIC\RecordInterface` and `CNIC\LoggerInterface` is what keeps future majors from breaking you; code that reaches for `CNIC\CNR\Response` or uses `method_exists()` fallbacks is what does not survive them.
 
+### Debug output
+
+`enableDebugMode()` writes one record per request to standard output. Two seams let you take it somewhere else, and they are independent:
+
+```php
+use CNIC\LogSinkInterface;
+
+// 1. Keep the brand's format, change the destination.
+final class FileSink implements LogSinkInterface
+{
+    public function __construct(private readonly string $path) {}
+
+    public function write(string $message): void
+    {
+        file_put_contents($this->path, $message . PHP_EOL, FILE_APPEND);
+    }
+}
+
+$cl->enableDebugMode()->setLogSink(new FileSink("/var/log/cnic.log"));
+
+// 2. Change the format too: extend CNIC\AbstractLogger and implement one
+//    method — the sink wiring comes with it.
+final class MyLogger extends \CNIC\AbstractLogger
+{
+    #[\Override]
+    public function format(string $post, \CNIC\ResponseInterface $r, ?string $error = null): string
+    {
+        return sprintf("[%d] %s\n", $r->getCode(), $post);
+    }
+}
+
+$cl->setCustomLogger(new MyLogger(new FileSink("/var/log/cnic.log")));
+```
+
+Order matters between the two: `setLogSink()` rebuilds the **brand** logger around your sink, so call it before `setCustomLogger()`, not after.
+
+`LoggerInterface::format()` **returns** the record rather than printing it, so you can route SDK debug output into your own logging without reimplementing a brand's format — and assert on it in your own tests without output buffering. Sensitive command values (`PASSWORD`, `AUTH`, `transferAuthInfo`) are already masked before they reach the formatter.
+
 For working, runnable examples per brand — including the CNR session flow (`saveSession()`/`reuseSession()` across two stateless requests) — see [`examples/app_CNR.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_CNR.php), [`examples/app_IBS.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_IBS.php) and [`examples/app_MONIKER.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_MONIKER.php). Those are not part of the Composer package — clone the repository to run them, as described under [Running the Demo Application](#running-the-demo-application).
 
 ## Date & time values
