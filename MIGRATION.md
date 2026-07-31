@@ -40,6 +40,8 @@ Two things to respect throughout:
 
 ---
 
+<a id="-v900"></a>
+
 ## → v9.0.0 — PHP 8.1 minimum
 
 **What changed:** the SDK now requires **PHP 8.1 or higher**.
@@ -54,6 +56,8 @@ Two things to respect throughout:
 ```
 
 ---
+
+<a id="-v1000"></a>
 
 ## → v10.0.0 — cURL handle is cached and reused
 
@@ -77,6 +81,8 @@ $cl->logout();
 
 ---
 
+<a id="-v1100"></a>
+
 ## → v11.0.0 — Internet.bs (IBS) and Moniker (MONIKER) added
 
 **What changed:** two new registrar brands were added — **Internet.bs** (`IBS`) and **Moniker** (`MONIKER`).
@@ -84,6 +90,8 @@ $cl->logout();
 **What to respect:** this is **additive**. Existing single-brand code keeps working unchanged. If you now want to talk to more than one brand, this is the version that makes it possible — see the factory sections below for how brand selection evolved.
 
 ---
+
+<a id="-v1200"></a>
 
 ## → v12.0.0 — HEXONET brand removed (end of life)
 
@@ -98,6 +106,8 @@ $cl->logout();
 
 ---
 
+<a id="-v1300"></a>
+
 ## → v13.0.0 — IBS / Moniker switched to the JSON API
 
 **What changed:** the **IBS** and **Moniker** brands now speak the JSON API / response format instead of the previous format. **CNR is unaffected.**
@@ -107,6 +117,8 @@ $cl->logout();
 If you only use CNR, this major is a no-op for your code.
 
 ---
+
+<a id="-v1400"></a>
 
 ## → v14.0.0 — PHP 8.3 minimum, `final` classes, `getPOSTData()` tightened
 
@@ -128,6 +140,8 @@ final class MyLogger implements \CNIC\LoggerInterface { /* ... */ }
 ```
 
 ---
+
+<a id="-v1500"></a>
 
 ## → v15.0.0 — Logger contract + IBS session methods removed
 
@@ -167,6 +181,8 @@ if ($cl instanceof \CNIC\CNR\SessionClient) {
 
 ---
 
+<a id="-v1600"></a>
+
 ## → v16.0.0 — `ClientFactory::getClient()` signature slimmed
 
 **What changed:** `ClientFactory::getClient()` no longer accepts a `$params` array or a `$logger` argument. Its signature became `getClient(string $registrar)`. It also stopped decoding your password internally.
@@ -195,6 +211,8 @@ $cl->useOTESystem()
 
 ---
 
+<a id="-v1700"></a>
+
 ## → v17.0.0 — `getNextPageNumber()` returns `null` on the last page
 
 **What changed:** `getNextPageNumber()` now returns **`null`** when there is no next page, instead of clamping to the current (last) page number.
@@ -217,6 +235,8 @@ if ($next !== null) { /* fetch next page */ }
 ```
 
 ---
+
+<a id="-v1800"></a>
 
 ## → v18.0.0 — CNR-only response methods moved off `ResponseInterface`
 
@@ -245,6 +265,8 @@ if ($r instanceof \CNIC\ExtendedResponseInterface) {
 ```
 
 ---
+
+<a id="-v1900"></a>
 
 ## → v19.0.0 — Typed factory constructors; `setRoleCredentials()` relocated
 
@@ -294,6 +316,8 @@ if ($cl instanceof \CNIC\RoleCredentialsInterface) {
 > **This last paragraph is true of v19–v21 only, and v22 reverses half of it.** `getSession()`/`setSession()` were _not_ harmless there: on IBS/Moniker they forwarded to null-object stubs, so `setSession("x")` looked accepted and was discarded. They moved to `CNR\Client` in v22 — see [→ v22.0.0](#-v2200). `useHighPerformanceConnectionSetup()` genuinely is brand-agnostic and stays put. The text above is kept as it stood so a v18 → v19 upgrade still reads correctly.
 
 ---
+
+<a id="-v2000"></a>
 
 ## → v20.0.0 — IBS/Moniker no longer force IPv4; `ResponseInterface` matches its implementation
 
@@ -422,6 +446,8 @@ Guard the call (`if ($ctor !== null)`) or reflect on the concrete `CNIC\CNR\Resp
 
 ---
 
+<a id="-v2100"></a>
+
 ## → v21.0.0 — `setExtraCurlOptions()` reaches the wire; transport-owned options throw
 
 **Read this if you call `setExtraCurlOptions()`.** If you do not, nothing here affects you: the default transport behaviour is unchanged, and the new timeout setter is purely additive.
@@ -508,6 +534,8 @@ A negative value is rejected rather than forwarded: cURL refuses it by returning
 
 ---
 
+<a id="-v2200"></a>
+
 ## → v22.0.0 — API sessions are CNR-only, enforced by type
 
 **Read this if you build an IBS or Moniker client, or if you name either brand's `SessionClient` type.** CNR code is unaffected: every session method is still there, on the same client, with the same behaviour and the same wire format.
@@ -590,6 +618,8 @@ This is a deliberate reversal of a v19 sub-decision, and it settles a policy the
 The practical consequence for you: brand capability differences now show up in your editor and in PHPStan/Psalm output, rather than at runtime or not at all.
 
 ---
+
+<a id="-v2300"></a>
 
 ## → v23.0.0 — connection configuration has one home
 
@@ -699,6 +729,8 @@ $cl->getProxy();   // BEFORE: null      AFTER: "http://proxy.example:3128"
 
 ---
 
+<a id="-v2400"></a>
+
 ## → v24.0.0 — CNR IDN command rewriting is its own module
 
 **What changed:** the SDK converts the IDN parameters of an outbound CNR command to punycode before sending it. Those rules used to live on the shared `AbstractClient`, as a protected `autoIDNConvert()` switched on by a `needsIDNConvert` flag on the `SocketConfig` — a flag only CNR ever set. They now live in `CNIC\CNR\IDNCommandRewriter`, called from `CNR\Client`'s own `buildCommand()` hook.
@@ -759,6 +791,8 @@ Three things were removed. Each is only reachable from code that reached into th
 **Why this happened:** 37 lines of CNR-specific domain regex on a base class shared with IBS and Moniker, gated by a flag whose only job was to disable them for two brands out of three — the same pattern v19 removed for role credentials and v20 for the IBS IPv4 default. It was also untestable in place: the only way to reach the rules was `ReflectionMethod::setAccessible()` on a constructed client. They now have a public surface, a direct test, and no shared-base footprint.
 
 ---
+
+<a id="-v2500"></a>
 
 ## → v25.0.0 — one shared `Record`, one shared `Column`
 
@@ -852,6 +886,8 @@ final class LazyColumn implements \CNIC\ColumnInterface
 **Why this happened:** two of these classes carried no behaviour at all, and the column pair duplicated ~35 lines with three trivial differences, one of which (the bounds check) was written twice in two different styles. Every other layer in the SDK — Client, SocketConfig, Response, TemplateManager, Translator — already shares a base and lets a brand override only what differs; this was the last place in that layer that did not. Consolidating it also closed a real coverage gap: `CNR\Column`'s `getData()`, `getDataByIndex()` and bounds behaviour had no direct tests, and now inherit the full shared suite.
 
 ---
+
+<a id="-v2600"></a>
 
 ## → v26.0.0 — response parsing is a seam
 
@@ -947,6 +983,8 @@ final class LazyColumn implements \CNIC\ColumnInterface
 
 ---
 
+<a id="-v2700"></a>
+
 ## → v27.0.0 — the logger seam moved from the sink to the format
 
 **What changed:** `CNIC\LoggerInterface` used to be one method, `log(): void`, and every implementation ended in `echo`. The record itself — the only part that actually differs between brands — could not be obtained by anyone. It is now two halves:
@@ -1028,6 +1066,8 @@ final class LazyColumn implements \CNIC\ColumnInterface
 **Why this happened:** the two brand loggers differed only in how they assembled the string — CNR joins command, POST body, error and plain response with newlines; IBS emits a labelled REQUEST/RESPONSE block with tab indentation — and then both did the identical thing with it. The seam was at the destination, which never varied, while the formatting, which does, was unreachable and (for CNR) untested. Moving the seam makes one formatter serve every sink instead of every sink carrying a copy of the format. Masking is unaffected and still happens upstream of the formatter: the response masks its own stored command and the client passes an already-secured POST body, so nothing new becomes obtainable except the record you asked for. (Ref: RSRMID-2925.)
 
 ---
+
+<a id="-v2800"></a>
 
 ## → v28.0.0 — IBS/Moniker date separators survive verbatim; Record/Column gained a date accessor; `IBS\Response::getStatus()` removed
 
