@@ -12,7 +12,7 @@ Issues, tasks, stories, and PRDs for this repo live in **Jira Cloud**, project *
 - **Required fields on create:**
   - Work Category `customfield_12383` (select): Strategic `13284`, Maintain Revenue/BAU `13285`, Tech Debt `13286`, Security `13287`
   - Business Unit `customfield_10027` (multi-checkbox): CentralNic Reseller `10187` (default)
-- **Workflow transitions:** To Do `11`, In Progress `21`, In Review `41`, QA `61`, Ready for Deployment `51`, Done `31`, Stand-by `71`, Cancelled `91`
+- **Workflow transitions:** To Do `11`, In Progress `21`, In Review `41`, QA `61`, Ready for Deployment `51`, Done `31`, Stand-by `71`, Cancelled `91` — all eight re-verified against the live workflow 2026-07-31; use them directly, do **not** look them up (see below)
 - **Known account IDs:** Kai Schwarz `61358848ee2fd0006aac7b4f`, Asif Nawaz `62a84362bf7afc006f3b15e5`
 
 ## Conventions
@@ -22,7 +22,7 @@ Issues, tasks, stories, and PRDs for this repo live in **Jira Cloud**, project *
 - **Read an issue:** `getJiraIssue` (add `fields`/`expand` as needed); `searchJiraIssuesUsingJql` for lists (e.g. `project = RSRMID AND component = PHP-SDK AND statusCategory != Done`).
 - **Comment:** `addCommentToJiraIssue`.
 - **Edit / set fields:** `editJiraIssue`.
-- **Transition:** `getTransitionsForJiraIssue` then `transitionJiraIssue` with the transition id above.
+- **Transition:** call `transitionJiraIssue` straight away with the id from **Workflow transitions** above — the ids are static and cached here precisely so this needs no lookup. Reach for `getTransitionsForJiraIssue` only to *diagnose* a transition that failed or is genuinely unavailable (workflow changed, or a condition on the target status is unmet); calling it first as a matter of course wastes a round-trip and a chunk of context on a payload whose eight useful values are already on this page.
 
 ## Branch / PR linkage
 
