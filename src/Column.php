@@ -83,4 +83,22 @@ class Column implements ColumnInterface
     {
         return ($idx >= 0 && $idx < $this->length);
     }
+
+    /**
+     * Get column data at given index, parsed as a date/time value.
+     *
+     * Opt-in narrowing over {@see self::getDataByIndex()}: returns `null` for
+     * an out-of-range index, a non-string value, or a string
+     * {@see ApiDateTime::tryFrom()} cannot parse. There is no throwing variant
+     * here — use `ApiDateTime::from($col->getDataByIndex($idx))` directly if an
+     * unparsable value should be a loud failure instead.
+     *
+     * @param integer $idx data index
+     */
+    #[\Override]
+    public function getDateTimeByIndex(int $idx): ?ApiDateTime
+    {
+        $value = $this->getDataByIndex($idx);
+        return is_string($value) ? ApiDateTime::tryFrom($value) : null;
+    }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CNICTEST;
 
+use CNIC\ApiDateTime;
 use CNIC\Record;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -69,5 +71,63 @@ final class RecordTest extends TestCase
         $rec = new Record(["EMPTY" => null]);
         $this->assertNull($rec->getDataByKey("EMPTY"));
         $this->assertArrayHasKey("EMPTY", $rec->getData());
+    }
+
+    // --- getDateTimeByKey() ---
+
+    public function testGetDateTimeByKeyParsesDashSeparatedValue(): void
+    {
+        $rec = new Record(["EXPIRATIONDATE" => "2026-07-25 07:46:34"]);
+        $dt = $rec->getDateTimeByKey("EXPIRATIONDATE");
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertSame(1784965594, $dt->ts);
+    }
+
+    public function testGetDateTimeByKeyParsesSlashSeparatedValue(): void
+    {
+        $rec = new Record(["EXPIRATIONDATE" => "2030/07/17"]);
+        $dt = $rec->getDateTimeByKey("EXPIRATIONDATE");
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertSame("2030-07-17", $dt->date);
+    }
+
+    public function testGetDateTimeByKeyOfDateOnlyValueHasNullTs(): void
+    {
+        $rec = new Record(["EXPIRATIONDATE" => "2030/07/17"]);
+        $dt = $rec->getDateTimeByKey("EXPIRATIONDATE");
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertNull($dt->ts);
+    }
+
+    public function testGetDateTimeByKeyOfMissingKeyIsNull(): void
+    {
+        $rec = new Record(self::ROW);
+        $this->assertNull($rec->getDateTimeByKey("NOTAKEY"));
+    }
+
+    /**
+     * @return array<string, array{mixed}>
+     */
+    public static function nonStringValues(): array
+    {
+        return [
+            "int" => [42],
+            "array" => [["nested" => "value"]],
+            "null" => [null],
+            "bool" => [true],
+        ];
+    }
+
+    #[DataProvider("nonStringValues")]
+    public function testGetDateTimeByKeyOfNonStringValueIsNull(mixed $value): void
+    {
+        $rec = new Record(["EXPIRATIONDATE" => $value]);
+        $this->assertNull($rec->getDateTimeByKey("EXPIRATIONDATE"));
+    }
+
+    public function testGetDateTimeByKeyOfUnparsableStringIsNull(): void
+    {
+        $rec = new Record(["EXPIRATIONDATE" => "not a date"]);
+        $this->assertNull($rec->getDateTimeByKey("EXPIRATIONDATE"));
     }
 }

@@ -23,9 +23,9 @@ final class RecordTest extends TestCase
         "transactid"       => "8986680508b740347a73e339b5c3bd67",
         "status"           => "SUCCESS",
         "domain"           => "ibstest.com",
-        "expirationdate"   => "2026-02-20",
-        "registrationdate" => "2025-02-20",
-        "paiduntil"        => "2026-02-20",
+        "expirationdate"   => "2026/02/20",
+        "registrationdate" => "2025/02/20",
+        "paiduntil"        => "2026/02/20",
         "domainstatus"     => "EXPIRED",
         "contacts"         => [
             "registrant" => ["firstname" => "Middle", "lastname" => "Ware"],
@@ -63,7 +63,7 @@ final class RecordTest extends TestCase
         $this->assertInstanceOf(Record::class, $rec);
         // all scalar fields present at index 0
         $this->assertSame("ibstest.com", $rec->getDataByKey("domain"));
-        $this->assertSame("2026-02-20", $rec->getDataByKey("expirationdate"));
+        $this->assertSame("2026/02/20", $rec->getDataByKey("expirationdate"));
         $this->assertSame("EXPIRED", $rec->getDataByKey("domainstatus"));
         $this->assertSame("ns1.ispapi.net", $rec->getDataByKey("nameserver"));
         // contacts full object preserved (nested registrant/admin values covered by equality)

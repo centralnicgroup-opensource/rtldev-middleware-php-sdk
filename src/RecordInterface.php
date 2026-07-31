@@ -47,4 +47,14 @@ interface RecordInterface
      * @return bool boolean result
      */
     //public function hasData(string $key): bool;
+
+    /**
+     * Get row data for given column, parsed as a date/time value.
+     *
+     * Returns `null` for a missing key, a non-string value, or a string that
+     * cannot be parsed — see {@see ApiDateTime::tryFrom()}.
+     *
+     * @param string $key column name
+     */
+    public function getDateTimeByKey(string $key): ?ApiDateTime;
 }

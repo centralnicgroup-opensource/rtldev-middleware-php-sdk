@@ -71,7 +71,7 @@ final class ResponseTest extends TestCase
         $this->assertTrue($r->isSuccess());
         $this->assertEquals("SUCCESS", $r->getStatus());
         $this->assertEquals("ibstest.com", $r->getHash()["domain"]);
-        $this->assertEquals("2026-02-20", $r->getHash()["expirationdate"]);
+        $this->assertEquals("2026/02/20", $r->getHash()["expirationdate"]);
     }
 
     public function testJsonErrorResponse(): void
@@ -107,9 +107,9 @@ final class ResponseTest extends TestCase
         $r = new R($json, $cmd);
         $this->assertTrue($r->isSuccess());
         $this->assertEquals("ibstest.com", $r->getHash()["domain"]);
-        $this->assertEquals("2026-02-20", $r->getHash()["expirationdate"]);
-        $this->assertEquals("2025-02-20", $r->getHash()["registrationdate"]);
-        $this->assertEquals("2026-02-20", $r->getHash()["paiduntil"]);
+        $this->assertEquals("2026/02/20", $r->getHash()["expirationdate"]);
+        $this->assertEquals("2025/02/20", $r->getHash()["registrationdate"]);
+        $this->assertEquals("2026/02/20", $r->getHash()["paiduntil"]);
         // nested objects and arrays preserved
         $this->assertIsArray($r->getHash()["contacts"]);
         $nameserver = $r->getHash()["nameserver"];

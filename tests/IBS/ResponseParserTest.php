@@ -26,19 +26,30 @@ final class ResponseParserTest extends TestCase
 
     public function testParseResponseWithDates(): void
     {
-        $raw = (string) json_encode([
+        // Raw date values survive verbatim — the parser no longer rewrites
+        // "/" to "-" on date-suffixed keys (that normalization moved to
+        // CNIC\ApiDateTime, which accepts both separators).
+        $input = [
             "date" => "2021/12/31",
             "expirydate" => "2026/12/31",
             "paiduntil" => "2023/07/01",
             "EXPIRATION" => "2024/05/02"
-        ]);
-        $expected = [
-            'date' => '2021-12-31',
-            'expirydate' => '2026-12-31',
-            'paiduntil' => '2023-07-01',
-            'EXPIRATION' => '2024-05-02'
         ];
-        $this->assertSame($expected, $this->parser()->parse($raw));
+        $raw = (string) json_encode($input);
+        $this->assertSame($input, $this->parser()->parse($raw));
+    }
+
+    public function testParseDoesNotCorruptNonDateSlashValues(): void
+    {
+        // The old rewrite matched on key suffix alone and corrupted any "/"
+        // value under a date-suffixed key, including non-date content such
+        // as "n/a". It must now survive untouched.
+        $input = [
+            "updatedate" => "n/a",
+            "paiduntil" => "n/a",
+        ];
+        $raw = (string) json_encode($input);
+        $this->assertSame($input, $this->parser()->parse($raw));
     }
 
     public function testParseResponseWithSpecialCharacters(): void
@@ -97,23 +108,17 @@ final class ResponseParserTest extends TestCase
         $this->assertSame($expected, $this->parser()->parse($raw));
     }
 
-    public function testParseNestedDateNormalization(): void
+    public function testParseNestedDatesSurviveVerbatim(): void
     {
-        $raw = (string) json_encode([
+        $input = [
             "domain" => "ibstest.com",
             "data" => [
                 "expirationdate" => "2026/02/20",
                 "nested" => ["paiduntil" => "2027/01/02"]
             ]
-        ]);
-        $expected = [
-            "domain" => "ibstest.com",
-            "data" => [
-                "expirationdate" => "2026-02-20",
-                "nested" => ["paiduntil" => "2027-01-02"]
-            ]
         ];
-        $this->assertSame($expected, $this->parser()->parse($raw));
+        $raw = (string) json_encode($input);
+        $this->assertSame($input, $this->parser()->parse($raw));
     }
 
     public function testParseResponseFormatCaseInsensitive(): void

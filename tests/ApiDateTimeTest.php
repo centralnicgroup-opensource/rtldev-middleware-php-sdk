@@ -31,12 +31,17 @@ final class ApiDateTimeTest extends TestCase
         $this->assertSame("2026-07-25", $dt->date);
         $this->assertSame("2026-07-25 07:46:34", $dt->dateTime);
         $this->assertSame("UTC", $dt->tz);
+        $this->assertSame("2026-07-25 07:46:34", $dt->raw);
         $this->assertFalse($dt->isDateOnly());
     }
 
     /**
      * CNR appends a fractional-second part (e.g. "2024-12-10 13:17:55.0").
-     * It is matched and discarded — the SDK's resolution is whole seconds.
+     * It is matched and discarded from $dateTime — the SDK's resolution is
+     * whole seconds — but it survives verbatim in $raw. This is the regression
+     * test that catches someone later "tidying up" by passing the
+     * separator-normalised subject (rather than the original $value) into the
+     * constructor.
      */
     public function testDiscardsFractionalSeconds(): void
     {
@@ -50,6 +55,15 @@ final class ApiDateTimeTest extends TestCase
             ApiDateTime::from("2024-12-10 13:17:55.123456")->ts,
             "A fractional part must not change the resulting instant."
         );
+    }
+
+    public function testRawRetainsFractionalSecondsDiscardedByDateTime(): void
+    {
+        $dt = ApiDateTime::from("2026-07-25 07:46:34.813");
+
+        $this->assertStringEndsWith(".813", $dt->raw);
+        $this->assertNotNull($dt->dateTime);
+        $this->assertStringNotContainsString(".", $dt->dateTime);
     }
 
     /**
@@ -66,7 +80,53 @@ final class ApiDateTimeTest extends TestCase
         $this->assertNull($dt->dateTime);
         $this->assertSame("2030-07-17", $dt->date);
         $this->assertSame("UTC", $dt->tz);
+        $this->assertSame("2030-07-17", $dt->raw);
         $this->assertTrue($dt->isDateOnly());
+    }
+
+    /**
+     * IBS/Moniker actually send "/" as the date separator (e.g. "2030/07/17").
+     * It is accepted directly and $date always comes back with "-" regardless.
+     */
+    public function testParsesSlashSeparatedDateOnlyValue(): void
+    {
+        $dt = ApiDateTime::from("2030/07/17");
+
+        $this->assertNull($dt->ts);
+        $this->assertNull($dt->dateTime);
+        $this->assertSame("2030-07-17", $dt->date);
+        $this->assertSame("UTC", $dt->tz);
+        $this->assertSame("2030/07/17", $dt->raw);
+        $this->assertTrue($dt->isDateOnly());
+    }
+
+    /**
+     * The "/" separator is accepted symmetrically with a time part too, and
+     * $dateTime always comes back with "-" regardless of the input separator.
+     */
+    public function testParsesSlashSeparatedTimestamp(): void
+    {
+        $dt = ApiDateTime::from("2026/07/25 07:46:34");
+
+        $this->assertSame(1784965594, $dt->ts);
+        $this->assertSame("2026-07-25", $dt->date);
+        $this->assertSame("2026-07-25 07:46:34", $dt->dateTime);
+        $this->assertSame("UTC", $dt->tz);
+        $this->assertSame("2026/07/25 07:46:34", $dt->raw);
+        $this->assertFalse($dt->isDateOnly());
+    }
+
+    /**
+     * Pins that normalisation to ISO applies to the struct ($date) and not to
+     * $raw: for "/" input the two must differ.
+     */
+    public function testRawPreservesSlashSeparatorWhileDateIsAlwaysIso(): void
+    {
+        $dt = ApiDateTime::from("2026/02/20");
+
+        $this->assertSame("2026/02/20", $dt->raw);
+        $this->assertSame("2026-02-20", $dt->date);
+        $this->assertNotSame($dt->raw, $dt->date);
     }
 
     /**
@@ -87,6 +147,7 @@ final class ApiDateTimeTest extends TestCase
                 "date" => "2026-07-25",
                 "dateTime" => "2026-07-25 07:46:34",
                 "tz" => "UTC",
+                "raw" => "2026-07-25 07:46:34",
             ],
             ApiDateTime::from("2026-07-25 07:46:34")->toArray()
         );
@@ -100,6 +161,7 @@ final class ApiDateTimeTest extends TestCase
                 "date" => "2030-07-17",
                 "dateTime" => null,
                 "tz" => "UTC",
+                "raw" => "2030-07-17",
             ],
             ApiDateTime::from("2030-07-17")->toArray()
         );
@@ -153,7 +215,21 @@ final class ApiDateTimeTest extends TestCase
             "empty string" => [""],
             "unix timestamp" => ["1784965594"],
             "free text" => ["not a date"],
-            "slash separators" => ["2026/07/25"],
+            // The same strictness cases, repeated in the "/" separator form.
+            "unpadded month and day (slash)" => ["2026/2/1"],
+            "month and day out of range (slash)" => ["2026/13/45"],
+            "day past end of month (slash)" => ["2026/02/30"],
+            "zero date (slash)" => ["0000/00/00"],
+            // Consistency between the two halves is required — a mix of both
+            // separators in one value is rejected rather than tolerated.
+            "mixed separators, dash then slash" => ["2026-02/20"],
+            "mixed separators, slash then dash" => ["2026/02-20"],
+            // Without the `D` modifier, PCRE's "$" also matches immediately
+            // before a single trailing newline; these pin that it does not.
+            "trailing newline, date only" => ["2026-07-25\n"],
+            "trailing newline, date only (slash)" => ["2030/07/17\n"],
+            "trailing newline, timestamp" => ["2026-07-25 07:46:34\n"],
+            "trailing newline, timestamp (slash)" => ["2026/07/25 07:46:34\n"],
         ];
     }
 
@@ -189,11 +265,38 @@ final class ApiDateTimeTest extends TestCase
         $this->assertNull(ApiDateTime::tryFrom("2026-02-30"));
     }
 
+    /**
+     * Mixed separators are rejected by tryFrom() too — null, not a partial parse.
+     */
+    public function testTryFromReturnsNullForMixedSeparators(): void
+    {
+        $this->assertNull(ApiDateTime::tryFrom("2026-02/20"));
+        $this->assertNull(ApiDateTime::tryFrom("2026/02-20"));
+    }
+
+    /**
+     * A trailing newline is rejected by tryFrom() too — null, not a partial
+     * parse that quietly carries the newline into $raw.
+     */
+    public function testTryFromReturnsNullForTrailingNewline(): void
+    {
+        $this->assertNull(ApiDateTime::tryFrom("2026-07-25\n"));
+        $this->assertNull(ApiDateTime::tryFrom("2026-07-25 07:46:34\n"));
+    }
+
     public function testTryFromParsesValidInput(): void
     {
         $dt = ApiDateTime::tryFrom("2026-07-25 07:46:34");
 
         $this->assertInstanceOf(ApiDateTime::class, $dt);
         $this->assertSame(1784965594, $dt->ts);
+    }
+
+    public function testTryFromParsesSlashSeparatedInput(): void
+    {
+        $dt = ApiDateTime::tryFrom("2030/07/17");
+
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertSame("2030-07-17", $dt->date);
     }
 }

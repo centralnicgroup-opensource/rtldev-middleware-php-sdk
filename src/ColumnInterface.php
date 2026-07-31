@@ -55,4 +55,14 @@ interface ColumnInterface
      * @return bool
      */
     //public function hasDataIndex(int $idx): bool;
+
+    /**
+     * Get column data at given index, parsed as a date/time value.
+     *
+     * Returns `null` for an out-of-range index, a non-string value, or a
+     * string that cannot be parsed — see {@see ApiDateTime::tryFrom()}.
+     *
+     * @param int $idx data index
+     */
+    public function getDateTimeByIndex(int $idx): ?ApiDateTime;
 }
