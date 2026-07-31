@@ -16,7 +16,7 @@ final class ResponseTest extends TestCase
     public function testGetTemplateNotFound(): void
     {
         $tpl = RTM::getTemplate("IwontExist");
-        $this->assertEquals("FAILURE", $tpl->getStatus());
+        $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("500 Response Template not found", $tpl->getDescription());
     }
 
@@ -47,7 +47,7 @@ final class ResponseTest extends TestCase
         RTM::addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
         $this->assertTrue(RTM::hasTemplate($tplid));
         $tpl = RTM::getTemplate($tplid);
-        $this->assertEquals("FAILURE", $tpl->getStatus());
+        $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
 
         // providing template by status and description
@@ -55,7 +55,7 @@ final class ResponseTest extends TestCase
         RTM::addTemplate($tplid, "FAILURE", "Forbidden");
         $this->assertTrue(RTM::hasTemplate($tplid));
         $tpl = RTM::getTemplate($tplid);
-        $this->assertEquals("FAILURE", $tpl->getStatus());
+        $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
     }
 
@@ -75,7 +75,7 @@ final class ResponseTest extends TestCase
     public function testConstructorEmptyResponse(): void
     {
         $r = new R("");
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertEquals("423 Empty API response. Probably unreachable API end point", $r->getDescription());
     }
 
@@ -84,13 +84,13 @@ final class ResponseTest extends TestCase
         // JSON without status field
         $raw = RT::translate('{"somekey":"somevalue"}', []);
         $r = new R($raw);
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertEquals("423 Invalid API response. Contact Support", $r->getDescription());
 
         // plain text without status field
         $raw2 = RT::translate("somekey=somevalue\r\n", []);
         $r2 = new R($raw2);
-        $this->assertEquals("FAILURE", $r2->getStatus());
+        $this->assertEquals("FAILURE", $r2->getHash()["status"] ?? null);
         $this->assertEquals("423 Invalid API response. Contact Support", $r2->getDescription());
     }
 
@@ -98,7 +98,7 @@ final class ResponseTest extends TestCase
     {
         $r = new R("httperror|Connection timed out");
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Connection timed out", $r->getDescription());
     }
 
@@ -110,7 +110,7 @@ final class ResponseTest extends TestCase
         $json = '{"transactid":"xyz789","status":"SUCCESS","domain":"ibstest.com","expirationdate":"2026/02/20"}';
         $r = new R($json, $cmd);
         $this->assertTrue($r->isSuccess());
-        $this->assertEquals("SUCCESS", $r->getStatus());
+        $this->assertEquals("SUCCESS", $r->getHash()["status"] ?? null);
         $this->assertEquals("ibstest.com", $r->getHash()["domain"]);
         $this->assertEquals("2026/02/20", $r->getHash()["expirationdate"]);
     }
@@ -121,7 +121,7 @@ final class ResponseTest extends TestCase
         $json = '{"transactid":"abc123","status":"FAILURE","message":"Permission denied! \"available123test.com\" permission is not granted.","code":100005}';
         $r = new R($json, $cmd);
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Permission denied!", $r->getDescription());
         $this->assertEquals(100005, $r->getCode());
     }
@@ -166,7 +166,7 @@ final class ResponseTest extends TestCase
     {
         $r = new R("nocurl");
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("curl_init failed", $r->getDescription());
     }
 
@@ -175,7 +175,7 @@ final class ResponseTest extends TestCase
         $cmd = ["ResponseFormat" => "JSON"];
         $r = new R("", $cmd);
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Empty API response", $r->getDescription());
     }
 
