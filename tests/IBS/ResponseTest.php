@@ -32,7 +32,7 @@ final class ResponseTest extends TestCase
     public function testConstructorEmptyResponse(): void
     {
         $r = new R("");
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertEquals("423 Empty API response. Probably unreachable API end point", $r->getDescription());
     }
 
@@ -40,7 +40,7 @@ final class ResponseTest extends TestCase
     {
         $r = new R("httperror|Connection timed out");
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Connection timed out", $r->getDescription());
     }
 
@@ -48,7 +48,7 @@ final class ResponseTest extends TestCase
     {
         $r = new R("nocurl");
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("curl_init failed", $r->getDescription());
     }
 
@@ -57,7 +57,7 @@ final class ResponseTest extends TestCase
         $cmd = ["ResponseFormat" => "JSON"];
         $r = new R("", $cmd);
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Empty API response", $r->getDescription());
     }
 
@@ -69,7 +69,7 @@ final class ResponseTest extends TestCase
         $json = '{"transactid":"xyz789","status":"SUCCESS","domain":"ibstest.com","expirationdate":"2026/02/20"}';
         $r = new R($json, $cmd);
         $this->assertTrue($r->isSuccess());
-        $this->assertEquals("SUCCESS", $r->getStatus());
+        $this->assertEquals("SUCCESS", $r->getHash()["status"] ?? null);
         $this->assertEquals("ibstest.com", $r->getHash()["domain"]);
         $this->assertEquals("2026/02/20", $r->getHash()["expirationdate"]);
     }
@@ -80,7 +80,7 @@ final class ResponseTest extends TestCase
         $json = '{"transactid":"abc123","status":"FAILURE","message":"Permission denied! \"available123test.com\" permission is not granted.","code":100005}';
         $r = new R($json, $cmd);
         $this->assertTrue($r->isError());
-        $this->assertEquals("FAILURE", $r->getStatus());
+        $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Permission denied!", $r->getDescription());
         $this->assertEquals(100005, $r->getCode());
     }

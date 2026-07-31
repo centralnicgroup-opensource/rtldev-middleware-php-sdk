@@ -22,7 +22,7 @@ use CNIC\ResponseParserInterface;
  *
  * Extends the shared AbstractResponse and supplies only what differs for the
  * IBS platform: the JSON-shaped response parsing (the translate() and
- * populate() hooks), the status/code/description accessors and the flat
+ * populate() hooks), the code/description accessors and the flat
  * (single-page) pagination model. The constructor, column/record bookkeeping,
  * record-cursor navigation and derived pagination are inherited from
  * AbstractResponse.
@@ -125,14 +125,6 @@ class Response extends AbstractResponse implements ResponseInterface
         // No explicit code: map to CNR's numeric convention via status —
         // 200 for a clear success, 500 for a clear error (see isError()).
         return $this->isSuccess() ? 200 : 500;
-    }
-
-    /**
-     * Get API response status
-     */
-    public function getStatus(): string
-    {
-        return $this->getHashString("status");
     }
 
     /**
