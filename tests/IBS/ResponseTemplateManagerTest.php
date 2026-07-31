@@ -13,7 +13,7 @@ final class ResponseTemplateManagerTest extends TestCase
     public function testGetTemplateNotFound(): void
     {
         $tpl = RTM::getTemplate("IwontExist");
-        $this->assertEquals("FAILURE", $tpl->getStatus());
+        $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("500 Response Template not found", $tpl->getDescription());
     }
 
@@ -83,7 +83,7 @@ final class ResponseTemplateManagerTest extends TestCase
         RTM::addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
         $this->assertTrue(RTM::hasTemplate($tplid));
         $tpl = RTM::getTemplate($tplid);
-        $this->assertEquals("FAILURE", $tpl->getStatus());
+        $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
 
         // providing template by status and description
@@ -91,7 +91,7 @@ final class ResponseTemplateManagerTest extends TestCase
         RTM::addTemplate($tplid, "FAILURE", "Forbidden");
         $this->assertTrue(RTM::hasTemplate($tplid));
         $tpl = RTM::getTemplate($tplid);
-        $this->assertEquals("FAILURE", $tpl->getStatus());
+        $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
     }
 
