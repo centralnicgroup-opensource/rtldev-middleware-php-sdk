@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CNICTEST;
 
+use CNIC\ApiDateTime;
 use CNIC\Column;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -87,5 +89,69 @@ final class ColumnTest extends TestCase
         $this->assertSame("scalar-value", $col->getDataByIndex(0));
         $this->assertSame(["nested" => "array"], $col->getDataByIndex(1));
         $this->assertSame("another-scalar", $col->getDataByIndex(2));
+    }
+
+    // --- getDateTimeByIndex() ---
+
+    public function testGetDateTimeByIndexParsesDashSeparatedValue(): void
+    {
+        /** @var Column<string> $col */
+        $col = new Column("expirationdate", ["2026-07-25 07:46:34"]);
+        $dt = $col->getDateTimeByIndex(0);
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertSame(1784965594, $dt->ts);
+    }
+
+    public function testGetDateTimeByIndexParsesSlashSeparatedValue(): void
+    {
+        /** @var Column<string> $col */
+        $col = new Column("expirationdate", ["2030/07/17"]);
+        $dt = $col->getDateTimeByIndex(0);
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertSame("2030-07-17", $dt->date);
+    }
+
+    public function testGetDateTimeByIndexOfDateOnlyValueHasNullTs(): void
+    {
+        /** @var Column<string> $col */
+        $col = new Column("expirationdate", ["2030/07/17"]);
+        $dt = $col->getDateTimeByIndex(0);
+        $this->assertInstanceOf(ApiDateTime::class, $dt);
+        $this->assertNull($dt->ts);
+    }
+
+    public function testGetDateTimeByIndexOutOfRangeIsNull(): void
+    {
+        /** @var Column<string> $col */
+        $col = new Column("expirationdate", ["2030/07/17"]);
+        $this->assertNull($col->getDateTimeByIndex(1));
+        $this->assertNull($col->getDateTimeByIndex(-1));
+    }
+
+    /**
+     * @return array<string, array{mixed}>
+     */
+    public static function nonStringValues(): array
+    {
+        return [
+            "int" => [42],
+            "array" => [["nested" => "value"]],
+            "null" => [null],
+            "bool" => [true],
+        ];
+    }
+
+    #[DataProvider("nonStringValues")]
+    public function testGetDateTimeByIndexOfNonStringValueIsNull(mixed $value): void
+    {
+        $col = new Column("expirationdate", [$value]);
+        $this->assertNull($col->getDateTimeByIndex(0));
+    }
+
+    public function testGetDateTimeByIndexOfUnparsableStringIsNull(): void
+    {
+        /** @var Column<string> $col */
+        $col = new Column("expirationdate", ["not a date"]);
+        $this->assertNull($col->getDateTimeByIndex(0));
     }
 }

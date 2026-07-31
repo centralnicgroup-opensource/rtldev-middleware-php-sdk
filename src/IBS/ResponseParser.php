@@ -45,7 +45,7 @@ final class ResponseParser implements ResponseParserInterface
         $result = $isJson ? json_decode($raw, true) : null;
 
         // A bare valid JSON scalar (number, quoted string, boolean) decodes to a
-        // non-null, non-array value that array_walk_recursive() cannot handle.
+        // non-null, non-array value, which is not a shape any caller expects here.
         // Report it as an invalid response up front rather than routing it through
         // the plain-text parser below (which would mis-split a scalar containing "=").
         if (is_scalar($result)) {
@@ -68,14 +68,6 @@ final class ResponseParser implements ResponseParserInterface
             return $invalidResponse;
         }
 
-        // Normalize date separators (handles nested arrays)
-        array_walk_recursive($result, function (mixed &$value, string $key): void {
-            if (is_string($value) && preg_match("/(date|paiduntil|expiration)$/i", $key)) {
-                $value = str_replace("/", "-", $value);
-            }
-        });
-
-        /** @psalm-var array<string, mixed> $result */
         return $result;
     }
 }

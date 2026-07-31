@@ -10,27 +10,28 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 
 ## Version compatibility at a glance
 
-| From → To | PHP required | Headline breaking change                                                              | Consumer action                                                                                                |
-| --------- | ------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                       | Bump your runtime                                                                                              |
-| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                             | Call `close()` in sessionless flows                                                                            |
-| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                            | None (additive)                                                                                                |
-| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                           | Migrate off HEXONET                                                                                            |
-| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                      | Re-test IBS/Moniker data handling                                                                              |
-| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                        | Bump runtime; stop subclassing finals                                                                          |
-| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                          | Retype loggers; guard session calls                                                                            |
-| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                        | Configure the client yourself                                                                                  |
-| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                     | Handle the `null` sentinel                                                                                     |
-| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                               | Narrow via `ExtendedResponseInterface`                                                                         |
-| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                                   | Use `cnr()`/`ibs()`/`moniker()`                                                                                |
-| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter     | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface` |
-| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw           | Audit what you pass it — options previously ignored now take effect, and seven now raise                       |
-| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                    | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`               |
-| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                      | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters    |
-| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module             | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                       |
-| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed     | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`            |
-| → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager  |
-| → v27.0.0 | 8.3+         | Loggers `format()` a record and a sink writes it; `setDefaultLogger()` removed        | Rename your `log()` body to `format()` and `return` the string; extend `CNIC\AbstractLogger`                   |
+| From → To | PHP required | Headline breaking change                                                                    | Consumer action                                                                                                                               |
+| --------- | ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                             | Bump your runtime                                                                                                                             |
+| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                                   | Call `close()` in sessionless flows                                                                                                           |
+| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                                  | None (additive)                                                                                                                               |
+| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                                 | Migrate off HEXONET                                                                                                                           |
+| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                            | Re-test IBS/Moniker data handling                                                                                                             |
+| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                              | Bump runtime; stop subclassing finals                                                                                                         |
+| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                                | Retype loggers; guard session calls                                                                                                           |
+| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                              | Configure the client yourself                                                                                                                 |
+| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                           | Handle the `null` sentinel                                                                                                                    |
+| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                                     | Narrow via `ExtendedResponseInterface`                                                                                                        |
+| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                                         | Use `cnr()`/`ibs()`/`moniker()`                                                                                                               |
+| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter           | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface`                                |
+| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw                 | Audit what you pass it — options previously ignored now take effect, and seven now raise                                                      |
+| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                          | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`                                              |
+| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                            | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters                                   |
+| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module                   | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                                                      |
+| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed           | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`                                           |
+| → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static       | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager                                 |
+| → v27.0.0 | 8.3+         | Loggers `format()` a record and a sink writes it; `setDefaultLogger()` removed              | Rename your `log()` body to `format()` and `return` the string; extend `CNIC\AbstractLogger`                                                  |
+| → v28.0.0 | 8.3+         | IBS/Moniker hash dates keep `/`; `RecordInterface`/`ColumnInterface` gained a date accessor | Accept `/` wherever you parsed a `getHash()`/`getPlain()`/`getListHash()` date; add the new method if you implement either interface directly |
 
 Two things to respect throughout:
 
@@ -1025,6 +1026,62 @@ final class LazyColumn implements \CNIC\ColumnInterface
 - **You asserted on debug output with `ob_start()`.** Call `format()` and assert on the returned string, or hand the client a collecting sink. Output buffering is no longer needed to see what the SDK logs.
 
 **Why this happened:** the two brand loggers differed only in how they assembled the string — CNR joins command, POST body, error and plain response with newlines; IBS emits a labelled REQUEST/RESPONSE block with tab indentation — and then both did the identical thing with it. The seam was at the destination, which never varied, while the formatting, which does, was unreachable and (for CNR) untested. Moving the seam makes one formatter serve every sink instead of every sink carrying a copy of the format. Masking is unaffected and still happens upstream of the formatter: the response masks its own stored command and the client passes an already-secured POST body, so nothing new becomes obtainable except the record you asked for. (Ref: RSRMID-2925.)
+
+---
+
+## → v28.0.0 — IBS/Moniker date separators survive verbatim; Record/Column gained a date accessor
+
+**What changed:** `CNIC\IBS\ResponseParser` used to silently rewrite `/` to `-` in any string value whose key matched `/(date|paiduntil|expiration)$/i` — the only place the SDK mutated raw response data. That rewrite is gone: `getPlain()`, `getHash()` and `getListHash()` now return IBS/Moniker date values exactly as the API sent them, with `/` (e.g. `2030/07/17`), not `-`.
+
+The rewrite was also over-broad: it matched on key suffix alone, so a non-date string such as `n/a` under an `updatedate` key came back corrupted as `n-a`. That corruption is also gone — every value now survives untouched, date or not.
+
+`CNIC\ApiDateTime` gained the ability to parse the `/` form directly instead, so nothing is lost: it now accepts **either** `-` or `/` as the date separator (consistently within one value — `2026-02/20` and `2026/02-20` are both still refused), and `$date`/`$dateTime` always come back with `-` regardless of which one the source used.
+
+Two new opt-in accessors do the narrowing at the point of use, instead of at parse time:
+
+- `CNIC\Record::getDateTimeByKey(string $key): ?ApiDateTime`
+- `CNIC\Column::getDateTimeByIndex(int $idx): ?ApiDateTime`
+
+Both are also declared on `CNIC\RecordInterface`/`CNIC\ColumnInterface` — which is what makes this breaking even for a consumer who never reads a date.
+
+`CNIC\ApiDateTime` also gained a new readonly property, `string $raw` — the original input string exactly as passed to `from()`/`tryFrom()`, unmodified (so it is also the only place a discarded fractional-second part, e.g. `.813`, survives). This is additive on the value object itself (it is `final` with a private constructor, so nothing you wrote could have broken), but `toArray()` gains a `"raw"` key — if you assert on the _whole_ array shape (e.g. `assertSame($expected, $dt->toArray())`), add that key.
+
+A value with a trailing newline (e.g. read from a file or a form field, rather than from an API response) is now refused by `from()`/`tryFrom()` instead of being silently parsed — consistent with how the class already refuses `2026-02-30` rather than coercing it. No API response is affected.
+
+**What to respect:**
+
+- **If you parse `getPlain()`/`getHash()`/`getListHash()` dates yourself for IBS or Moniker**, they now carry `/`, not `-`. Either accept both separators in your own parsing, or switch to `ApiDateTime`, which already does:
+
+  ```php
+  // BEFORE (v27) — IBS/Moniker date values arrived pre-normalized to "-"
+  $expiry = $rec->getDataByKey("expirationdate"); // "2030-07-17"
+
+  // AFTER (v28) — the raw API separator survives
+  $expiry = $rec->getDataByKey("expirationdate"); // "2030/07/17"
+
+  // Parse it instead of hand-rolling the separator handling:
+  $dt = $rec->getDateTimeByKey("expirationdate");
+  $dt?->date; // "2030-07-17" — always "-", regardless of the source separator
+  ```
+
+- **If you implement `RecordInterface` or `ColumnInterface` directly** (rather than using `CNIC\Record`/`CNIC\Column`), add the new method:
+
+  ```php
+  // AFTER (v28)
+  final class MyRecord implements \CNIC\RecordInterface
+  {
+      // ... existing getData()/getDataByKey() ...
+
+      #[\Override]
+      public function getDateTimeByKey(string $key): ?\CNIC\ApiDateTime
+      {
+          $value = $this->getDataByKey($key);
+          return is_string($value) ? \CNIC\ApiDateTime::tryFrom($value) : null;
+      }
+  }
+  ```
+
+**Why this happened:** the rewrite was a silent data mutation with no test coverage of its edge cases, sitting in the one parser that had no business making a formatting decision. `ApiDateTime` already existed as the SDK's date parser but had never actually been wired up to anything in `src/`; teaching it to accept both separators removed the only reason the rewrite existed, and the accessors give a caller a normalized value without the response data itself being touched. (Ref: RSRMID-2926.)
 
 ---
 

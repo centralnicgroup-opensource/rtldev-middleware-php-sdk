@@ -16,12 +16,17 @@ use CNIC\Exception\InvalidDateTimeException;
  *
  * The Team Internet APIs declare their date columns in UTC and emit exactly two
  * shapes: a full timestamp (`2026-07-25 07:46:34`, optionally with a fractional
- * second part, as CNR sends) and a bare calendar date (`2030-07-17`, as
- * IBS/Moniker send). This class parses both into one flat struct and does
- * nothing else — it is a **parser, not a formatter**. There is no `in($tz)`, no
- * locale formatting and no ext-intl dependency; presenting a value in the
- * viewer's timezone is a display concern and belongs in the consuming
- * application.
+ * second part, as CNR sends) and a bare calendar date (`2030/07/17`, as
+ * IBS/Moniker send — accepted directly, rather than being rewritten upstream).
+ * This class parses both into one flat struct and does nothing else — it is a
+ * **parser, not a formatter**. There is no `in($tz)`, no locale formatting and
+ * no ext-intl dependency; presenting a value in the viewer's timezone is a
+ * display concern and belongs in the consuming application.
+ *
+ * The date separator may be `-` or `/`, but must be consistent within one
+ * value — `2026-02/20` and `2026/02-20` are both rejected. {@see self::$date}
+ * and {@see self::$dateTime} always emit `-` regardless of the input
+ * separator, so a consumer never has to branch on which one the source used.
  *
  * Responses are **not** rewritten to use this type. `getPlain()`, `getHash()`
  * and `getListHash()` keep returning the raw API strings; this parser is opt-in
@@ -32,11 +37,17 @@ use CNIC\Exception\InvalidDateTimeException;
  * defaulting to midnight, which would be an invented instant a consumer could
  * not tell apart from a real one. {@see self::$date} is always populated.
  *
+ * {@see self::$raw} keeps the original input string exactly as given — the
+ * only place the discarded fractional-second precision, or the source's own
+ * separator, survives. It is for display, logging and round-trip fidelity
+ * only; comparison and sorting must use `$ts` or `$date`.
+ *
  * ```php
  * $dt = \CNIC\ApiDateTime::from("2026-07-25 07:46:34");
  * $dt->ts;       // 1784965594
  * $dt->date;     // "2026-07-25"
  * $dt->dateTime; // "2026-07-25 07:46:34"
+ * $dt->raw;      // "2026-07-25 07:46:34"
  *
  * // Presenting it elsewhere is the caller's job:
  * (new \DateTimeImmutable("@{$dt->ts}"))->setTimezone(new \DateTimeZone("Europe/Berlin"));
@@ -61,10 +72,20 @@ final class ApiDateTime
      * not strict enough: `createFromFormat("!Y-m-d", "2026-7-1")` succeeds with
      * no warning at all, quietly accepting a format the API never sends.
      *
-     * Only the space separator is accepted — the ISO `T` variant, a `Z` suffix
-     * and numeric offsets are all rejected rather than assumed to mean UTC.
+     * The date separator may be `-` (CNR) or `/` (IBS/Moniker); the captured
+     * `sep` group plus the `\k<sep>` backreference requires the SAME separator
+     * both times, so a mixed value like `2026-02/20` is rejected rather than
+     * silently accepted. Only the space separator is accepted before a time
+     * part — the ISO `T` variant, a `Z` suffix and numeric offsets are all
+     * rejected rather than assumed to mean UTC.
+     *
+     * The trailing `D` modifier (`PCRE_DOLLAR_ENDONLY`) matters because without
+     * it `$` also matches immediately before a single trailing newline, so
+     * `"2026-07-25\n"` would pass this gate; `$raw` would then carry that
+     * newline into `json_encode()`, log lines and templates.
      */
-    private const string PATTERN = "/^(?<date>\d{4}-\d{2}-\d{2})(?: (?<time>\d{2}:\d{2}:\d{2})(?:\.\d+)?)?$/";
+    private const string PATTERN =
+        "#^(?<date>\d{4}(?<sep>[-/])\d{2}\k<sep>\d{2})(?: (?<time>\d{2}:\d{2}:\d{2})(?:\.\d+)?)?$#D";
 
     /**
      * Unix timestamp of the instant, or `null` when the source value was a bare
@@ -98,25 +119,51 @@ final class ApiDateTime
     public readonly string $tz;
 
     /**
+     * The original input string, exactly as passed to {@see self::from()} /
+     * {@see self::tryFrom()} — no separator normalisation, no fractional-second
+     * stripping. Before the `getDateTimeByKey()`/`getDateTimeByIndex()`
+     * accessors existed, the only way to obtain an `ApiDateTime` was
+     * `ApiDateTime::tryFrom($hash["paiduntil"])`, so the caller necessarily
+     * still held the raw string alongside it. Those accessors close that gap —
+     * the raw value never passes through the integrator's own code — and
+     * recovering it afterwards would mean a second `getDataByKey()` lookup plus
+     * a re-narrow, exactly the double work the accessor exists to eliminate.
+     * `$raw` is also the only place the fractional-second precision
+     * {@see self::$dateTime} discards survives (`"2026-07-25 07:46:34.813"`
+     * keeps `.813` here even though `$dateTime` drops it).
+     *
+     * **Display, logging and round-trip fidelity only.** Comparison and sorting
+     * must use {@see self::$ts} or {@see self::$date}, never `$raw`: a string
+     * comparison of `"2026/02/20"` against `"2026-03-01"` yields the wrong
+     * answer, so sorting a mixed CNR/IBS list on `$raw` fails silently —
+     * normalising `$date` to ISO regardless of the input separator is precisely
+     * what this field must not be allowed to bypass.
+     */
+    public readonly string $raw;
+
+    /**
      * Private by design: instances come from {@see self::from()} /
      * {@see self::tryFrom()} only, which is what makes the UTC invariant
      * structurally unforgeable.
      */
-    private function __construct(?int $ts, string $date, ?string $dateTime)
+    private function __construct(?int $ts, string $date, ?string $dateTime, string $raw)
     {
         $this->ts = $ts;
         $this->date = $date;
         $this->dateTime = $dateTime;
         $this->tz = self::TIMEZONE;
+        $this->raw = $raw;
     }
 
     /**
      * Parse an API date/time value.
      *
-     * Accepts `Y-m-d H:i:s` (with an optional fractional-second part, which is
-     * discarded) and `Y-m-d`. Anything else throws — including values PHP would
-     * otherwise roll over silently, such as `2026-02-30` (which
-     * `createFromFormat()` turns into `2026-03-02`) or `0000-00-00`.
+     * Accepts `Y-m-d H:i:s` / `Y/m/d H:i:s` (with an optional fractional-second
+     * part, which is discarded) and `Y-m-d` / `Y/m/d` — the separator may be
+     * either, as long as it is the same one twice. Anything else throws —
+     * including values PHP would otherwise roll over silently, such as
+     * `2026-02-30` (which `createFromFormat()` turns into `2026-03-02`) or
+     * `0000-00-00`.
      *
      * @param string $value Raw value as sent by the API
      * @throws InvalidDateTimeException If the value is not one of the two accepted shapes, or names a non-existent date or time
@@ -125,14 +172,18 @@ final class ApiDateTime
     {
         if (preg_match(self::PATTERN, $value, $matches) !== 1) {
             throw new InvalidDateTimeException(
-                "Unparsable API date/time value: \"{$value}\". Expected \"Y-m-d H:i:s\" or \"Y-m-d\" in UTC."
+                "Unparsable API date/time value: \"{$value}\". Expected \"Y-m-d H:i:s\" or \"Y-m-d\" in UTC "
+                    . "(with a consistent \"-\" or \"/\" separator)."
             );
         }
 
+        // $date and $dateTime always emit "-" regardless of the input
+        // separator, so the struct's shape does not depend on which brand sent it.
+        $date = str_replace($matches["sep"], "-", $matches["date"]);
         $time = $matches["time"] ?? "";
         $isDateOnly = $time === "";
         $format = $isDateOnly ? "!Y-m-d" : "!Y-m-d H:i:s";
-        $subject = $isDateOnly ? $matches["date"] : "{$matches["date"]} {$time}";
+        $subject = $isDateOnly ? $date : "{$date} {$time}";
 
         $parsed = \DateTimeImmutable::createFromFormat($format, $subject, new \DateTimeZone(self::TIMEZONE));
         $errors = \DateTimeImmutable::getLastErrors();
@@ -149,9 +200,12 @@ final class ApiDateTime
             );
         }
 
+        // $value (the ORIGINAL argument, not $date/$subject) is what becomes
+        // $raw — passing the separator-normalised subject here would silently
+        // defeat the whole point of the field.
         return $isDateOnly
-            ? new self(null, $parsed->format("Y-m-d"), null)
-            : new self($parsed->getTimestamp(), $parsed->format("Y-m-d"), $parsed->format("Y-m-d H:i:s"));
+            ? new self(null, $parsed->format("Y-m-d"), null, $value)
+            : new self($parsed->getTimestamp(), $parsed->format("Y-m-d"), $parsed->format("Y-m-d H:i:s"), $value);
     }
 
     /**
@@ -190,7 +244,7 @@ final class ApiDateTime
      * The value as a plain array — ready for `json_encode()` and for handing to
      * a template or frontend.
      *
-     * @return array{ts:int|null,date:string,dateTime:string|null,tz:string}
+     * @return array{ts:int|null,date:string,dateTime:string|null,tz:string,raw:string}
      */
     public function toArray(): array
     {
@@ -199,6 +253,7 @@ final class ApiDateTime
             "date" => $this->date,
             "dateTime" => $this->dateTime,
             "tz" => $this->tz,
+            "raw" => $this->raw,
         ];
     }
 }

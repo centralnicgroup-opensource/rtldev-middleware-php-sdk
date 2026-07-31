@@ -102,7 +102,7 @@ For working, runnable examples per brand — including the CNR session flow (`sa
 
 ## Date & time values
 
-The APIs declare their date columns in **UTC** and emit two shapes: a full timestamp (`2026-07-25 07:46:34`, optionally with a fractional-second part, as CNR sends) and a bare calendar date (`2030-07-17`, as internet.bs/Moniker send). `CNIC\ApiDateTime` parses both into one flat, immutable struct:
+The APIs declare their date columns in **UTC** and emit two shapes: a full timestamp (`2026-07-25 07:46:34`, optionally with a fractional-second part, as CNR sends) and a bare calendar date (`2030/07/17`, as internet.bs/Moniker send). `CNIC\ApiDateTime` parses both into one flat, immutable struct, and accepts **either** `-` or `/` as the date separator — consistently within one value, so `2026-02/20` is refused. `$date`/`$dateTime` always come back with `-`, regardless of which one the source used:
 
 ```php
 use CNIC\ApiDateTime;
@@ -112,16 +112,20 @@ $dt->ts;             // 1784965594
 $dt->date;           // "2026-07-25"
 $dt->dateTime;       // "2026-07-25 07:46:34"
 $dt->tz;             // "UTC"
+$dt->raw;            // "2026-07-25 07:46:34" — the input, verbatim
 $dt->isDateOnly();   // false
 $dt->toArray();      // ready for json_encode()
 ```
 
-| Field      | Type           | CNR `2026-07-25 07:46:34` | internet.bs / Moniker `2030-07-17` |
-| ---------- | -------------- | ------------------------- | ---------------------------------- |
-| `ts`       | `int\|null`    | `1784965594`              | **`null`** — exact instant unknown |
-| `date`     | `string`       | `2026-07-25`              | `2030-07-17`                       |
-| `dateTime` | `string\|null` | `2026-07-25 07:46:34`     | **`null`**                         |
-| `tz`       | `string`       | `UTC`                     | `UTC`                              |
+| Field      | Type           | CNR `2026-07-25 07:46:34` | internet.bs / Moniker `2030/07/17`   |
+| ---------- | -------------- | ------------------------- | ------------------------------------ |
+| `ts`       | `int\|null`    | `1784965594`              | **`null`** — exact instant unknown   |
+| `date`     | `string`       | `2026-07-25`              | `2030-07-17` — always `-`, even here |
+| `dateTime` | `string\|null` | `2026-07-25 07:46:34`     | **`null`**                           |
+| `tz`       | `string`       | `UTC`                     | `UTC`                                |
+| `raw`      | `string`       | `2026-07-25 07:46:34`     | `2030/07/17` — verbatim input        |
+
+`raw` is the input exactly as given — including a fractional-second part `dateTime` discards, and whichever separator the source used. It exists for display, logging and round-trip fidelity only; **compare and sort on `ts` or `date`, never on `raw`** — a plain string comparison of `"2026/02/20"` against `"2026-03-01"` gives the wrong order.
 
 A bare calendar date names no instant, so `ts` and `dateTime` are **both null** for one — deliberately, rather than defaulting to midnight, which would be a fabricated instant indistinguishable from a real one. `date` is always populated, so there is unconditionally something to print; `$dt->ts === null` (or `isDateOnly()`) is the unambiguous test.
 
@@ -133,11 +137,23 @@ ApiDateTime::tryFrom("2026-02-30");  // null — refused, not coerced
 ```
 
 > [!NOTE]
-> This is a **parser, not a formatter**. Responses are not rewritten: `getPlain()`, `getHash()` and `getListHash()` keep returning the raw API strings, and this type is opt-in at the point where a value is actually used. There is no locale formatting and no `ext-intl` dependency — presenting a value in the viewer's timezone is a display concern for the consuming application:
+> This is a **parser, not a formatter**. Responses are not rewritten: `getPlain()`, `getHash()` and `getListHash()` keep returning the raw API strings verbatim — internet.bs/Moniker dates keep their `/` separator — and this type is opt-in at the point where a value is actually used. There is no locale formatting and no `ext-intl` dependency — presenting a value in the viewer's timezone is a display concern for the consuming application:
 >
 > ```php
 > (new \DateTimeImmutable("@{$dt->ts}"))->setTimezone(new \DateTimeZone("Europe/Berlin"));
 > ```
+
+`CNIC\Record::getDateTimeByKey()` and `CNIC\Column::getDateTimeByIndex()` do that narrowing for you, right where you already read a value — no `null` check on a non-string, missing, or unparsable value needed beyond the returned `?ApiDateTime` itself:
+
+```php
+$rec = $response->getRecord(0);
+$expiry = $rec?->getDateTimeByKey("expirationdate"); // ?ApiDateTime — works for "-" or "/" input
+$expiry?->date;       // "2030-07-17"
+$expiry?->isDateOnly(); // true
+
+$col = $response->getColumn("expirationdate");
+$col?->getDateTimeByIndex(0); // same parsing, by column index instead of record key
+```
 
 Run `composer demo:datetime` for a runnable tour — it needs no credentials and makes no API calls.
 

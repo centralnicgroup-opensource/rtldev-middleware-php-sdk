@@ -71,4 +71,23 @@ class Record implements RecordInterface
     {
         return array_key_exists($key, $this->data);
     }
+
+    /**
+     * Get row data for given column, parsed as a date/time value.
+     *
+     * Opt-in narrowing over {@see self::getDataByKey()}: returns `null` for a
+     * missing key, a non-string value, or a string {@see ApiDateTime::tryFrom()}
+     * cannot parse. There is no throwing variant here — use
+     * `ApiDateTime::from($rec->getDataByKey($key))` directly if an unparsable
+     * value should be a loud failure instead.
+     *
+     * @param string $key column name
+     */
+    #[\Override]
+    public function getDateTimeByKey(string $key): ?ApiDateTime
+    {
+        /** @psalm-suppress MixedAssignment getDataByKey() returns mixed by design; is_string() narrows it below */
+        $value = $this->getDataByKey($key);
+        return is_string($value) ? ApiDateTime::tryFrom($value) : null;
+    }
 }

@@ -25,19 +25,15 @@ final class ResponseParserTest extends TestCase
 
     public function testParseResponseWithDates(): void
     {
-        $raw = (string) json_encode([
+        // Raw date values survive verbatim (see tests/IBS/ResponseParserTest.php).
+        $input = [
             "date" => "2021/12/31",
             "expirydate" => "2026/12/31",
             "paiduntil" => "2023/07/01",
             "EXPIRATION" => "2024/05/02"
-        ]);
-        $expected = [
-            'date' => '2021-12-31',
-            'expirydate' => '2026-12-31',
-            'paiduntil' => '2023-07-01',
-            'EXPIRATION' => '2024-05-02'
         ];
-        $this->assertSame($expected, $this->parser()->parse($raw));
+        $raw = (string) json_encode($input);
+        $this->assertSame($input, $this->parser()->parse($raw));
     }
 
     public function testParseResponseWithSpecialCharacters(): void
