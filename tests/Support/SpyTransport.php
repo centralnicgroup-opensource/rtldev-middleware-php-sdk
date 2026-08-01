@@ -39,7 +39,7 @@ use CNIC\TransportInterface;
 final class SpyTransport implements TransportInterface
 {
     /** Canned CNR success response, enough to drive the full parse path. */
-    private const DEFAULT_RAW = "[RESPONSE]\r\nCODE=200\r\nDESCRIPTION=Command completed successfully\r\nEOF\r\n";
+    private const string DEFAULT_RAW = "[RESPONSE]\r\nCODE=200\r\nDESCRIPTION=Command completed successfully\r\nEOF\r\n";
 
     /** Timeout handed over by the client; -1 until the first call. */
     public int $timeout = -1;

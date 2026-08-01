@@ -46,7 +46,7 @@ final class HttpTransport implements TransportInterface
      *
      * @var array<int, string>
      */
-    public const PROTECTED_OPTIONS = [
+    public const array PROTECTED_OPTIONS = [
         CURLOPT_URL => "CURLOPT_URL",
         CURLOPT_POST => "CURLOPT_POST",
         CURLOPT_POSTFIELDS => "CURLOPT_POSTFIELDS",
@@ -76,7 +76,7 @@ final class HttpTransport implements TransportInterface
     {
         // Reject before touching the handle: a protected option is a
         // programming error, not a network event, and must not cost a request.
-        self::rejectProtectedOptions($options);
+        $this->rejectProtectedOptions($options);
 
         if (!$this->handle instanceof \CurlHandle) {
             $tmp = curl_init();
@@ -107,7 +107,7 @@ final class HttpTransport implements TransportInterface
         // A non-array value is deliberately left in $options for cURL to reject
         // with its own TypeError — loud, and before anything is sent.
         if (isset($options[CURLOPT_HTTPHEADER]) && is_array($options[CURLOPT_HTTPHEADER])) {
-            $headers = self::appendHeaders($headers, $options[CURLOPT_HTTPHEADER]);
+            $headers = $this->appendHeaders($headers, $options[CURLOPT_HTTPHEADER]);
             unset($options[CURLOPT_HTTPHEADER]);
         }
 
@@ -146,7 +146,7 @@ final class HttpTransport implements TransportInterface
      * @param array<int, mixed> $options
      * @throws UnsupportedFeatureException
      */
-    private static function rejectProtectedOptions(array $options): void
+    private function rejectProtectedOptions(array $options): void
     {
         $rejected = array_intersect_key(self::PROTECTED_OPTIONS, $options);
         if ($rejected === []) {
@@ -179,17 +179,17 @@ final class HttpTransport implements TransportInterface
      * @return list<string>
      * @throws UnsupportedFeatureException if a caller line restates a transport header
      */
-    private static function appendHeaders(array $base, array $extra): array
+    private function appendHeaders(array $base, array $extra): array
     {
         $owned = [];
         foreach ($base as $line) {
-            $owned[self::headerName($line)] = true;
+            $owned[$this->headerName($line)] = true;
         }
         // Non-string entries are dropped rather than coerced; cURL would reject
         // them anyway, and guessing at what a caller meant is the behaviour this
         // change exists to remove.
         foreach (array_filter($extra, "is_string") as $line) {
-            $name = self::headerName($line);
+            $name = $this->headerName($line);
             if (isset($owned[$name])) {
                 throw new UnsupportedFeatureException(
                     "HTTP header(s) owned by " . self::class . " cannot be overridden: " . $name
@@ -208,7 +208,7 @@ final class HttpTransport implements TransportInterface
      * A line with no colon (malformed) is treated as its own name, so it is
      * neither mistaken for nor able to collide with a real header.
      */
-    private static function headerName(string $line): string
+    private function headerName(string $line): string
     {
         $pos = strpos($line, ":");
         return strtolower(trim($pos === false ? $line : substr($line, 0, $pos)));

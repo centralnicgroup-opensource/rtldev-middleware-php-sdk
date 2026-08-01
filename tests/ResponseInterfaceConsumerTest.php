@@ -31,7 +31,7 @@ final class ResponseInterfaceConsumerTest extends TestCase
     /**
      * A CNR list response carrying both real columns and pagination columns.
      */
-    private static function cnrListResponse(): ResponseInterface
+    private function cnrListResponse(): ResponseInterface
     {
         return new CNRResponse(implode("\n", [
             "[RESPONSE]",
@@ -58,7 +58,7 @@ final class ResponseInterfaceConsumerTest extends TestCase
      */
     public function testConsumerCanStripPaginationColumnsThroughTheInterface(): void
     {
-        $r = self::cnrListResponse();
+        $r = $this->cnrListResponse();
 
         $all = $r->getColumnKeys();
         $this->assertContains("FIRSTNAME", $all);
@@ -77,7 +77,7 @@ final class ResponseInterfaceConsumerTest extends TestCase
      */
     public function testOmittingTheArgumentKeepsEveryColumn(): void
     {
-        $r = self::cnrListResponse();
+        $r = $this->cnrListResponse();
         $this->assertSame($r->getColumnKeys(), $r->getColumnKeys(false));
     }
 

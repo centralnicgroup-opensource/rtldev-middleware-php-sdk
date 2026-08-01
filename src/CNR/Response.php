@@ -78,7 +78,7 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
         if ($properties !== []) {
             foreach (array_keys($properties) as $k) {
                 $key = strval($k);
-                $this->addColumn($key, self::stringCells($key, $properties[$k]));
+                $this->addColumn($key, $this->stringCells($key, $properties[$k]));
             }
             $this->assembleRecords();
         }
@@ -117,7 +117,7 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * @return string[]
      * @throws UnsupportedFeatureException if the entry is not a list, or a cell is not a string
      */
-    private static function stringCells(string $key, mixed $values): array
+    private function stringCells(string $key, mixed $values): array
     {
         if (!is_array($values)) {
             throw new UnsupportedFeatureException(
