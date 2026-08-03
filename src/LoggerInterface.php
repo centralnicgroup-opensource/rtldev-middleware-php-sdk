@@ -37,14 +37,14 @@ interface LoggerInterface
      * {@see ResponseInterface::getContext()}, which is caller-supplied and
      * deliberately untouched: an implementation logging it masks it itself.
      *
-     * @param string $post Post request data in string format (already secured)
+     * @param string $post Post request data in string format (already masked)
      */
-    public function format(string $post, ResponseInterface $r, ?string $error = null): string;
+    public function format(string $post, ResponseInterface $response, ?string $error = null): string;
 
     /**
      * Write the debug record for the given request/response pair.
      *
-     * @param string $post Post request data in string format (already secured)
+     * @param string $post Post request data in string format (already masked)
      */
-    public function log(string $post, ResponseInterface $r, ?string $error = null): void;
+    public function log(string $post, ResponseInterface $response, ?string $error = null): void;
 }

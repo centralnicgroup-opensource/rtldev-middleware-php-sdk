@@ -34,9 +34,9 @@ use CNIC\ResponseInterface;
  *
  * Both arguments arrive masked: the response masks its own stored command (so
  * `getCommand()` and `getCommandPlain()` are safe) and the client passes a
- * secured POST body. The one thing that is **not** masked is
- * `$r->getContext()` — that array is whatever you put there yourself, so if you
- * log it, mask it yourself.
+ * masked POST body. The one thing that is **not** masked is
+ * `$response->getContext()` — that array is whatever you put there yourself, so
+ * if you log it, mask it yourself.
  *
  * @psalm-api
  * @package MYCUSTOMNAMESPACE
@@ -46,21 +46,19 @@ class Logger extends AbstractLogger
     /**
      * Build the debug record. Return it; do not print it.
      *
-     * @param string $post Post request data in string format (already secured)
-     * @param ResponseInterface $r Response to log
-     * @param string|null $error Error message (optional)
+     * @param string $post Post request data in string format (already masked)
      * @return string Formatted debug record
      */
     #[\Override]
-    public function format(string $post, ResponseInterface $r, ?string $error = null): string
+    public function format(string $post, ResponseInterface $response, ?string $error = null): string
     {
         // apply your custom formatting here
         return sprintf(
             "[%s] %s -> %d %s%s",
-            $r->getRequestURL(),
+            $response->getRequestURL(),
             $post,
-            $r->getCode(),
-            $r->getDescription(),
+            $response->getCode(),
+            $response->getDescription(),
             $error !== null && $error !== "" ? " (transport error: " . $error . ")" : ""
         );
     }

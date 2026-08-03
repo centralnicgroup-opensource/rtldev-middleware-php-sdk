@@ -33,7 +33,7 @@ interface RecordInterface
     /**
      * Get row data for given column, or null if the column does not exist
      */
-    public function getDataByKey(string $key): mixed;
+    public function getDataByKey(string $columnName): mixed;
 
     /**
      * Get row data for given column, parsed as a date/time value.
@@ -41,5 +41,5 @@ interface RecordInterface
      * Returns `null` for a missing key, a non-string value, or a string that
      * cannot be parsed — see {@see ApiDateTime::tryFrom()}.
      */
-    public function getDateTimeByKey(string $key): ?ApiDateTime;
+    public function getDateTimeByKey(string $columnName): ?ApiDateTime;
 }

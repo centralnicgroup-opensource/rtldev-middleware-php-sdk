@@ -240,7 +240,7 @@ final class AbstractClientConfigDriftTest extends TestCase
 
         $this->assertSame("http://proxy.test:8080", $cl->getProxy(), "the proxy is not a cURL option default");
         $this->assertSame("https://referer.test/", $cl->getReferer());
-        $this->assertSame([], $this->curlopts($cl), "the option bag itself is back to the brand default");
+        $this->assertSame([], $this->curlOptions($cl), "the option bag itself is back to the brand default");
     }
 
     /**
@@ -350,7 +350,7 @@ final class AbstractClientConfigDriftTest extends TestCase
         $cl = CF::cnr();
         $first = $cl->getUserAgent();
 
-        $p = new ReflectionProperty(AbstractClient::class, "ua");
+        $p = new ReflectionProperty(AbstractClient::class, "userAgent");
         $this->assertSame("", $p->getValue($cl), "getUserAgent() must not have written the default back");
         $this->assertSame($first, $cl->getUserAgent(), "and must keep answering the same thing");
         $this->assertStringContainsString("PHP-SDK", $first);
@@ -391,9 +391,9 @@ final class AbstractClientConfigDriftTest extends TestCase
      * Read the cURL option bag off a config.
      * @return array<int, mixed>
      */
-    private function curlopts(AbstractClient $cl): array
+    private function curlOptions(AbstractClient $cl): array
     {
-        $p = new ReflectionProperty(AbstractSocketConfig::class, "curlopts");
+        $p = new ReflectionProperty(AbstractSocketConfig::class, "curlOptions");
         /** @var array<int, mixed> $opts */
         $opts = $p->getValue($cl->getSocketConfig());
         return $opts;

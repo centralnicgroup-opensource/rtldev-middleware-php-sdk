@@ -72,24 +72,23 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Get POST data container of connection data
      * @param array<string, string|null> $command API Command to request
-     * @param bool $secured if password has to be returned "hidden"
      * @return array<string, string|null>
      */
     #[\Override]
-    protected function getPOSTDataParams(array $command, bool $secured): array
+    protected function getPOSTDataParams(array $command, bool $maskSecrets): array
     {
         $params = [];
         if (strlen($this->login) !== 0) {
             $params[$this->parameters["login"]] = $this->login;
         }
-        if (strlen($this->pw) !== 0) {
-            $params[$this->parameters["password"]] = $secured ? "***" : $this->pw;
+        if (strlen($this->password) !== 0) {
+            $params[$this->parameters["password"]] = $maskSecrets ? "***" : $this->password;
         }
         if (strlen($this->session) !== 0) {
             $params[$this->parameters["session"]] = $this->session;
         }
         if ($command !== []) {
-            if ($secured) {
+            if ($maskSecrets) {
                 $command = $this->maskSensitiveCommand($command);
             }
             $newcommand = "";
@@ -112,9 +111,9 @@ final class SocketConfig extends AbstractSocketConfig
     /**
      * Add persistent parameter to request (request API session)
      */
-    public function setPersistent(bool $value = false): static
+    public function setPersistent(bool $persistent = false): static
     {
-        $this->persistent = $value;
+        $this->persistent = $persistent;
         return $this;
     }
 
@@ -144,36 +143,40 @@ final class SocketConfig extends AbstractSocketConfig
 
     /**
      * Set account name to use
-     * @param string $value account name
      */
     #[\Override]
-    public function setLogin(string $value): static
+    public function setLogin(string $login): static
     {
         $this->session = "";
-        $this->login = $value;
+        $this->login = $login;
         return $this;
     }
 
     /**
      * Set account password to use
-     * @param string $value account password
      */
     #[\Override]
-    public function setPassword(string $value): static
+    public function setPassword(string $password): static
     {
         $this->session = "";
-        $this->pw = $value;
+        $this->password = $password;
         return $this;
     }
 
     /**
-     * Set API Session ID to use
-     * @param string $value API Session ID
+     * Set API Session ID to use.
+     *
+     * Always clears the stored password — a session and a password are alternative
+     * credentials on the wire and the newer one is authoritative. Note this holds
+     * on the **reset** path too: `setSession("")` drops the session *and* leaves no
+     * password behind it, so the next request carries only the login. Call
+     * `setLogin()`/`setPassword()` again to get back to password authentication.
+     * @param string $session empty string resets it
      */
-    public function setSession(string $value = ""): static
+    public function setSession(string $session = ""): static
     {
-        $this->session = $value;
-        $this->pw = "";
+        $this->session = $session;
+        $this->password = "";
         return $this;
     }
 }

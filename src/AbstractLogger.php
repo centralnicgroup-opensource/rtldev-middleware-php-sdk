@@ -38,17 +38,17 @@ abstract class AbstractLogger implements LoggerInterface
     }
 
     #[\Override]
-    abstract public function format(string $post, ResponseInterface $r, ?string $error = null): string;
+    abstract public function format(string $post, ResponseInterface $response, ?string $error = null): string;
 
     /**
      * Format the record, then hand it to the sink. The whole implementation of
      * the contract — see the class docblock for why it may not be overridden.
      *
-     * @param string $post Post request data in string format (already secured)
+     * @param string $post Post request data in string format (already masked)
      */
     #[\Override]
-    final public function log(string $post, ResponseInterface $r, ?string $error = null): void
+    final public function log(string $post, ResponseInterface $response, ?string $error = null): void
     {
-        $this->sink->write($this->format($post, $r, $error));
+        $this->sink->write($this->format($post, $response, $error));
     }
 }

@@ -56,7 +56,7 @@ final class CassetteTransportTest extends TestCase
              * @return array{0: string, 1: string|null}
              */
             #[\Override]
-            public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
+            public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
             {
                 $next = array_shift($this->queue);
                 return $next ?? ["", null];

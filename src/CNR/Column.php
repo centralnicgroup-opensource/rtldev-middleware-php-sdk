@@ -27,11 +27,10 @@ class Column extends BaseColumn
 {
     /**
      * Get column data at given index
-     * @param integer $idx data index
      */
     #[\Override]
-    public function getDataByIndex(int $idx): string|null
+    public function getDataByIndex(int $recordIndex): string|null
     {
-        return parent::getDataByIndex($idx);
+        return parent::getDataByIndex($recordIndex);
     }
 }

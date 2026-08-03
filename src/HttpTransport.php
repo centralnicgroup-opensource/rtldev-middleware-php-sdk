@@ -77,8 +77,13 @@ final class HttpTransport implements TransportInterface
      * @throws UnsupportedFeatureException if $options contains a transport-owned option or header
      */
     #[\Override]
-    public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
-    {
+    public function post(
+        string $url,
+        string $data,
+        int $timeoutSeconds,
+        string $userAgent,
+        array $options = []
+    ): array {
         // Reject before touching the handle: a protected option is a
         // programming error, not a network event, and must not cost a request.
         self::rejectProtectedOptions($options);
@@ -123,7 +128,7 @@ final class HttpTransport implements TransportInterface
             // CURLOPT_VERBOSE         => true,
             CURLOPT_URL             => $url,
             CURLOPT_CONNECTTIMEOUT  => 30, // 30s connect timeout (cURL defaults to 300s when this is not set explicitly)
-            CURLOPT_TIMEOUT         => $timeout,
+            CURLOPT_TIMEOUT         => $timeoutSeconds,
             CURLOPT_POST            => 1,
             CURLOPT_HEADER          => 0,
             CURLOPT_RETURNTRANSFER  => 1,

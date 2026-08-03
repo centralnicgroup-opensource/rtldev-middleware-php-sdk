@@ -32,6 +32,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static                                            | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager                                                                                      |
 | → v27.0.0 | 8.3+         | Loggers `format()` a record and a sink writes it; `setDefaultLogger()` removed                                                   | Rename your `log()` body to `format()` and `return` the string; extend `CNIC\AbstractLogger`                                                                                                       |
 | → v28.0.0 | 8.3+         | IBS/Moniker hash dates keep `/`; `RecordInterface`/`ColumnInterface` gained a date accessor; `IBS\Response::getStatus()` removed | Accept `/` wherever you parsed a `getHash()`/`getPlain()`/`getListHash()` date; add the new method if you implement either interface directly; read `getHash()["status"]` instead of `getStatus()` |
+| → v29.0.0 | 8.3+         | Public method parameters and six protected properties renamed to be self-describing                                              | Nothing, unless you pass named arguments (`getColumn(key: …)` → `columnName:`), implement an SDK interface (match the parameter names), or subclass and read `$this->pw`/`$ua`/`$curlopts`         |
 
 Two things to respect throughout:
 
@@ -1029,6 +1030,118 @@ $status = (string)($r->getHash()["status"] ?? "");
 This is the one field where reading `status` off the hash directly is genuinely useful, not just a fallback: for `Domain/Check`, `status` is how the API reports `AVAILABLE`/`UNAVAILABLE` — a 200 response with `isError() === false` either way (see `tests/IBS/cassettes/request-success-dbg.json`, which carries `"status":"UNAVAILABLE"` alongside a 200 code). `isError()`/`isSuccess()` tell you whether the _command_ succeeded, not whether the domain is available — for that you still need `getHash()["status"]`.
 
 **Why this happened:** see the `getStatus()` entry in [docs/agents/architecture.md](docs/agents/architecture.md) for the full decision record. (Ref: RSRMID-2927.)
+
+---
+
+<a id="-v2900"></a>
+
+## → v29.0.0 — public method parameters and six protected properties renamed to be self-describing
+
+**What changed:** every public method parameter whose name carried no meaning was renamed. Nothing else — no method was added, removed, renamed or retyped, no default changed, no behaviour changed. Every call that passes arguments **positionally** is unaffected.
+
+Since PHP 8.0 a parameter name is part of the public API, because a caller may pass it as a named argument — and the runtime floor here is 8.3, so consumers can already do that. There is no parameter alias in PHP and therefore no deprecation path, which is why a rename has to ride a major.
+
+**Who is affected — two groups, and only these two:**
+
+1. **Callers using named arguments.** `$r->getColumn(key: "DOMAIN")` now raises `Error: Unknown named parameter $key` at runtime. The message does not mention the SDK, so it is worth grepping for before you upgrade. Typing against an interface does **not** insulate you: PHP binds a named argument to the _implementation's_ parameter name, so the call breaks whichever type your variable is declared as.
+2. **Implementers and subclassers.** If you implement `LoggerInterface`, `TransportInterface`, `RecordInterface`, `ColumnInterface`, `ResponseInterface` or `RoleCredentialsInterface`, or extend `AbstractClient`, `AbstractLogger`, `AbstractResponse`, `AbstractResponseTemplateManager`, `AbstractResponseTranslator`, `AbstractSocketConfig`, or a brand `Client`/`Response`/`SocketConfig`/`ResponseTemplateManager`, your parameter names should match the new ones. PHP itself does not enforce this, so your code keeps running; but Psalm reports `ParamNameMismatch`, and your own callers bind to _your_ names — so a mismatch quietly leaves your class's contract diverging from the one documented here.
+
+**What to respect:**
+
+```php
+// BEFORE (v28) — named arguments bound to the old names
+$r->getColumn(key: "DOMAIN");
+$cl->setUserAgent(str: "MyApp", rv: "1.0");
+$cl->setCredentials(uid: "test.user", pw: "secret");
+
+// AFTER (v29)
+$r->getColumn(columnName: "DOMAIN");
+$cl->setUserAgent(label: "MyApp", revision: "1.0");
+$cl->setCredentials(login: "test.user", password: "secret");
+```
+
+The full set, grouped by the name that replaced them:
+
+| New name          | Replaces                         | Where                                                                                                                                                                                                                       |
+| ----------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `$columnName`     | `$key`, `$colkey`                | `ResponseInterface`/`AbstractResponse`/`CNR\Response`/`IBS\Response::addColumn()`, `getColumn()`, `getColumnIndex()` (1st); `RecordInterface`/`Record::getDataByKey()`, `getDateTimeByKey()`; `Column::__construct()` (1st) |
+| `$recordIndex`    | `$idx`, `$index`                 | `ResponseInterface`/`AbstractResponse::getRecord()`, `getColumnIndex()` (2nd); `ColumnInterface`/`Column::getDataByIndex()`, `getDateTimeByIndex()`; `CNR\Column::getDataByIndex()`                                         |
+| `$templateId`     | `$id`                            | `AbstractResponseTemplateManager::getTemplate()`, `addTemplate()`, `hasTemplate()`, `isTemplateMatchHash()` (2nd), `isTemplateMatchPlain()` (2nd); `CNR`/`IBS\ResponseTemplateManager::getTemplate()`                       |
+| `$description`    | `$descr`                         | `AbstractResponseTemplateManager::addTemplate()` (3rd)                                                                                                                                                                      |
+| `$response`       | `$r`                             | `LoggerInterface`/`AbstractLogger`/`CNR\Logger`/`IBS\Logger::format()`, `log()` (2nd)                                                                                                                                       |
+| `$placeholders`   | `$ph`                            | `AbstractResponse::__construct()` (3rd), `translate()` (3rd, incl. both brand overrides); `AbstractResponseTranslator::translate()` (3rd), `replacePlaceholders()` (2nd)                                                    |
+| `$row`            | `$h`                             | `ResponseInterface`/`AbstractResponse::addRecord()`; `AbstractResponse`/`CNR\Response`/`IBS\Response::newRecord()`                                                                                                          |
+| `$timeoutSeconds` | `$seconds`, `$timeout`, `$value` | `AbstractClient`/`AbstractSocketConfig::setSocketTimeout()`; `TransportInterface`/`HttpTransport::post()` (3rd)                                                                                                             |
+| `$maskSecrets`    | `$secured`                       | `AbstractClient`/`AbstractSocketConfig::getPOSTData()` (2nd), `getPOSTDataParams()` (2nd, incl. both brand overrides)                                                                                                       |
+| `$login`          | `$value`, `$uid`                 | `AbstractSocketConfig`/`CNR\SocketConfig::setLogin()`; `AbstractClient::setCredentials()` (1st)                                                                                                                             |
+| `$password`       | `$value`, `$pw`                  | `AbstractSocketConfig`/`CNR\SocketConfig::setPassword()`; `AbstractClient::setCredentials()` (2nd); `RoleCredentialsInterface`/`CNR\Client::setRoleCredentials()` (3rd)                                                     |
+| `$accountId`      | `$uid`                           | `RoleCredentialsInterface`/`CNR\Client::setRoleCredentials()` (1st)                                                                                                                                                         |
+| `$roleId`         | `$role`                          | `RoleCredentialsInterface`/`CNR\Client::setRoleCredentials()` (2nd)                                                                                                                                                         |
+| `$session`        | `$value`                         | `CNR\Client`/`CNR\SocketConfig::setSession()`                                                                                                                                                                               |
+| `$url`            | `$value`                         | `AbstractClient`/`AbstractSocketConfig::setURL()`                                                                                                                                                                           |
+| `$persistent`     | `$value`                         | `CNR\SocketConfig::setPersistent()`                                                                                                                                                                                         |
+| `$label`          | `$str`                           | `AbstractClient::setUserAgent()` (1st)                                                                                                                                                                                      |
+| `$revision`       | `$rv`                            | `AbstractClient::setUserAgent()` (2nd)                                                                                                                                                                                      |
+| `$currentPage`    | `$rr`                            | `CNR\Client::requestNextResponsePage()`                                                                                                                                                                                     |
+| `$upperCaseKeys`  | `$toupper`                       | `CommandFormatter::flattenCommand()` (2nd)                                                                                                                                                                                  |
+| `$responseHash`   | `$tpl`                           | `AbstractResponseTemplateManager::isTemplateMatchHash()` (1st)                                                                                                                                                              |
+
+`$tpl` → `$responseHash` is the one rename that fixes a name meaning the **opposite** of what it said: the argument is the API response hash being tested _against_ a template, not the template. Post-rename the pair reads `isTemplateMatchHash(array $responseHash, string $templateId)`, which is the right way round.
+
+Note `$accountId` and `$login` are deliberately different words for what looks like one concept: `setCredentials()` takes the login **as it goes on the wire**, while `setRoleCredentials()` takes the account and role ids **separately** and composes the login from them. They are not interchangeable.
+
+`ApiDateTime::from()`/`tryFrom()` keep `$value`, mirroring PHP's own `BackedEnum::from()`, and are **not** part of this rename.
+
+If you implement `RecordInterface`, the v28 snippet above needs its parameter renamed:
+
+```php
+// AFTER (v29)
+#[\Override]
+public function getDateTimeByKey(string $columnName): ?\CNIC\ApiDateTime
+{
+    $value = $this->getDataByKey($columnName);
+    return is_string($value) ? \CNIC\ApiDateTime::tryFrom($value) : null;
+}
+```
+
+**Why this happened:** the old names carried no meaning, so every one of them needed a `@param` line restating it — 48 such annotations are gone with this change, leaving only the ones that say something a name cannot (an array shape, a precondition, or what passing an empty string resets). Follow-up to RSRMID-2934, which did the same for internal parameters without breaking anything. (Ref: RSRMID-2935.)
+
+### Six `protected` properties renamed too
+
+**What changed:** the same defect on the property surface. This is a **separate** break from the parameter renames above, with a different audience: a protected property is reachable only from a subclass, so this affects you **only if you extend** `AbstractSocketConfig`, `AbstractClient` or `AbstractResponse` (or a brand `SocketConfig`/`Response`) and read the property directly.
+
+| Old               | New               | On                                       |
+| ----------------- | ----------------- | ---------------------------------------- |
+| `$pw`             | `$password`       | `AbstractSocketConfig`                   |
+| `$ua`             | `$userAgent`      | `AbstractClient`                         |
+| `$curlopts`       | `$curlOptions`    | `AbstractSocketConfig`                   |
+| `$paginationkeys` | `$paginationKeys` | `AbstractResponse`, `CNR`/`IBS\Response` |
+| `$columnkeys`     | `$columnKeys`     | `AbstractResponse`                       |
+| `$columnindex`    | `$columnIndex`    | `AbstractResponse`                       |
+
+The last three were also the repo's only departures from its own camelCase-properties rule.
+
+**What to respect:**
+
+```php
+// BEFORE (v28)
+final class MyConfig extends \CNIC\AbstractSocketConfig
+{
+    protected function getPOSTDataParams(array $command, bool $maskSecrets): array
+    {
+        return ["u" => $this->login, "p" => $maskSecrets ? "***" : $this->pw];
+    }
+}
+
+// AFTER (v29)
+        return ["u" => $this->login, "p" => $maskSecrets ? "***" : $this->password];
+```
+
+Unlike the parameter renames, this one fails **loudly and statically**: reading `$this->pw` is an access to an undefined property, which PHPStan reports at level 9 rather than leaving to runtime. If you run either analyser over your integration you will be told; if you run neither, PHP emits a warning and yields `null` at runtime.
+
+**Public** properties are untouched — `$templates` and `ApiDateTime`'s readonly fields were already accurate, and `System::$name`/`$value` are native enum properties.
+
+**Why this happened:** `$pw` and `$ua` are the same meaningless-abbreviation defect as the parameters, and the rest violated the project's own naming standard; batching them into the one major this rename already costs is cheaper than a second breaking release later. (Ref: RSRMID-2935.)
 
 ---
 

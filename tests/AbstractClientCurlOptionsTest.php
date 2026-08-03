@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  * refuse (RSRMID-2921).
  *
  * These run without any live API — they only mutate and introspect the protected
- * $curlopts bag, which since RSRMID-2921 lives on the SocketConfig with the rest
+ * $curlOptions bag, which since RSRMID-2921 lives on the SocketConfig with the rest
  * of the connection configuration. The bag is read back via reflection (the same
  * pattern used by AbstractClientIDNTest) so the tests do not depend on the
  * client's forwarders alone.
@@ -55,12 +55,12 @@ final class AbstractClientCurlOptionsTest extends TestCase
     }
 
     /**
-     * Read the protected $curlopts bag off a client's config.
+     * Read the protected $curlOptions bag off a client's config.
      * @return array<int, mixed>
      */
-    private function curlopts(AbstractClient $cl): array
+    private function curlOptions(AbstractClient $cl): array
     {
-        $p = new \ReflectionProperty(AbstractSocketConfig::class, "curlopts");
+        $p = new \ReflectionProperty(AbstractSocketConfig::class, "curlOptions");
         /** @var array<int, mixed> $opts */
         $opts = $p->getValue($cl->getSocketConfig());
         return $opts;
@@ -68,7 +68,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
 
     public function testCnrDefaultCurlOptsIsEmpty(): void
     {
-        $this->assertSame([], $this->curlopts($this->cnr()));
+        $this->assertSame([], $this->curlOptions($this->cnr()));
     }
 
     /**
@@ -82,7 +82,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
      */
     public function testIbsDefaultCurlOptsIsEmpty(): void
     {
-        $this->assertSame([], $this->curlopts($this->ibs()));
+        $this->assertSame([], $this->curlOptions($this->ibs()));
     }
 
     /**
@@ -95,7 +95,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $cl->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $this->assertSame(
             [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4],
-            $this->curlopts($cl)
+            $this->curlOptions($cl)
         );
     }
 
@@ -108,13 +108,13 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $cl = $this->cnr();
         $cl->setExtraCurlOptions([CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
 
-        $this->assertSame(5, $this->curlopts($cl)[CURLOPT_CONNECTTIMEOUT]);
-        $this->assertSame(CURL_IPRESOLVE_V4, $this->curlopts($cl)[CURLOPT_IPRESOLVE]);
+        $this->assertSame(5, $this->curlOptions($cl)[CURLOPT_CONNECTTIMEOUT]);
+        $this->assertSame(CURL_IPRESOLVE_V4, $this->curlOptions($cl)[CURLOPT_IPRESOLVE]);
 
         // a later call merges, overriding only the colliding keys
         $cl->setExtraCurlOptions([CURLOPT_CONNECTTIMEOUT => 9]);
-        $this->assertSame(9, $this->curlopts($cl)[CURLOPT_CONNECTTIMEOUT]);
-        $this->assertSame(CURL_IPRESOLVE_V4, $this->curlopts($cl)[CURLOPT_IPRESOLVE]);
+        $this->assertSame(9, $this->curlOptions($cl)[CURLOPT_CONNECTTIMEOUT]);
+        $this->assertSame(CURL_IPRESOLVE_V4, $this->curlOptions($cl)[CURLOPT_IPRESOLVE]);
     }
 
     /**
@@ -126,7 +126,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $cl = $this->ibs();
         $cl->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $cl->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V6]);
-        $this->assertSame(CURL_IPRESOLVE_V6, $this->curlopts($cl)[CURLOPT_IPRESOLVE]);
+        $this->assertSame(CURL_IPRESOLVE_V6, $this->curlOptions($cl)[CURLOPT_IPRESOLVE]);
     }
 
     public function testSetExtraCurlOptionsIsFluent(): void
@@ -140,7 +140,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $cl = $this->cnr();
         $cl->setExtraCurlOptions([CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $cl->resetCurlOptions();
-        $this->assertSame([], $this->curlopts($cl));
+        $this->assertSame([], $this->curlOptions($cl));
     }
 
     /**
@@ -159,7 +159,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $cl->setExtraCurlOptions([CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
         $cl->resetCurlOptions();
 
-        $this->assertSame([], $this->curlopts($cl));
+        $this->assertSame([], $this->curlOptions($cl));
     }
 
     public function testResetCurlOptionsIsFluent(): void
@@ -268,7 +268,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
         } catch (UnsupportedFeatureException) {
             // expected
         }
-        $this->assertSame([], $this->curlopts($cl), "the whole call is refused, not merged in part");
+        $this->assertSame([], $this->curlOptions($cl), "the whole call is refused, not merged in part");
         $this->assertNull($cl->getProxy(), "and the managed value is not applied through the back door");
     }
 
@@ -298,7 +298,7 @@ final class AbstractClientCurlOptionsTest extends TestCase
         $cl->setExtraCurlOptions([CURLOPT_CONNECTTIMEOUT => 4, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V6]);
         $this->assertSame(
             [CURLOPT_CONNECTTIMEOUT => 4, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V6],
-            $this->curlopts($cl)
+            $this->curlOptions($cl)
         );
     }
 }

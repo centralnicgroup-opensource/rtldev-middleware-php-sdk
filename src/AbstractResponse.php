@@ -89,13 +89,13 @@ abstract class AbstractResponse implements ResponseInterface
      * nothing, so a brand that does not paginate needs no override.
      * @var non-empty-string
      */
-    protected string $paginationkeys = "/^$/";
+    protected string $paginationKeys = "/^$/";
 
     /**
      * Column names available in this response
      * @var string[]
      */
-    protected array $columnkeys = [];
+    protected array $columnKeys = [];
 
     /**
      * Container of Column Instances
@@ -104,12 +104,12 @@ abstract class AbstractResponse implements ResponseInterface
     protected array $columns = [];
 
     /**
-     * Map of column name to its index in the column/columnkeys lists.
+     * Map of column name to its index in the column/columnKeys lists.
      * Maintained by registerColumn() to provide O(1) column lookup. First
      * occurrence wins, mirroring the previous array_search() behaviour.
      * @var array<string, int>
      */
-    protected array $columnindex = [];
+    protected array $columnIndex = [];
 
     /**
      * Record Index we currently point to in record list
@@ -144,24 +144,24 @@ abstract class AbstractResponse implements ResponseInterface
      * Constructor
      * @param string $raw API plain response
      * @param array<string, string> $cmd API command used within this request
-     * @param array{CONNECTION_URL?: string} $ph placeholder array to get vars in response description dynamically replaced
+     * @param array{CONNECTION_URL?: string} $placeholders vars the response description has dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      * @param ResponseParserInterface|null $parser parser to use instead of the brand default (see newResponseParser())
      */
     public function __construct(
         string $raw,
         array $cmd = [],
-        array $ph = [],
+        array $placeholders = [],
         array $context = [],
         ?ResponseParserInterface $parser = null
     ) {
         $cmd = $this->sanitizeCommand($cmd);
         $this->context = $context;
         $this->command = $cmd;
-        $this->requestUrl = $ph["CONNECTION_URL"] ?? "";
+        $this->requestUrl = $placeholders["CONNECTION_URL"] ?? "";
         // Assigned before populate(), which is where the parser is used.
         $this->parser = $parser ?? $this->newResponseParser();
-        $this->raw = $this->translate($raw, $cmd, $ph);
+        $this->raw = $this->translate($raw, $cmd, $placeholders);
         $this->populate();
     }
 
@@ -170,9 +170,9 @@ abstract class AbstractResponse implements ResponseInterface
      * Brand-specific by the ResponseTranslator each subclass imports; $cmd is
      * already sanitized.
      * @param array<string, string> $cmd API command used within this request
-     * @param array{CONNECTION_URL?: string} $ph placeholder array for dynamic replacement
+     * @param array{CONNECTION_URL?: string} $placeholders
      */
-    abstract protected function translate(string $raw, array $cmd, array $ph): string;
+    abstract protected function translate(string $raw, array $cmd, array $placeholders): string;
 
     /**
      * Parse the translated response into the hash and build the column/record
@@ -207,9 +207,9 @@ abstract class AbstractResponse implements ResponseInterface
      * hard-coding the shared Record here would close it. (Unlike columns, whose
      * value types diverge and so cannot use a param-typed factory at all — see
      * registerColumn().)
-     * @param array<string,mixed> $h row hash data
+     * @param array<string,mixed> $row
      */
-    abstract protected function newRecord(array $h): RecordInterface;
+    abstract protected function newRecord(array $row): RecordInterface;
 
     /**
      * Mask the brand's sensitive command keys (see $sensitiveFields) so their
@@ -243,7 +243,7 @@ abstract class AbstractResponse implements ResponseInterface
         }
         for ($i = 0; $i < $count; $i++) {
             $d = [];
-            foreach ($this->columnkeys as $k) {
+            foreach ($this->columnKeys as $k) {
                 $col = $this->getColumn($k);
                 if ($col instanceof ColumnInterface) {
                     /** @psalm-suppress MixedAssignment getDataByIndex returns mixed by design — IBS columns hold arbitrary JSON values */
@@ -299,7 +299,7 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * Register an already-constructed column into the list bookkeeping.
      *
-     * The bookkeeping ($columns/$columnkeys/$columnindex) is identical for every
+     * The bookkeeping ($columns/$columnKeys/$columnIndex) is identical for every
      * brand; what differs is the column's value type. Rather than a param-typed
      * newColumn() factory — which cannot stay type-clean under PHPStan L9 / Psalm
      * L1, because CNR columns take string[] while IBS columns take mixed[] and a
@@ -311,43 +311,40 @@ abstract class AbstractResponse implements ResponseInterface
     {
         $key = $col->getKey();
         $this->columns[] = $col;
-        $this->columnkeys[] = $key;
-        $this->columnindex[$key] ??= count($this->columns) - 1;
+        $this->columnKeys[] = $key;
+        $this->columnIndex[$key] ??= count($this->columns) - 1;
         return $this;
     }
 
     /**
      * Add a record to the record list
-     * @param array<string,mixed> $h row hash data
+     * @param array<string,mixed> $row
      */
     #[\Override]
-    public function addRecord(array $h): static
+    public function addRecord(array $row): static
     {
-        $this->records[] = $this->newRecord($h);
+        $this->records[] = $this->newRecord($row);
         return $this;
     }
 
     /**
      * Get column by column name
-     * @param string $key column name
      */
     #[\Override]
-    public function getColumn(string $key): ?ColumnInterface
+    public function getColumn(string $columnName): ?ColumnInterface
     {
-        $idx = $this->columnindex[$key] ?? null;
+        $idx = $this->columnIndex[$columnName] ?? null;
         return $idx === null ? null : $this->columns[$idx];
     }
 
     /**
      * Get Data by Column Name and Index
-     * @param string $colkey column name
-     * @param int $index column data index
      */
     #[\Override]
-    public function getColumnIndex(string $colkey, int $index): mixed
+    public function getColumnIndex(string $columnName, int $recordIndex): mixed
     {
-        $col = $this->getColumn($colkey);
-        return $col instanceof ColumnInterface ? $col->getDataByIndex($index) : null;
+        $col = $this->getColumn($columnName);
+        return $col instanceof ColumnInterface ? $col->getDataByIndex($recordIndex) : null;
     }
 
     /**
@@ -360,10 +357,10 @@ abstract class AbstractResponse implements ResponseInterface
     {
         if ($filterPaginationKeys) {
             // Ensure that preg_grep always returns an array
-            $paginationKeys = preg_grep($this->paginationkeys, $this->columnkeys, PREG_GREP_INVERT) ?: [];
+            $paginationKeys = preg_grep($this->paginationKeys, $this->columnKeys, PREG_GREP_INVERT) ?: [];
             return array_values($paginationKeys);
         }
-        return $this->columnkeys;
+        return $this->columnKeys;
     }
 
     /**
@@ -498,13 +495,12 @@ abstract class AbstractResponse implements ResponseInterface
 
     /**
      * Get Record at given index
-     * @param int $idx record index
      */
     #[\Override]
-    public function getRecord(int $idx): ?RecordInterface
+    public function getRecord(int $recordIndex): ?RecordInterface
     {
-        if ($idx >= 0 && $this->getRecordsCount() > $idx) {
-            return $this->records[$idx];
+        if ($recordIndex >= 0 && $this->getRecordsCount() > $recordIndex) {
+            return $this->records[$recordIndex];
         }
         return null;
     }

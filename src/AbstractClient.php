@@ -28,7 +28,7 @@ use CNIC\System;
  * Not here. Connection configuration has one home — {@see AbstractSocketConfig} —
  * reachable through {@see getSocketConfig()}. What lives here is client
  * *behaviour*: the logger and debug flag, the response context, the transport
- * instance, and the SDK's own identity (`VERSION`/`$ua`, versioned with this class
+ * instance, and the SDK's own identity (`VERSION`/`$userAgent`, versioned with this class
  * and released from it). Do not add a copy of a config-owned value; guarded by
  * tests/ClientConfigSeamTest.php.
  *
@@ -81,7 +81,7 @@ abstract class AbstractClient
      * library (and the platform embedding it) and is built from {@see VERSION},
      * which semantic-release rewrites in this file.
      */
-    protected string $ua = "";
+    protected string $userAgent = "";
 
     /**
      * logger instance for debug mode
@@ -265,11 +265,10 @@ abstract class AbstractClient
     /**
      * Serialize given command for POST request including connection configuration data
      * @param array<string, string|null> $cmd API command to encode
-     * @param bool $secured secure password (when used for output)
      */
-    public function getPOSTData(array $cmd, bool $secured = false): string
+    public function getPOSTData(array $cmd, bool $maskSecrets = false): string
     {
-        return $this->socketConfig->getPOSTData($cmd, $secured);
+        return $this->socketConfig->getPOSTData($cmd, $maskSecrets);
     }
 
     /**
@@ -287,12 +286,12 @@ abstract class AbstractClient
      * is rejected ({@see setExtraCurlOptions()}) rather than quietly overriding
      * what {@see getSocketTimeout()} reports.
      *
-     * @param int $seconds timeout in seconds (0 = no timeout, per cURL)
+     * @param int $timeoutSeconds 0 carries cURL's meaning — no timeout
      * @throws InvalidConfigurationException on a negative value
      */
-    public function setSocketTimeout(int $seconds): static
+    public function setSocketTimeout(int $timeoutSeconds): static
     {
-        $this->socketConfig->setSocketTimeout($seconds);
+        $this->socketConfig->setSocketTimeout($timeoutSeconds);
         return $this;
     }
 
@@ -306,14 +305,12 @@ abstract class AbstractClient
 
     /**
      * Set a custom user agent (for platforms that use this SDK)
-     * @param string $str user agent label
-     * @param string $rv user agent revision
      * @param array<string> $modules further modules to add to user agent string
      */
-    public function setUserAgent(string $str, string $rv, array $modules = []): static
+    public function setUserAgent(string $label, string $revision, array $modules = []): static
     {
         $mods = $modules === [] ? "" : " " . implode(" ", $modules);
-        $this->ua = $str . " (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $rv . ")" . $mods . " php-sdk/" . $this->getVersion() . " php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
+        $this->userAgent = $label . " (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $revision . ")" . $mods . " php-sdk/" . $this->getVersion() . " php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
         return $this;
     }
 
@@ -321,14 +318,14 @@ abstract class AbstractClient
      * Get the user agent string — the one set via {@see setUserAgent()}, or the
      * SDK default when none was.
      *
-     * A pure read — keep it that way. Memoising the default into {@see $ua} would
+     * A pure read — keep it that way. Memoising the default into {@see $userAgent} would
      * make a getter write during a request, and there is nothing worth memoising:
      * the value is a handful of constants and one `php_uname()` call.
      */
     public function getUserAgent(): string
     {
-        if ($this->ua !== '') {
-            return $this->ua;
+        if ($this->userAgent !== '') {
+            return $this->userAgent;
         }
         return "PHP-SDK (" . PHP_OS . "; " . php_uname("m") . "; rv:" . $this->getVersion() . ") php/" . implode(".", [PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION]);
     }
@@ -364,7 +361,7 @@ abstract class AbstractClient
 
     /**
      * Set proxy to use for API communication
-     * @param string $proxy proxy to use (optional, for reset)
+     * @param string $proxy empty string resets it, restoring a direct connection
      */
     public function setProxy(string $proxy = ""): static
     {
@@ -382,7 +379,7 @@ abstract class AbstractClient
 
     /**
      * Set Referer to use for API communication
-     * @param string $referer Referer (optional, for reset)
+     * @param string $referer empty string resets it, so no Referer is sent
      */
     public function setReferer(string $referer = ""): static
     {
@@ -408,11 +405,10 @@ abstract class AbstractClient
 
     /**
      * Set another connection url to be used for API communication
-     * @param string $value API connection url to set
      */
-    public function setURL(string $value): static
+    public function setURL(string $url): static
     {
-        $this->socketConfig->setURL($value);
+        $this->socketConfig->setURL($url);
         return $this;
     }
 
@@ -425,13 +421,13 @@ abstract class AbstractClient
      * invariant is deliberate and pinned by a test —
      * `CNR\SessionCapable::reuseSession()` depends on it, restoring the login first
      * and the session second. Set the session *after* the credentials, never before.
-     * @param string $uid account name (optional, for reset)
-     * @param string $pw account password (optional, for reset)
+     * @param string $login empty string resets the stored login
+     * @param string $password empty string resets the stored password
      */
-    public function setCredentials(string $uid = "", string $pw = ""): static
+    public function setCredentials(string $login = "", string $password = ""): static
     {
-        $this->socketConfig->setLogin($uid);
-        $this->socketConfig->setPassword($pw);
+        $this->socketConfig->setLogin($login);
+        $this->socketConfig->setPassword($password);
         return $this;
     }
 

@@ -26,18 +26,16 @@ final class Logger extends AbstractLogger
      * Build the CNR debug record: command, POST body, optional transport error
      * and the plain response, joined by newlines.
      *
-     * @param string $post post request data in string format (already secured)
-     * @param ResponseInterface $r Response to log
-     * @param string|null $error error message (optional)
+     * @param string $post post request data in string format (already masked)
      */
     #[\Override]
-    public function format(string $post, ResponseInterface $r, ?string $error = null): string
+    public function format(string $post, ResponseInterface $response, ?string $error = null): string
     {
         return implode("\n", [
-            print_r($r->getCommand(), true),
+            print_r($response->getCommand(), true),
             $post,
             $error !== null && $error !== '' ? "HTTP communication failed: " . $error : "",
-            $r->getPlain()
+            $response->getPlain()
         ]);
     }
 }

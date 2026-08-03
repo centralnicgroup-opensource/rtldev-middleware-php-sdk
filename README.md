@@ -85,9 +85,9 @@ $cl->enableDebugMode()->setLogSink(new FileSink("/var/log/cnic.log"));
 final class MyLogger extends \CNIC\AbstractLogger
 {
     #[\Override]
-    public function format(string $post, \CNIC\ResponseInterface $r, ?string $error = null): string
+    public function format(string $post, \CNIC\ResponseInterface $response, ?string $error = null): string
     {
-        return sprintf("[%d] %s\n", $r->getCode(), $post);
+        return sprintf("[%d] %s\n", $response->getCode(), $post);
     }
 }
 

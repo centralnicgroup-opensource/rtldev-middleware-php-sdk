@@ -39,9 +39,9 @@ final class LoggerTest extends TestCase
         $sink = new CollectingSink();
         $logger = new class ($sink) extends AbstractLogger {
             #[\Override]
-            public function format(string $post, ResponseInterface $r, ?string $error = null): string
+            public function format(string $post, ResponseInterface $response, ?string $error = null): string
             {
-                return "code=" . $r->getCode() . " post=" . $post;
+                return "code=" . $response->getCode() . " post=" . $post;
             }
         };
 
@@ -55,7 +55,7 @@ final class LoggerTest extends TestCase
     {
         $logger = new class extends AbstractLogger {
             #[\Override]
-            public function format(string $post, ResponseInterface $r, ?string $error = null): string
+            public function format(string $post, ResponseInterface $response, ?string $error = null): string
             {
                 return "post=" . $post;
             }
@@ -69,13 +69,13 @@ final class LoggerTest extends TestCase
     {
         $logger = new class implements LoggerInterface {
             #[\Override]
-            public function format(string $post, ResponseInterface $r, ?string $error = null): string
+            public function format(string $post, ResponseInterface $response, ?string $error = null): string
             {
                 return $post;
             }
 
             #[\Override]
-            public function log(string $post, ResponseInterface $r, ?string $error = null): void
+            public function log(string $post, ResponseInterface $response, ?string $error = null): void
             {
             }
         };

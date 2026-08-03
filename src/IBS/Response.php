@@ -55,7 +55,7 @@ class Response extends AbstractResponse implements ResponseInterface
      * in a single page, so the last index is the record-grounded count - 1.
      * @var non-empty-string
      */
-    protected string $paginationkeys = "/^(total_.*|domaincount)$/";
+    protected string $paginationKeys = "/^(total_.*|domaincount)$/";
 
     /**
      * IBS carries sensitive data under lower-/camel-case command keys.
@@ -66,12 +66,12 @@ class Response extends AbstractResponse implements ResponseInterface
     /**
      * Translate the raw API response using the IBS translator.
      * @param array<string, string> $cmd API command used within this request
-     * @param array{CONNECTION_URL?: string} $ph placeholder array for dynamic replacement
+     * @param array{CONNECTION_URL?: string} $placeholders
      */
     #[\Override]
-    protected function translate(string $raw, array $cmd, array $ph): string
+    protected function translate(string $raw, array $cmd, array $placeholders): string
     {
-        return RT::translate($raw, $cmd, $ph);
+        return RT::translate($raw, $cmd, $placeholders);
     }
 
     /**
@@ -188,23 +188,22 @@ class Response extends AbstractResponse implements ResponseInterface
      * value type is why a param-typed newColumn() factory would not stay
      * type-clean, and why this builds its column locally and hands the finished
      * instance to the shared registerColumn() bookkeeping — see registerColumn().
-     * @param string $key column name
      * @param array<array-key, mixed> $data array of column data
      */
     #[\Override]
-    public function addColumn(string $key, array $data): static
+    public function addColumn(string $columnName, array $data): static
     {
-        return $this->registerColumn(new Column($key, $data));
+        return $this->registerColumn(new Column($columnName, $data));
     }
 
     /**
      * Instantiate the record type for this brand.
-     * @param array<string,mixed> $h row hash data
+     * @param array<string,mixed> $row
      */
     #[\Override]
-    protected function newRecord(array $h): Record
+    protected function newRecord(array $row): Record
     {
-        return new Record($h);
+        return new Record($row);
     }
 
     /**

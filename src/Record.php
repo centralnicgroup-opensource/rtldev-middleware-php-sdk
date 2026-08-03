@@ -52,24 +52,22 @@ class Record implements RecordInterface
 
     /**
      * get row data for given column
-     * @param string $key column name
      */
     #[\Override]
-    public function getDataByKey(string $key): mixed
+    public function getDataByKey(string $columnName): mixed
     {
-        if ($this->hasData($key)) {
-            return $this->data[$key];
+        if ($this->hasData($columnName)) {
+            return $this->data[$columnName];
         }
         return null;
     }
 
     /**
      * check if record has data for given column
-     * @param string $key column name
      */
-    private function hasData(string $key): bool
+    private function hasData(string $columnName): bool
     {
-        return array_key_exists($key, $this->data);
+        return array_key_exists($columnName, $this->data);
     }
 
     /**
@@ -78,16 +76,14 @@ class Record implements RecordInterface
      * Opt-in narrowing over {@see self::getDataByKey()}: returns `null` for a
      * missing key, a non-string value, or a string {@see ApiDateTime::tryFrom()}
      * cannot parse. There is no throwing variant here — use
-     * `ApiDateTime::from($rec->getDataByKey($key))` directly if an unparsable
-     * value should be a loud failure instead.
-     *
-     * @param string $key column name
+     * `ApiDateTime::from($rec->getDataByKey($columnName))` directly if an
+     * unparsable value should be a loud failure instead.
      */
     #[\Override]
-    public function getDateTimeByKey(string $key): ?ApiDateTime
+    public function getDateTimeByKey(string $columnName): ?ApiDateTime
     {
         /** @psalm-suppress MixedAssignment getDataByKey() returns mixed by design; is_string() narrows it below */
-        $value = $this->getDataByKey($key);
+        $value = $this->getDataByKey($columnName);
         return is_string($value) ? ApiDateTime::tryFrom($value) : null;
     }
 }

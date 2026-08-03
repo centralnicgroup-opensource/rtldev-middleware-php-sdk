@@ -40,17 +40,14 @@ abstract class AbstractResponseTemplateManager
 
     /**
      * Generate API response template string for given code and description
-     * @param string $code API response code
-     * @param string $description API response description
      */
     abstract public static function generateTemplate(string $code, string $description): string;
 
     /**
      * Get response template instance from template container.
      * Subclasses narrow the return type to their concrete Response.
-     * @param string $id template id
      */
-    abstract public static function getTemplate(string $id): ResponseInterface;
+    abstract public static function getTemplate(string $templateId): ResponseInterface;
 
     /**
      * Create a brand Response instance from a template id or raw response.
@@ -75,14 +72,14 @@ abstract class AbstractResponseTemplateManager
 
     /**
      * Add response template to template container
-     * @param string $id template id
-     * @param string $plain API plain response or API response code (when providing $descr)
-     * @param string|null $descr API response description (optional)
+     * @param string $plain API plain response, or API response code when $description is given
      */
-    public static function addTemplate(string $id, string $plain, ?string $descr = null): static
+    public static function addTemplate(string $templateId, string $plain, ?string $description = null): static
     {
         self::$builtinTemplates[static::class] ??= static::$templates;
-        static::$templates[$id] = is_null($descr) ? $plain : static::generateTemplate($plain, $descr);
+        static::$templates[$templateId] = is_null($description)
+            ? $plain
+            : static::generateTemplate($plain, $description);
         return new static();
     }
 
@@ -128,29 +125,26 @@ abstract class AbstractResponseTemplateManager
 
     /**
      * Check if given template exists in template container
-     * @param string $id template id
      */
-    public static function hasTemplate(string $id): bool
+    public static function hasTemplate(string $templateId): bool
     {
-        return array_key_exists($id, static::$templates);
+        return array_key_exists($templateId, static::$templates);
     }
 
     /**
      * Check if given API response hash matches a given template by code and description
-     * @param array<string, mixed> $tpl api response hash
-     * @param string $id template id
+     * @param array<string, mixed> $responseHash
      */
-    public static function isTemplateMatchHash(array $tpl, string $id): bool
+    public static function isTemplateMatchHash(array $responseHash, string $templateId): bool
     {
-        return self::matches(static::getTemplate($id)->getHash(), $tpl);
+        return self::matches(static::getTemplate($templateId)->getHash(), $responseHash);
     }
 
     /**
      * Check if given API plain response matches a given template by code and description
      * @param string $plain API plain response
-     * @param string $id template id
      */
-    public static function isTemplateMatchPlain(string $plain, string $id): bool
+    public static function isTemplateMatchPlain(string $plain, string $templateId): bool
     {
         // Parsed with no command on purpose: a template is not tied to one, and
         // the brand parsers that read $cmd use it only to pick their wire branch
@@ -160,20 +154,20 @@ abstract class AbstractResponseTemplateManager
         // yield the same hash. Pinned by IBS's ResponseTemplateManagerTest and its
         // ResponseParserTest; keep that assertion, it is what stops the two routes
         // diverging unnoticed.
-        return self::matches(static::getTemplate($id)->getHash(), static::newResponseParser()->parse($plain));
+        return self::matches(static::getTemplate($templateId)->getHash(), static::newResponseParser()->parse($plain));
     }
 
     /**
      * Compare two response hashes on this brand's match keys.
-     * @param array<string, mixed> $h template hash
-     * @param array<string, mixed> $tpl response hash to compare against
+     * @param array<string, mixed> $templateHash
+     * @param array<string, mixed> $responseHash
      */
-    private static function matches(array $h, array $tpl): bool
+    private static function matches(array $templateHash, array $responseHash): bool
     {
         [$codeKey, $descrKey] = static::matchKeys();
         return (
-            ($h[$codeKey] === $tpl[$codeKey]) &&
-            ($h[$descrKey] === $tpl[$descrKey])
+            ($templateHash[$codeKey] === $responseHash[$codeKey]) &&
+            ($templateHash[$descrKey] === $responseHash[$descrKey])
         );
     }
 }
