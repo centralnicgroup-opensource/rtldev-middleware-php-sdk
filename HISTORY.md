@@ -1,3 +1,21 @@
+# [28.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v27.0.0...v28.0.0) (2026-08-03)
+
+
+### Features
+
+* **datetime:** accept both API date separators and expose date accessors ([e067c5e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/e067c5ec262ab8c000c754a07cad1c9603d6940e))
+* **response:** remove the IBS-only status accessor ([129ad01](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/129ad0133bc94964f54bcbdb5cae977a5358e8f4))
+
+
+### BREAKING CHANGES
+
+* **response:** IBS\Response::getStatus() has been removed; read the status key via getHash()["status"].
+
+See [MIGRATION.md → v28.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2800)
+* **datetime:** IBS/Moniker date values in getPlain()/getHash()/getListHash() now carry the API's own "/" separator verbatim instead of being rewritten to "-", and RecordInterface/ColumnInterface each gained a date accessor that a direct implementor must add.
+
+See [MIGRATION.md → v28.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2800)
+
 # [27.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v26.0.0...v27.0.0) (2026-07-30)
 
 
