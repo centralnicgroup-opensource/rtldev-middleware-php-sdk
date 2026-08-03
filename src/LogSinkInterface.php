@@ -16,7 +16,7 @@ namespace CNIC;
  * the debug record looks like, a sink decides where it goes. Implement this to
  * route SDK debug output into a file, a PSR-3 logger or a host application's own
  * log without reimplementing a brand's format — see
- * {@see AbstractClient::setLogSink()}. (Ref: RSRMID-2925.)
+ * {@see AbstractClient::setLogSink()}.
  *
  * @psalm-api
  * @package CNIC

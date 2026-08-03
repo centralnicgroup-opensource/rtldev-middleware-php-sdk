@@ -14,8 +14,7 @@ use CNIC\IBS\Client as IBSClient;
 /**
  * Moniker API Client — same platform as IBS; only the endpoints differ.
  *
- * Deliberately **not** `final`, even though nothing in the SDK extends it since
- * the empty `MONIKER\SessionClient` was deleted (RSRMID-2920). Psalm's
+ * Deliberately **not** `final`, even though nothing in the SDK extends it. Psalm's
  * `ClassMustBeFinal` only fires on leaf classes, so `CNR\Client` and
  * `IBS\Client` escape it purely because something inside this repo happens to
  * extend them. Sealing this one brand on that accident would make consumer

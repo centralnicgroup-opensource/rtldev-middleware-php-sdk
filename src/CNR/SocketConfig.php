@@ -15,18 +15,18 @@ use CNIC\AbstractSocketConfig;
  * CNR SocketConfig
  *
  * Owns the three settings that are CNR platform concepts rather than shared
- * transport configuration, and that RSRMID-2920 moved down here off
+ * transport configuration, and must not be hoisted onto
  * {@see AbstractSocketConfig}:
  *
- * - the **API session id** and the **`persistent` flag** that requests one.
- *   These used to exist twice — as null-object stubs on the shared base and as
- *   real state here — so `setSession()` on an IBS/Moniker client looked accepted
- *   (the setter is fluent) and was discarded. They now exist only here, which
- *   makes the mismatch a call-site type error instead of a silent no-op.
+ * - the **API session id** and the **`persistent` flag** that requests one. As
+ *   stubs on the shared base they made `setSession()` on an IBS/Moniker client look
+ *   accepted (the setter is fluent) while the value was discarded. Living only here
+ *   makes that mismatch a call-site type error instead of a silent no-op.
  * - the **role separator**, whose single consumer is
  *   {@see \CNIC\CNR\Client::setRoleCredentials()} — itself already CNR-only via
- *   {@see \CNIC\RoleCredentialsInterface}. Keeping the separator on the shared
- *   base left half of that split behind.
+ *   {@see \CNIC\RoleCredentialsInterface}.
+ *
+ * Guarded by tests/ClientSessionSeamTest.php.
  *
  * @package CNIC\CNR
  */
@@ -101,8 +101,8 @@ final class SocketConfig extends AbstractSocketConfig
             }
             $params[$this->parameters["command"]] = substr($newcommand, 0, -1);
         }
-        // Appended last so the encoded body is byte-identical to what the shared
-        // getPOSTData() used to produce when it owned this branch (RSRMID-2920).
+        // Appended last, which is what keeps the encoded body byte-identical to the
+        // CNR wire format; a test asserts the exact bytes.
         if ($this->getPersistent()) {
             $params["persistent"] = "1";
         }

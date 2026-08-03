@@ -28,10 +28,9 @@ use CNIC\ResponseParserInterface;
  * AbstractResponse.
  *
  * IBS does NOT provide the CNR-only telemetry/transient-status/list-hash
- * capabilities, so — unlike the previous design, which inherited them from
- * CNR\Response and had to throw — those methods are simply absent here. They
- * live on CNR\Response via CNIC\ExtendedResponseInterface; consumers narrow to
- * that interface before using them.
+ * capabilities, so those methods are simply absent here rather than present and
+ * throwing. They live on CNR\Response via CNIC\ExtendedResponseInterface;
+ * consumers narrow to that interface before using them.
  *
  * @psalm-api
  * @package CNIC\IBS

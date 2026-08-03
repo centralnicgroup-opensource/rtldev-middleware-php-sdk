@@ -132,7 +132,6 @@ final class CommandFormatter
      * Format the command array into a plain text string
      *
      * @param array<string,string> $command The command array to be formatted
-     * @return string The formatted command string
      */
     public static function formatCommand(array $command): string
     {
@@ -171,7 +170,6 @@ final class CommandFormatter
      *
      * @param string $key The key to find the priority for
      * @param array<string,int> $priority The priority array
-     * @return int The priority value
      */
     private static function findPriority(string $key, array $priority): int
     {

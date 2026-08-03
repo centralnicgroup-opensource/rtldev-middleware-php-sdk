@@ -16,7 +16,7 @@ use CNIC\ResponseInterface;
  * IBS Logger
  *
  * Formatting only — the destination belongs to the sink the base class writes
- * to (RSRMID-2925). Do not add a `log()` override here; it is final upstream.
+ * to. Do not add a `log()` override here; it is final upstream.
  *
  * @package CNIC\IBS
  */

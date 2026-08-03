@@ -14,34 +14,21 @@ use CNIC\Exception\UnsupportedFeatureException;
 
 /**
  * Shared base for all registrar SocketConfig implementations, and **the one home
- * for connection configuration** (RSRMID-2921, breaking in v23.0.0).
+ * for connection configuration**.
  *
  * Concrete subclasses provide getPOSTDataParams() and their own $parameters array
  * shaped to the API they target.
  *
- * ## One home, one answer
- *
- * Connection configuration used to be split between here and
- * {@see AbstractClient}, with no invariant tying the copies together — the client
- * held `$socketURL`, `$system` and the `$curlopts` bag while this class held the
- * endpoints and the timeout. Three defects followed directly from the split, all
- * reproducible before this change:
- *
- * 1. `useOTESystem()->setURL($custom)` left `isOTE()` reporting `true` forever
- *    while requests went to `$custom` — a stored flag disagreeing with the URL.
- * 2. `getURL()` and `getLiveUrl()` answered from different objects.
- * 3. `setProxy()` wrote into the cURL bag, so `resetCurlOptions()` dropped it.
- *
- * The division of labour that replaces it: **this class owns the connection** —
- * where to connect (`$url`, the endpoints, the high-performance route), how to
- * authenticate (login/password, plus CNR's session on its own subclass), and how
- * the transport should behave (timeout, proxy, referer, extra cURL options).
- * {@see AbstractClient} owns **client behaviour** — logging, response context, the
- * transport instance, and the SDK's own identity (version and user agent). Its
- * configuration methods are forwarders to this object, kept for ergonomics; they
- * read and write the state below rather than copies of it, and
- * {@see AbstractClient::getSocketConfig()} exposes it once so a new setting never
- * needs a new forwarder.
+ * **This class owns the connection** — where to connect (`$url`, the endpoints,
+ * the high-performance route), how to authenticate (login/password, plus CNR's
+ * session on its own subclass), and how the transport should behave (timeout,
+ * proxy, referer, extra cURL options). {@see AbstractClient} owns **client
+ * behaviour** — logging, response context, the transport instance, and the SDK's
+ * own identity. Its configuration methods are forwarders to this object, reading
+ * and writing the state below rather than copies of it. Do not add a client-side
+ * copy of anything declared here: two homes for one value is the defect class
+ * this split exists to prevent, and it is guarded by
+ * tests/ClientConfigSeamTest.php.
  *
  * Two invariants keep "one answer" true, and both are enforced rather than
  * documented:
@@ -50,6 +37,8 @@ use CNIC\Exception\UnsupportedFeatureException;
  * - **A value the SDK models as configuration cannot also be set through the
  *   cURL bag** ({@see MANAGED_OPTIONS}) — passing one raises rather than becoming
  *   a second answer the getter cannot see.
+ *
+ * Full decision record: docs/agents/architecture.md.
  *
  * @psalm-api
  * @package CNIC
@@ -61,15 +50,12 @@ abstract class AbstractSocketConfig
      * setter that owns it. Passing one to {@see setExtraCurlOptions()} raises
      * {@see UnsupportedFeatureException} naming the replacement.
      *
-     * These are not protected for the transport's sake — {@see HttpTransport}
-     * happily accepts all four, and a caller driving the transport directly
-     * still may. They are protected because each already has a home here or on
-     * the client, and letting the bag carry a second value would put two answers
-     * behind one question: `getProxy()` would report what `setProxy()` stored
-     * while the wire carried what the bag held. That is the defect class
-     * RSRMID-2919 closed for transport-owned options ("in the bag is not on the
-     * wire") reappearing one layer up, so it gets the same treatment — throw,
-     * naming the constant and the setter, never silently pick a winner.
+     * They are refused not for the transport's sake — {@see HttpTransport} accepts
+     * all four, and a caller driving it directly still may — but because each
+     * already has a home, and letting the bag carry a second value would put two
+     * answers behind one question: `getProxy()` reporting what `setProxy()` stored
+     * while the wire carried the bag's value. Throw, naming constant and setter;
+     * never silently pick a winner.
      *
      * Rejection is **eager** here, unlike {@see HttpTransport::PROTECTED_OPTIONS}
      * which is checked on the next request: the config knows immediately, and the
@@ -77,9 +63,9 @@ abstract class AbstractSocketConfig
      * (CURLOPT_CONNECTTIMEOUT, CURLOPT_IPRESOLVE, ...) stay caller-owned and pass
      * through untouched — the bag is for what the SDK has no opinion about.
      *
-     * Keyed by the cURL constant, valued with its name and the owning setter, so
-     * the message can name both rather than handing back a bare integer. One
-     * list, not two, per the {@see HttpTransport::PROTECTED_OPTIONS} precedent.
+     * Keep the list exactly the options that have their own setter: widening it
+     * takes away legitimate tuning, narrowing it re-opens a second home. Pinned by
+     * AbstractClientCurlOptionsTest::testManagedOptionsAreExactlyTheOnesWithTheirOwnSetter().
      *
      * @var array<int, array{option: string, setter: string}>
      */
@@ -116,7 +102,7 @@ abstract class AbstractSocketConfig
      *
      * The **only** stored URL/system state: which system this is gets derived
      * from it ({@see getSystem()}) rather than tracked alongside it. Seeded to
-     * {@see $liveUrl} by the constructor, LIVE having always been the default.
+     * {@see $liveUrl} by the constructor, LIVE being the default.
      */
     protected string $url = "";
 
@@ -124,19 +110,18 @@ abstract class AbstractSocketConfig
      * Whether requests are routed through the co-located high-performance proxy
      * on loopback ({@see useHighPerformanceConnectionSetup()}).
      *
-     * A flag applied by {@see getURL()} rather than a rewrite of {@see $url},
-     * so the selected system survives it: routing through a local proxy says
-     * nothing about which system sits behind that proxy, and an eager rewrite
-     * made `isOTE()` false the moment high-performance mode was switched on.
+     * A flag applied by {@see getURL()} rather than a rewrite of {@see $url}, so
+     * the selected system survives it: routing through a local proxy says nothing
+     * about which system sits behind that proxy. Do not make it eager again.
      */
     protected bool $highPerformance = false;
 
     /**
      * Proxy for API communication, or null for a direct connection.
      *
-     * Real state, not a {@see $curlopts} key: as a bag key it was discarded by
-     * {@see resetCurlOptions()}, which restores *option* defaults and has no
-     * business forgetting the proxy the caller configured.
+     * Deliberately real state rather than a {@see $curlopts} key, so that
+     * {@see resetCurlOptions()} — whose job is restoring *option* defaults —
+     * cannot forget the proxy the caller configured.
      */
     protected ?string $proxy = null;
 
@@ -226,12 +211,9 @@ abstract class AbstractSocketConfig
      * where requests *go*, while `setURL()`/{@see getSystem()}/{@see isOTE()}
      * operate on which endpoint was *selected*. The two differ only under
      * high-performance routing, and only in that direction — so do not round-trip
-     * one into the other (`setURL($cfg->getURL())` would burn the loopback
-     * rewrite into the selection and lose the system, which is the very drift
-     * this class exists to prevent). No `getEndpointURL()` companion is offered:
-     * `getSystem()` answers the question a caller actually has about the
-     * selection, and a second URL getter with no caller would be surface for its
-     * own sake.
+     * one into the other: `setURL($cfg->getURL())` burns the loopback rewrite into
+     * the selection and loses the system, which is the very drift this class
+     * exists to prevent.
      */
     public function getURL(): string
     {
@@ -244,9 +226,8 @@ abstract class AbstractSocketConfig
      * This replaces the endpoint selection wholesale, so a URL that is neither
      * {@see $oteUrl} nor {@see $liveUrl} leaves {@see getSystem()} answering
      * `null` — the SDK cannot know which system an arbitrary host fronts, and
-     * saying "OT&E" because that was the last selection is how the flag came to
-     * disagree with the URL in the first place.
-     * @param string $value API connection url to set
+     * answering with the last selection is how a stored flag comes to disagree
+     * with the URL in use.
      */
     public function setURL(string $value): static
     {
@@ -274,12 +255,11 @@ abstract class AbstractSocketConfig
      * Get the API system currently in use, or null when the configured URL is
      * neither of the brand's two known endpoints.
      *
-     * Derived from {@see $url}, never stored: a stored copy is a second answer
-     * waiting to contradict the first, which is exactly what it did before
-     * RSRMID-2921. The `null` case is therefore honest rather than defensive —
-     * after `setURL("https://staging.example/")` the client is on a system the
-     * SDK has no name for, and a caller branching on OT&E-vs-LIVE needs to see
-     * that rather than be told "LIVE".
+     * Derived from {@see $url}, never stored — a stored copy is a second answer
+     * waiting to contradict the first. The `null` case is honest rather than
+     * defensive: after `setURL("https://staging.example/")` the client is on a
+     * system the SDK has no name for, and a caller branching on OT&E-vs-LIVE needs
+     * to see that rather than be told "LIVE".
      */
     public function getSystem(): ?System
     {
@@ -321,11 +301,11 @@ abstract class AbstractSocketConfig
      * loopback.
      *
      * Recorded as a flag and applied by {@see getURL()} on every read, not by
-     * rewriting {@see $url} once: which system sits behind the local proxy is
-     * unchanged by routing through it, so an eager rewrite silently cost the
-     * caller `isOTE()`/`getSystem()`. Consequently it also survives a later
+     * rewriting {@see $url} once: an eager rewrite silently costs the caller
+     * `isOTE()`/`getSystem()`. It therefore also survives a later
      * `useOTESystem()`/`useLIVESystem()`/`setURL()` — high-performance routing is
-     * a property of *how* to reach the endpoint, not of *which* endpoint.
+     * a property of *how* to reach the endpoint, not of *which* endpoint. There is
+     * no disable method; construct a fresh client if you need one without it.
      */
     public function useHighPerformanceConnectionSetup(): static
     {
@@ -403,16 +383,13 @@ abstract class AbstractSocketConfig
     /**
      * Brand-default cURL options, used to seed and to reset {@see $curlopts}.
      *
-     * **No brand overrides this, and new overrides should be resisted.**
-     * IBS/Moniker used to force IPv4 resolution (through the equivalent hook on
-     * `AbstractClient`, where the bag lived before RSRMID-2921); that shipped one
-     * customer's network workaround to every integration and was removed in
-     * RSRMID-2915 so transport tuning stays the caller's decision via
-     * {@see setExtraCurlOptions()}. The hook is kept because it is the seam
-     * {@see resetCurlOptions()} is defined in terms of — reset restores these
-     * defaults rather than blindly wiping the bag — and because a genuinely
-     * protocol-mandatory option could still warrant one. A default that merely
-     * papers over one environment's networking does not.
+     * **No brand overrides this, and new overrides should be resisted** — transport
+     * tuning is the caller's decision via {@see setExtraCurlOptions()}, and a brand
+     * default that papers over one environment's networking does not qualify. The
+     * bar is a genuinely protocol-mandatory option. The hook is kept because it is
+     * the seam {@see resetCurlOptions()} is defined in terms of: reset restores
+     * these defaults rather than blindly wiping the bag. Guarded by
+     * ClientConfigSeamTest::testNoBrandOverridesTheDefaultCurlOptsHook().
      * @return array<int, mixed>
      */
     protected function getDefaultCurlOpts(): array
@@ -426,9 +403,9 @@ abstract class AbstractSocketConfig
      * restore the brand defaults afterwards.
      *
      * What lands here reaches the wire: {@see HttpTransport::post()} applies the
-     * bag *over* its own defaults, so an option of yours wins on collision
-     * (RSRMID-2919). Two sets of keys are refused rather than allowed to become
-     * a second answer or a silent loser:
+     * bag *over* its own defaults, so an option of yours wins on collision. Two
+     * sets of keys are refused rather than allowed to become a second answer or a
+     * silent loser:
      * - {@see MANAGED_OPTIONS} — CURLOPT_TIMEOUT, USERAGENT, PROXY and REFERER
      *   each already have a setter that owns them. Rejected here, immediately,
      *   naming the setter to use instead.
@@ -456,14 +433,12 @@ abstract class AbstractSocketConfig
      * ({@see getDefaultCurlOpts()}), discarding anything previously handed to
      * {@see setExtraCurlOptions()}.
      *
-     * Scope note: **options only**. The proxy and the referer are no longer bag
-     * keys ({@see $proxy}/{@see $referer}), so this no longer silently forgets
-     * them — that was the third of the three drifts RSRMID-2921 closed. Reset
-     * them explicitly with `setProxy()`/`setReferer()` if that is what you meant.
+     * Scope note: **options only**. The proxy and the referer are not bag keys
+     * ({@see $proxy}/{@see $referer}), so this does not forget them — reset those
+     * explicitly with `setProxy()`/`setReferer()` if that is what you meant.
      *
      * It restores the defaults rather than clearing the bag, so a brand default
-     * would survive; since RSRMID-2915 no brand declares one, so this currently
-     * empties the bag for every brand.
+     * would survive; no brand declares one, so today this empties the bag.
      */
     public function resetCurlOptions(): static
     {
@@ -475,17 +450,16 @@ abstract class AbstractSocketConfig
      * The cURL options to hand the transport for a request: the dedicated
      * proxy/referer state plus the caller's bag.
      *
-     * The dedicated state goes on the **left** of the union, which is the side
-     * PHP's `+` keeps on a duplicate key, so what {@see getProxy()} reports is
-     * what goes on the wire — structurally, not by convention. It is tempting to
-     * call the order redundant because {@see setExtraCurlOptions()} already
-     * refuses those two keys, but that guard is not the only writer of
-     * {@see $curlopts}: {@see getDefaultCurlOpts()} seeds it through the
-     * constructor and {@see resetCurlOptions()} re-seeds it, neither passing
-     * through the guard. A brand default of CURLOPT_PROXY — precisely the
-     * "protocol-mandatory option" that hook is kept for — would otherwise bring
-     * drift 3 back inverted: the getter reporting the setter's value while the
-     * request used the default.
+     * The dedicated state goes on the **left** of the union — the side PHP's `+`
+     * keeps on a duplicate key — so what {@see getProxy()} reports is what goes on
+     * the wire, structurally rather than by convention. Do not "simplify" the order
+     * on the grounds that {@see setExtraCurlOptions()} already refuses those two
+     * keys: that guard is not the only writer of {@see $curlopts}, since
+     * {@see getDefaultCurlOpts()} seeds it through the constructor and
+     * {@see resetCurlOptions()} re-seeds it, neither passing through the guard. A
+     * brand default of CURLOPT_PROXY would then leave the getter reporting the
+     * setter's value while the request used the default. Pinned by
+     * AbstractClientConfigDriftTest::testDedicatedProxyStateBeatsABrandDefaultOnTheWire().
      * @return array<int, mixed>
      */
     public function getCurlOptions(): array
@@ -537,19 +511,15 @@ abstract class AbstractSocketConfig
     /**
      * Set the socket timeout in seconds — the ceiling on a whole API request.
      *
-     * The single home for the request timeout. Added in RSRMID-2919, when the
-     * value was unreachable from outside the SDK altogether; CURLOPT_TIMEOUT in
-     * the option bag then became a *second* route with the bag winning, which
-     * took 22 lines of prose on the client to explain. RSRMID-2921 removed that
-     * route — the bag now rejects CURLOPT_TIMEOUT ({@see MANAGED_OPTIONS}) — so
-     * this is the only way in, and {@see getSocketTimeout()} is the only answer.
+     * The single home for the request timeout: the bag rejects CURLOPT_TIMEOUT
+     * ({@see MANAGED_OPTIONS}), so this is the only way in and
+     * {@see getSocketTimeout()} the only answer.
      * {@see AbstractClient::setSocketTimeout()} forwards here.
      *
      * 0 carries cURL's meaning — no timeout — and is passed through unchanged.
      * A negative value is rejected rather than forwarded: cURL refuses it by
      * returning `false` from `curl_setopt()`, whose result `curl_setopt_array()`
-     * does not surface, so it would be dropped without a signal — the same
-     * silent divergence this setter was added (RSRMID-2919) to end.
+     * does not surface, so forwarding it would drop the setting with no signal.
      * @param int $value timeout in seconds (0 = no timeout)
      * @throws InvalidConfigurationException on a negative value
      */
@@ -597,11 +567,9 @@ abstract class AbstractSocketConfig
      * Create POST data string out of connection data.
      *
      * Purely the encoding step: every parameter, including brand-specific ones,
-     * comes from {@see getPOSTDataParams()}. It used to append CNR's
-     * `persistent=1` here, gated on a `getPersistent()` stub that no brand but
-     * CNR could ever answer truthfully — a CNR wire parameter reaching every
-     * brand's request builder. That moved to CNR's own getPOSTDataParams() in
-     * RSRMID-2920; do not reintroduce brand knowledge at this level.
+     * comes from {@see getPOSTDataParams()}. Do not reintroduce brand knowledge at
+     * this level — CNR's `persistent=1` is appended by its own
+     * getPOSTDataParams(), which is why this method knows nothing brand-specific.
      * @param array<string, string|null> $command API Command to request
      * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string

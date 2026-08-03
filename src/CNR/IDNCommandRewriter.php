@@ -14,23 +14,19 @@ use CNIC\IDNA\Factory\ConverterFactory;
 /**
  * Rewrites the IDN-bearing parameters of a CNR API command to punycode.
  *
- * ## Why this is a module and not a client method (RSRMID-2922)
+ * ## Why this is a module and not a client method
  *
  * These rules are CNR domain knowledge: which parameter names carry a domain
  * name, that `OBJECTID` is a pattern parameter whose content depends on
- * `OBJECTCLASS`, and that an already-ASCII value must be left alone. Until v24
- * they sat on the shared {@see \CNIC\AbstractClient} as the largest method in
- * that class, switched on by a `needsIDNConvert` flag that only
- * {@see SocketConfig} set true — brand behaviour on a base shared with IBS and
- * Moniker, gated by a flag whose only job was to disable it for two brands out
- * of three. That is the pattern RSRMID-2911 removed for role credentials and
- * RSRMID-2915 removed for the IBS cURL default; this is the same move.
- *
- * It is also what made the rules untestable: with no surface of their own, the
- * only test reached past the client with `ReflectionMethod::setAccessible()`.
- * They are now called from CNR's {@see Client::buildCommand()} hook — the brand
- * variation point the request template method already provides — and asserted
- * directly in `tests/CNR/IDNCommandRewriterTest.php`.
+ * `OBJECTCLASS`, and that an already-ASCII value must be left alone. Do not move
+ * them onto the shared {@see \CNIC\AbstractClient} behind a flag — brand behaviour
+ * on a base shared with IBS and Moniker, gated by a flag whose only job is to
+ * disable it for two brands out of three, is the shape this module replaced, and
+ * it also left the rules reachable only through
+ * `ReflectionMethod::setAccessible()`. They are called from CNR's
+ * {@see Client::buildCommand()} hook — the brand variation point the request
+ * template method already provides — and asserted directly in
+ * `tests/CNR/IDNCommandRewriterTest.php`.
  *
  * The conversion itself is not CNR-specific and stays where it was: the vendor
  * `centralnic-reseller/idn-converter`, also reachable for callers as the public
@@ -84,8 +80,7 @@ final class IDNCommandRewriter
         // undefined-function error from the vendor converter. It cannot be
         // exercised from this suite, which needs idn_to_ascii() for every other
         // IDN assertion; reaching it would take a second PHPUnit process with the
-        // function disabled. (It used to be covered incidentally, when the guard
-        // also carried the needsIDNConvert flag that every IBS request took.)
+        // function disabled.
         if (!function_exists("idn_to_ascii")) {
             return $cmd;
         }

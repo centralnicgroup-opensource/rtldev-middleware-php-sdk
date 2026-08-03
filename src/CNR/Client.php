@@ -27,7 +27,7 @@ use CNIC\RoleCredentialsInterface;
  * {@see SessionClient}) and **role credentials**
  * ({@see \CNIC\RoleCredentialsInterface}). Both read state that only
  * {@see SocketConfig} carries, which is why they live here rather than on
- * {@see AbstractClient} — see the note there (RSRMID-2920).
+ * {@see AbstractClient} — see the note there.
  *
  * @psalm-api
  * @package CNIC\CNR
@@ -53,11 +53,9 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * cannot inform the property's type — this accessor carries that knowledge
      * instead, in exactly one place, rather than each caller asserting.
      *
-     * It is the covariant override of {@see AbstractClient::getSocketConfig()},
-     * having been the protected `cnrConfig()` until RSRMID-2921 gave the base a
-     * public accessor: two methods narrowing the same property would be two
-     * places to keep in step, and the CNR config is exactly what a CNR consumer
-     * should get back. Consumers holding `CNR\Client` therefore reach
+     * It is the covariant override of {@see AbstractClient::getSocketConfig()}, and
+     * deliberately the only one: two methods narrowing the same property would be
+     * two places to keep in step. Consumers holding `CNR\Client` therefore reach
      * `getSession()`/`setPersistent()` with no narrowing of their own.
      *
      * The guard is unreachable in practice, since newSocketConfig() above is the
@@ -82,8 +80,8 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     /**
      * Get the API Session ID that is currently set, or null when there is none.
      *
-     * CNR-only (RSRMID-2920): IBS/Moniker have no session concept, and this used
-     * to sit on {@see AbstractClient} reporting a hard-coded null for them.
+     * CNR-only: IBS/Moniker have no session concept, so the method is absent there
+     * rather than present and answering null.
      */
     public function getSession(): ?string
     {
@@ -131,12 +129,11 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * Flatten the given command into wire form (CNR uppercase key/value pairs)
      * and convert its IDN parameters to punycode.
      *
-     * The IDN rewrite is CNR's alone — IBS/Moniker convert server-side — and it
-     * runs here, in the brand hook, rather than on {@see AbstractClient}, where it
-     * used to sit behind a `needsIDNConvert` flag that no other brand set. See
-     * {@see IDNCommandRewriter} (RSRMID-2922). It must run *after* the flattening:
-     * the rules match wire keys (`NAMESERVER0`, `OBJECTID`), not the caller's
-     * nested, arbitrarily-cased input.
+     * The IDN rewrite is CNR's alone — IBS/Moniker convert server-side — so it runs
+     * here, in the brand hook, and not on {@see AbstractClient} behind a flag; see
+     * {@see IDNCommandRewriter}. It must run *after* the flattening: the rules match
+     * wire keys (`NAMESERVER0`, `OBJECTID`), not the caller's nested,
+     * arbitrarily-cased input.
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @return array<string, string>
      */

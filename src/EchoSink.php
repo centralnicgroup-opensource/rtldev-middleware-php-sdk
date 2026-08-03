@@ -11,7 +11,7 @@ namespace CNIC;
 
 /**
  * Log sink writing to standard output — the shipped default, and what keeps
- * `enableDebugMode()` emitting the same bytes it always has (RSRMID-2925).
+ * `enableDebugMode()` emitting the bytes consumers expect.
  *
  * @psalm-api
  * @package CNIC

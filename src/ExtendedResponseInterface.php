@@ -27,26 +27,21 @@ interface ExtendedResponseInterface extends ResponseInterface
 {
     /**
      * Get Queuetime of API response
-     * @return float Queuetime of API response
      */
     public function getQueuetime(): float;
 
     /**
      * Get Runtime of API response
-     * @return float Runtime of API response
      */
     public function getRuntime(): float;
 
     /**
-     * Check if current API response represents a temporary error case
-     * API response code is an 4xx code
-     * @return bool result
+     * Check if current API response represents a temporary error case (a 4xx code)
      */
     public function isTmpError(): bool;
 
     /**
      * Check if current operation is returned as pending
-     * @return bool result
      */
     public function isPending(): bool;
 

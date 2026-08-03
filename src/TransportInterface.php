@@ -28,12 +28,12 @@ interface TransportInterface
      * Execute a POST request and return the raw response.
      *
      * $options carries the caller's transport tuning (see
-     * {@see AbstractClient::setExtraCurlOptions()}). Since RSRMID-2919 the
-     * contract is that a caller's option **wins** over the implementation's own
-     * default for the same key — an implementation that must own a key is
-     * required to reject it by throwing {@see UnsupportedFeatureException},
-     * naming what it refused, rather than quietly ignoring it. Which keys those
-     * are is implementation-specific: for the production transport they are
+     * {@see AbstractClient::setExtraCurlOptions()}). The contract is that a
+     * caller's option **wins** over the implementation's own default for the same
+     * key — an implementation that must own a key is required to reject it by
+     * throwing {@see UnsupportedFeatureException}, naming what it refused, rather
+     * than quietly ignoring it. Which keys those are is
+     * implementation-specific: for the production transport they are
      * {@see HttpTransport::PROTECTED_OPTIONS}, while a test double typically
      * owns none and simply records what it was given.
      *

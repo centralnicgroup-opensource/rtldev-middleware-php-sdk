@@ -18,7 +18,7 @@ namespace CNIC\Exception;
  * problem. Raised rather than passed through because cURL rejects such values
  * *quietly* — `curl_setopt()` returns `false` for a negative CURLOPT_TIMEOUT
  * and `curl_setopt_array()`'s return is not inspected, so the setting would be
- * dropped with no signal, which is the failure class RSRMID-2919 removed.
+ * dropped with no signal.
  *
  * @psalm-api
  * @package CNIC\Exception

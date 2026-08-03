@@ -87,28 +87,25 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     /**
      * Narrow one parsed PROPERTY entry to the string list a CNR Column takes.
      *
-     * The CNR wire format is textual, so every cell of a real response is
-     * already a string and this rejects nothing. It exists because the parse
-     * step is a seam since RSRMID-2924: the contract returns
-     * array<string, mixed>, so the brand's own shape has to be re-established
-     * here rather than read off the concrete parser's return type — which is
-     * also why CNR\Column binds its value type to string in the first place.
+     * The CNR wire format is textual, so every cell of a real response is already
+     * a string and this rejects nothing. It exists because the parse step is a
+     * seam: the contract returns array<string, mixed>, so the brand's own shape has
+     * to be re-established here rather than read off the concrete parser's return
+     * type — which is also why CNR\Column binds its value type to string.
      *
      * A parser handing CNR anything else is contradicting that binding, so both
      * checks **throw** rather than skipping or coercing: silently dropping data
-     * would be exactly the no-op this project ruled out in
-     * RSRMID-2919/RSRMID-2920, and coercing would invent a value the wire could
-     * never carry. The container is checked as strictly as the cells — an
-     * earlier draft cast it with (array), which quietly turned a bare string
-     * into a one-cell column while a bare int still threw one line later, i.e.
-     * it coerced a bad container while refusing a bad cell. Unreachable with
-     * either brand parser; reachable only from a substitute, where it is a
-     * programming error and should say so.
+     * would be the no-op this project rules out, and coercing would invent a value
+     * the wire could never carry. Keep the container check as strict as the cells —
+     * casting it with (array) instead quietly turns a bare string into a one-cell
+     * column while a bare int still throws one line later, coercing a bad container
+     * while refusing a bad cell. Unreachable with either brand parser; reachable
+     * only from a substitute, where it is a programming error and should say so.
      *
      * Note the deliberate asymmetry with populate(): a *missing or non-array*
-     * PROPERTY block yields no columns rather than throwing, because that is
-     * what the is_array() guard did before the seam and real responses without
-     * columns rely on it. This is about the contents of a block that does exist.
+     * PROPERTY block yields no columns rather than throwing, because most CNR
+     * responses legitimately have none. This is about the contents of a block that
+     * does exist.
      *
      * Written as an explicit loop rather than array_filter(..., "is_string"):
      * PHPStan narrows that form, Psalm does not (MixedReturnTypeCoercion), and

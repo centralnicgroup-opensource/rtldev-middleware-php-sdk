@@ -29,10 +29,9 @@ use CNIC\MONIKER\Client as MONIKERClient;
  * - {@see ibs()}/{@see moniker()} yield the plain brand {@see \CNIC\IBS\Client} /
  *   {@see \CNIC\MONIKER\Client}. Those platforms have no session or
  *   role-credential concept, so those methods are genuinely **absent** — calling
- *   one is a static analysis error at the call site. Until v22 this docblock
- *   claimed as much while `setSession()` was in fact inherited and silently
- *   discarded, and the two brands had empty `SessionClient` subclasses named
- *   after a capability they did not have (RSRMID-2920).
+ *   one is a static analysis error at the call site, not a runtime surprise. Keep
+ *   it that way: a stub that accepts a session id and discards it is worse than no
+ *   method at all.
  *
  * All further configuration — credentials, referer, user-agent, proxy, logging
  * and OT&E/sandbox mode — is the caller's responsibility via the client's fluent

@@ -23,33 +23,27 @@ use CNIC\System;
  * Concrete subclasses provide the request() implementation, the default
  * logger, and the appropriate SocketConfig subtype.
  *
- * ## Where configuration lives (RSRMID-2921)
+ * ## Where configuration lives
  *
- * Not here. Connection configuration has one home — {@see AbstractSocketConfig}
- * — reachable through {@see getSocketConfig()}. This class used to keep its own
- * copies of part of it (`$socketURL`, `$system`, the `$curlopts` bag) alongside
- * the config's endpoints and timeout, with nothing tying the two sets together;
- * three defects followed from the split, and the full account is in the config's
- * class docblock. What is left here is client *behaviour*: the logger and debug
- * flag, the response context, the transport instance, and the SDK's own identity
- * (`VERSION`/`$ua`, which is versioned with this class and released from it).
+ * Not here. Connection configuration has one home — {@see AbstractSocketConfig} —
+ * reachable through {@see getSocketConfig()}. What lives here is client
+ * *behaviour*: the logger and debug flag, the response context, the transport
+ * instance, and the SDK's own identity (`VERSION`/`$ua`, versioned with this class
+ * and released from it). Do not add a copy of a config-owned value; guarded by
+ * tests/ClientConfigSeamTest.php.
  *
  * The configuration methods below are forwarders, and deliberately kept: they are
  * the documented ergonomic surface (`$cl->useOTESystem()->setCredentials(...)`)
- * and they now read and write the config's state rather than a copy of it, so a
- * forwarder cannot disagree with the config. What `getSocketConfig()` changes is
- * that a *new* setting no longer needs one — the accessor's absence is why ~26 of
- * these accumulated and why this was the repo's highest-churn file.
+ * and they read and write the config's state rather than a copy of it, so a
+ * forwarder cannot disagree with the config. A *new* setting needs no forwarder —
+ * `getSocketConfig()` is the accessor whose absence let ~26 of these accumulate.
  *
  * Only capabilities every brand can actually honour live here. In particular
- * `getSession()`/`setSession()` do **not** — API sessions are a CNR concept, and
- * these sat here until v22 forwarding to null-object stubs on
- * {@see AbstractSocketConfig}, so `setSession()` on an IBS/Moniker client looked
- * accepted and was discarded. They now live on {@see \CNIC\CNR\Client} beside the
- * state they read. Do not hoist them (or role credentials, see
- * {@see \CNIC\RoleCredentialsInterface}) back up: a capability a brand cannot
- * honour belongs off the shared surface, not on it returning a constant.
- * (Ref: RSRMID-2920, reversing the RSRMID-2911 sub-decision that kept them here.)
+ * `getSession()`/`setSession()` do **not** — API sessions are a CNR concept and
+ * live on {@see \CNIC\CNR\Client} beside the state they read. Do not hoist them,
+ * or role credentials ({@see \CNIC\RoleCredentialsInterface}), back up: a
+ * capability a brand cannot honour belongs off the shared surface, not on it
+ * returning a constant. Full decision record: docs/agents/architecture.md.
  *
  * @psalm-api
  * @package CNIC
@@ -105,22 +99,16 @@ abstract class AbstractClient
     public function __construct()
     {
         $this->transport = $this->newTransport();
-        // Seeds itself: the config's constructor selects LIVE (the default
-        // system) and the brand's default cURL options. The client used to call
-        // useLIVESystem() here to initialise its own URL copy — there is no copy
-        // to initialise any more.
+        // Seeds itself: the config's constructor selects LIVE (the default system)
+        // and the brand's default cURL options. No client-side URL copy to seed.
         $this->socketConfig = $this->newSocketConfig();
         $this->logger = $this->newLogger(new EchoSink());
     }
 
     /**
-     * The connection configuration this client uses.
-     *
-     * Added in RSRMID-2921 as the missing piece that made ~26 forwarding methods
-     * the *only* way to reach a configuration value, and this the highest-churn
-     * file in the repo: every new setting needed a hand-written forwarder or was
-     * unreachable from outside. It is also the seam that lets configuration be
-     * built and asserted without constructing a client.
+     * The connection configuration this client uses — the accessor that means a new
+     * setting needs no forwarder, and the seam that lets configuration be built and
+     * asserted without constructing a client.
      *
      * Brands narrow the return type covariantly where they have their own config
      * capabilities — {@see \CNIC\CNR\Client::getSocketConfig()} returns the CNR
@@ -148,16 +136,15 @@ abstract class AbstractClient
     abstract public function request(array $cmd = [], string $path = ""): ResponseInterface;
 
     /**
-     * Shared request lifecycle (template method). Brands vary it through exactly
-     * two hooks — {@see buildCommand()} (command flattening) and
-     * {@see newResponse()} (covariant Response factory) — plus their
-     * {@see newSocketConfig()} subtype, which is where any brand-mandatory cURL
-     * option would go now that the bag lives on the config (RSRMID-2921). No
-     * brand declares one.
+     * Shared request lifecycle (template method). Never reimplement it in a brand;
+     * vary it through exactly two hooks — {@see buildCommand()} (command
+     * flattening) and {@see newResponse()} (covariant Response factory) — plus the
+     * {@see newSocketConfig()} subtype, which is where a brand-mandatory cURL
+     * option would go. No brand declares one.
      *
-     * A third step, `autoIDNConvert()`, used to wrap the buildCommand() call from
-     * here. It was CNR domain knowledge on a shared class, so it moved into
-     * {@see \CNIC\CNR\IDNCommandRewriter} behind the hook (RSRMID-2922).
+     * Brand-specific command rewriting belongs behind `buildCommand()`, not here:
+     * CNR's IDN conversion lives in {@see \CNIC\CNR\IDNCommandRewriter}, and a
+     * shared step gated by a flag only one brand sets is the shape that replaced.
      *
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @param string $path path segment appended to the base URL to select the endpoint
@@ -224,9 +211,10 @@ abstract class AbstractClient
 
     /**
      * Instantiate the brand's logger, writing to the given sink. Mirrors
-     * {@see newTransport()}/{@see newSocketConfig()} — the factory hook that
-     * replaced the public `setDefaultLogger()` in RSRMID-2925, so the sink can
-     * be chosen without the brand's Logger class being named at the call site.
+     * {@see newTransport()}/{@see newSocketConfig()}, and exists so a sink can be
+     * chosen without the brand's Logger class being named at the call site. An
+     * override must honour `$sink` — that is what makes {@see setLogSink()} work
+     * for a subclass.
      */
     abstract protected function newLogger(LogSinkInterface $sink): LoggerInterface;
 
@@ -296,11 +284,9 @@ abstract class AbstractClient
     /**
      * Set the request timeout in seconds (default 300).
      *
-     * The **only** way to change the timeout. Added in RSRMID-2919 to close a gap
-     * — the value was unreachable from outside the SDK — and made the single
-     * route in RSRMID-2921, which stopped the option bag offering a second one:
-     * `CURLOPT_TIMEOUT` there is now rejected ({@see setExtraCurlOptions()})
-     * rather than quietly overriding what {@see getSocketTimeout()} reports.
+     * The **only** way to change the timeout: `CURLOPT_TIMEOUT` in the option bag
+     * is rejected ({@see setExtraCurlOptions()}) rather than quietly overriding
+     * what {@see getSocketTimeout()} reports.
      *
      * @param int $seconds timeout in seconds (0 = no timeout, per cURL)
      * @throws InvalidConfigurationException on a negative value
@@ -336,10 +322,9 @@ abstract class AbstractClient
      * Get the user agent string — the one set via {@see setUserAgent()}, or the
      * SDK default when none was.
      *
-     * A pure read. It used to memoise the default into {@see $ua} on first call,
-     * which meant a getter performing a write in the middle of a request; there
-     * is nothing to memoise — the value is a handful of constants and one
-     * `php_uname()` call.
+     * A pure read — keep it that way. Memoising the default into {@see $ua} would
+     * make a getter write during a request, and there is nothing worth memoising:
+     * the value is a handful of constants and one `php_uname()` call.
      */
     public function getUserAgent(): string
     {
@@ -435,13 +420,12 @@ abstract class AbstractClient
     /**
      * Set Credentials to be used for API communication.
      *
-     * On CNR this **discards any active API session**, which was true before
-     * RSRMID-2921 too but stated nowhere: `CNR\SocketConfig::setLogin()`/
+     * On CNR this **discards any active API session**: `CNR\SocketConfig::setLogin()`/
      * `setPassword()` clear the session id, because a session and a password are
      * alternative credentials on the wire and the newer one is authoritative. The
-     * invariant is deliberate — `CNR\SessionCapable::reuseSession()` depends on
-     * it, restoring the login first and the session second — so it is documented
-     * rather than removed. Set the session *after* the credentials, never before.
+     * invariant is deliberate and pinned by a test —
+     * `CNR\SessionCapable::reuseSession()` depends on it, restoring the login first
+     * and the session second. Set the session *after* the credentials, never before.
      * @param string $uid account name (optional, for reset)
      * @param string $pw account password (optional, for reset)
      */
@@ -456,10 +440,9 @@ abstract class AbstractClient
      * Activate High Performance Setup — route requests through the co-located
      * proxy on loopback.
      *
-     * Brand-agnostic and therefore shared (RSRMID-2911). Since RSRMID-2921 it
-     * records a flag on the config instead of rewriting the URL once, so the
-     * selected system survives it: {@see isOTE()} used to flip to false here,
-     * because the rewritten loopback URL no longer matched the OT&E endpoint. See
+     * Brand-agnostic and therefore shared — the caller supplies the local proxy, so
+     * IBS/Moniker may opt in too. It records a flag on the config rather than
+     * rewriting the URL, so the selected system survives it; see
      * {@see AbstractSocketConfig::useHighPerformanceConnectionSetup()}.
      */
     public function useHighPerformanceConnectionSetup(): static
@@ -471,12 +454,11 @@ abstract class AbstractClient
     /**
      * Convert domain names to idn + punycode.
      *
-     * Brand-agnostic and therefore shared, and part of the public surface since
-     * v7.1.0: a thin pass-through to the vendor converter for callers who want to
-     * normalise a name explicitly. The automatic rewrite of an outbound *command*
-     * is a different thing and is not here — which parameters carry a domain name
-     * is CNR knowledge, and it lives in {@see \CNIC\CNR\IDNCommandRewriter} since
-     * RSRMID-2922.
+     * Brand-agnostic and therefore shared: a thin pass-through to the vendor
+     * converter for callers who want to normalise a name explicitly. The automatic
+     * rewrite of an outbound *command* is a different thing and is deliberately not
+     * here — which parameters carry a domain name is CNR knowledge, and it lives in
+     * {@see \CNIC\CNR\IDNCommandRewriter}.
      * @param array<string> $domains list of domain names (or tlds)
      * @return array<int, array{idn: string|false, punycode: string|false}>
      */
@@ -494,13 +476,11 @@ abstract class AbstractClient
      * transport's own defaults in {@see HttpTransport::post()} (PHP's `+` keeps
      * the left operand on a duplicate key).
      *
-     * It used to take a third `$extraCurlOpts` argument merged in *over* the
-     * configured options. Nothing in the SDK ever passed it, and as a route into
-     * the option set that skipped {@see AbstractSocketConfig::MANAGED_OPTIONS} it
-     * was a way for a subclass to put a second answer behind `getProxy()` — the
-     * defect this ticket exists to close. Dropped in RSRMID-2921: a per-request
-     * option belongs on the config before the request, or on a transport the
-     * caller drives themselves.
+     * Do not re-add a per-request options argument here: it would be a route into
+     * the option set that skips {@see AbstractSocketConfig::MANAGED_OPTIONS}, and so
+     * a way for a subclass to put a second answer behind `getProxy()`. A
+     * per-request option belongs on the config before the request, or on a
+     * transport the caller drives themselves.
      * @param string $data serialized POST payload
      * @param array{CONNECTION_URL: string} $cfg connection config
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
@@ -528,12 +508,9 @@ abstract class AbstractClient
     /**
      * Get LIVE system URL.
      *
-     * There is deliberately no matching `getOTEUrl()` here. The asymmetry is
-     * pre-existing — this forwarder is the one the SDK has always had, and it is
-     * half of what made drift 2 visible — and RSRMID-2921 did not add its twin: a
-     * change whose point is that a configuration value no longer needs a
-     * hand-written forwarder should not open with a new one. Read the OT&E
-     * endpoint from {@see getSocketConfig()}.
+     * There is deliberately no matching `getOTEUrl()` here: a configuration value
+     * no longer needs a hand-written forwarder, so read the OT&E endpoint from
+     * {@see getSocketConfig()}.
      */
     public function getLiveUrl(): string
     {
@@ -544,11 +521,10 @@ abstract class AbstractClient
      * Get the API system in use, or null when the configured URL is neither of
      * the brand's two known endpoints.
      *
-     * Derived from the URL rather than stored beside it (RSRMID-2921), which is
-     * what makes it impossible for the two to disagree — and why the return type
-     * is nullable: after a `setURL()` to some other host there is no honest
-     * OT&E-or-LIVE answer to give. See
-     * {@see AbstractSocketConfig::getSystem()}.
+     * Derived from the URL rather than stored beside it, which is what makes it
+     * impossible for the two to disagree — and why the return type is nullable:
+     * after a `setURL()` to some other host there is no honest OT&E-or-LIVE answer
+     * to give. See {@see AbstractSocketConfig::getSystem()}.
      */
     public function getSystem(): ?System
     {

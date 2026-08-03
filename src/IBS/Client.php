@@ -19,14 +19,11 @@ use CNIC\LogSinkInterface;
 /**
  * IBS API Client
  *
- * Carries no transport defaults of its own: this client used to seed
- * CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4 via getDefaultCurlOpts(), forcing IPv4
- * name resolution for every IBS/Moniker integration. That was one customer's
- * network workaround hard-coded into the library; callers who need it set it
- * themselves with setExtraCurlOptions(). Do not re-add a brand default — not
- * here, and not on {@see SocketConfig}, where the hook moved with the option bag
- * in RSRMID-2921. Transport tuning is the caller's decision.
- * (Ref: RSRMID-2915, RSRMID-2913.)
+ * Carries no transport defaults of its own, and must not grow any — not here, and
+ * not on {@see SocketConfig}, which owns the option bag. Forcing IPv4 resolution
+ * (CURLOPT_IPRESOLVE) for every IBS/Moniker integration is one host's network
+ * workaround hard-coded into the library; a caller who needs it sets it with
+ * setExtraCurlOptions(). Transport tuning is the caller's decision.
  *
  * @package CNIC\IBS
  */
@@ -76,9 +73,9 @@ class Client extends AbstractClient
      *
      * Deliberately no IDN handling: the IBS/Moniker platform converts IDNs
      * server-side, so the command reaches the wire with its unicode values intact.
-     * CNR's client-side rewrite is called from CNR's own hook and is not shared
-     * (RSRMID-2922) — this used to be expressed as `needsIDNConvert = false` on
-     * the config, i.e. a flag switching off code this brand never wanted.
+     * CNR's client-side rewrite is called from CNR's own hook and is not shared —
+     * do not express this as a flag that switches off shared code, which is the
+     * shape that replaced.
      * @param array<string, scalar|scalar[]|null> $cmd API command
      * @return array<string, string>
      */

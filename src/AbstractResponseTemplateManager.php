@@ -62,7 +62,7 @@ abstract class AbstractResponseTemplateManager
      *
      * The template-manager twin of {@see AbstractResponse::newResponseParser()}:
      * both name the same brand parser, so the shared pipeline can parse a plain
-     * response without each subclass repeating the call. (Ref: RSRMID-2924.)
+     * response without each subclass repeating the call.
      */
     abstract protected static function newResponseParser(): ResponseParserInterface;
 
@@ -104,7 +104,6 @@ abstract class AbstractResponseTemplateManager
      * writer would mean making the property non-public, which
      * {@see \CNIC\CNR\ResponseTranslator::templates()} reads across a class
      * boundary, so it is a separate change. Go through addTemplate().
-     * (Ref: RSRMID-2924.)
      * @psalm-api
      */
     public static function resetTemplates(): void
@@ -158,9 +157,9 @@ abstract class AbstractResponseTemplateManager
         // (IBS: JSON when the command is empty or asks for it, plain text
         // otherwise). Templates are plain "key=value" text, which the JSON-first
         // branch reaches through its own plain-text fallback — so both routes
-        // yield the same hash. Pinned by IBS's ResponseTemplateManagerTest (and
-        // its ResponseParserTest), since the two routes used to differ with
-        // nothing asserting that they agreed (RSRMID-2924).
+        // yield the same hash. Pinned by IBS's ResponseTemplateManagerTest and its
+        // ResponseParserTest; keep that assertion, it is what stops the two routes
+        // diverging unnoticed.
         return self::matches(static::getTemplate($id)->getHash(), static::newResponseParser()->parse($plain));
     }
 

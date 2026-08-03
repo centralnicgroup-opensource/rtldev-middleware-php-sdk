@@ -29,7 +29,7 @@ namespace CNIC;
  * human-readable field, leaving {UPPER} content in other data fields untouched. The
  * former IBS behaviour stripped such tokens globally across the whole response, which
  * risked corrupting legitimate data fields — replacePlaceholders() below is the single
- * correct behaviour for both brands. (Ref: RSRMID-2893.)
+ * correct behaviour for both brands.
  *
  * @package CNIC
  */

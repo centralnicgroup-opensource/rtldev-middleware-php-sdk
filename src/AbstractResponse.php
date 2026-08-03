@@ -33,8 +33,9 @@ namespace CNIC;
  *
  * None of the members in those last two groups is declared abstract *here*: they
  * are interface methods this base simply never implements, so every concrete
- * brand must supply them. See docs/agents/architecture.md for why the pagination
- * seam is drawn there. (Ref: RSRMID-2904, RSRMID-2912 declined, RSRMID-2918.)
+ * brand must supply them. Do not add base defaults for the pagination primitives
+ * — see docs/agents/architecture.md for why the seam is drawn there, and
+ * tests/ResponsePaginationSeamTest.php, which refuses it.
  *
  * CNR\Response and IBS\Response both extend this as siblings — mirroring the
  * AbstractClient / AbstractSocketConfig / AbstractResponseTemplateManager /
@@ -189,7 +190,10 @@ abstract class AbstractResponse implements ResponseInterface
      * Factory hook mirroring {@see newRecord()} and
      * {@see \CNIC\AbstractClient::newTransport()}: it supplies the default, and
      * the constructor's $parser argument overrides it — so a substitute parser
-     * needs neither reflection nor a subclass. (Ref: RSRMID-2924.)
+     * needs neither reflection nor a subclass. `populate()` must parse through
+     * `$this->parser`; instantiating a parser inline there behaves identically and
+     * silently closes the seam, which is why the guard is structural
+     * (tests/ResponseParserSeamTest.php).
      */
     abstract protected function newResponseParser(): ResponseParserInterface;
 

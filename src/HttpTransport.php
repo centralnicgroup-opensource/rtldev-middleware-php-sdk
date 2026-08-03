@@ -25,7 +25,7 @@ final class HttpTransport implements TransportInterface
      * Passing one of these to {@see post()} raises
      * {@see UnsupportedFeatureException} rather than being silently dropped.
      *
-     * Two kinds of option, protected for two different reasons (RSRMID-2919):
+     * Two kinds of option, protected for two different reasons:
      * - Request-envelope invariants — CURLOPT_URL, POST, POSTFIELDS,
      *   RETURNTRANSFER, HEADER. Response parsing is written against exactly this
      *   envelope; CURLOPT_RETURNTRANSFER => 0, for instance, makes curl_exec()
@@ -43,6 +43,11 @@ final class HttpTransport implements TransportInterface
      * message can name what the caller passed instead of handing back a bare
      * integer to look up. One list, not two: a second list of the same
      * constants could drift out of step with this one.
+     *
+     * Keep the list exactly the envelope and TLS keys — widening it silently
+     * re-breaks legitimate tuning, narrowing it gives away one of the two
+     * guarantees. Pinned by
+     * HttpTransportCurlOptionsTest::testProtectedOptionsAreExactlyTheEnvelopeAndTlsKeys().
      *
      * @var array<int, string>
      */
@@ -139,9 +144,9 @@ final class HttpTransport implements TransportInterface
     }
 
     /**
-     * Fail loudly when the caller asks to override an option the transport
-     * owns. Silently discarding it — which is what happened before RSRMID-2919
-     * — left the caller believing a setting had applied when it had not.
+     * Fail loudly when the caller asks to override an option the transport owns.
+     * Do not downgrade this to an ignore: silently discarding the option leaves the
+     * caller believing a setting applied when it did not.
      *
      * @param array<int, mixed> $options
      * @throws UnsupportedFeatureException

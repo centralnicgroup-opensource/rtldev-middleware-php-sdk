@@ -21,8 +21,7 @@ namespace CNIC\CNR;
  * tag, and rejects a second phpstan-prefixed copy of it): composing this trait into
  * anything but a `CNR\Client` is a static analysis error rather than a fatal on
  * first call. It is scoped to this namespace on purpose: the IBS/Moniker platform
- * has no login/logout lifecycle, and the empty `SessionClient` subclasses that
- * used to advertise one were removed in RSRMID-2920.
+ * has no login/logout lifecycle, and has no `SessionClient` of its own.
  *
  * @psalm-require-extends Client
  * @package CNIC\CNR
