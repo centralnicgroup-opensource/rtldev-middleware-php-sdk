@@ -6,12 +6,21 @@ Reference for the CI/GitHub Actions wiring, the Rector modernization flow, and t
 
 Most workflows in `.github/workflows/` are thin wrappers that **delegate to the shared reusable workflows** in `centralnicgroup-opensource/rtldev-middleware-shareable-workflows` (pinned `@main`):
 
-- `lint.yml` → `php-sdk-lint.yml` (phpcs, phpstan, psalm, `composer audit --no-dev` CVE gating, trufflehog, actionlint, hadolint, shellcheck)
+- `lint.yml` → `php-sdk-lint.yml` (phpcs, phpstan, psalm, `composer audit --no-dev` CVE gating, trufflehog, actionlint, hadolint, shellcheck, prettier)
 - `test.yml` → `php-sdk-test.yml` (PHP matrix tests, **Codecov** coverage upload via `codecov-action`, and a `dependabot` auto-merge job that chains into `auto-merge-dependabot-pr.yml`)
 - `release.yml` → `php-sdk-release.yml`; `daily-node-dependency-refresh.yml` and `whmcs-php-check.yml` likewise delegate.
 - `rector.yml` is the one substantial repo-local workflow (monthly modernization PR).
 
 Because of this, **caching, the test matrix, coverage upload, and audit gating are configured in the shared repo, not here** — don't try to add them to the local wrappers.
+
+### The one input the lint wrapper passes (`prettier: true`)
+
+`php-sdk-lint.yml` gates its `prettier` job behind a `workflow_call` boolean input that defaults to **false**, and `lint.yml` passes `prettier: true`. The opt-in exists because that job is the only one in the shared workflow needing the *caller* to bring a Node toolchain (committed `pnpm-lock.yaml`, prettier in `devDependencies`, a `prettier` composer script) — an unconditional job would break the first consumer without one, and auto-detecting the config was rejected because a job that silently self-skips reports green while checking nothing (RSRMID-2929).
+
+Two consequences worth knowing:
+
+- **`ci-success` needs no per-job edit.** It gates on `needs.lint.result`, the conclusion of the whole reusable call, so any job added to the shared workflow blocks the merge automatically. Do not expand it into a list of job names.
+- **The job runs `composer prettier`, not a raw prettier call**, so the arguments and `.prettierignore` rules stay owned by this repo. It installs with `pnpm install --frozen-lockfile` so CI checks against the prettier version in `pnpm-lock.yaml` — prettier's output changes between minors, and a floating install would produce a red CI that cannot be reproduced locally. The job prints the version it used for exactly that comparison.
 
 ### Reusable-workflow permissions (important)
 
@@ -23,7 +32,7 @@ A reusable workflow's effective `GITHUB_TOKEN` is the **intersection** of the ro
 
 ### Action pinning
 
-Third-party actions are used directly in only two workflows (`test.yml`, `rector.yml`); everything else delegates. Pin those to **commit SHAs with a `# vX` comment** (e.g. `actions/checkout@9c091bb… # v7`) rather than floating tags — a moved tag would run unreviewed code with the workflow's token. The Dependabot `github-actions` ecosystem (`.github/dependabot.yml`, weekly) bumps both the SHA and the comment automatically, so there is no manual upkeep. Any newly-introduced direct action use should be SHA-pinned the same way.
+Third-party actions are used directly in only two workflows (`test.yml`, `rector.yml`); everything else delegates. Pin those to **commit SHAs with a `# vX` comment** (e.g. `actions/checkout@9c091bb… # v7`) rather than floating tags — a moved tag would run unreviewed code with the workflow's token. The Dependabot `github-actions` ecosystem (`.github/dependabot.yml`, weekly) bumps both the SHA and the comment automatically, so there is no manual upkeep. Any newly-introduced direct action use should be SHA-pinned the same way. **The rule is scoped to this repo.** `rtldev-middleware-shareable-workflows` pins by floating major tag across all ~29 of its workflows and has its own daily Dependabot bumping them; a lone SHA-pinned step over there would be inconsistent with the file it lives in without buying anything the tag policy of that repo does not already accept. Follow the local convention of whichever repo the step lands in.
 
 ## Codebase Modernization (Rector)
 

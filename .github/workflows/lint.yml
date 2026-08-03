@@ -13,11 +13,15 @@ permissions:
 jobs:
   # Delegates to the shared php-sdk-lint workflow, which runs these jobs:
   #   composer-audit (composer audit --no-dev — dependency CVE gating),
-  #   trufflehog, actionlint, hadolint, shellcheck, phpcs, phpstan, psalm.
+  #   trufflehog, actionlint, hadolint, prettier, shellcheck, phpcs, phpstan, psalm.
+  # prettier is opt-in there (default false) because it needs a Node toolchain in
+  # the calling repo; we have one, so we ask for it.
   # See: centralnicgroup-opensource/rtldev-middleware-shareable-workflows
   #      .github/workflows/php-sdk-lint.yml
   lint:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-lint.yml@main
+    with:
+      prettier: true
     secrets: inherit
 
   ci-success:
