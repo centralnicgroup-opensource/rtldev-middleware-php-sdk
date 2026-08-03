@@ -1,3 +1,24 @@
+# [29.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v28.0.0...v29.0.0) (2026-08-03)
+
+
+### Features
+
+* **src:** rename public parameters and protected properties to be self-describing ([4582bc8](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/4582bc8caaea94bdd9ef20a31cbb3bebedd72a92))
+
+
+### BREAKING CHANGES
+
+* **src:** public method parameter names changed, so a call binding
+an argument by name (e.g. getColumn(key: "DOMAIN") -> columnName:) raises
+Error: Unknown named parameter at runtime. Typing against an interface does
+not insulate a caller -- PHP binds a named argument to the implementation's
+parameter name. Implementers of the SDK's interfaces should match the new
+names or Psalm reports ParamNameMismatch. Separately, six protected
+properties were renamed, which breaks a subclass reading $this->pw, $ua,
+$curlopts, $paginationkeys, $columnkeys or $columnindex.
+
+See [MIGRATION.md → v29.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2900)
+
 # [28.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v27.0.0...v28.0.0) (2026-08-03)
 
 
