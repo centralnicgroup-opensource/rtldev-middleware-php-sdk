@@ -125,9 +125,9 @@ $dt->toArray();      // ready for json_encode()
 | `tz`       | `string`       | `UTC`                     | `UTC`                                |
 | `raw`      | `string`       | `2026-07-25 07:46:34`     | `2030/07/17` — verbatim input        |
 
-`raw` is the input exactly as given — including a fractional-second part `dateTime` discards, and whichever separator the source used. It exists for display, logging and round-trip fidelity only; **compare and sort on `ts` or `date`, never on `raw`** — a plain string comparison of `"2026/02/20"` against `"2026-03-01"` gives the wrong order.
-
 A bare calendar date names no instant, so `ts` and `dateTime` are **both null** for one — deliberately, rather than defaulting to midnight, which would be a fabricated instant indistinguishable from a real one. `date` is always populated, so there is unconditionally something to print; `$dt->ts === null` (or `isDateOnly()`) is the unambiguous test.
+
+`raw` keeps whatever the source sent, including a fractional-second part `dateTime` discards. It is for display, logging and round-trip fidelity only — **compare and sort on `ts` or `date`, never on `raw`**, since `"2026/02/20"` sorts wrong against `"2026-03-01"` as plain strings.
 
 Parsing is strict. Values PHP's own date handling would silently roll over into a _different_ instant — `2026-02-30` becoming `2026-03-02`, `2026-13-45` becoming `2027-02-14`, `0000-00-00` becoming `-0001-11-30` — are refused with a `CNIC\Exception\InvalidDateTimeException`, as are offset-bearing values (never silently relabelled UTC). Use `ApiDateTime::tryFrom()` when a `null` is preferable to an exception:
 
@@ -181,40 +181,18 @@ The devcontainer looks for an `env.sh` file in the workspace root and **automati
 
 To run the demo application, follow these steps:
 
-1. **Set Your Credentials**:
-   You need to ensure your credentials are available. The recommended approach inside the devcontainer is to create an `env.sh` file in the workspace root — see [Environment variables (`env.sh`)](#environment-variables-envsh) for details.
-   Alternatively, you can directly replace the credential placeholders inside the demo application file.
+1. **Set your credentials** — create an `env.sh` in the workspace root (see [Environment variables (`env.sh`)](#environment-variables-envsh)), or replace the placeholders inside the demo file directly.
 
-2. **Execute the Demo**: Once the credentials are configured, run the appropriate demo command:
-
-   Run the below Composer scripts:
+2. **Run the demo** for the brand you want:
 
    ```sh
-   # CentralNic Reseller
-   composer demo:cnr
-   # internet.bs
-   composer demo:ibs
-   # Moniker
-   composer demo:moniker
-   # ApiDateTime parser — no credentials or network needed
-   composer demo:datetime
+   composer demo:cnr        # CentralNic Reseller  → examples/app_CNR.php
+   composer demo:ibs        # internet.bs          → examples/app_IBS.php
+   composer demo:moniker    # Moniker              → examples/app_MONIKER.php
+   composer demo:datetime   # ApiDateTime parser   → examples/datetime.php (no credentials, no network)
    ```
 
-   These are thin wrappers around plain PHP, so you can also run the examples directly without any tooling, e.g. `php -f examples/app_CNR.php`.
-
-3. **Update Demo Contents**:
-   If you need to modify the demo contents, the relevant files are located at:
-
-   ```plaintext
-   # CentralNic Reseller
-   examples/app_CNR.php
-   # internet.bs
-   examples/app_IBS.php
-   # Moniker
-   examples/app_MONIKER.php
-   # ApiDateTime parser
-   examples/datetime.php
-   ```
+   These are thin wrappers around plain PHP — edit the file listed on the right to change a demo, or run it directly without any tooling (`php -f examples/app_CNR.php`).
 
 ## CI / Testing
 
@@ -229,12 +207,12 @@ CI is powered by [reusable GitHub Actions workflows](https://github.com/centraln
 The matrix is configured via the repository variable `RTLDEV_MW_CI_PHP_MATRIX` and tracks the **actively-maintained** PHP versions — new versions are added as they enter active support and dropped once they reach end-of-life.
 
 > [!NOTE]
-> `composer.json` requires `php: >=8.3.0`, which sets the **minimum** only — the SDK runs on every version in the matrix above. Note that the source code itself is deliberately held to **PHP 8.3 language features** (Rector is pinned to 8.3) because the SDK also ships inside ionCube-encoded WHMCS integrations that cannot execute newer syntax. In short: runs on 8.3–8.5, but only _uses_ 8.3-level language features. See the CLAUDE.md "PHP Version Policy" for the full rationale.
+> `composer.json` requires `php: >=8.3.0`, which sets the **minimum** only — the SDK runs on every version in the matrix above. Note that the source code itself is deliberately held to **PHP 8.3 language features** (Rector is pinned to 8.3) because the SDK also ships inside ionCube-encoded WHMCS integrations that cannot execute newer syntax. In short: runs on 8.3–8.5, but only _uses_ 8.3-level language features. Full rationale: [PHP Version Policy](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/docs/agents/project-policies.md#php-version-policy).
 
 ## Maintainers
 
 - **Kai Schwarz** - [KaiSchwarz-cnic](https://github.com/kaischwarz-cnic)
-- **Asif Nawaz** - [KaiSchwarz-cnic](https://github.com/AsifNawaz-cnic)
+- **Asif Nawaz** - [AsifNawaz-cnic](https://github.com/AsifNawaz-cnic)
 
 ## License
 

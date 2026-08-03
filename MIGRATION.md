@@ -41,80 +41,28 @@ Two things to respect throughout:
 ---
 
 <a id="-v900"></a>
-
-## → v9.0.0 — PHP 8.1 minimum
-
-**What changed:** the SDK now requires **PHP 8.1 or higher**.
-
-**What to respect:** this is purely a runtime bump — there is no API change. Upgrade your PHP runtime (and CI matrix) to 8.1+ before pulling v9.
-
-```jsonc
-// composer.json
-"require": {
-    "php": ">=8.1"
-}
-```
-
----
-
 <a id="-v1000"></a>
-
-## → v10.0.0 — cURL handle is cached and reused
-
-**What changed:** the client now caches its cURL handle and reuses it across requests for performance, instead of opening/closing a connection per call.
-
-**What to respect:** in a **sessionless** flow you must explicitly release the connection when you are done, by calling `close()`. In a **session-based** flow this is handled for you — `logout()` already closes the connection.
-
-```php
-// Sessionless — BEFORE v10: connection was torn down automatically per request.
-// AFTER v10: close() the client when finished.
-$cl = ClientFactory::cnr();
-$cl->useOTESystem()->setCredentials($user, $password);
-$r = $cl->request(["COMMAND" => "StatusAccount"]);
-$cl->close();   // <-- release the cached handle
-
-// Session-based — no change needed: logout() closes the connection for you.
-$cl->login();
-// ...
-$cl->logout();
-```
-
----
-
 <a id="-v1100"></a>
-
-## → v11.0.0 — Internet.bs (IBS) and Moniker (MONIKER) added
-
-**What changed:** two new registrar brands were added — **Internet.bs** (`IBS`) and **Moniker** (`MONIKER`).
-
-**What to respect:** this is **additive**. Existing single-brand code keeps working unchanged. If you now want to talk to more than one brand, this is the version that makes it possible — see the factory sections below for how brand selection evolved.
-
----
-
 <a id="-v1200"></a>
-
-## → v12.0.0 — HEXONET brand removed (end of life)
-
-**What changed:** support for the **HEXONET** brand was removed following its platform shutdown.
-
-**What to respect:** if you still construct a HEXONET client, you must migrate. CNR (CentralNic Reseller, formerly RRPproxy) is the successor platform for that traffic. If you genuinely still need a HEXONET connection during a transition window, **pin to `^11`** until you have fully migrated — v12+ cannot talk to HEXONET at all.
-
-```jsonc
-// Stay on v11 ONLY while you still require HEXONET:
-"require": { "centralnic-reseller/php-sdk": "^11" }
-```
-
----
-
 <a id="-v1300"></a>
 
-## → v13.0.0 — IBS / Moniker switched to the JSON API
+## → v9.0.0 – v13.0.0 — the pre-8.3 majors
 
-**What changed:** the **IBS** and **Moniker** brands now speak the JSON API / response format instead of the previous format. **CNR is unaffected.**
+These five majors predate the current PHP floor, so if you are still on one of them you are also on an end-of-life runtime — plan to land on v14+ (PHP 8.3) in the same effort. Four things need action; the rest was additive.
 
-**What to respect:** the **data structure of responses changed** for IBS and Moniker. Any code that reads specific keys/columns out of an IBS or Moniker response must be re-tested and, in places, adjusted. Drive your IBS/Moniker integration through a full test pass before shipping.
+- **v9.0.0 — PHP 8.1 minimum.** A runtime bump with no API change: move your runtime and CI matrix to 8.1+ before pulling v9.
+- **v10.0.0 — the cURL handle is cached and reused** across requests instead of being opened per call. In a **sessionless** flow you must now release it yourself with `close()` when you are done. Session-based flows need no change — `logout()` closes the connection for you.
 
-If you only use CNR, this major is a no-op for your code.
+  ```php
+  $cl = ClientFactory::cnr();
+  $cl->useOTESystem()->setCredentials($user, $password);
+  $r = $cl->request(["COMMAND" => "StatusAccount"]);
+  $cl->close();   // <-- release the cached handle
+  ```
+
+- **v11.0.0 — Internet.bs (`IBS`) and Moniker (`MONIKER`) added.** Purely additive; existing single-brand code is unaffected.
+- **v12.0.0 — the HEXONET brand was removed** following that platform's shutdown, and v12+ cannot talk to it at all. CNR (formerly RRPproxy) is the successor platform. If you genuinely still need a HEXONET connection during a transition window, pin `"centralnic-reseller/php-sdk": "^11"` until you have migrated off it.
+- **v13.0.0 — IBS/Moniker moved to the JSON API**, which **changed the data structure of their responses**. Any code reading specific keys or columns out of an IBS/Moniker response must be re-tested and in places adjusted. CNR is unaffected, so CNR-only integrations can treat this major as a no-op.
 
 ---
 
@@ -270,7 +218,7 @@ if ($r instanceof \CNIC\ExtendedResponseInterface) {
 
 ## → v19.0.0 — Typed factory constructors; `setRoleCredentials()` relocated
 
-The current major. Two related breaking changes.
+Two related breaking changes.
 
 ### 1. `ClientFactory::getClient(string)` removed — use typed constructors
 
@@ -340,7 +288,7 @@ $client->setExtraCurlOptions([CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
 
 `CURLOPT_URL`, `CURLOPT_POST`, `CURLOPT_POSTFIELDS`, `CURLOPT_RETURNTRANSFER`, `CURLOPT_HEADER`, `CURLOPT_SSL_VERIFYPEER`, `CURLOPT_SSL_VERIFYHOST`, `CURLOPT_TIMEOUT`, `CURLOPT_CONNECTTIMEOUT`, `CURLOPT_USERAGENT`, `CURLOPT_HTTPHEADER`.
 
-The first five keep the request envelope intact (overriding them would break response handling) and the next two stop this setter being used to weaken TLS verification. For the user agent, use `setUserAgent()`. **In v20 the request timeout has no public setter at all** — it comes from a protected `$socketTimeout` (300s) and `CURLOPT_TIMEOUT` passed here is discarded, so on this version it cannot be changed from outside the SDK. That was a gap rather than an intended limit; an earlier revision of this guide suggested a `setSocketTimeout()` method that did not yet exist at the time.
+The first five keep the request envelope intact (overriding them would break response handling) and the next two stop this setter being used to weaken TLS verification. For the user agent, use `setUserAgent()`. **In v20 the request timeout has no public setter at all** — it comes from a protected `$socketTimeout` (300s) and `CURLOPT_TIMEOUT` passed here is discarded, so on this version it cannot be changed from outside the SDK. That was a gap rather than an intended limit, and v21 closes it.
 
 > **Everything in this sub-section describes v20 only, and v21 changes it.** The silent discard was the defect and was fixed there: your options now reach the wire, seven of the eleven keys above raise instead of being ignored, and the timeout gap is closed with a real `setSocketTimeout()`. If you are upgrading past v20, read [→ v21.0.0](#-v2100) and treat that as current. This text is kept as it stood so a v19 → v20 upgrade still reads correctly.
 
@@ -366,75 +314,17 @@ public function getColumnKeys(bool $filterPaginationKeys = false): array;
 
 **What to respect — two cases:**
 
-**1. You only _call_ the SDK (the overwhelmingly common case): no action.** In fact this _fixes_ things for you. The project asks consumers to type against `CNIC\ResponseInterface` rather than the concrete `CNIC\CNR\Response`. Before v20 that advice conflicted with itself: stripping pagination columns was impossible for an interface-typed consumer without a static-analysis error, even though the call ran correctly.
+**1. You only _call_ the SDK (the overwhelmingly common case): no action**, and the correction _fixes_ something for you. Before v20, an interface-typed consumer could not call `$r->getColumnKeys(true)` without PHPStan/Psalm rejecting it (`invoked with 1 parameter, 0 required`), even though the call ran correctly — so the advice to type against `ResponseInterface` conflicted with itself. If you worked around that by retyping to the concrete `CNR\Response` or suppressing the error, drop the workaround and go back to the interface.
 
-```php
-use CNIC\ResponseInterface;
-
-function renderColumns(ResponseInterface $r): array
-{
-    // ≤ v19: ran fine, but PHPStan/Psalm rejected it —
-    //   "Method CNIC\ResponseInterface::getColumnKeys() invoked with 1 parameter, 0 required."
-    // The usual workarounds were to retype the parameter to the concrete
-    // CNR\Response (losing brand-neutrality) or to silence the analyser.
-    // v20: simply legal.
-    return $r->getColumnKeys(true);
-}
-```
-
-If you worked around it by typing against a concrete Response or by suppressing the error, you can now drop the workaround and go back to the interface.
-
-**2. You _implement_ `ResponseInterface` yourself — add the parameter.** This is the breaking part. A custom implementation (or a test double) declaring the old no-argument signature is no longer compatible with the interface and will raise a fatal error at declaration time:
-
-```php
-// BEFORE (≤ v19)
-final class MyResponse implements \CNIC\ResponseInterface
-{
-    public function getColumnKeys(): array { /* ... */ }
-}
-
-// AFTER (v20) — add the parameter and honour it
-final class MyResponse implements \CNIC\ResponseInterface
-{
-    public function getColumnKeys(bool $filterPaginationKeys = false): array
-    {
-        // Return every column key when false; strip your pagination/metadata
-        // columns when true. Extending CNIC\AbstractResponse instead gives you
-        // a correct implementation for free.
-    }
-}
-```
-
-Extending `CNIC\AbstractResponse` (as `CNR\Response` and `IBS\Response` do) requires no change — it already had the parameter.
+**2. You _implement_ `ResponseInterface` yourself — add the parameter.** This is the breaking part: a custom implementation or test double still declaring `getColumnKeys(): array` is no longer compatible with the interface and raises a fatal error at declaration time. Honour the flag (return every column key when `false`, strip your pagination/metadata columns when `true`), or extend `CNIC\AbstractResponse` — as `CNR\Response`/`IBS\Response` do — and inherit a correct implementation.
 
 ### 3. `__construct()` is no longer declared on the interface
 
-**What changed:** `ResponseInterface` used to declare a constructor:
+**What changed:** `ResponseInterface` used to declare `__construct(string $raw, array $cmd, array $ph = [])`. It is gone from the interface entirely.
 
-```php
-// BEFORE (≤ v19)
-public function __construct(string $raw, array $cmd, array $ph = []);
+**What to respect: nothing, unless you _reflect_ on the interface.** Removal only relaxes the contract, so every existing implementation still satisfies it, and construction has not moved — responses are built by the brand factory hooks (`AbstractClient::newResponse()`, `AbstractResponseTemplateManager::createResponse()`), each naming its own concrete `Response`. If you build one directly, keep naming the concrete class: `new \CNIC\CNR\Response($raw)`.
 
-// AFTER (v20) — removed from the interface entirely
-```
-
-**What to respect: nothing, unless you _reflect_ on the interface** (see the caveat at the end of this sub-section). No call you make and no class you write needs changing.
-
-The declaration never did anything. PHP exempts constructors from signature-compatibility checks, so it constrained no implementer — which is exactly how it drifted: it declared 3 parameters while `AbstractResponse::__construct()` had grown a 4th (`$context`), and nothing complained for as long as that was true. Removing it is a _relaxation_ of the contract, so no existing implementation stops satisfying the interface.
-
-Nor does construction move: it was never done through this type. Responses are built by the brand factory hooks — `AbstractClient::newResponse()` and `AbstractResponseTemplateManager::createResponse()` — each of which instantiates its own concrete `Response`. The interface now describes only what a response can be _asked_, which is all a consumer ever needs from it.
-
-```php
-// Unchanged, and still the supported way to obtain a response:
-$r = $cl->request(["COMMAND" => "StatusAccount"]);   // returns ResponseInterface
-
-// If you build responses directly, keep naming the concrete class — as the SDK does:
-$r = new \CNIC\CNR\Response($raw);
-```
-
-Verified rather than assumed: instantiating through a `class-string<ResponseInterface>` with either 3 or 4 arguments passes PHPStan level 9 and Psalm level 1 identically before and after this change.
-
-**The one caveat — reflection on the interface itself.** If you inspect `ResponseInterface` reflectively (a DI container autowiring by interface, a doc generator, a test that asserts the contract), the constructor is now absent:
+The one observable effect is reflective. If you inspect the interface (a DI container autowiring by interface, a doc generator, a contract test), the constructor is now absent:
 
 ```php
 $ctor = (new ReflectionClass(\CNIC\ResponseInterface::class))->getConstructor();
@@ -442,7 +332,7 @@ $ctor = (new ReflectionClass(\CNIC\ResponseInterface::class))->getConstructor();
 // v20:   null   <-- ->getParameters() on this now raises a TypeError
 ```
 
-Guard the call (`if ($ctor !== null)`) or reflect on the concrete `CNIC\CNR\Response` / `CNIC\IBS\Response`, which is where the real constructor has always lived. This is the only way the change can be observed from outside the SDK.
+Guard the call (`if ($ctor !== null)`) or reflect on the concrete `CNIC\CNR\Response` / `CNIC\IBS\Response`, which is where the real constructor has always lived. Why the interface is the wrong place to describe construction: see the interface-declaration entry in [docs/agents/architecture.md](docs/agents/architecture.md). (Ref: RSRMID-2918.)
 
 ---
 
@@ -529,8 +419,6 @@ $client->setSocketTimeout(-1);        // CNIC\Exception\InvalidConfigurationExce
 Prefer this over `setExtraCurlOptions([CURLOPT_TIMEOUT => …])` — it states the intent rather than the mechanism. Both work; if you set both, the cURL option bag wins.
 
 A negative value is rejected rather than forwarded: cURL refuses it by returning `false` from `curl_setopt()`, which `curl_setopt_array()` does not surface, so passing it on would drop the setting with no signal — the very thing this release exists to stop. `CNIC\Exception\InvalidConfigurationException` is new in v21 and extends `CNIC\Exception\CnicException`, so existing `catch (\Exception)` code keeps catching it.
-
-> A note if you read the v20 documentation: it briefly told callers to use `setSocketTimeout()` for timeouts, at a point when no such method existed. That was corrected in the v20 line, and the method is real as of v21.
 
 ---
 
@@ -788,7 +676,7 @@ Three things were removed. Each is only reachable from code that reached into th
 
 - **You set `$needsIDNConvert = true`** on your own `SocketConfig` subclass to get the conversion on IBS/Moniker. It never did anything useful — those platforms convert IDNs server-side, which is why the flag was false for them — and the property no longer exists, so PHP will report the declaration as unused rather than fail. If you have an IBS/Moniker command you believe needs client-side conversion, call `IDNCommandRewriter::rewrite()` on it yourself before passing it to `request()`, but check with support first.
 
-**Why this happened:** 37 lines of CNR-specific domain regex on a base class shared with IBS and Moniker, gated by a flag whose only job was to disable them for two brands out of three — the same pattern v19 removed for role credentials and v20 for the IBS IPv4 default. It was also untestable in place: the only way to reach the rules was `ReflectionMethod::setAccessible()` on a constructed client. They now have a public surface, a direct test, and no shared-base footprint.
+**Why this happened:** see the IDN entry in [docs/agents/architecture.md](docs/agents/architecture.md) for the full decision record. (Ref: RSRMID-2922.)
 
 ---
 
@@ -883,7 +771,7 @@ final class LazyColumn implements \CNIC\ColumnInterface
 }
 ```
 
-**Why this happened:** two of these classes carried no behaviour at all, and the column pair duplicated ~35 lines with three trivial differences, one of which (the bounds check) was written twice in two different styles. Every other layer in the SDK — Client, SocketConfig, Response, TemplateManager, Translator — already shares a base and lets a brand override only what differs; this was the last place in that layer that did not. Consolidating it also closed a real coverage gap: `CNR\Column`'s `getData()`, `getDataByIndex()` and bounds behaviour had no direct tests, and now inherit the full shared suite.
+**Why this happened:** see the record/column entry in [docs/agents/architecture.md](docs/agents/architecture.md) for the full decision record. (Ref: RSRMID-2923.)
 
 ---
 
@@ -979,7 +867,7 @@ final class LazyColumn implements \CNIC\ColumnInterface
 
   It is `addTemplate()`'s counterpart, not a general undo: it restores what the container held the first time you called `addTemplate()` on that class, it is per brand, and a direct assignment to the public `$templates` property is outside its reach. Register through `addTemplate()` and it will always take you back.
 
-**Why this happened:** both parsers were static and hard-wired into `populate()`, so nothing in the Response tree could be exercised without a full raw wire payload, and the CNR parser had no test of its own at all. Because the two signatures differed (CNR one parameter, IBS two), no shared contract was even expressible. Unifying them made the seam possible, and the seam is the one already proven here for the HTTP transport (`TransportInterface`, v-19-era RSRMID-2910): a factory hook for the default, an injection point for the substitute. Two real implementations — CNR's line-oriented format and IBS's JSON-with-plain-text-fallback — justify the abstraction; this is not a speculative one.
+**Why this happened:** see the parse-seam entry in [docs/agents/architecture.md](docs/agents/architecture.md) for the full decision record. (Ref: RSRMID-2924.)
 
 ---
 
@@ -1063,7 +951,7 @@ final class LazyColumn implements \CNIC\ColumnInterface
 
 - **You asserted on debug output with `ob_start()`.** Call `format()` and assert on the returned string, or hand the client a collecting sink. Output buffering is no longer needed to see what the SDK logs.
 
-**Why this happened:** the two brand loggers differed only in how they assembled the string — CNR joins command, POST body, error and plain response with newlines; IBS emits a labelled REQUEST/RESPONSE block with tab indentation — and then both did the identical thing with it. The seam was at the destination, which never varied, while the formatting, which does, was unreachable and (for CNR) untested. Moving the seam makes one formatter serve every sink instead of every sink carrying a copy of the format. Masking is unaffected and still happens upstream of the formatter: the response masks its own stored command and the client passes an already-secured POST body, so nothing new becomes obtainable except the record you asked for. (Ref: RSRMID-2925.)
+**Masking is unaffected** and still happens upstream of the formatter: the response masks its own stored command and the client passes an already-secured POST body, so nothing new becomes obtainable except the record you asked for. For why the seam moved, see the logger entry in [docs/agents/architecture.md](docs/agents/architecture.md). (Ref: RSRMID-2925.)
 
 ---
 
@@ -1121,7 +1009,7 @@ A value with a trailing newline (e.g. read from a file or a form field, rather t
   }
   ```
 
-**Why this happened:** the rewrite was a silent data mutation with no test coverage of its edge cases, sitting in the one parser that had no business making a formatting decision. `ApiDateTime` already existed as the SDK's date parser but had never actually been wired up to anything in `src/`; teaching it to accept both separators removed the only reason the rewrite existed, and the accessors give a caller a normalized value without the response data itself being touched. (Ref: RSRMID-2926.)
+**Why this happened:** see the `ApiDateTime` entry in [docs/agents/architecture.md](docs/agents/architecture.md) for the full decision record. (Ref: RSRMID-2926.)
 
 ### `IBS\Response::getStatus()` removed
 
@@ -1148,7 +1036,7 @@ This is the one field where reading `status` off the hash directly is genuinely 
 
 **Once you have finished upgrading, check your code against [the Usage section of README.md](README.md#usage)** — it holds the worked, per-brand example of idiomatic code for the current major (client construction, the `$path` argument, `close()`, and which capabilities are CNR-only), kept up to date rather than pinned to any one version.
 
-It lives there rather than here on purpose: `README.md` is the only documentation that ships in the Composer package (`MIGRATION.md`, `examples/` and `docs/` are all `export-ignore`d in `.gitattributes`), so a consumer who installed via `composer require` can read the example without fetching anything else. Keeping a second copy here would only give us two versions to keep current. (Ref: RSRMID-2930.)
+It lives there rather than here because `README.md` is the only documentation that ships in the Composer package, so a consumer who installed via `composer require` can read it without fetching anything else. (Ref: RSRMID-2930.)
 
 ---
 

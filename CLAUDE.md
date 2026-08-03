@@ -1,8 +1,6 @@
 # Project Instructions
 
-> **How this file is organised:** this file holds only the rules and facts needed on nearly every task — one imperative line each. Rationale, alternatives considered and RSRMID history live in `docs/agents/*.md` and are linked inline; read those on demand and never summarise them back here.
->
-> **Where a change gets documented:** a `BREAKING CHANGE:` commit updates [MIGRATION.md](MIGRATION.md) (consumer upgrade path) and [docs/agents/architecture.md](docs/agents/architecture.md) (the decision record) — **not** this file. Touch this file only when a rule an agent needs on _every_ task actually changes, and edit the linked doc rather than growing a bullet here.
+> **This file is read in full on every task**, so it holds only rules needed on nearly every task — one imperative line each. Rationale, alternatives and RSRMID history belong in the linked `docs/agents/*.md`; never summarise them back here. Which doc a change lands in: [CONTRIBUTING.md → Where a change gets documented](CONTRIBUTING.md#where-a-change-gets-documented).
 
 ## Project Overview
 
@@ -188,4 +186,4 @@ Detailed, on-demand reference lives under `docs/agents/` — read the relevant f
 - **[project-policies.md](docs/agents/project-policies.md)** — PHP version policy, lockfiles, distribution archive, lint toolchain, Claude Code allowlist.
 - **[ci-release.md](docs/agents/ci-release.md)** — CI/GitHub Actions wiring, Rector modernization, Doctum API-doc pipeline.
 - **[issue-tracker.md](docs/agents/issue-tracker.md)** — Jira Cloud via the Atlassian MCP tools; all issue IDs/fields/transitions.
-- **[domain.md](docs/agents/domain.md)** — domain-doc layout: `CONTEXT.md` + `docs/adr/` (created lazily by the domain-modeling skill).
+- **[domain.md](docs/agents/domain.md)** — what to do about `CONTEXT.md`/`docs/adr/`: neither exists yet, so proceed silently; the domain-modeling skill creates them lazily.
