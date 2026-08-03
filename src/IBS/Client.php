@@ -87,7 +87,6 @@ class Client extends AbstractClient
 
     /**
      * Instantiate an IBS Response for the given raw payload.
-     * @param string $raw raw API response payload
      * @param array<string, string> $cmd flattened command that produced the response
      * @param array{CONNECTION_URL: string} $cfg connection config used for the request
      */
