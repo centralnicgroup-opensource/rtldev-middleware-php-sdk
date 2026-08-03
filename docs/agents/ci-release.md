@@ -19,7 +19,8 @@ Because of this, **caching, the test matrix, coverage upload, and audit gating a
 
 Two consequences worth knowing:
 
-- **`ci-success` needs no per-job edit.** It gates on `needs.lint.result`, the conclusion of the whole reusable call, so any job added to the shared workflow blocks the merge automatically. Do not expand it into a list of job names.
+- **`ci-success` needs no per-job edit.** It gates on `needs.lint.result`, the conclusion of the whole reusable call, so any job added to the shared workflow is covered automatically. Do not expand it into a list of job names.
+- **But the lint workflow is currently advisory, not merge-blocking** — verified against `master` protection, not assumed. `lint.yml`'s `ci-success` job carries `name: "Lint: completed"`, so *that* is the check-run name it publishes; `test.yml` has an identically-keyed `ci-success` job with no `name:`, so it publishes the bare context `ci-success`. Branch protection on `master` requires exactly one context — `ci-success` — which is **`test.yml`'s**. `Lint: completed` is not required. So a prettier (or phpcs, or psalm) failure turns `Lint: completed` red and still leaves the PR mergeable. Making any linter genuinely merge-blocking is a **branch-protection change** — add `Lint: completed` to the required contexts — not a workflow change. A startup failure of the reusable call is the sharper edge of the same gap: it produces *zero* check runs, so it is invisible in the PR rollup.
 - **The job runs `composer prettier`, not a raw prettier call**, so the arguments and `.prettierignore` rules stay owned by this repo. It installs with `pnpm install --frozen-lockfile` so CI checks against the prettier version in `pnpm-lock.yaml` — prettier's output changes between minors, and a floating install would produce a red CI that cannot be reproduced locally. The job prints the version it used for exactly that comparison.
 
 ### Reusable-workflow permissions (important)
