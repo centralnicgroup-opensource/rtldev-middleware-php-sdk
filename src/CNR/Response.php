@@ -49,18 +49,18 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * FIRSTNAME, DISCOUNT or ACCOUNT from getColumnKeys()/getListHash().
      * @var non-empty-string
      */
-    protected string $paginationkeys = "/^(TOTAL|COUNT|LIMIT|FIRST|LAST)$/";
+    protected string $paginationKeys = "/^(TOTAL|COUNT|LIMIT|FIRST|LAST)$/";
 
     /**
      * Translate the raw API response into its canonical form using the CNR
      * translator. $cmd is already sanitized.
      * @param array<string, string> $cmd API command used within this request
-     * @param array{CONNECTION_URL?: string} $ph placeholder array for dynamic replacement
+     * @param array{CONNECTION_URL?: string} $placeholders
      */
     #[\Override]
-    protected function translate(string $raw, array $cmd, array $ph): string
+    protected function translate(string $raw, array $cmd, array $placeholders): string
     {
-        return RT::translate($raw, $cmd, $ph);
+        return RT::translate($raw, $cmd, $placeholders);
     }
 
     /**
@@ -217,24 +217,23 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
 
     /**
      * Add a column to the column list
-     * @param string $key column name
      * @param string[] $data array of column data
      * @psalm-suppress MoreSpecificImplementedParamType CNR columns are always string-valued
      */
     #[\Override]
-    public function addColumn(string $key, array $data): static
+    public function addColumn(string $columnName, array $data): static
     {
-        return $this->registerColumn(new Column($key, $data));
+        return $this->registerColumn(new Column($columnName, $data));
     }
 
     /**
      * Instantiate the record type for this brand.
-     * @param array<string,mixed> $h row hash data
+     * @param array<string,mixed> $row
      */
     #[\Override]
-    protected function newRecord(array $h): Record
+    protected function newRecord(array $row): Record
     {
-        return new Record($h);
+        return new Record($row);
     }
 
     /**

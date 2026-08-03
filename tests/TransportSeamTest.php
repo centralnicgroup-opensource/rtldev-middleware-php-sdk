@@ -41,7 +41,7 @@ final class TransportSeamTest extends TestCase
              * @return array{0: string, 1: string|null}
              */
             #[\Override]
-            public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
+            public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
             {
                 // canned CNR wire response for a successful CheckDomains
                 $raw = "[RESPONSE]\r\nCODE=200\r\nDESCRIPTION=Command completed successfully\r\n"

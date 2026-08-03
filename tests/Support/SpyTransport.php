@@ -18,7 +18,7 @@ use CNIC\TransportInterface;
  * canned wire response, so a test can assert the *effective* arguments — the
  * timeout and the cURL option bag — without a network. This is the seam that
  * was missing when the setExtraCurlOptions() discard went unnoticed: the
- * existing tests only inspected the client's own $curlopts bag, which looked
+ * existing tests only inspected the client's own $curlOptions bag, which looked
  * correct all along.
  *
  * For assertions about what the real cURL layer does with those options, see
@@ -65,10 +65,10 @@ final class SpyTransport implements TransportInterface
      * @return array{0: string, 1: string|null}
      */
     #[\Override]
-    public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
+    public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
     {
         $this->url = $url;
-        $this->timeout = $timeout;
+        $this->timeout = $timeoutSeconds;
         $this->userAgent = $userAgent;
         $this->options = $options;
         return [$this->raw, null];

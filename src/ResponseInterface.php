@@ -64,26 +64,25 @@ interface ResponseInterface
 
     /**
      * Add a column to the column list
-     * @param string $key column name
      * @param array<array-key, mixed> $data array of column data
      */
-    public function addColumn(string $key, array $data): ResponseInterface;
+    public function addColumn(string $columnName, array $data): ResponseInterface;
 
     /**
      * Add a record to the record list
-     * @param array<string, mixed> $h row hash data
+     * @param array<string, mixed> $row
      */
-    public function addRecord(array $h): ResponseInterface;
+    public function addRecord(array $row): ResponseInterface;
 
     /**
      * Get column by column name, or null if the column does not exist
      */
-    public function getColumn(string $key): ?ColumnInterface;
+    public function getColumn(string $columnName): ?ColumnInterface;
 
     /**
      * Get Data by Column Name and Index, or null if not found
      */
-    public function getColumnIndex(string $colkey, int $index): mixed;
+    public function getColumnIndex(string $columnName, int $recordIndex): mixed;
 
     /**
      * Get Column Names
@@ -92,7 +91,7 @@ interface ResponseInterface
      * endpoints emit alongside the real data (CNR: TOTAL, FIRST, LAST, COUNT,
      * LIMIT; IBS: the total_ prefixed keys and domaincount), leaving only the
      * columns a caller wants to render. Which keys count as pagination is
-     * brand-specific — see the $paginationkeys property on each brand's Response.
+     * brand-specific — see the $paginationKeys property on each brand's Response.
      *
      * The parameter is declared here, not only on the implementation, because
      * consumers are expected to type against this interface: an interface
@@ -180,7 +179,7 @@ interface ResponseInterface
     /**
      * Get Record at given index, or null if the index does not exist
      */
-    public function getRecord(int $idx): ?RecordInterface;
+    public function getRecord(int $recordIndex): ?RecordInterface;
 
     /**
      * Get all Records

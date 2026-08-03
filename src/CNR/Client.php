@@ -94,12 +94,14 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      *
      * Setting a session clears the stored password: the two are alternative
      * credentials on the wire, and CNR's SocketConfig treats the newer one as
-     * authoritative (see {@see SocketConfig::setSession()}).
-     * @param string $value API session id (optional, for reset)
+     * authoritative. That holds on the reset path too — `setSession("")` leaves
+     * neither, so re-set the credentials to go back to password authentication
+     * (see {@see SocketConfig::setSession()}).
+     * @param string $session empty string resets it
      */
-    public function setSession(string $value = ""): static
+    public function setSession(string $session = ""): static
     {
-        $this->getSocketConfig()->setSession($value);
+        $this->getSocketConfig()->setSession($session);
         return $this;
     }
 
@@ -161,28 +163,27 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * login is the account id, the `":"` role separator and the role user id,
      * authenticated with that role user's own password.
      *
-     * @param string $uid account name (optional, for reset)
-     * @param string $role role user id (optional, for reset)
-     * @param string $pw role user password (optional, for reset)
+     * @param string $accountId empty string resets it
+     * @param string $roleId empty string logs in as the account itself, without a role
+     * @param string $password the role user's own password; empty string resets it
      */
     #[\Override]
-    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static
+    public function setRoleCredentials(string $accountId = "", string $roleId = "", string $password = ""): static
     {
-        $login = $uid;
-        if ($role !== '') {
-            $login .= $this->getSocketConfig()->getRoleSeparator() . $role;
+        $login = $accountId;
+        if ($roleId !== '') {
+            $login .= $this->getSocketConfig()->getRoleSeparator() . $roleId;
         }
-        return $this->setCredentials($login, $pw);
+        return $this->setCredentials($login, $password);
     }
 
     /**
      * Request the next page of list entries for the current list query
-     * @param Response $rr API Response of current page
      * @throws PaginationException in case Command Parameter LAST is in use while using this method
      */
-    public function requestNextResponsePage(Response $rr): ?Response
+    public function requestNextResponsePage(Response $currentPage): ?Response
     {
-        $mycmd = $rr->getCommand();
+        $mycmd = $currentPage->getCommand();
         if (array_key_exists("LAST", $mycmd)) {
             throw new PaginationException("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         }
@@ -193,14 +194,14 @@ class Client extends AbstractClient implements RoleCredentialsInterface
         // getCurrentPageNumber() null, so hasNextPage() returns false and
         // requestAllResponsePages() terminates instead of re-requesting the same
         // page forever (see testRequestNextResponsePageZeroLimit).
-        if (!$rr->hasNextPage()) {
+        if (!$currentPage->hasNextPage()) {
             return null;
         }
         $first = 0;
         if (array_key_exists("FIRST", $mycmd)) {
             $first = (int) $mycmd["FIRST"];
         }
-        $limit = $rr->getRecordsLimitation();
+        $limit = $currentPage->getRecordsLimitation();
         $mycmd["FIRST"] = $first + $limit;
         $mycmd["LIMIT"] = $limit;
         return $this->request($mycmd);

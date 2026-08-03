@@ -40,7 +40,7 @@ interface ColumnInterface
     /**
      * Get column data at given index
      */
-    public function getDataByIndex(int $idx): mixed;
+    public function getDataByIndex(int $recordIndex): mixed;
 
     /**
      * Get column data at given index, parsed as a date/time value.
@@ -48,5 +48,5 @@ interface ColumnInterface
      * Returns `null` for an out-of-range index, a non-string value, or a
      * string that cannot be parsed — see {@see ApiDateTime::tryFrom()}.
      */
-    public function getDateTimeByIndex(int $idx): ?ApiDateTime;
+    public function getDateTimeByIndex(int $recordIndex): ?ApiDateTime;
 }

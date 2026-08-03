@@ -29,9 +29,9 @@ interface RoleCredentialsInterface
 {
     /**
      * Set Role Credentials to be used for API communication
-     * @param string $uid account name (optional, for reset)
-     * @param string $role role user id (optional, for reset)
-     * @param string $pw role user password (optional, for reset)
+     * @param string $accountId empty string resets it
+     * @param string $roleId empty string logs in as the account itself, without a role
+     * @param string $password the role user's own password; empty string resets it
      */
-    public function setRoleCredentials(string $uid = "", string $role = "", string $pw = ""): static;
+    public function setRoleCredentials(string $accountId = "", string $roleId = "", string $password = ""): static;
 }

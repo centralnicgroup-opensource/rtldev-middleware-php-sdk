@@ -106,7 +106,7 @@ final class CassetteTransport implements TransportInterface
      * @return array{0: string, 1: string|null}
      */
     #[\Override]
-    public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array
+    public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
     {
         if (!$this->selected) {
             throw new RuntimeException(
@@ -118,7 +118,7 @@ final class CassetteTransport implements TransportInterface
             if (!$this->inner instanceof TransportInterface) {
                 throw new RuntimeException("Record mode requires an inner transport.");
             }
-            [$raw, $error] = $this->inner->post($url, $data, $timeout, $userAgent, $options);
+            [$raw, $error] = $this->inner->post($url, $data, $timeoutSeconds, $userAgent, $options);
             $this->exchanges[] = [$raw, $error];
             $this->flush();
             return [$raw, $error];

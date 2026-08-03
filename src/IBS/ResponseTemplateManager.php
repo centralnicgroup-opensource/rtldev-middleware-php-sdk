@@ -41,8 +41,7 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
 
     /**
      * Generate API response template string for given status and description
-     * @param string $code API response status
-     * @param string $description API response description
+     * @param string $code goes on the wire as IBS's `status` field
      */
     #[\Override]
     public static function generateTemplate(string $code, string $description): string
@@ -52,12 +51,11 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
 
     /**
      * Get response template instance from template container
-     * @param string $id template id
      */
     #[\Override]
-    public static function getTemplate(string $id): Response
+    public static function getTemplate(string $templateId): Response
     {
-        return self::createResponse(self::hasTemplate($id) ? $id : "notfound");
+        return self::createResponse(self::hasTemplate($templateId) ? $templateId : "notfound");
     }
 
     /**

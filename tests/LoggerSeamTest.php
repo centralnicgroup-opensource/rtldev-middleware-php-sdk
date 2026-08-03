@@ -278,15 +278,15 @@ final class LoggerSeamTest extends TestCase
             public array $written = [];
 
             #[\Override]
-            public function format(string $post, ResponseInterface $r, ?string $error = null): string
+            public function format(string $post, ResponseInterface $response, ?string $error = null): string
             {
-                return "custom:" . $r->getCode();
+                return "custom:" . $response->getCode();
             }
 
             #[\Override]
-            public function log(string $post, ResponseInterface $r, ?string $error = null): void
+            public function log(string $post, ResponseInterface $response, ?string $error = null): void
             {
-                $this->written[] = $this->format($post, $r, $error);
+                $this->written[] = $this->format($post, $response, $error);
             }
         };
 
@@ -313,13 +313,13 @@ final class LoggerSeamTest extends TestCase
             public bool $used = false;
 
             #[\Override]
-            public function format(string $post, ResponseInterface $r, ?string $error = null): string
+            public function format(string $post, ResponseInterface $response, ?string $error = null): string
             {
                 return "custom";
             }
 
             #[\Override]
-            public function log(string $post, ResponseInterface $r, ?string $error = null): void
+            public function log(string $post, ResponseInterface $response, ?string $error = null): void
             {
                 $this->used = true;
             }

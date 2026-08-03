@@ -84,7 +84,7 @@ abstract class AbstractSocketConfig
     /**
      * account password
      */
-    protected string $pw = "";
+    protected string $password = "";
 
     /**
      * API OT&E endpoint URL
@@ -119,7 +119,7 @@ abstract class AbstractSocketConfig
     /**
      * Proxy for API communication, or null for a direct connection.
      *
-     * Deliberately real state rather than a {@see $curlopts} key, so that
+     * Deliberately real state rather than a {@see $curlOptions} key, so that
      * {@see resetCurlOptions()} — whose job is restoring *option* defaults —
      * cannot forget the proxy the caller configured.
      */
@@ -138,7 +138,7 @@ abstract class AbstractSocketConfig
      * those defaults by {@see resetCurlOptions()}.
      * @var array<int, mixed>
      */
-    protected array $curlopts = [];
+    protected array $curlOptions = [];
 
     /**
      * API socket timeout in seconds
@@ -162,22 +162,21 @@ abstract class AbstractSocketConfig
      *
      * Both seeds have to happen after the subclass's property initialisers, which
      * is why they are here and not inline defaults: {@see $url} starts at the
-     * brand's {@see $liveUrl} (LIVE is the default system) and {@see $curlopts}
+     * brand's {@see $liveUrl} (LIVE is the default system) and {@see $curlOptions}
      * at the brand's {@see getDefaultCurlOpts()}.
      */
     public function __construct()
     {
         $this->url = $this->liveUrl;
-        $this->curlopts = $this->getDefaultCurlOpts();
+        $this->curlOptions = $this->getDefaultCurlOpts();
     }
 
     /**
      * Set account name to use
-     * @param string $value account name
      */
-    public function setLogin(string $value): static
+    public function setLogin(string $login): static
     {
-        $this->login = $value;
+        $this->login = $login;
         return $this;
     }
 
@@ -191,11 +190,10 @@ abstract class AbstractSocketConfig
 
     /**
      * Set account password to use
-     * @param string $value account password
      */
-    public function setPassword(string $value): static
+    public function setPassword(string $password): static
     {
-        $this->pw = $value;
+        $this->password = $password;
         return $this;
     }
 
@@ -229,9 +227,9 @@ abstract class AbstractSocketConfig
      * answering with the last selection is how a stored flag comes to disagree
      * with the URL in use.
      */
-    public function setURL(string $value): static
+    public function setURL(string $url): static
     {
-        $this->url = $value;
+        $this->url = $url;
         return $this;
     }
 
@@ -345,7 +343,7 @@ abstract class AbstractSocketConfig
 
     /**
      * Set the proxy to use for API communication
-     * @param string $proxy proxy to use (optional, for reset)
+     * @param string $proxy empty string resets it, restoring a direct connection
      */
     public function setProxy(string $proxy = ""): static
     {
@@ -364,7 +362,7 @@ abstract class AbstractSocketConfig
 
     /**
      * Set the Referer to send with API requests
-     * @param string $referer Referer (optional, for reset)
+     * @param string $referer empty string resets it, so no Referer is sent
      */
     public function setReferer(string $referer = ""): static
     {
@@ -381,7 +379,7 @@ abstract class AbstractSocketConfig
     }
 
     /**
-     * Brand-default cURL options, used to seed and to reset {@see $curlopts}.
+     * Brand-default cURL options, used to seed and to reset {@see $curlOptions}.
      *
      * **No brand overrides this, and new overrides should be resisted** — transport
      * tuning is the caller's decision via {@see setExtraCurlOptions()}, and a brand
@@ -424,7 +422,7 @@ abstract class AbstractSocketConfig
     public function setExtraCurlOptions(array $opts): static
     {
         self::rejectManagedOptions($opts);
-        $this->curlopts = $opts + $this->curlopts;
+        $this->curlOptions = $opts + $this->curlOptions;
         return $this;
     }
 
@@ -442,7 +440,7 @@ abstract class AbstractSocketConfig
      */
     public function resetCurlOptions(): static
     {
-        $this->curlopts = $this->getDefaultCurlOpts();
+        $this->curlOptions = $this->getDefaultCurlOpts();
         return $this;
     }
 
@@ -454,7 +452,7 @@ abstract class AbstractSocketConfig
      * keeps on a duplicate key — so what {@see getProxy()} reports is what goes on
      * the wire, structurally rather than by convention. Do not "simplify" the order
      * on the grounds that {@see setExtraCurlOptions()} already refuses those two
-     * keys: that guard is not the only writer of {@see $curlopts}, since
+     * keys: that guard is not the only writer of {@see $curlOptions}, since
      * {@see getDefaultCurlOpts()} seeds it through the constructor and
      * {@see resetCurlOptions()} re-seeds it, neither passing through the guard. A
      * brand default of CURLOPT_PROXY would then leave the getter reporting the
@@ -471,7 +469,7 @@ abstract class AbstractSocketConfig
         if ($this->referer !== null) {
             $dedicated[CURLOPT_REFERER] = $this->referer;
         }
-        return $dedicated + $this->curlopts;
+        return $dedicated + $this->curlOptions;
     }
 
     /**
@@ -520,17 +518,17 @@ abstract class AbstractSocketConfig
      * A negative value is rejected rather than forwarded: cURL refuses it by
      * returning `false` from `curl_setopt()`, whose result `curl_setopt_array()`
      * does not surface, so forwarding it would drop the setting with no signal.
-     * @param int $value timeout in seconds (0 = no timeout)
+     * @param int $timeoutSeconds 0 carries cURL's meaning — no timeout
      * @throws InvalidConfigurationException on a negative value
      */
-    public function setSocketTimeout(int $value): static
+    public function setSocketTimeout(int $timeoutSeconds): static
     {
-        if ($value < 0) {
+        if ($timeoutSeconds < 0) {
             throw new InvalidConfigurationException(
-                "Socket timeout must be 0 (no timeout) or a positive number of seconds, got {$value}."
+                "Socket timeout must be 0 (no timeout) or a positive number of seconds, got {$timeoutSeconds}."
             );
         }
-        $this->socketTimeout = $value;
+        $this->socketTimeout = $timeoutSeconds;
         return $this;
     }
 
@@ -558,10 +556,9 @@ abstract class AbstractSocketConfig
     /**
      * Get POST data container of connection data
      * @param array<string, string|null> $command API Command to request
-     * @param bool $secured if password has to be returned "hidden"
      * @return array<string, string|null>
      */
-    abstract protected function getPOSTDataParams(array $command, bool $secured): array;
+    abstract protected function getPOSTDataParams(array $command, bool $maskSecrets): array;
 
     /**
      * Create POST data string out of connection data.
@@ -571,11 +568,10 @@ abstract class AbstractSocketConfig
      * this level — CNR's `persistent=1` is appended by its own
      * getPOSTDataParams(), which is why this method knows nothing brand-specific.
      * @param array<string, string|null> $command API Command to request
-     * @param bool $secured if password has to be returned "hidden"
      * @return string POST data string
      */
-    public function getPOSTData(array $command = [], bool $secured = false): string
+    public function getPOSTData(array $command = [], bool $maskSecrets = false): string
     {
-        return http_build_query($this->getPOSTDataParams($command, $secured));
+        return http_build_query($this->getPOSTDataParams($command, $maskSecrets));
     }
 }

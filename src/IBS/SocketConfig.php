@@ -42,18 +42,17 @@ class SocketConfig extends AbstractSocketConfig
     /**
      * Get POST data container of connection data
      * @param array<string, string|null> $command API Command to request
-     * @param bool $secured if password has to be returned "hidden"
      * @return array<string, string|null>
      */
     #[\Override]
-    protected function getPOSTDataParams(array $command, bool $secured): array
+    protected function getPOSTDataParams(array $command, bool $maskSecrets): array
     {
-        $params = $secured ? $this->maskSensitiveCommand($command) : $command;
+        $params = $maskSecrets ? $this->maskSensitiveCommand($command) : $command;
         if (strlen($this->login) !== 0) {
             $params[$this->parameters["login"]] = $this->login;
         }
-        if (strlen($this->pw) !== 0) {
-            $params[$this->parameters["password"]] = $secured ? "***" : $this->pw;
+        if (strlen($this->password) !== 0) {
+            $params[$this->parameters["password"]] = $maskSecrets ? "***" : $this->password;
         }
         return $params;
     }

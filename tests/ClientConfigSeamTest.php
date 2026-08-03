@@ -28,7 +28,7 @@ use ReflectionMethod;
  * SocketConfig and nowhere else (RSRMID-2921).
  *
  * Until v23 the client kept its own copies of part of it — `$socketURL`,
- * `$system`, the `$curlopts` bag — beside the config's endpoints and timeout,
+ * `$system`, the `$curlOptions` bag — beside the config's endpoints and timeout,
  * with no invariant tying the two sets together. Three defects followed, each
  * with its own regression test in {@see AbstractClientConfigDriftTest}; this file
  * guards the structural property that makes all three unrepresentable rather than
@@ -48,7 +48,8 @@ final class ClientConfigSeamTest extends TestCase
      * Connection-configuration state that must exist on the config and not on the
      * client. Names both the historical client property (`socketURL`) and the
      * config's current one (`url`), so re-adding either spelling to a client is a
-     * failure.
+     * failure. Same for the option bag, renamed `curlopts` -> `curlOptions` in
+     * RSRMID-2935 — both spellings stay listed here.
      * @var string[]
      */
     private const array CONFIG_OWNED_PROPERTIES = [
@@ -56,6 +57,7 @@ final class ClientConfigSeamTest extends TestCase
         "socketURL",
         "system",
         "curlopts",
+        "curlOptions",
         "proxy",
         "referer",
         "highPerformance",
@@ -152,7 +154,7 @@ final class ClientConfigSeamTest extends TestCase
     public function testTheSocketConfigOwnsTheConnectionState(): void
     {
         $rc = new ReflectionClass(AbstractSocketConfig::class);
-        foreach (["url", "highPerformance", "proxy", "referer", "curlopts", "oteUrl", "liveUrl", "socketTimeout"] as $p) {
+        foreach (["url", "highPerformance", "proxy", "referer", "curlOptions", "oteUrl", "liveUrl", "socketTimeout"] as $p) {
             $this->assertTrue($rc->hasProperty($p), "AbstractSocketConfig must own \${$p}.");
         }
     }

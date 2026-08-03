@@ -186,7 +186,7 @@ final class ResponseParserSeamTest extends TestCase
 
         // A named-argument call pins the parameter's *name* and its type without
         // reaching into ReflectionParameter: renaming or retyping it makes this
-        // an Error, and skipping $cmd/$ph/$context proves it stays last.
+        // an Error, and skipping $cmd/$placeholders/$context proves it stays last.
         $r = new IBSResponse(raw: '{"status":"SUCCESS"}', parser: new SpyResponseParser());
         $this->assertSame("from the substitute", $r->getDescription());
     }

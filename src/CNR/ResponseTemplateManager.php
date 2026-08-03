@@ -41,8 +41,6 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
 
     /**
      * Generate API response template string for given code and description
-     * @param string $code API response code
-     * @param string $description API response description
      */
     #[\Override]
     public static function generateTemplate(string $code, string $description): string
@@ -52,12 +50,11 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
 
     /**
      * Get response template instance from template container
-     * @param string $id template id
      */
     #[\Override]
-    public static function getTemplate(string $id): Response
+    public static function getTemplate(string $templateId): Response
     {
-        return self::createResponse(self::hasTemplate($id) ? $id : "notfound");
+        return self::createResponse(self::hasTemplate($templateId) ? $templateId : "notfound");
     }
 
     /**

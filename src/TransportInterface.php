@@ -37,15 +37,19 @@ interface TransportInterface
      * {@see HttpTransport::PROTECTED_OPTIONS}, while a test double typically
      * owns none and simply records what it was given.
      *
-     * @param string $url request URL
      * @param string $data serialized POST payload
-     * @param int $timeout socket timeout in seconds
-     * @param string $userAgent user agent header value
+     * @param int $timeoutSeconds 0 carries cURL's meaning — no timeout
      * @param array<int, mixed> $options additional cURL options, overriding the implementation's defaults
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
      * @throws UnsupportedFeatureException if $options contains an option the implementation owns
      */
-    public function post(string $url, string $data, int $timeout, string $userAgent, array $options = []): array;
+    public function post(
+        string $url,
+        string $data,
+        int $timeoutSeconds,
+        string $userAgent,
+        array $options = []
+    ): array;
 
     /**
      * Close and release any underlying connection/handle.

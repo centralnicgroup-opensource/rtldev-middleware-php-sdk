@@ -71,9 +71,9 @@ abstract class AbstractResponseTranslator
      * translate a raw api response
      * @param string $raw API raw response
      * @param array<string, string> $cmd requested API command
-     * @param array{CONNECTION_URL?: string} $ph list of place holder vars
+     * @param array{CONNECTION_URL?: string} $placeholders
      */
-    public static function translate(string $raw, array $cmd, array $ph = []): string
+    public static function translate(string $raw, array $cmd, array $placeholders = []): string
     {
         $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
@@ -121,7 +121,7 @@ abstract class AbstractResponseTranslator
             }
         }
 
-        return static::replacePlaceholders($newraw, $ph);
+        return static::replacePlaceholders($newraw, $placeholders);
     }
 
     /**
@@ -166,14 +166,14 @@ abstract class AbstractResponseTranslator
      * placeholders are substituted, unknown {UPPER} tokens are stripped, and any
      * other brace content (e.g. lowercase %{i} in SPF records) is left untouched.
      *
-     * @param array{CONNECTION_URL?: string} $ph placeholder key-value pairs
+     * @param array{CONNECTION_URL?: string} $placeholders
      */
-    protected static function replacePlaceholders(string $raw, array $ph): string
+    protected static function replacePlaceholders(string $raw, array $placeholders): string
     {
         $field = static::fieldName();
         $tmp = preg_replace_callback(
             '/^(' . $field . '\s*=\s*)(.*)$/im',
-            static function ($matches) use ($ph) {
+            static function ($matches) use ($placeholders) {
                 $description = $matches[2];
 
                 if (strpos($description, '{') === false) {
@@ -182,11 +182,11 @@ abstract class AbstractResponseTranslator
 
                 $description = preg_replace_callback(
                     '/\{([^}]+)\}/',
-                    static function ($tokenMatches) use ($ph) {
+                    static function ($tokenMatches) use ($placeholders) {
                         $token = $tokenMatches[1];
 
-                        if (array_key_exists($token, $ph)) {
-                            return $ph[$token];
+                        if (array_key_exists($token, $placeholders)) {
+                            return $placeholders[$token];
                         }
 
                         if (preg_match('/^[A-Z][A-Z0-9_]*$/', $token) === 1) {

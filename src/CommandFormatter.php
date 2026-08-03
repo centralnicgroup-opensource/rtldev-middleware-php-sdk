@@ -101,10 +101,9 @@ final class CommandFormatter
      * Flatten API command's nested arrays for easier handling
      *
      * @param array<string,scalar|scalar[]|null> $cmd API Command
-     * @param bool $toupper flag to convert keys to uppercase or leave as is
      * @return array<string,string>
      */
-    public static function flattenCommand(array $cmd, bool $toupper = true): array
+    public static function flattenCommand(array $cmd, bool $upperCaseKeys = true): array
     {
         /** @var array<string,string> $newcmd */
         $newcmd = [];
@@ -112,7 +111,7 @@ final class CommandFormatter
             if (!isset($val)) {
                 continue;
             }
-            $newKey = $toupper ? \strtoupper($key) : $key;
+            $newKey = $upperCaseKeys ? \strtoupper($key) : $key;
             if (!is_array($val)) {
                 $newv = (string)$val;
                 $newcmd[$newKey] = preg_replace("/\r|\n/", "", $newv) ?? $newv;
