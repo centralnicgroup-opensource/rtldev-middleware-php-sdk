@@ -175,7 +175,6 @@ abstract class AbstractClient
      * Instantiate the brand Response for the given raw payload.
      * Return type is covariant so each brand pins its concrete Response.
      *
-     * @param string $raw raw API response payload
      * @param array<string, string> $cmd flattened command that produced the response
      * @param array{CONNECTION_URL: string} $cfg connection config used for the request
      */
@@ -481,16 +480,15 @@ abstract class AbstractClient
      * a way for a subclass to put a second answer behind `getProxy()`. A
      * per-request option belongs on the config before the request, or on a
      * transport the caller drives themselves.
-     * @param string $data serialized POST payload
      * @param array{CONNECTION_URL: string} $cfg connection config
      * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
      * @throws UnsupportedFeatureException if a transport-owned option was set
      */
-    protected function executeCurl(string $data, array $cfg): array
+    protected function executeCurl(string $postData, array $cfg): array
     {
         return $this->transport->post(
             $cfg["CONNECTION_URL"],
-            $data,
+            $postData,
             $this->socketConfig->getSocketTimeout(),
             $this->getUserAgent(),
             $this->socketConfig->getCurlOptions()

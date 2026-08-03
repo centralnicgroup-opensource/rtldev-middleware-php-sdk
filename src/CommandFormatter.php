@@ -168,7 +168,6 @@ final class CommandFormatter
     /**
      * Find the priority of a given key
      *
-     * @param string $key The key to find the priority for
      * @param array<string,int> $priority The priority array
      */
     private static function findPriority(string $key, array $priority): int

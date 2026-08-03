@@ -130,12 +130,11 @@ abstract class AbstractResponseTranslator
      * This function searches for a specified regular expression pattern in the provided text and
      * performs replacements based on the matched pattern, command data, and placeholder values.
      *
-     * @param string $regex The regular expression pattern to search for.
-     * @param string $newraw The input text where the match will be searched for and replacements applied.
-     * @param string $val The value to be used in replacement if a match is found.
+     * $subject is mutated in place when a replacement is applied.
+     *
      * @param array<string, string> $cmd The command data containing replacements, if applicable.
      */
-    private static function findMatch(string $regex, string &$newraw, string $val, array $cmd): bool
+    private static function findMatch(string $regex, string &$subject, string $replacement, array $cmd): bool
     {
         // match the response for given description
         // NOTE: we match if the description starts with the given description
@@ -144,16 +143,14 @@ abstract class AbstractResponseTranslator
         $qregex = "/" . $field . "\s*=\s*" . $regex . "([^\\r\\n]+)?/i";
         $return = false;
 
-        if (preg_match($qregex, $newraw)) {
-            // If "COMMAND" exists in $cmd, replace "{COMMAND}" in $val
+        if (preg_match($qregex, $subject)) {
             if (isset($cmd["COMMAND"])) {
-                $val = str_replace("{COMMAND}", $cmd["COMMAND"], $val);
+                $replacement = str_replace("{COMMAND}", $cmd["COMMAND"], $replacement);
             }
 
-            // If $newraw matches $qregex, replace with "<field>=" . $val
-            $tmp = preg_replace($qregex, $field . "=" . $val, $newraw);
-            if ($tmp !== null && $tmp !== $newraw) {
-                $newraw = $tmp;
+            $tmp = preg_replace($qregex, $field . "=" . $replacement, $subject);
+            if ($tmp !== null && $tmp !== $subject) {
+                $subject = $tmp;
                 $return = true;
             }
         }
@@ -169,7 +166,6 @@ abstract class AbstractResponseTranslator
      * placeholders are substituted, unknown {UPPER} tokens are stripped, and any
      * other brace content (e.g. lowercase %{i} in SPF records) is left untouched.
      *
-     * @param string $raw input response
      * @param array{CONNECTION_URL?: string} $ph placeholder key-value pairs
      */
     protected static function replacePlaceholders(string $raw, array $ph): string
