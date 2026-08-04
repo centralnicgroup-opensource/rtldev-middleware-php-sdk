@@ -147,7 +147,7 @@ final class HttpTransportTest extends TestCase
         [$raw, $error] = $t->post(self::$url . "?delay=2", "x=1", 30, "UA", [CURLOPT_TIMEOUT => 1]);
         $t->close();
 
-        $this->assertStringStartsWith("httperror|", $raw, "the caller's 1s timeout did not reach the wire");
+        $this->assertSame("", $raw, "the caller's 1s timeout did not reach the wire");
         $this->assertIsString($error);
         $this->assertNotSame("", $error);
     }
@@ -235,10 +235,8 @@ final class HttpTransportTest extends TestCase
         [$raw, $error] = $t->post("http://127.0.0.1:" . $closedPort . "/", "x=1", 2, "UA");
         $t->close();
 
-        $this->assertStringStartsWith("httperror|", $raw);
+        $this->assertSame("", $raw);
         $this->assertIsString($error);
         $this->assertNotSame("", $error, "a cURL error message is expected on connection failure");
-        // the raw payload carries the same error after the "httperror|" prefix
-        $this->assertSame("httperror|" . $error, $raw);
     }
 }

@@ -146,7 +146,8 @@ final class HttpTransportCurlOptionsTest extends TestCase
      * The guard must run before any connection is attempted — a rejected option
      * is a programming error, not a network event, and must not cost a request.
      * Pointing at a port nothing listens on: if the guard were to run after the
-     * request, this would return the "httperror|" tuple instead of throwing.
+     * request, this would return the httperror tuple (empty raw, error set)
+     * instead of throwing.
      */
     public function testRejectionHappensBeforeAnyRequestIsAttempted(): void
     {

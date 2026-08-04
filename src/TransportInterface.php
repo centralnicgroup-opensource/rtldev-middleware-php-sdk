@@ -37,10 +37,18 @@ interface TransportInterface
      * {@see HttpTransport::PROTECTED_OPTIONS}, while a test double typically
      * owns none and simply records what it was given.
      *
+     * The return contract: a non-null element [1] declares the request a
+     * failure and the payload in [0] unusable. The caller (see
+     * {@see AbstractResponseTranslator}) discards [0] entirely in that case and
+     * substitutes the "httperror" template instead, so an implementation that
+     * returns both real bytes and a non-null error has its bytes thrown away —
+     * it must not rely on [0] surviving alongside a set [1]. The production
+     * transport honours this by returning ["", $error] on failure.
+     *
      * @param string $data serialized POST payload
      * @param int $timeoutSeconds 0 carries cURL's meaning — no timeout
      * @param array<int, mixed> $options additional cURL options, overriding the implementation's defaults
-     * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
+     * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null] — errorMessage !== null means rawResponse is unusable
      * @throws UnsupportedFeatureException if $options contains an option the implementation owns
      */
     public function post(

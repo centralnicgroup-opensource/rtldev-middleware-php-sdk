@@ -434,11 +434,11 @@ final class ClientTest extends TestCase
 
     /**
      * HTTP communication failure maps to code 421. Driven by a hand-authored
-     * `conn-error` cassette (a captured `httperror|…` tuple), so the exact
-     * failure and description are exercised offline — replacing the former
-     * bogus-host integration test. Always replay: a dedicated replay-only
-     * transport means a record run never overwrites the fixture with a
-     * resolver-dependent message (RSRMID-2910).
+     * `conn-error` cassette (a captured `["raw" => "", "error" => "…"]` tuple),
+     * so the exact failure and description are exercised offline — replacing
+     * the former bogus-host integration test. Always replay: a dedicated
+     * replay-only transport means a record run never overwrites the fixture
+     * with a resolver-dependent message (RSRMID-2910).
      */
     public function testRequestCurlExecFail2(): void
     {

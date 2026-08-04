@@ -72,8 +72,15 @@ final class HttpTransport implements TransportInterface
      * transport's, and restating one of the transport's own headers is rejected
      * rather than allowed to override it (see {@see appendHeaders()}).
      *
+     * A non-null element [1] means the request failed and the payload is
+     * unusable: on failure this transport returns ["", $error] — empty raw,
+     * the cURL error message in [1] — and the caller (see
+     * {@see AbstractResponseTranslator}) discards the raw side entirely in
+     * favour of the "httperror" template. See {@see TransportInterface::post()}
+     * for the contract every implementation must honour.
+     *
      * @param array<int, mixed> $options additional cURL options, overriding the transport defaults
-     * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null]
+     * @return array{0: string, 1: string|null} [rawResponse, errorMessage|null] — errorMessage !== null means rawResponse is unusable
      * @throws UnsupportedFeatureException if $options contains a transport-owned option or header
      */
     #[\Override]
@@ -90,14 +97,11 @@ final class HttpTransport implements TransportInterface
 
         if (!$this->handle instanceof \CurlHandle) {
             $tmp = curl_init();
-            // @codeCoverageIgnoreStart
             // curl_init() only returns false when the curl extension is
-            // unavailable; ext-curl is a hard composer requirement, so this
-            // defensive guard is unreachable in any supported environment.
-            if ($tmp === false) {
-                return ["nocurl", "CURL for PHP missing."];
-            }
-            // @codeCoverageIgnoreEnd
+            // unavailable; ext-curl is a hard composer requirement, so this is
+            // unreachable in any supported environment — assert it rather than
+            // branch on it.
+            \assert($tmp !== false);
             $this->handle = $tmp;
         }
 
@@ -142,8 +146,7 @@ final class HttpTransport implements TransportInterface
         $r = curl_exec($this->handle);
         \assert(\is_string($r) || $r === false);
         if ($r === false) {
-            $error = curl_error($this->handle);
-            return ["httperror|" . $error, $error];
+            return ["", curl_error($this->handle)];
         }
         return [$r, null];
     }

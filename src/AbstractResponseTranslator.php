@@ -13,10 +13,11 @@ namespace CNIC;
  * Shared base for all registrar ResponseTranslator implementations.
  *
  * The translate()/findMatch() pipeline is identical across brands: empty->"empty",
- * "httperror|" splitting, static-template lookup with {HTTPERROR} injection,
- * invalid-template fallback, the two description-map rewrite loops, findMatch(),
- * and placeholder replacement. Only a few narrow points differ, supplied by the
- * abstract hooks below:
+ * an explicit $error parameter resolving to the "httperror" template with
+ * {HTTPERROR} injection (see {@see resolveTemplateId()}), invalid-template
+ * fallback, the two description-map rewrite loops, findMatch(), and placeholder
+ * replacement. Only a few narrow points differ, supplied by the abstract hooks
+ * below:
  *   - the static template container (templates())
  *   - the two description rewrite maps (descriptionRegexMap()/descriptionRawPatternMap())
  *   - the response field carrying the human-readable text (fieldName():
@@ -72,30 +73,23 @@ abstract class AbstractResponseTranslator
      * @param string $raw API raw response
      * @param array<string, string> $cmd requested API command
      * @param array{CONNECTION_URL?: string} $placeholders
+     * @param string|null $error transport error, if any (see {@see AbstractClient::performRequest()}); non-null means $raw is unusable and the "httperror" template is substituted instead
      */
-    public static function translate(string $raw, array $cmd, array $placeholders = []): string
+    public static function translate(string $raw, array $cmd, array $placeholders = [], ?string $error = null): string
     {
         $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
-        // curl error handling
-        $httperror = "";
-        $isHTTPError = substr($newraw, 0, 10) === "httperror|";
-        if ($isHTTPError) {
-            $parts = explode("|", $newraw, 2);
-            $newraw = $parts[0];
-            $httperror = $parts[1] ?? "";
-        }
-
         $templates = static::templates();
 
-        // Explicit call for a static template
-        if (array_key_exists($newraw, $templates)) {
+        // Explicit call for a static template, or a declared transport failure
+        $templateId = self::resolveTemplateId($newraw, $error);
+        if ($templateId !== null) {
             // don't use getTemplate as it leads to endless loop as of again
             // creating a response instance
-            $newraw = $templates[$newraw];
-            if ($isHTTPError && strlen($httperror)) {
-                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $httperror . ")", $newraw) ?? $newraw;
+            $newraw = $templates[$templateId];
+            if ($error !== null && $error !== "") {
+                $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $error . ")", $newraw) ?? $newraw;
             }
         }
 
@@ -122,6 +116,32 @@ abstract class AbstractResponseTranslator
         }
 
         return static::replacePlaceholders($newraw, $placeholders);
+    }
+
+    /**
+     * Resolve the template id to look up for this response, or null when
+     * $raw is an ordinary API response with no matching template.
+     *
+     * A non-null $error always resolves to "httperror", taking priority over
+     * $raw — this is what replaced the former "httperror|" sentinel that used
+     * to be smuggled through $raw itself.
+     *
+     * Otherwise $raw is checked against templates(): a raw payload equal to a
+     * known template id (e.g. "empty", "invalid", or one registered via
+     * {@see AbstractResponseTemplateManager::addTemplate()}) is the sanctioned
+     * mocking route CLAUDE.md documents for tests — constructing a
+     * Response/Translator call with the template id as $raw is how a test
+     * exercises a specific canned response without a real API round-trip.
+     * This is deliberate, load-bearing behaviour, not a leak. An arbitrary raw
+     * response that does not match any known id resolves to null and is used
+     * as-is by the caller.
+     */
+    private static function resolveTemplateId(string $raw, ?string $error): ?string
+    {
+        if ($error !== null) {
+            return "httperror";
+        }
+        return array_key_exists($raw, static::templates()) ? $raw : null;
     }
 
     /**

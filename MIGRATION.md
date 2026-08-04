@@ -10,29 +10,30 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 
 ## Version compatibility at a glance
 
-| From → To | PHP required | Headline breaking change                                                                                                         | Consumer action                                                                                                                                                                                    |
-| --------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                                                                  | Bump your runtime                                                                                                                                                                                  |
-| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                                                                        | Call `close()` in sessionless flows                                                                                                                                                                |
-| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                                                                       | None (additive)                                                                                                                                                                                    |
-| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                                                                      | Migrate off HEXONET                                                                                                                                                                                |
-| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                                                                 | Re-test IBS/Moniker data handling                                                                                                                                                                  |
-| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                                                                   | Bump runtime; stop subclassing finals                                                                                                                                                              |
-| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                                                                     | Retype loggers; guard session calls                                                                                                                                                                |
-| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                                                                   | Configure the client yourself                                                                                                                                                                      |
-| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                                                                | Handle the `null` sentinel                                                                                                                                                                         |
-| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                                                                          | Narrow via `ExtendedResponseInterface`                                                                                                                                                             |
-| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                                                                              | Use `cnr()`/`ibs()`/`moniker()`                                                                                                                                                                    |
-| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter                                                | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface`                                                                                     |
-| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw                                                      | Audit what you pass it — options previously ignored now take effect, and seven now raise                                                                                                           |
-| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                                                               | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`                                                                                                   |
-| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                                                                 | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters                                                                                        |
-| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module                                                        | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                                                                                                           |
-| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed                                                | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`                                                                                                |
-| → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static                                            | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager                                                                                      |
-| → v27.0.0 | 8.3+         | Loggers `format()` a record and a sink writes it; `setDefaultLogger()` removed                                                   | Rename your `log()` body to `format()` and `return` the string; extend `CNIC\AbstractLogger`                                                                                                       |
-| → v28.0.0 | 8.3+         | IBS/Moniker hash dates keep `/`; `RecordInterface`/`ColumnInterface` gained a date accessor; `IBS\Response::getStatus()` removed | Accept `/` wherever you parsed a `getHash()`/`getPlain()`/`getListHash()` date; add the new method if you implement either interface directly; read `getHash()["status"]` instead of `getStatus()` |
-| → v29.0.0 | 8.3+         | Public method parameters and six protected properties renamed to be self-describing                                              | Nothing, unless you pass named arguments (`getColumn(key: …)` → `columnName:`), implement an SDK interface (match the parameter names), or subclass and read `$this->pw`/`$ua`/`$curlopts`         |
+| From → To | PHP required | Headline breaking change                                                                                                          | Consumer action                                                                                                                                                                                    |
+| --------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| → v9.0.0  | **8.1+**     | PHP 8.1 minimum                                                                                                                   | Bump your runtime                                                                                                                                                                                  |
+| → v10.0.0 | 8.1+         | cURL handle cached/reused                                                                                                         | Call `close()` in sessionless flows                                                                                                                                                                |
+| → v11.0.0 | 8.1+         | IBS + Moniker brands added                                                                                                        | None (additive)                                                                                                                                                                                    |
+| → v12.0.0 | 8.1+         | HEXONET brand removed (EOL)                                                                                                       | Migrate off HEXONET                                                                                                                                                                                |
+| → v13.0.0 | 8.1+         | IBS/Moniker switched to JSON API                                                                                                  | Re-test IBS/Moniker data handling                                                                                                                                                                  |
+| → v14.0.0 | **8.3+**     | Some classes `final`; `getPOSTData()` no longer takes a string                                                                    | Bump runtime; stop subclassing finals                                                                                                                                                              |
+| → v15.0.0 | 8.3+         | Logger contract; IBS session methods removed                                                                                      | Retype loggers; guard session calls                                                                                                                                                                |
+| → v16.0.0 | 8.3+         | `ClientFactory::getClient()` signature slimmed                                                                                    | Configure the client yourself                                                                                                                                                                      |
+| → v17.0.0 | 8.3+         | `getNextPageNumber()` returns `null` on last page                                                                                 | Handle the `null` sentinel                                                                                                                                                                         |
+| → v18.0.0 | 8.3+         | CNR-only response methods moved off `ResponseInterface`                                                                           | Narrow via `ExtendedResponseInterface`                                                                                                                                                             |
+| → v19.0.0 | 8.3+         | `getClient()` removed; `setRoleCredentials()` moved                                                                               | Use `cnr()`/`ibs()`/`moniker()`                                                                                                                                                                    |
+| → v20.0.0 | 8.3+         | IBS/Moniker no longer force IPv4; `getColumnKeys()` declares its `bool` parameter                                                 | Set `CURLOPT_IPRESOLVE` yourself if your host needs it; add the parameter if you implement `ResponseInterface`                                                                                     |
+| → v21.0.0 | 8.3+         | `setExtraCurlOptions()` now reaches the wire; transport-owned options throw                                                       | Audit what you pass it — options previously ignored now take effect, and seven now raise                                                                                                           |
+| → v22.0.0 | 8.3+         | Sessions are CNR-only by type; IBS/Moniker `SessionClient` deleted                                                                | Drop `setSession()`/`getSession()` calls on IBS/Moniker; retype to `IBS\Client`/`MONIKER\Client`                                                                                                   |
+| → v23.0.0 | 8.3+         | Connection configuration has one home; `getSystem()` is nullable                                                                  | Handle `null` from `getSystem()`; move `CURLOPT_TIMEOUT`/`USERAGENT`/`PROXY`/`REFERER` to their own setters                                                                                        |
+| → v24.0.0 | 8.3+         | CNR IDN command rewriting moved off the shared client into its own module                                                         | Nothing, unless you called or overrode `autoIDNConvert()`, or read/set `needsIDNConvert`                                                                                                           |
+| → v25.0.0 | 8.3+         | One shared `Record` and `Column`; the brand `Record`/`IBS\Column` classes removed                                                 | Retype `CNR\Record`/`IBS\Record`/`AbstractRecord` → `CNIC\Record`, and `IBS\Column` → `CNIC\Column`                                                                                                |
+| → v26.0.0 | 8.3+         | Response parsing is an injectable seam; `ResponseParser::parse()` is no longer static                                             | Call `(new ResponseParser())->parse(…)`; implement `newResponseParser()` in a custom Response/TemplateManager                                                                                      |
+| → v27.0.0 | 8.3+         | Loggers `format()` a record and a sink writes it; `setDefaultLogger()` removed                                                    | Rename your `log()` body to `format()` and `return` the string; extend `CNIC\AbstractLogger`                                                                                                       |
+| → v28.0.0 | 8.3+         | IBS/Moniker hash dates keep `/`; `RecordInterface`/`ColumnInterface` gained a date accessor; `IBS\Response::getStatus()` removed  | Accept `/` wherever you parsed a `getHash()`/`getPlain()`/`getListHash()` date; add the new method if you implement either interface directly; read `getHash()["status"]` instead of `getStatus()` |
+| → v29.0.0 | 8.3+         | Public method parameters and six protected properties renamed to be self-describing                                               | Nothing, unless you pass named arguments (`getColumn(key: …)` → `columnName:`), implement an SDK interface (match the parameter names), or subclass and read `$this->pw`/`$ua`/`$curlopts`         |
+| → v30.0.0 | 8.3+         | Transport error is a declared `?string $error` parameter, not a `"httperror\|"` prefix on the raw payload; `nocurl` template gone | Add the parameter if you override `newResponse()`/`translate()`; return `["", $error]` (not bytes) on failure if you implement `TransportInterface`                                                |
 
 Two things to respect throughout:
 
@@ -1142,6 +1143,58 @@ Unlike the parameter renames, this one fails **loudly and statically**: reading 
 **Public** properties are untouched — `$templates` and `ApiDateTime`'s readonly fields were already accurate, and `System::$name`/`$value` are native enum properties.
 
 **Why this happened:** `$pw` and `$ua` are the same meaningless-abbreviation defect as the parameters, and the rest violated the project's own naming standard; batching them into the one major this rename already costs is cheaper than a second breaking release later. (Ref: RSRMID-2935.)
+
+---
+
+<a id="-v3000"></a>
+
+## → v30.0.0 — the transport error travels as a parameter, not encoded into the payload
+
+**What changed:** `HttpTransport::post()` used to encode a failure twice — once as the tuple's error element `[1]`, and once as a `"httperror|"` prefix smuggled into the raw payload `[0]`, which `AbstractResponseTranslator::translate()` then string-split back off. The sentinel is gone: the error now travels only as an explicit, trailing `?string $error` parameter, appended last (default `null`) on every hook in the pipeline. The `nocurl` template id is also gone — it existed only for a `curl_init() === false` branch that is unreachable with `ext-curl` as a hard dependency, and is now an `assert()` like the rest of that file's defensive guards.
+
+**Who is affected — two groups:**
+
+1. **Anyone who subclassed a brand `Client` or `Response` to override `newResponse()` or `translate()`.** Both hooks gained a trailing `?string $error = null` parameter.
+2. **Anyone who implements `TransportInterface` directly.** The contract `post()` already declared is now stated explicitly: a non-null element `[1]` means element `[0]` is unusable and will be discarded in favour of the `httperror` template. A transport that used to return real bytes alongside an advisory error will now have those bytes thrown away.
+
+**What to respect:**
+
+```php
+// BEFORE (v29) — the brand hooks took three parameters
+abstract protected function newResponse(string $raw, array $cmd, array $cfg): ResponseInterface;
+abstract protected function translate(string $raw, array $cmd, array $placeholders): string;
+
+// AFTER (v30) — a trailing $error, appended last so positional callers are unaffected
+abstract protected function newResponse(string $raw, array $cmd, array $cfg, ?string $error = null): ResponseInterface;
+abstract protected function translate(string $raw, array $cmd, array $placeholders, ?string $error = null): string;
+```
+
+```php
+// BEFORE (v29) — a transport could return bytes and an error together and both survived,
+// because the caller string-split "httperror|" back off $raw
+final class MyTransport implements TransportInterface
+{
+    public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
+    {
+        // ...
+        return ["httperror|" . $error, $error];
+    }
+}
+
+// AFTER (v30) — $raw is unusable whenever $error is non-null; return it empty
+final class MyTransport implements TransportInterface
+{
+    public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
+    {
+        // ...
+        return ["", $error];
+    }
+}
+```
+
+**Behaviour is otherwise unchanged:** `$error !== null` still selects the brand's `httperror` template, and `$error !== ""` still gates the `{HTTPERROR}` injection into it — the same two-level check as before, just reached through a parameter instead of a string split. A cassette or fixture that used to hand-author `["raw" => "httperror|<msg>", "error" => "<msg>"]` should now read `["raw" => "", "error" => "<msg>"]`.
+
+**Why this happened:** the sentinel was redundant — the same information already existed as the tuple's `[1]`, and string-splitting `[0]` for it meant a pipe character _inside_ a cURL error message was a real truncation hazard (mitigated, never removed, by an `explode(..., 2)` limit). Declaring the error as its own parameter removes the encoding round-trip entirely. (Ref: RSRMID-2937.)
 
 ---
 

@@ -155,7 +155,7 @@ abstract class AbstractClient
         $cfg = ["CONNECTION_URL" => $this->socketConfig->getURL() . $path];
         $data = $this->getPOSTData($mycmd);
         [$raw, $error] = $this->executeCurl($data, $cfg);
-        $response = $this->newResponse($raw, $mycmd, $cfg);
+        $response = $this->newResponse($raw, $mycmd, $cfg, $error);
         if ($this->debugMode) {
             $this->logger->log($this->getPOSTData($mycmd, true), $response, $error);
         }
@@ -177,8 +177,9 @@ abstract class AbstractClient
      *
      * @param array<string, string> $cmd flattened command that produced the response
      * @param array{CONNECTION_URL: string} $cfg connection config used for the request
+     * @param string|null $error transport error, if any; non-null means $raw is unusable and the brand's "httperror" template is substituted instead
      */
-    abstract protected function newResponse(string $raw, array $cmd, array $cfg): ResponseInterface;
+    abstract protected function newResponse(string $raw, array $cmd, array $cfg, ?string $error = null): ResponseInterface;
 
     /**
      * Instantiate the SocketConfig for this client.

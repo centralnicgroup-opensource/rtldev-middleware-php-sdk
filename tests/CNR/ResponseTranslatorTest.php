@@ -174,12 +174,13 @@ final class ResponseTranslatorTest extends TestCase
     }
 
     /**
-     * Test that an HTTP/cURL error message containing a pipe is preserved in full
-     * (the split must keep everything after the first pipe, not truncate at the next)
+     * Test that an HTTP/cURL error message containing a pipe survives verbatim
+     * through the $error parameter (RSRMID-2937 removed the "httperror|" split
+     * that used to make a pipe inside the message itself a truncation hazard)
      */
     public function testHttpErrorWithPipeIsPreserved(): void
     {
-        $raw = RT::translate("httperror|proxy CONNECT failed | host unreachable", []);
+        $raw = RT::translate("", [], [], "proxy CONNECT failed | host unreachable");
         $this->assertStringContainsString("(proxy CONNECT failed | host unreachable)", $raw);
     }
 }

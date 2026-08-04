@@ -149,11 +149,12 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * Instantiate a CNR Response for the given raw payload.
      * @param array<string, string> $cmd flattened command that produced the response
      * @param array{CONNECTION_URL: string} $cfg connection config used for the request
+     * @param string|null $error transport error, if any; non-null means $raw is unusable
      */
     #[\Override]
-    protected function newResponse(string $raw, array $cmd, array $cfg): Response
+    protected function newResponse(string $raw, array $cmd, array $cfg, ?string $error = null): Response
     {
-        return new Response($raw, $cmd, $cfg, $this->context);
+        return new Response($raw, $cmd, $cfg, $this->context, error: $error);
     }
 
     /**
