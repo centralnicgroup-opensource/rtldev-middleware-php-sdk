@@ -83,7 +83,7 @@ abstract class AbstractResponseTranslator
         $templates = static::templates();
 
         // Explicit call for a static template, or a declared transport failure
-        $templateId = self::resolveTemplateId($newraw, $error);
+        $templateId = self::resolveTemplateId($newraw, $error, $templates);
         if ($templateId !== null) {
             // don't use getTemplate as it leads to endless loop as of again
             // creating a response instance
@@ -120,13 +120,22 @@ abstract class AbstractResponseTranslator
 
     /**
      * Resolve the template id to look up for this response, or null when
-     * $raw is an ordinary API response with no matching template.
+     * there is no matching template — in which case the caller falls through
+     * to the hasMissingRequiredFields()/"invalid" path, exactly as it did
+     * before this method existed.
      *
-     * A non-null $error always resolves to "httperror", taking priority over
-     * $raw — this is what replaced the former "httperror|" sentinel that used
-     * to be smuggled through $raw itself.
+     * A non-null $error resolves to "httperror", taking priority over $raw —
+     * this is what replaced the former "httperror|" sentinel that used to be
+     * smuggled through $raw itself — but ONLY if $templates actually declares
+     * that id. templates() is an abstract hook: a third-party brand
+     * translator's container need not include "httperror" at all, and
+     * indexing $templates["httperror"] unconditionally would degrade an
+     * Undefined-array-key warning into a TypeError a few lines later. Null
+     * here, same as any other unmatched id, keeps that a quiet fallback
+     * instead of a crash — mirroring the "invalid" lookup a few lines down in
+     * translate(), which is guarded by the same array_key_exists() shape.
      *
-     * Otherwise $raw is checked against templates(): a raw payload equal to a
+     * Otherwise $raw is checked against $templates: a raw payload equal to a
      * known template id (e.g. "empty", "invalid", or one registered via
      * {@see AbstractResponseTemplateManager::addTemplate()}) is the sanctioned
      * mocking route CLAUDE.md documents for tests — constructing a
@@ -135,13 +144,19 @@ abstract class AbstractResponseTranslator
      * This is deliberate, load-bearing behaviour, not a leak. An arbitrary raw
      * response that does not match any known id resolves to null and is used
      * as-is by the caller.
+     *
+     * $templates is passed in rather than re-fetched via templates(): the
+     * caller already bound one snapshot for the rest of translate(), and a
+     * second call would resolve the id against a possibly different snapshot
+     * than the one it is then dereferenced against.
+     * @param array<string> $templates the caller's already-bound templates() snapshot
      */
-    private static function resolveTemplateId(string $raw, ?string $error): ?string
+    private static function resolveTemplateId(string $raw, ?string $error, array $templates): ?string
     {
         if ($error !== null) {
-            return "httperror";
+            return array_key_exists("httperror", $templates) ? "httperror" : null;
         }
-        return array_key_exists($raw, static::templates()) ? $raw : null;
+        return array_key_exists($raw, $templates) ? $raw : null;
     }
 
     /**
