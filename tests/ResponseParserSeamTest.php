@@ -173,11 +173,14 @@ final class ResponseParserSeamTest extends TestCase
         }
     }
 
-    public function testTheParserIsTheOptionalLastConstructorArgument(): void
+    public function testTheParserIsAnOptionalNamedConstructorArgument(): void
     {
+        // RSRMID-2937 appended a trailing ?string $error, so $parser is no
+        // longer the *last* constructor argument — but it stays optional and
+        // reachable by name, which is the property this guards.
         $ctor = (new ReflectionClass(AbstractResponse::class))->getConstructor();
         $this->assertNotNull($ctor);
-        $this->assertSame(5, $ctor->getNumberOfParameters());
+        $this->assertSame(6, $ctor->getNumberOfParameters());
         $this->assertSame(
             1,
             $ctor->getNumberOfRequiredParameters(),
@@ -186,7 +189,8 @@ final class ResponseParserSeamTest extends TestCase
 
         // A named-argument call pins the parameter's *name* and its type without
         // reaching into ReflectionParameter: renaming or retyping it makes this
-        // an Error, and skipping $cmd/$placeholders/$context proves it stays last.
+        // an Error, and skipping $cmd/$placeholders/$context proves it stays
+        // reachable without supplying them.
         $r = new IBSResponse(raw: '{"status":"SUCCESS"}', parser: new SpyResponseParser());
         $this->assertSame("from the substitute", $r->getDescription());
     }

@@ -68,11 +68,12 @@ class Response extends AbstractResponse implements ResponseInterface
      * Translate the raw API response using the IBS translator.
      * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $placeholders
+     * @param string|null $error transport error, if any; non-null means $raw is unusable
      */
     #[\Override]
-    protected function translate(string $raw, array $cmd, array $placeholders): string
+    protected function translate(string $raw, array $cmd, array $placeholders, ?string $error = null): string
     {
-        return RT::translate($raw, $cmd, $placeholders);
+        return RT::translate($raw, $cmd, $placeholders, $error);
     }
 
     /**

@@ -64,4 +64,38 @@ final class TransportSeamTest extends TestCase
         $this->assertSame(200, $r->getCode());
         $this->assertNotNull($r->getColumn("DOMAINCHECK"));
     }
+
+    /**
+     * RSRMID-2937: TransportInterface::post()'s contract states that a
+     * non-null element [1] means [0] is unusable. A transport that (against
+     * the contract's spirit, but not forbidden by the type system) returns
+     * real parseable bytes alongside a non-null error must still lose — the
+     * httperror template wins and the bytes are discarded.
+     */
+    public function testTransportErrorDiscardsParseableBytes(): void
+    {
+        $cl = CF::cnr();
+        $fake = new class implements TransportInterface {
+            /**
+             * @param array<int, mixed> $options
+             * @return array{0: string, 1: string|null}
+             */
+            #[\Override]
+            public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
+            {
+                $raw = "[RESPONSE]\r\nCODE=200\r\nDESCRIPTION=Command completed successfully\r\nEOF\r\n";
+                return [$raw, "Could not resolve host: example.invalid"];
+            }
+            #[\Override]
+            public function close(): void
+            {
+            }
+        };
+
+        $cl->setTransport($fake)->useOTESystem();
+        $r = $cl->request(["COMMAND" => "StatusAccount"]);
+
+        $this->assertSame(421, $r->getCode());
+        $this->assertStringContainsString("Could not resolve host: example.invalid", $r->getDescription());
+    }
 }

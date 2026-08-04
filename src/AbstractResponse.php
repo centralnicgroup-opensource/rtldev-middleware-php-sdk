@@ -148,13 +148,15 @@ abstract class AbstractResponse implements ResponseInterface
      * @param array{CONNECTION_URL?: string} $placeholders vars the response description has dynamically replaced
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      * @param ResponseParserInterface|null $parser parser to use instead of the brand default (see newResponseParser())
+     * @param string|null $error transport error, if any; non-null means $raw is unusable and the brand's "httperror" template is substituted instead (see {@see AbstractResponseTranslator::translate()})
      */
     public function __construct(
         string $raw,
         array $cmd = [],
         array $placeholders = [],
         array $context = [],
-        ?ResponseParserInterface $parser = null
+        ?ResponseParserInterface $parser = null,
+        ?string $error = null
     ) {
         $cmd = $this->sanitizeCommand($cmd);
         $this->context = $context;
@@ -162,7 +164,7 @@ abstract class AbstractResponse implements ResponseInterface
         $this->requestUrl = $placeholders["CONNECTION_URL"] ?? "";
         // Assigned before populate(), which is where the parser is used.
         $this->parser = $parser ?? $this->newResponseParser();
-        $this->raw = $this->translate($raw, $cmd, $placeholders);
+        $this->raw = $this->translate($raw, $cmd, $placeholders, $error);
         $this->populate();
     }
 
@@ -172,8 +174,9 @@ abstract class AbstractResponse implements ResponseInterface
      * already sanitized.
      * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $placeholders
+     * @param string|null $error transport error, if any; non-null means $raw is unusable (see {@see AbstractResponseTranslator::translate()})
      */
-    abstract protected function translate(string $raw, array $cmd, array $placeholders): string;
+    abstract protected function translate(string $raw, array $cmd, array $placeholders, ?string $error = null): string;
 
     /**
      * Parse the translated response into the hash and build the column/record

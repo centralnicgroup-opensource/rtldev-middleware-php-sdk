@@ -96,7 +96,9 @@ final class ResponseTest extends TestCase
 
     public function testHttpErrorTemplate(): void
     {
-        $r = new R("httperror|Connection timed out");
+        // The transport error travels as the declared $error parameter now,
+        // not encoded into $raw (RSRMID-2937) — $raw is unusable and ignored.
+        $r = new R("", error: "Connection timed out");
         $this->assertTrue($r->isError());
         $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Connection timed out", $r->getDescription());
@@ -162,12 +164,15 @@ final class ResponseTest extends TestCase
         $this->assertEquals("ns1.ispapi.net", $nameserver[0]);
     }
 
-    public function testNoCurlTemplate(): void
+    public function testStaticTemplateLookupByRawId(): void
     {
-        $r = new R("nocurl");
+        // A raw payload equal to a known template id is the sanctioned
+        // ResponseTemplateManager::addTemplate() mocking route (see
+        // AbstractResponseTranslator::resolveTemplateId()), not a leak.
+        $r = new R("notfound");
         $this->assertTrue($r->isError());
         $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
-        $this->assertStringContainsString("curl_init failed", $r->getDescription());
+        $this->assertStringContainsString("Response Template not found", $r->getDescription());
     }
 
     public function testEmptyResponseWithJsonCommand(): void

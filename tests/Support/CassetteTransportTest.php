@@ -105,13 +105,13 @@ final class CassetteTransportTest extends TestCase
         file_put_contents(
             $this->dir . "/conn-error.json",
             (string) json_encode([
-                ["raw" => "httperror|Could not resolve host: nope.invalid", "error" => "Could not resolve host: nope.invalid"],
+                ["raw" => "", "error" => "Could not resolve host: nope.invalid"],
             ])
         );
         $rep = new CassetteTransport(null, $this->dir, false);
         $rep->useCassette("conn-error");
         [$raw, $error] = $rep->post("u", "d", 30, "UA");
-        $this->assertStringStartsWith("httperror|", $raw);
+        $this->assertSame("", $raw);
         $this->assertSame("Could not resolve host: nope.invalid", $error);
     }
 

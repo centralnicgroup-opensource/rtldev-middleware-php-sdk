@@ -34,7 +34,6 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
         "error" => "status=FAILURE\r\nmessage=421 Command failed due to server error. Please retry.\r\n",
         "httperror" => "status=FAILURE\r\nmessage=421 Command failed due to HTTP communication error{HTTPERROR}.\r\n",
         "invalid" => "status=FAILURE\r\nmessage=423 Invalid API response. Contact Support\r\n",
-        "nocurl" => "status=FAILURE\r\nmessage=423 API access error: curl_init failed\r\n",
         "notfound" => "status=FAILURE\r\nmessage=500 Response Template not found\r\n",
         "unauthorized" => "status=FAILURE\r\nmessage=530 Unauthorized\r\n"
     ];

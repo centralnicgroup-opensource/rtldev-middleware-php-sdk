@@ -33,7 +33,7 @@ final class HttpTransportCloseTest extends TestCase
         $t->close(); // handle is still null here — must not error
 
         [$raw] = $t->post("http://127.0.0.1:1/", "x=1", 2, "UA");
-        $this->assertStringStartsWith("httperror|", $raw);
+        $this->assertSame("", $raw);
         $t->close();
     }
 
@@ -45,12 +45,12 @@ final class HttpTransportCloseTest extends TestCase
     {
         $t = new HttpTransport();
         [$raw1] = $t->post("http://127.0.0.1:1/", "x=1", 2, "UA");
-        $this->assertStringStartsWith("httperror|", $raw1);
+        $this->assertSame("", $raw1);
 
         $t->close();
 
         [$raw2] = $t->post("http://127.0.0.1:1/", "y=2", 2, "UA");
-        $this->assertStringStartsWith("httperror|", $raw2);
+        $this->assertSame("", $raw2);
         $t->close();
     }
 
