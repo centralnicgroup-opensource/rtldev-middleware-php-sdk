@@ -175,12 +175,15 @@ final class ResponseParserSeamTest extends TestCase
 
     public function testTheParserIsAnOptionalNamedConstructorArgument(): void
     {
-        // RSRMID-2937 appended a trailing ?string $error, so $parser is no
-        // longer the *last* constructor argument — but it stays optional and
-        // reachable by name, which is the property this guards.
+        // The guarded property is that $parser stays optional and reachable by
+        // NAME — not its position, and not the constructor's total parameter
+        // count. A count assertion lived here until RSRMID-2937 appended a
+        // trailing ?string $error and tripped it: such an assertion fires on
+        // every constructor change and reports an undone decision where there
+        // is none, so it is deliberately absent. Do not re-add it — the real
+        // invariant is getNumberOfRequiredParameters() below.
         $ctor = (new ReflectionClass(AbstractResponse::class))->getConstructor();
         $this->assertNotNull($ctor);
-        $this->assertSame(6, $ctor->getNumberOfParameters());
         $this->assertSame(
             1,
             $ctor->getNumberOfRequiredParameters(),
