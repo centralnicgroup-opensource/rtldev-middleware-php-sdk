@@ -1152,10 +1152,11 @@ Unlike the parameter renames, this one fails **loudly and statically**: reading 
 
 **What changed:** `HttpTransport::post()` used to encode a failure twice — once as the tuple's error element `[1]`, and once as a `"httperror|"` prefix smuggled into the raw payload `[0]`, which `AbstractResponseTranslator::translate()` then string-split back off. The sentinel is gone: the error now travels only as an explicit, trailing `?string $error` parameter, appended last (default `null`) on every hook in the pipeline. The `nocurl` template id is also gone — it existed only for a `curl_init() === false` branch that is unreachable with `ext-curl` as a hard dependency, and is now an `assert()` like the rest of that file's defensive guards.
 
-**Who is affected — two groups:**
+**Who is affected — three groups:**
 
 1. **Anyone who subclassed a brand `Client` or `Response` to override `newResponse()` or `translate()`.** Both hooks gained a trailing `?string $error = null` parameter.
 2. **Anyone who implements `TransportInterface` directly.** The contract `post()` already declared is now stated explicitly: a non-null element `[1]` means element `[0]` is unusable and will be discarded in favour of the `httperror` template. A transport that used to return real bytes alongside an advisory error will now have those bytes thrown away.
+3. **Anyone calling `getTemplate("nocurl")` or `hasTemplate("nocurl")` on `CNR\ResponseTemplateManager`/`IBS\ResponseTemplateManager` directly.** This one is silent — nothing throws, the returned value just changes. `getTemplate("nocurl")` used to return `CODE=423`/`status=FAILURE` ("API access error: curl_init failed"); it now falls through to the generic `"notfound"` template instead — `CODE=500`/`status=FAILURE` ("Response Template not found"). `hasTemplate("nocurl")` flips from `true` to `false`.
 
 **What to respect:**
 
