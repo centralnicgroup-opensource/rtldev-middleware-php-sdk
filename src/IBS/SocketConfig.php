@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace CNIC\IBS;
 
 use CNIC\AbstractSocketConfig;
+use CNIC\CommandRedactor;
 
 /**
  * IBS SocketConfig
@@ -23,11 +24,11 @@ class SocketConfig extends AbstractSocketConfig
     protected int $socketTimeout = 300;
 
     /**
-     * IBS carries sensitive data under lower-/camel-case command keys. Mirrors
-     * {@see \CNIC\IBS\Response::$sensitiveFields}.
+     * IBS carries sensitive data under lower-/camel-case command keys. Declared
+     * once in {@see SensitiveFields::KEYS}, shared with {@see \CNIC\IBS\Response}.
      * @var string[]
      */
-    protected array $sensitiveFields = ["password", "transferAuthInfo"];
+    protected array $sensitiveFields = SensitiveFields::KEYS;
 
     /**
      * list of http request parameters
@@ -52,7 +53,7 @@ class SocketConfig extends AbstractSocketConfig
             $params[$this->parameters["login"]] = $this->login;
         }
         if (strlen($this->password) !== 0) {
-            $params[$this->parameters["password"]] = $maskSecrets ? "***" : $this->password;
+            $params[$this->parameters["password"]] = $maskSecrets ? CommandRedactor::MASK : $this->password;
         }
         return $params;
     }

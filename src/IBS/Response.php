@@ -58,10 +58,11 @@ class Response extends AbstractResponse implements ResponseInterface
     protected string $paginationKeys = "/^(total_.*|domaincount)$/";
 
     /**
-     * IBS carries sensitive data under lower-/camel-case command keys.
+     * IBS carries sensitive data under lower-/camel-case command keys. Declared
+     * once in {@see SensitiveFields::KEYS}, shared with {@see \CNIC\IBS\SocketConfig}.
      * @var string[]
      */
-    protected array $sensitiveFields = ["password", "transferAuthInfo"];
+    protected array $sensitiveFields = SensitiveFields::KEYS;
 
     /**
      * Translate the raw API response using the IBS translator.

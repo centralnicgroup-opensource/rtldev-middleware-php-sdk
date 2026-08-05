@@ -36,10 +36,11 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
 {
     /**
      * Command parameter keys carrying sensitive data (masked before storage).
-     * CNR uses upper-case keys.
+     * CNR uses upper-case keys. Declared once in {@see SensitiveFields::KEYS},
+     * shared with {@see \CNIC\CNR\SocketConfig}.
      * @var string[]
      */
-    protected array $sensitiveFields = ["PASSWORD", "AUTH"];
+    protected array $sensitiveFields = SensitiveFields::KEYS;
 
     /**
      * Regex for pagination related column keys.

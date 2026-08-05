@@ -31,6 +31,27 @@
                 <directory name="../../tests" />
             </errorLevel>
         </UnusedClass>
+        <!-- The @internal symbols added in RSRMID-2938 (CommandRedactor, the two
+             brand SensitiveFields holders) are internal to the *package*, and the
+             package's own tests are entitled to reach them — a redaction helper
+             marked @internal precisely so no consumer calls it still has to be
+             directly testable, which is half the reason it was extracted. Psalm
+             scopes @internal to the declaring root namespace (CNIC), and the test
+             namespace is CNICTEST, so every test reference raises these two. The
+             suppression is scoped to tests/ only: src/ stays strict, so a genuine
+             cross-namespace leak inside the SDK is still an error. Preferred over
+             a `@psalm-internal CNICTEST` line in src/, which would make shipped
+             production docblocks name the test namespace. -->
+        <InternalClass>
+            <errorLevel type="suppress">
+                <directory name="../../tests" />
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <directory name="../../tests" />
+            </errorLevel>
+        </InternalMethod>
         <!-- The UnusedMethodCall suppression for tests/ is gone for the same
              reason: its only trigger was `ReflectionMethod::setAccessible()`,
              whose return value is discarded, in the two IDN tests that reached
