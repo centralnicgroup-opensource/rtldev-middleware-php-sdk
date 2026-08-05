@@ -62,8 +62,9 @@ abstract class AbstractResponse implements ResponseInterface
      * the command is stored so they can never be read back (e.g. by custom
      * loggers). Matching is case-insensitive (see sanitizeCommand()), so only
      * the names matter, not their casing. Brand-specific by design: each brand
-     * declares the keys it uses (CNR upper-case, IBS lower-/camel-case); the
-     * neutral default masks nothing.
+     * declares the keys it uses, sourced from a single per-brand constant (e.g.
+     * {@see \CNIC\CNR\SensitiveFields::KEYS}) shared with the corresponding
+     * SocketConfig class; the neutral default masks nothing.
      * @var string[]
      */
     protected array $sensitiveFields = [];
@@ -214,6 +215,8 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * Mask the brand's sensitive command keys (see $sensitiveFields) so their
      * values can never be read back from the response (e.g. by custom loggers).
+     * Delegates the actual matching/masking to {@see CommandRedactor::redact()},
+     * which is shared with {@see AbstractSocketConfig::maskSensitiveCommand()}.
      * Matching is case-insensitive to stay robust against casing differences
      * between what a brand documents and what it actually sends.
      * @param array<string, string> $cmd API command used within this request
@@ -221,13 +224,7 @@ abstract class AbstractResponse implements ResponseInterface
      */
     protected function sanitizeCommand(array $cmd): array
     {
-        $sensitive = array_map(strtolower(...), $this->sensitiveFields);
-        foreach (array_keys($cmd) as $key) {
-            if (in_array(strtolower($key), $sensitive, true)) {
-                $cmd[$key] = "***";
-            }
-        }
-        return $cmd;
+        return CommandRedactor::redact($cmd, $this->sensitiveFields);
     }
 
     /**

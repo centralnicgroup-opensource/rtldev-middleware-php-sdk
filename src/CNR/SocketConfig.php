@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace CNIC\CNR;
 
 use CNIC\AbstractSocketConfig;
+use CNIC\CommandRedactor;
 
 /**
  * CNR SocketConfig
@@ -42,11 +43,11 @@ final class SocketConfig extends AbstractSocketConfig
     private string $roleSeparator = ":";
 
     /**
-     * CNR carries sensitive data under upper-case command keys. Mirrors
-     * {@see \CNIC\CNR\Response::$sensitiveFields}.
+     * CNR carries sensitive data under upper-case command keys. Declared once
+     * in {@see SensitiveFields::KEYS}, shared with {@see \CNIC\CNR\Response}.
      * @var string[]
      */
-    protected array $sensitiveFields = ["PASSWORD", "AUTH"];
+    protected array $sensitiveFields = SensitiveFields::KEYS;
 
     /**
      * Parameter to trigger creation of a backend session
@@ -82,7 +83,7 @@ final class SocketConfig extends AbstractSocketConfig
             $params[$this->parameters["login"]] = $this->login;
         }
         if (strlen($this->password) !== 0) {
-            $params[$this->parameters["password"]] = $maskSecrets ? "***" : $this->password;
+            $params[$this->parameters["password"]] = $maskSecrets ? CommandRedactor::MASK : $this->password;
         }
         if (strlen($this->session) !== 0) {
             $params[$this->parameters["session"]] = $this->session;

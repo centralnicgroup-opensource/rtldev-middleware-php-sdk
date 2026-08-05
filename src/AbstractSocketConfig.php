@@ -150,9 +150,10 @@ abstract class AbstractSocketConfig
      * password, domain authorization code, ...) and must be masked in the
      * "secured" POST body used for debug logging. Matching is case-insensitive
      * (see maskSensitiveCommand()), so only the names matter, not their casing.
-     * Brand subclasses declare the keys their API uses; this mirrors the
-     * corresponding Response::$sensitiveFields set for each brand so the debug
-     * mask and the stored-command mask cover the same fields.
+     * Brand subclasses declare the keys their API uses, sourced from a single
+     * per-brand constant (e.g. {@see \CNIC\CNR\SensitiveFields::KEYS}) shared
+     * with the corresponding Response class, so the debug mask and the
+     * stored-command mask cover the same fields by construction.
      * @var string[]
      */
     protected array $sensitiveFields = [];
@@ -535,7 +536,9 @@ abstract class AbstractSocketConfig
     /**
      * Mask the values of the brand's sensitive command keys (see
      * $sensitiveFields) so command-level secrets — e.g. a domain transfer
-     * authorization code — never reach the debug log in cleartext. Matching is
+     * authorization code — never reach the debug log in cleartext. Delegates the
+     * actual matching/masking to {@see CommandRedactor::redact()}, which is
+     * shared with {@see AbstractResponse::sanitizeCommand()}. Matching is
      * case-insensitive to stay robust against casing differences between what a
      * brand documents and what it actually sends. `null` values are left
      * untouched (they are dropped from the request, not logged).
@@ -544,13 +547,7 @@ abstract class AbstractSocketConfig
      */
     protected function maskSensitiveCommand(array $command): array
     {
-        $sensitive = array_map(strtolower(...), $this->sensitiveFields);
-        foreach ($command as $key => $val) {
-            if ($val !== null && in_array(strtolower($key), $sensitive, true)) {
-                $command[$key] = "***";
-            }
-        }
-        return $command;
+        return CommandRedactor::redact($command, $this->sensitiveFields);
     }
 
     /**
