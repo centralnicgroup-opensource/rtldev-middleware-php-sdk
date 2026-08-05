@@ -131,15 +131,23 @@ final class ResponseSealSeamTest extends TestCase
     }
 
     /**
-     * `registerColumn()` stays the one writer, and it stays non-public.
+     * `registerColumn()` stays non-public and stays shared.
      *
      * The column bookkeeping is three lists that must agree
-     * ($columns/$columnKeys/$columnIndex); a second writer is how they drifted
-     * apart in the first place. Pinned here rather than in
+     * ($columns/$columnKeys/$columnIndex), so it has exactly one implementation
+     * and no consumer-reachable entry point. Pinned here rather than in
      * {@see RecordColumnSeamTest}, which guards the factory *shape* — this is
-     * about who may write.
+     * about visibility and ownership.
+     *
+     * Deliberately **not** claiming to prove sole writership: nothing here can
+     * see a *second* writer arrive (a brand assigning `$this->columns[]`
+     * directly would pass this untouched). That would need a source scan, which
+     * would be a weaker instrument than it looks — the properties are
+     * `protected`, so the honest guard is the duplicate-refusal and
+     * consistency assertions below, which fail on the *effect* of a second
+     * writer regardless of how it was written.
      */
-    public function testRegisterColumnIsTheOnlyAndNonPublicWriter(): void
+    public function testRegisterColumnStaysNonPublicAndShared(): void
     {
         $m = new ReflectionMethod(AbstractResponse::class, "registerColumn");
         $this->assertFalse($m->isPublic(), "registerColumn() is internal bookkeeping, not consumer surface");
