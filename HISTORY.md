@@ -1,3 +1,20 @@
+# [31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v30.0.0...v31.0.0) (2026-08-05)
+
+
+### Features
+
+* **response:** seal the response after construction and iterate records ([9bfa21d](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/9bfa21db488150264bb8f88c20a8dea815a4c7d2))
+
+
+### BREAKING CHANGES
+
+* **response:** six methods are removed from ResponseInterface. Replace
+getNextRecord() loops with foreach (which also yields the first record) and
+getCurrentRecord() with getRecord(0). The protected populate() hook takes
+three new parameters.
+
+See [MIGRATION.md → v31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3100)
+
 # [30.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v29.1.0...v30.0.0) (2026-08-05)
 
 
