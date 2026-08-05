@@ -60,6 +60,25 @@ Two brand differences the snippet is deliberately explicit about:
 
 **Type against the interfaces, not the concrete classes.** Depending on `CNIC\ResponseInterface`, `CNIC\ColumnInterface`, `CNIC\RecordInterface` and `CNIC\LoggerInterface` is what keeps future majors from breaking you; code that reaches for `CNIC\CNR\Response` or uses `method_exists()` fallbacks is what does not survive them.
 
+### Reading the rows of a list response
+
+A response is fully assembled by the time you hold one, and read-only from then on. Walk its records with `foreach` — the response is iterable — or address them by index:
+
+```php
+$r = $cl->request(["COMMAND" => "QueryDomainList", "LIMIT" => "100"]);
+
+foreach ($r as $index => $rec) {
+    echo $index, ": ", $rec->getDataByKey("DOMAIN"), "\n";
+}
+
+$r->getRecord(0);           // ?RecordInterface — by index, or null if out of range
+$r->getRecords();           // RecordInterface[] — the whole list
+$r->getColumn("DOMAIN");    // ?ColumnInterface — column-wise instead of row-wise
+$r->getPagination();        // COUNT / FIRST / LAST / LIMIT / TOTAL / PAGES / …
+```
+
+`foreach` keeps its position in the loop rather than on the response, so iterating is repeatable, needs no rewind step, and two places iterating the same response cannot interfere. If you are coming from a version with `getNextRecord()`/`rewindRecordList()`, see [Migration Guide → v31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3100).
+
 ### Debug output
 
 `enableDebugMode()` writes one record per request to standard output. Two seams let you take it somewhere else, and they are independent:

@@ -21,10 +21,31 @@ namespace CNIC;
  * through this type. Put construction concerns on the factory hooks instead.
  * Rationale: the interface-declaration entry in docs/agents/architecture.md.
  *
+ * **A response is sealed once constructed, and read-only thereafter
+ * (RSRMID-2939).** There are no mutators here — `addColumn()`/`addRecord()` were
+ * removed in v31 — because a column added after construction was silently absent
+ * from every already-assembled record, and an added record changed four derived
+ * pagination getters. Every column and record is built inside the constructor by
+ * the brand's `populate()` hook. Do not re-add a mutator: it would reintroduce a
+ * state a caller can observe only by having mutated it (guarded by
+ * tests/ResponseSealSeamTest.php).
+ *
+ * **Records are iterated, not stepped.** This interface extends
+ * {@see \IteratorAggregate}, so `foreach ($response as $record)` walks the rows
+ * without touching shared state and can be repeated as often as a caller likes.
+ * The former record cursor (`getCurrentRecord()`/`getNextRecord()`/
+ * `getPreviousRecord()`/`rewindRecordList()`) was hidden mutable state shared by
+ * every holder of the object: two consumers iterating one response interfered
+ * with each other, the predicates that would have let a caller check the cursor
+ * without moving it were `protected`, and nothing stated that re-iteration had to
+ * be preceded by a rewind. Use `foreach`, or {@see self::getRecord()} for random
+ * access.
+ *
+ * @extends \IteratorAggregate<int, RecordInterface>
  * @psalm-api
  * @package CNIC
  */
-interface ResponseInterface
+interface ResponseInterface extends \IteratorAggregate
 {
     /**
      * Get API response code
@@ -61,18 +82,6 @@ interface ResponseInterface
      * Check if current API response represents a success case (a 2xx code)
      */
     public function isSuccess(): bool;
-
-    /**
-     * Add a column to the column list
-     * @param array<array-key, mixed> $data array of column data
-     */
-    public function addColumn(string $columnName, array $data): ResponseInterface;
-
-    /**
-     * Add a record to the record list
-     * @param array<string, mixed> $row
-     */
-    public function addRecord(array $row): ResponseInterface;
 
     /**
      * Get column by column name, or null if the column does not exist
@@ -130,11 +139,6 @@ interface ResponseInterface
     public function getCurrentPageNumber(): ?int;
 
     /**
-     * Get Record of current record index, or null for a non-list response
-     */
-    public function getCurrentRecord(): ?RecordInterface;
-
-    /**
      * Get Index of first row in this response
      */
     public function getFirstRecordIndex(): ?int;
@@ -144,11 +148,6 @@ interface ResponseInterface
      * response
      */
     public function getLastRecordIndex(): ?int;
-
-    /**
-     * Get next record in record list, or null if there is no further record
-     */
-    public function getNextRecord(): ?RecordInterface;
 
     /**
      * Get Page Number of next list query, or null if there is no next page
@@ -172,11 +171,6 @@ interface ResponseInterface
     public function getPreviousPageNumber(): ?int;
 
     /**
-     * Get previous record in record list, or null if there is no previous record
-     */
-    public function getPreviousRecord(): ?RecordInterface;
-
-    /**
      * Get Record at given index, or null if the index does not exist
      */
     public function getRecord(int $recordIndex): ?RecordInterface;
@@ -186,6 +180,21 @@ interface ResponseInterface
      * @return RecordInterface[] array of records
      */
     public function getRecords(): array;
+
+    /**
+     * Iterate the record list, keyed by record index.
+     *
+     * Redeclared here — {@see \IteratorAggregate} already requires it — so the
+     * element type is stated on the contract consumers type against, rather than
+     * only where it happens to be implemented. `foreach` is the supported way to
+     * walk the rows: it holds its position in the loop rather than on the
+     * response, so nothing a caller does while iterating is visible to another
+     * holder of the same response, and a second `foreach` starts from the top
+     * with no rewind step. See the class docblock for what this replaced.
+     * @return \Traversable<int, RecordInterface>
+     */
+    #[\Override]
+    public function getIterator(): \Traversable;
 
     /**
      * Get count of rows in this response
@@ -213,9 +222,4 @@ interface ResponseInterface
      * Check if this list query has a previous page
      */
     public function hasPreviousPage(): bool;
-
-    /**
-     * Reset index in record list back to zero
-     */
-    public function rewindRecordList(): ResponseInterface;
 }

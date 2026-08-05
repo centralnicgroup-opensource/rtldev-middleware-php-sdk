@@ -8,7 +8,7 @@ use CNIC\IBS\Response as R;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Coverage for IBS\Response record navigation, pagination metadata,
+ * Coverage for IBS\Response record iteration, pagination metadata,
  * column access and the response code/description fallbacks.
  *
  * All fixtures are template-driven (no live API / credentials required).
@@ -29,46 +29,54 @@ final class ResponseNavigationTest extends TestCase
         return new R($json, self::JSONCMD);
     }
 
-    // --- record navigation cursor ---
+    // --- record iteration ---
 
-    public function testRecordCursorWalksForwardAndStopsAtEnd(): void
+    public function testIterationWalksEveryRecordInOrderAndStopsAtEnd(): void
     {
         $r = $this->listResponse();
         $this->assertEquals(3, $r->getRecordsCount());
 
-        $cur = $r->getCurrentRecord();
-        $this->assertNotNull($cur);
-        $this->assertEquals("a.com", $cur->getDataByKey("domain"));
+        $domains = [];
+        foreach ($r as $index => $rec) {
+            /** @psalm-suppress MixedAssignment getDataByKey() returns mixed by design — IBS records hold arbitrary JSON values */
+            $domains[$index] = $rec->getDataByKey("domain");
+        }
 
-        $next = $r->getNextRecord();
-        $this->assertNotNull($next);
-        $this->assertEquals("b.com", $next->getDataByKey("domain"));
-
-        $next = $r->getNextRecord();
-        $this->assertNotNull($next);
-        $this->assertEquals("c.com", $next->getDataByKey("domain"));
-
-        // already at the last record -> no further record
-        $this->assertNull($r->getNextRecord());
+        $this->assertSame(
+            [0 => "a.com", 1 => "b.com", 2 => "c.com"],
+            $domains,
+            "iteration must yield every record once, in order, keyed by record index"
+        );
     }
 
-    public function testRecordCursorWalksBackwardAndRewinds(): void
+    public function testTwoIterationsOfOneResponseDoNotInterfere(): void
     {
+        // The property the removed cursor (RSRMID-2939) could not provide: the
+        // position lives in the loop, not on the response, so an inner walk leaves
+        // an outer one untouched and neither needs a rewind.
         $r = $this->listResponse();
-        $r->getNextRecord(); // -> index 1
-        $r->getNextRecord(); // -> index 2
 
-        $prev = $r->getPreviousRecord();
-        $this->assertNotNull($prev);
-        $this->assertEquals("b.com", $prev->getDataByKey("domain"));
+        $all = ["a.com", "b.com", "c.com"];
 
-        // rewind returns $this (fluent) and resets to the first record
-        $first = $r->rewindRecordList()->getCurrentRecord();
-        $this->assertNotNull($first);
-        $this->assertEquals("a.com", $first->getDataByKey("domain"));
+        $outerSeen = [];
+        $innerWalks = [];
+        foreach ($r as $outer) {
+            /** @psalm-suppress MixedAssignment getDataByKey() returns mixed by design — IBS records hold arbitrary JSON values */
+            $outerSeen[] = $outer->getDataByKey("domain");
+            $inner = [];
+            foreach ($r as $rec) {
+                /** @psalm-suppress MixedAssignment as above */
+                $inner[] = $rec->getDataByKey("domain");
+            }
+            $innerWalks[] = $inner;
+        }
 
-        // at index 0 there is no previous record
-        $this->assertNull($r->getPreviousRecord());
+        $this->assertSame($all, $outerSeen, "the inner walks must not advance the outer one");
+        $this->assertSame(
+            [$all, $all, $all],
+            $innerWalks,
+            "every inner walk must see the whole list — a shared cursor would cut the later ones short"
+        );
     }
 
     public function testGetRecordByIndexBounds(): void
@@ -88,7 +96,7 @@ final class ResponseNavigationTest extends TestCase
         // a status-only response has exactly one column -> exactly one record
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
         $this->assertEquals(1, $r->getRecordsCount());
-        $this->assertNotNull($r->getCurrentRecord());
+        $this->assertNotNull($r->getRecord(0));
     }
 
     // --- pagination metadata ---
