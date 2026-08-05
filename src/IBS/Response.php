@@ -78,16 +78,19 @@ class Response extends AbstractResponse implements ResponseInterface
 
     /**
      * Parse the translated response with the IBS parser and build the columns
-     * from it. The IBS parser needs the sanitized command (kept on
-     * $this->command by the shared constructor). IBS responses are flat
-     * key => value maps; each hash entry becomes a column, list values kept
-     * as-is and anything else wrapped into a single-cell list so the shared
-     * record assembly can iterate them.
+     * from it. The IBS parser needs the sanitized command — it reads it to choose
+     * between the JSON and plain-text wire shapes, which is why the command
+     * arrives as an argument rather than off $this (see
+     * AbstractResponse::__construct()). IBS responses are flat key => value maps;
+     * each hash entry becomes a column, list values kept as-is and anything else
+     * wrapped into a single-cell list so the shared record assembly can iterate
+     * them.
+     * @param array<string, string> $cmd API command used within this request, already sanitized
      */
     #[\Override]
-    protected function populate(): void
+    protected function populate(string $raw, ResponseParserInterface $parser, array $cmd): void
     {
-        $this->hash = $this->parser->parse($this->raw, $this->command);
+        $this->hash = $parser->parse($raw, $cmd);
         $colKeys = array_map(strval(...), array_keys($this->hash));
         foreach ($colKeys as $k) {
             $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
@@ -190,10 +193,14 @@ class Response extends AbstractResponse implements ResponseInterface
      * value type is why a param-typed newColumn() factory would not stay
      * type-clean, and why this builds its column locally and hands the finished
      * instance to the shared registerColumn() bookkeeping — see registerColumn().
+     *
+     * Protected since RSRMID-2939, and called only from populate(): records are
+     * assembled from the columns once, at the end of construction, so a column
+     * added afterwards was absent from every record — present in getColumns() and
+     * getColumnKeys(), invisible to getRecord()/getRecords() and to iteration.
      * @param array<array-key, mixed> $data array of column data
      */
-    #[\Override]
-    public function addColumn(string $columnName, array $data): static
+    protected function addColumn(string $columnName, array $data): static
     {
         return $this->registerColumn(new Column($columnName, $data));
     }

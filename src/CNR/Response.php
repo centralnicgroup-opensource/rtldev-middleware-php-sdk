@@ -69,11 +69,15 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * Parse the translated response into the hash and build the column/record
      * lists from it. CNR exposes its columns under the PROPERTY sub-array and
      * assembles records only when properties are present.
+     *
+     * $cmd is forwarded to keep the parse call uniform across brands even though
+     * the CNR parser ignores it — see ResponseParserInterface::parse().
+     * @param array<string, string> $cmd API command used within this request, already sanitized
      */
     #[\Override]
-    protected function populate(): void
+    protected function populate(string $raw, ResponseParserInterface $parser, array $cmd): void
     {
-        $this->hash = $this->parser->parse($this->raw, $this->command);
+        $this->hash = $parser->parse($raw, $cmd);
         // A PROPERTY that is absent or not an array yields no columns and no
         // records — the same as the is_array() guard this replaced.
         $properties = $this->getHashArray("PROPERTY");
@@ -219,11 +223,17 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
 
     /**
      * Add a column to the column list
+     *
+     * Protected since RSRMID-2939 — see IBS\Response::addColumn() for why, and
+     * AbstractResponse::registerColumn() for why each brand builds its own Column
+     * here rather than through a shared factory. Note the
+     * `@psalm-suppress MoreSpecificImplementedParamType` this carried is gone with
+     * the interface declaration: with no parent naming addColumn(), the
+     * string-valued `$data` narrows nothing and the suppression would never fire
+     * (a never-applied suppression fails the lint).
      * @param string[] $data array of column data
-     * @psalm-suppress MoreSpecificImplementedParamType CNR columns are always string-valued
      */
-    #[\Override]
-    public function addColumn(string $columnName, array $data): static
+    protected function addColumn(string $columnName, array $data): static
     {
         return $this->registerColumn(new Column($columnName, $data));
     }

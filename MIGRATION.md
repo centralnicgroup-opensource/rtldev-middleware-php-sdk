@@ -34,6 +34,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v28.0.0 | 8.3+         | IBS/Moniker hash dates keep `/`; `RecordInterface`/`ColumnInterface` gained a date accessor; `IBS\Response::getStatus()` removed  | Accept `/` wherever you parsed a `getHash()`/`getPlain()`/`getListHash()` date; add the new method if you implement either interface directly; read `getHash()["status"]` instead of `getStatus()` |
 | → v29.0.0 | 8.3+         | Public method parameters and six protected properties renamed to be self-describing                                               | Nothing, unless you pass named arguments (`getColumn(key: …)` → `columnName:`), implement an SDK interface (match the parameter names), or subclass and read `$this->pw`/`$ua`/`$curlopts`         |
 | → v30.0.0 | 8.3+         | Transport error is a declared `?string $error` parameter, not a `"httperror\|"` prefix on the raw payload; `nocurl` template gone | Add the parameter if you override `newResponse()`/`translate()`; return `["", $error]` (not bytes) on failure if you implement `TransportInterface`                                                |
+| → v31.0.0 | 8.3+         | `Response` is sealed after construction: the two mutators and the four record-cursor methods are off `ResponseInterface`          | Replace `getNextRecord()` loops with `foreach ($r as $rec)` (it yields the first row too) and `getCurrentRecord()` with `getRecord(0)`; take `populate()`'s three new arguments if you subclass    |
 
 Two things to respect throughout:
 
@@ -1196,6 +1197,64 @@ final class MyTransport implements TransportInterface
 **Behaviour is otherwise unchanged:** `$error !== null` still selects the brand's `httperror` template, and `$error !== ""` still gates the `{HTTPERROR}` injection into it — the same two-level check as before, just reached through a parameter instead of a string split. A cassette or fixture that used to hand-author `["raw" => "httperror|<msg>", "error" => "<msg>"]` should now read `["raw" => "", "error" => "<msg>"]`.
 
 **Why this happened:** the sentinel was redundant — the same information already existed as the tuple's `[1]`, and string-splitting `[0]` for it meant a pipe character _inside_ a cURL error message was a real truncation hazard (mitigated, never removed, by an `explode(..., 2)` limit). Declaring the error as its own parameter removes the encoding round-trip entirely. (Ref: RSRMID-2937.)
+
+---
+
+## → v31.0.0 — a `Response` is sealed once constructed; `foreach` replaces the record cursor
+
+**What changed:** six methods came off `ResponseInterface`. Two were mutators (`addColumn()`, `addRecord()`); four were the record cursor (`getCurrentRecord()`, `getNextRecord()`, `getPreviousRecord()`, `rewindRecordList()`). A response is now fully assembled by its constructor and read-only afterwards, and its rows are walked with `foreach` — the interface extends `IteratorAggregate`.
+
+**Who is affected — three groups:**
+
+1. **Anyone stepping through records with the cursor.** `while ($rec = $r->getNextRecord())` no longer compiles. This is the one change likely to touch real code — see the rewrite below.
+2. **Anyone calling `addColumn()` / `addRecord()` on a response.** Both are now `protected`. There is no replacement, because there was never a working use: see "Why this happened".
+3. **Anyone who subclasses a brand `Response`.** The `populate()` hook changed signature — it now receives what it used to read off `$this`.
+
+**What to respect — iterating records:**
+
+```php
+// BEFORE (v30) — a shared cursor, with a rewind protocol nothing declared
+$r->rewindRecordList();
+while (($rec = $r->getNextRecord()) !== null) {
+    echo $rec->getDataByKey("domain");
+}
+
+// AFTER (v31) — foreach; the position lives in the loop, not on the response
+foreach ($r as $rec) {
+    echo $rec->getDataByKey("domain");
+}
+```
+
+Note the `getNextRecord()` loop above never saw the **first** record: the cursor started at index 0 and `getNextRecord()` advanced before returning, so row 0 had to be fetched separately with `getCurrentRecord()`. If your loop looked like the "before" block and you never noticed a missing first row, you were probably reading a single-record response. `foreach` yields every row, first one included — so a `getNextRecord()` loop ported verbatim will now legitimately see **one more record than it used to**.
+
+Random access is unchanged: `getRecord(int $recordIndex)` and `getRecords()` are still there, so `getCurrentRecord()` becomes `getRecord(0)`.
+
+**What to respect — subclassing a brand `Response`:**
+
+```php
+// BEFORE (v30) — populate() read three pieces of half-initialised state off $this
+protected function populate(): void
+{
+    $this->hash = $this->parser->parse($this->raw, $this->command);
+    // ...
+}
+
+// AFTER (v31) — all three arrive as arguments; the $parser property is gone
+protected function populate(string $raw, ResponseParserInterface $parser, array $cmd): void
+{
+    $this->hash = $parser->parse($raw, $cmd);
+    // ...
+}
+```
+
+`$this->raw`, `$this->command` and `$this->hash` are all still readable properties; only `$this->parser` was removed, since nothing after construction has a use for it. Injecting a substitute parser through the constructor is unaffected — the `$parser` argument still works exactly as in v26+.
+
+**Also in this major, both silent unless you subclass:**
+
+- **A duplicate column name now throws** `CNIC\Exception\DuplicateColumnException` (new, additive in the `CnicException` hierarchy). Previously `$columns`/`$columnKeys` appended the second column while the name-to-position index kept the first, leaving `getColumns()` holding a column `getColumn()` could never return. Unreachable from either shipped brand, and from a substitute parser too — both derive their column names from `array_keys()` of the parsed hash, and two distinct PHP array keys cannot stringify to one name.
+- **`assembleRecords()` replaces the record list instead of appending to it,** so calling it twice yields the same rows rather than double.
+
+**Why this happened:** every one of the six was a rule a caller had to know that no type expressed. A column added after construction was absent from every record, because records are assembled from the columns once, at the end of `populate()` — it appeared in `getColumns()` and `getColumnKeys()` and nowhere else. A record added afterwards changed `getRecordsCount()` and, through it, the four pagination getters IBS derives from it, so a caller could silently repaginate a finished response. And the cursor was hidden mutable state shared by every holder of the object: two consumers iterating one response interfered with each other, the predicates that would have let a caller test the cursor without moving it were `protected`, and nothing stated that re-iteration needed a `rewindRecordList()` first. `foreach` has none of those properties. (Ref: RSRMID-2939.)
 
 ---
 

@@ -135,10 +135,10 @@ final class ResponseTest extends TestCase
     }
 
 
-    public function testGetCurrentRecordRows(): void
+    public function testGetRecordRows(): void
     {
         $r = new R("listP0");
-        $rec = $r->getCurrentRecord();
+        $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
         $this->assertEquals([
             "COUNT" => "2",
@@ -150,10 +150,10 @@ final class ResponseTest extends TestCase
         ], $rec->getData());
     }
 
-    public function testGetCurrentRecordNoRows(): void
+    public function testGetRecordNoRows(): void
     {
         $r = new R("OK");
-        $this->assertNull($r->getCurrentRecord());
+        $this->assertNull($r->getRecord(0));
     }
 
     public function testGetListHash(): void
@@ -210,13 +210,21 @@ final class ResponseTest extends TestCase
         $this->assertSame(["FIRSTNAME" => "John", "COUNTRY" => "US"], $lh["LIST"][1]);
     }
 
-    public function testGetNextRecord(): void
+    public function testIterationYieldsEveryRecordInOrder(): void
     {
+        // The listP0 fixture holds two rows: the first carries the pagination
+        // columns alongside DOMAIN, the second only DOMAIN. Iteration walks both
+        // and stops — no cursor, no rewind (RSRMID-2939).
         $r = new R("listP0");
-        $rec = $r->getNextRecord();
-        $this->assertNotNull($rec);
-        $this->assertEquals(["DOMAIN" => "0-be-s01-0.com"], $rec->getData());
-        $this->assertNull($r->getNextRecord());
+
+        $rows = [];
+        foreach ($r as $index => $rec) {
+            $rows[$index] = $rec->getData();
+        }
+
+        $this->assertSame([0, 1], array_keys($rows), "iteration must be keyed by record index");
+        $this->assertEquals("0-60motorcycletimes.com", $rows[0]["DOMAIN"]);
+        $this->assertEquals(["DOMAIN" => "0-be-s01-0.com"], $rows[1]);
     }
 
     public function testGetPagination(): void
@@ -234,21 +242,23 @@ final class ResponseTest extends TestCase
         $this->assertArrayHasKey("TOTAL", $pager);
     }
 
-    public function testGetPreviousRecord(): void
+    public function testIterationIsRepeatableWithoutARewindStep(): void
     {
+        // What the removed cursor could not do: walk the rows twice and get the
+        // same rows both times, with nothing to reset in between (RSRMID-2939).
         $r = new R("listP0");
-        $r->getNextRecord();
-        $pr = $r->getPreviousRecord();
-        $this->assertNotNull($pr);
-        $this->assertEquals([
-            "COUNT" => "2",
-            "DOMAIN" => "0-60motorcycletimes.com",
-            "FIRST" => "0",
-            "LAST" => "1",
-            "LIMIT" => "2",
-            "TOTAL" => "2701"
-        ], $pr->getData());
-        $this->assertNull($r->getPreviousRecord());
+
+        $first = [];
+        foreach ($r as $rec) {
+            $first[] = $rec->getData();
+        }
+        $second = [];
+        foreach ($r as $rec) {
+            $second[] = $rec->getData();
+        }
+
+        $this->assertCount(2, $first);
+        $this->assertSame($first, $second);
     }
 
     public function testHasNextPageNoRows(): void
@@ -343,13 +353,10 @@ final class ResponseTest extends TestCase
         $this->assertNull($r->getPreviousPageNumber());
     }
 
-    public function testRewindRecordList(): void
+    public function testIteratingAResponseWithoutRecordsYieldsNothing(): void
     {
-        $r = new R("listP0");
-        $this->assertNull($r->getPreviousRecord());
-        $this->assertNotNull($r->getNextRecord());
-        $this->assertNull($r->getNextRecord());
-        $this->assertNull($r->rewindRecordList()->getPreviousRecord());
+        $r = new R("OK");
+        $this->assertSame([], iterator_to_array($r));
     }
 
     public function testConstructorEmptyRaw(): void
