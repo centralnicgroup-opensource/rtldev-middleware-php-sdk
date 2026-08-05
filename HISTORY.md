@@ -1,3 +1,27 @@
+# [30.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v29.1.0...v30.0.0) (2026-08-05)
+
+
+### Bug Fixes
+
+* **translator:** guard the httperror template lookup against a missing key ([7ec9a8c](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/7ec9a8c43761fc3c1bd4dfedb99fdb5bd63d7a73))
+
+
+### Features
+
+* **transport:** pass the transport error as a declared parameter ([d0a83e3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d0a83e39f7ca7c17629a90cb1a5b9f388cb7dfad))
+
+
+### BREAKING CHANGES
+
+* **transport:** newResponse()/translate() on a brand Client/Response
+gained a trailing ?string $error parameter, and TransportInterface::post()'s
+contract now states that a non-null element [1] means element [0] is
+discarded in favour of the "httperror" template — a custom transport that
+returned bytes alongside an advisory error now has those bytes discarded.
+The "nocurl" template id is also gone.
+
+See [MIGRATION.md → v30.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3000)
+
 # [29.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v29.0.0...v29.1.0) (2026-08-05)
 
 
