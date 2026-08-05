@@ -1,3 +1,10 @@
+# [29.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v29.0.0...v29.1.0) (2026-08-05)
+
+
+### Features
+
+* **redaction:** unify sensitive-command masking behind one module ([91f8124](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/91f81246126ea705436d7b53dd9b95cd3b16b92f))
+
 # [29.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v28.0.0...v29.0.0) (2026-08-03)
 
 
