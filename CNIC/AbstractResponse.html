@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\AbstractResponse | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../fonts/doctum-font.css">
+        <script src="../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../doctum.js"></script>
+        <script async defer src="../js/bootstrap.min.js"></script>
+        <script async defer src="../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_AbstractResponse" data-root-path="../" data-search-index-url="../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../classes.html">Classes</a></li>
+                    <li><a href="../namespaces.html">Namespaces</a></li>
+                    <li><a href="../interfaces.html">Interfaces</a></li>
+                    <li><a href="../traits.html">Traits</a></li>
+                    <li><a href="../doc-index.html">Index</a></li>
+                    <li><a href="../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../CNIC.html">CNIC</a></li><li class="backslash">\</li><li>AbstractResponse</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>AbstractResponse    
+            </h1>
+    </div>
+
+    
+    <p>    abstract     class
+    <strong>AbstractResponse</strong>        implements        <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Shared Response foundation</p></p>            <p><p>Brand-neutral base for every registrar Response. It owns the machinery that
+is identical across brands — the constructor skeleton (template method),
+command sanitisation, column/record bookkeeping, record iteration and
+the derived pagination getters — and leaves the parts that genuinely differ
+to the concrete subclasses:</p>
+<ul>
+<li>wire hooks: {\CNIC\translate()} / {\CNIC\populate()} (protected),</li>
+<li>factories: {\CNIC\newRecord()} and {\CNIC\newResponseParser()} (protected),</li>
+<li>the brand's own <code>addColumn()</code> (protected), which has to build its
+correctly-typed Column before handing it to {\CNIC\registerColumn()},</li>
+<li>the status/code accessors declared on {\CNIC\ResponseInterface}
+(getCode/getDescription/isError/isSuccess) — each reads a different wire
+shape,</li>
+<li>the pagination primitives, likewise declared on {\CNIC\ResponseInterface}
+(getCurrentPageNumber, getFirstRecordIndex, getLastRecordIndex,
+getRecordsTotalCount, getRecordsLimitation, hasNextPage, hasPreviousPage),
+which this base deliberately does NOT implement — not even as single-page
+defaults — so a brand that forgets pagination fails at declaration time
+instead of silently answering &quot;one page, no next page&quot;.</li>
+</ul>
+<p>None of the members in those last two groups is declared abstract <em>here</em>: they
+are interface methods this base simply never implements, so every concrete
+brand must supply them. Do not add base defaults for the pagination primitives
+— see docs/agents/architecture.md for why the seam is drawn there, and
+tests/ResponsePaginationSeamTest.php, which refuses it.</p>
+<p>CNR\Response and IBS\Response both extend this as siblings — mirroring the
+AbstractClient / AbstractSocketConfig / AbstractResponseTemplateManager /
+AbstractResponseTranslator pattern — so neither brand is-a the other. The
+CNR-only capabilities (telemetry, transient/pending status, list-hash) live
+on CNR\Response via {\CNIC\ExtendedResponseInterface} and are deliberately NOT
+part of this base, so brands like IBS/Moniker never inherit methods they
+cannot support.</p></p>        </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_command">
+                                        protected                                        <abbr title="CNIC\array&lt;string, string&gt;">array&lt;string, string&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$command</td>
+                <td class="last"><p>The API Command used within this request</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_sensitiveFields">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$sensitiveFields</td>
+                <td class="last"><p>Command parameter keys that carry sensitive data for this brand (account
+password, domain authorization code, ...). Their values are masked before
+the command is stored so they can never be read back (e.g. by custom
+loggers). Matching is case-insensitive (see sanitizeCommand()), so only
+the names matter, not their casing. Brand-specific by design: each brand
+declares the keys it uses, sourced from a single per-brand constant (e.g.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_raw">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$raw</td>
+                <td class="last"><p>plain API response</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_hash">
+                                        protected                                        <abbr title="CNIC\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$hash</td>
+                <td class="last"><p>hash representation of plain API response.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_paginationKeys">
+                                        protected                                        <abbr title="CNIC\non-empty-string">non-empty-string</abbr>
+                                                                                
+                                    </td>
+                <td>$paginationKeys</td>
+                <td class="last"><p>Regex for pagination related column keys, stripped in getColumnKeys(true).</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_columnKeys">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$columnKeys</td>
+                <td class="last"><p>Column names available in this response</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_columns">
+                                        protected                                        <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>[]
+                                                                                
+                                    </td>
+                <td>$columns</td>
+                <td class="last"><p>Container of Column Instances</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_columnIndex">
+                                        protected                                        <abbr title="CNIC\array&lt;string, int&gt;">array&lt;string, int&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$columnIndex</td>
+                <td class="last"><p>Map of column name to its index in the column/columnKeys lists.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_records">
+                                        protected                                        <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>[]
+                                                                                
+                                    </td>
+                <td>$records</td>
+                <td class="last"><p>Record List (List of rows)</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_context">
+                                        protected                                        <abbr title="CNIC\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$context</td>
+                <td class="last"><p>Context data for the response</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_requestUrl">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$requestUrl</td>
+                <td class="last"><p>API request url</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(string $raw, array $cmd = [], array $placeholders = [], array $context = [], <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>|null $parser = null, string|null $error = null)
+        
+                                            <p>Constructor</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_translate">translate</a>(string $raw, array $cmd, array $placeholders, string|null $error = null)
+        
+                                            <p><p>Translate the raw API response into its canonical form.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_populate">populate</a>(string $raw, <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a> $parser, array $cmd)
+        
+                                            <p><p>Parse the translated response into the hash and build the column/record
+lists from it. Brand-specific because each brand's parser returns a
+different hash shape (CNR nests columns under PROPERTY, IBS is a flat
+key =&gt; value map).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newResponseParser">newResponseParser</a>()
+        
+                                            <p><p>Instantiate the response parser for this brand.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newRecord">newRecord</a>(array $row)
+        
+                                            <p><p>Instantiate the record type for this brand.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sanitizeCommand">sanitizeCommand</a>(array $cmd)
+        
+                                            <p><p>Mask the brand's sensitive command keys (see $sensitiveFields) so their
+values can never be read back from the response (e.g. by custom loggers).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_assembleRecords">assembleRecords</a>()
+        
+                                            <p><p>Assemble the record (row) list from the columns already added via
+addColumn(). Shared by all brands: each subclass populates the columns
+with its own Column type beforehand, while the row assembly is identical.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getContext">getContext</a>()
+        
+                                            <p><p>Get context data for the response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRequestURL">getRequestURL</a>()
+        
+                                            <p><p>Get Request URL</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPlain">getPlain</a>()
+        
+                                            <p><p>Get Plain API response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getHash">getHash</a>()
+        
+                                            <p><p>Get API response as Hash</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractResponse.html"><abbr title="CNIC\AbstractResponse">AbstractResponse</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_registerColumn">registerColumn</a>(<a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a> $col)
+        
+                                            <p><p>Register an already-constructed column into the list bookkeeping.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractResponse.html"><abbr title="CNIC\AbstractResponse">AbstractResponse</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addRecord">addRecord</a>(array $row)
+        
+                                            <p><p>Add a record to the record list.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumn">getColumn</a>(string $columnName)
+        
+                                            <p><p>Get column by column name</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumnIndex">getColumnIndex</a>(string $columnName, int $recordIndex)
+        
+                                            <p><p>Get Data by Column Name and Index</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumnKeys">getColumnKeys</a>(bool $filterPaginationKeys = false)
+        
+                                            <p><p>Get Column Names</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getColumns">getColumns</a>()
+        
+                                            <p><p>Get List of Columns</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCommand">getCommand</a>()
+        
+                                            <p><p>Get Command used in this request</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCommandPlain">getCommandPlain</a>()
+        
+                                            <p><p>Get Command used in this request in plain text format</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNextPageNumber">getNextPageNumber</a>()
+        
+                                            <p><p>Get Page Number of next list query</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getNumberOfPages">getNumberOfPages</a>()
+        
+                                            <p><p>Get the number of pages available for this list query</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPagination">getPagination</a>()
+        
+                                            <p><p>Get object containing all paging data</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPreviousPageNumber">getPreviousPageNumber</a>()
+        
+                                            <p><p>Get Page Number of previous list query</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecord">getRecord</a>(int $recordIndex)
+        
+                                            <p><p>Get Record at given index</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecords">getRecords</a>()
+        
+                                            <p><p>Get all Records</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecordsCount">getRecordsCount</a>()
+        
+                                            <p><p>Get count of rows in this response</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a target="_blank" rel="noopener" href="https://www.php.net/Traversable">Traversable</a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getIterator">getIterator</a>()
+        
+                                            <p><p>Iterate the record list, keyed by record index.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getHashString">getHashString</a>(string $key, string $default = &quot;&quot;)
+        
+                                            <p><p>Get a string value from the hash by key, returning a default if not found or not a string</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getHashArray">getHashArray</a>(string $key)
+        
+                                            <p><p>Get an array value from the hash by key, returning an empty array if not
+found or not an array. The twin of {getHashString()} for the nested
+blocks a brand's populate() reads (e.g. CNR's PROPERTY).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L162">at line 162</a></div>
+        <code>                    
+    <strong>__construct</strong>(string $raw, array $cmd = [], array $placeholders = [], array $context = [], <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>|null $parser = null, string|null $error = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p>Constructor</p>                <p><p>Assembles the response completely: every column and record exists by the
+time this returns, and nothing afterwards can add one (RSRMID-2939) — see
+the sealing note on {\CNIC\ResponseInterface}.</p>
+<p>The parser is a constructor local, not a property, and reaches
+{\CNIC\populate()} as an argument. So does the translated raw response and
+the sanitized command. That is deliberate: while <code>populate()</code> read them off
+<code>$this</code>, the order of the assignments above it was load-bearing and
+enforced by nothing but a comment — moving the <code>$this-&gt;command</code> assignment
+below the <code>populate()</code> call silently switched the IBS parser to its other
+wire branch, because that parser reads the command to choose JSON vs plain
+text. Passing them in makes the dependency a signature, so there is no
+order left to get wrong. Do not reintroduce a <code>$parser</code> property: nothing
+after construction has any use for it.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td><p>API plain response</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command used within this request</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$placeholders</td>
+                <td><p>vars the response description has dynamically replaced</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$context</td>
+                <td><p>context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>|null</td>
+                <td>$parser</td>
+                <td><p>parser to use instead of the brand default (see newResponseParser())</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$error</td>
+                <td><p>transport error, if any; non-null means $raw is unusable and the brand's &quot;httperror&quot; template is substituted instead (see {<a href="../CNIC/AbstractResponseTranslator.html">\CNIC\AbstractResponseTranslator::translate()})</a></p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_translate">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L187">at line 187</a></div>
+        <code>    abstract        protected        string
+    <strong>translate</strong>(string $raw, array $cmd, array $placeholders, string|null $error = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Translate the raw API response into its canonical form.</p></p>                <p><p>Brand-specific by the ResponseTranslator each subclass imports; $cmd is
+already sanitized.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command used within this request</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$placeholders</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$error</td>
+                <td><p>transport error, if any; non-null means $raw is unusable (see {<a href="../CNIC/AbstractResponseTranslator.html">\CNIC\AbstractResponseTranslator::translate()})</a></p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_populate">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L209">at line 209</a></div>
+        <code>    abstract        protected        void
+    <strong>populate</strong>(string $raw, <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a> $parser, array $cmd)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Parse the translated response into the hash and build the column/record
+lists from it. Brand-specific because each brand's parser returns a
+different hash shape (CNR nests columns under PROPERTY, IBS is a flat
+key =&gt; value map).</p></p>                <p><p>Everything it needs arrives as an argument rather than being read off a
+half-initialised <code>$this</code> — see the constructor for why. Parse through the
+given $parser: instantiating one inline behaves identically and silently
+closes the injection seam, which is why the guard is structural
+(tests/ResponseParserSeamTest.php).</p>
+<p>Called exactly once, from the constructor. It is the only place columns and
+records are built, so it must finish the job: nothing afterwards can add to
+either list.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td><p>the translated response, as returned by {\CNIC\translate()}</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a></td>
+                <td>$parser</td>
+                <td><p>the brand default or the injected substitute</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command used within this request, already sanitized</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newResponseParser">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L222">at line 222</a></div>
+        <code>    abstract        protected        <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>
+    <strong>newResponseParser</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the response parser for this brand.</p></p>                <p><p>Factory hook mirroring {\CNIC\newRecord()} and
+{<a href="../CNIC/AbstractClient.html">\CNIC\AbstractClient::newTransport()}:</a> it supplies the default, and
+the constructor's $parser argument overrides it — so a substitute parser
+needs neither reflection nor a subclass. Whichever wins is handed to
+{\CNIC\populate()}, which must parse through it; instantiating a parser
+inline there behaves identically and silently closes the seam, which is why
+the guard is structural (tests/ResponseParserSeamTest.php).</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newRecord">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L236">at line 236</a></div>
+        <code>    abstract        protected        <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>
+    <strong>newRecord</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the record type for this brand.</p></p>                <p><p>Factory hook for addRecord(). Records share one shape across brands
+(array&lt;string,mixed&gt;), so every brand currently returns the same shared
+CNIC\Record — the hook stays abstract nonetheless, because it is the seam
+a brand needing genuinely different row behaviour would implement, and
+hard-coding the shared Record here would close it. (Unlike columns, whose
+value types diverge and so cannot use a param-typed factory at all — see
+registerColumn().)</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sanitizeCommand">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L248">at line 248</a></div>
+        <code>            protected        array
+    <strong>sanitizeCommand</strong>(array $cmd)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Mask the brand's sensitive command keys (see $sensitiveFields) so their
+values can never be read back from the response (e.g. by custom loggers).</p></p>                <p><p>Delegates the actual matching/masking to {<a href="../CNIC/CommandRedactor.html">\CNIC\CommandRedactor::redact()},
+which</a> is shared with {<a href="../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::maskSensitiveCommand()}.
+Matching</a> is case-insensitive to stay robust against casing differences
+between what a brand documents and what it actually sends.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command used within this request</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_assembleRecords">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L264">at line 264</a></div>
+        <code>            protected        void
+    <strong>assembleRecords</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Assemble the record (row) list from the columns already added via
+addColumn(). Shared by all brands: each subclass populates the columns
+with its own Column type beforehand, while the row assembly is identical.</p></p>                <p><p>Replaces the record list rather than appending to it, so calling it twice
+yields the same rows instead of doubling them (RSRMID-2939). No caller does
+— each brand's populate() calls it once, at the end — but &quot;assembles the
+records&quot; is what the name promises, and an append-only version made that
+promise conditional on a call count nothing enforced.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getContext">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L292">at line 292</a></div>
+        <code>                    array
+    <strong>getContext</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get context data for the response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>context data</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRequestURL">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L301">at line 301</a></div>
+        <code>                    string
+    <strong>getRequestURL</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Request URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPlain">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L310">at line 310</a></div>
+        <code>                    string
+    <strong>getPlain</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Plain API response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getHash">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L320">at line 320</a></div>
+        <code>                    array
+    <strong>getHash</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get API response as Hash</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>API response hash</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_registerColumn">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L353">at line 353</a></div>
+        <code>            protected        <a href="../CNIC/AbstractResponse.html"><abbr title="CNIC\AbstractResponse">AbstractResponse</abbr></a>
+    <strong>registerColumn</strong>(<a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a> $col)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Register an already-constructed column into the list bookkeeping.</p></p>                <p><p>The bookkeeping ($columns/$columnKeys/$columnIndex) is identical for every
+brand; what differs is the column's value type. Rather than a param-typed
+newColumn() factory — which cannot stay type-clean under PHPStan L9 / Psalm
+L1, because CNR columns take string[] while IBS columns take mixed[] and a
+shared factory would have to narrow one into the other — each brand's
+addColumn() builds its own correctly-typed Column locally and hands the
+finished instance here, so this shared helper never sees the brand types.</p>
+<p>A repeated column name is refused rather than half-registered
+(RSRMID-2939). The three lists are one data structure: $columns/$columnKeys
+are positional while $columnIndex maps a name to one position, so a second
+column under an existing name used to append to the first two while the
+<code>??=</code> kept the index pointing at the first — leaving getColumns() holding a
+column getColumn() could never return, and getColumnKeys() listing a name
+twice.</p>
+<p>Neither shipped brand can reach the throw, and neither can a substitute
+parser: both brands derive their column names from array_keys() of the
+parsed hash, and two distinct PHP array keys cannot stringify to the same
+name. It guards the invariant against a <em>future</em> brand whose populate()
+builds its columns some other way — there the collision is a programming
+error and says so instead of silently desynchronising the three lists.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a></td>
+                <td>$col</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractResponse.html"><abbr title="CNIC\AbstractResponse">AbstractResponse</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/Exception/DuplicateColumnException.html"><abbr title="CNIC\Exception\DuplicateColumnException">DuplicateColumnException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addRecord">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L378">at line 378</a></div>
+        <code>            protected        <a href="../CNIC/AbstractResponse.html"><abbr title="CNIC\AbstractResponse">AbstractResponse</abbr></a>
+    <strong>addRecord</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a record to the record list.</p></p>                <p><p>Protected since RSRMID-2939: a record added after construction changed
+getRecordsCount() and, through it, the four pagination getters IBS derives
+from it (getRecordsTotalCount/getRecordsLimitation/getLastRecordIndex/
+getNumberOfPages) — so a caller could silently repaginate a finished
+response. Only {\CNIC\assembleRecords()} calls this.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractResponse.html"><abbr title="CNIC\AbstractResponse">AbstractResponse</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumn">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L387">at line 387</a></div>
+        <code>                    <a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null
+    <strong>getColumn</strong>(string $columnName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get column by column name</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$columnName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ColumnInterface.html"><abbr title="CNIC\ColumnInterface">ColumnInterface</abbr></a>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumnIndex">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L397">at line 397</a></div>
+        <code>                    mixed
+    <strong>getColumnIndex</strong>(string $columnName, int $recordIndex)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Data by Column Name and Index</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$columnName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$recordIndex</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumnKeys">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L409">at line 409</a></div>
+        <code>                    array
+    <strong>getColumnKeys</strong>(bool $filterPaginationKeys = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Column Names</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$filterPaginationKeys</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of Column Names</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getColumns">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L424">at line 424</a></div>
+        <code>                    array
+    <strong>getColumns</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get List of Columns</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of Columns</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCommand">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L434">at line 434</a></div>
+        <code>                    array
+    <strong>getCommand</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Command used in this request</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td>command</td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCommandPlain">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L443">at line 443</a></div>
+        <code>                    string
+    <strong>getCommandPlain</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Command used in this request in plain text format</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNextPageNumber">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L452">at line 452</a></div>
+        <code>                    int|null
+    <strong>getNextPageNumber</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Page Number of next list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getNumberOfPages">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L469">at line 469</a></div>
+        <code>                    int
+    <strong>getNumberOfPages</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the number of pages available for this list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPagination">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L484">at line 484</a></div>
+        <code>                    array
+    <strong>getPagination</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get object containing all paging data</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>paginator data</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPreviousPageNumber">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L503">at line 503</a></div>
+        <code>                    int|null
+    <strong>getPreviousPageNumber</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Page Number of previous list query</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecord">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L520">at line 520</a></div>
+        <code>                    <a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null
+    <strong>getRecord</strong>(int $recordIndex)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Record at given index</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$recordIndex</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/RecordInterface.html"><abbr title="CNIC\RecordInterface">RecordInterface</abbr></a>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecords">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L533">at line 533</a></div>
+        <code>                    array
+    <strong>getRecords</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get all Records</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>array of records</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRecordsCount">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L542">at line 542</a></div>
+        <code>                    int
+    <strong>getRecordsCount</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get count of rows in this response</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getIterator">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L558">at line 558</a></div>
+        <code>                    <a target="_blank" rel="noopener" href="https://www.php.net/Traversable">Traversable</a>
+    <strong>getIterator</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Iterate the record list, keyed by record index.</p></p>                <p><p>A fresh ArrayIterator per call, over a list that can no longer change: two
+<code>foreach</code> loops over one response therefore see identical rows, in either
+order, without a rewind step between them, and neither is observable to the
+other. That is the property the removed record cursor could not offer —
+see {\CNIC\ResponseInterface} for the full account.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a target="_blank" rel="noopener" href="https://www.php.net/Traversable">Traversable</a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getHashString">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L567">at line 567</a></div>
+        <code>            protected        string
+    <strong>getHashString</strong>(string $key, string $default = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get a string value from the hash by key, returning a default if not found or not a string</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$default</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getHashArray">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponse.php#L580">at line 580</a></div>
+        <code>            protected        array
+    <strong>getHashArray</strong>(string $key)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get an array value from the hash by key, returning an empty array if not
+found or not an array. The twin of {getHashString()} for the nested
+blocks a brand's populate() reads (e.g. CNR's PROPERTY).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
