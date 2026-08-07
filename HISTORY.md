@@ -1,3 +1,10 @@
+# [31.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v31.0.0...v31.1.0) (2026-08-07)
+
+
+### Features
+
+* **client:** add read accessors for the transport and logger seams ([560c33d](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/560c33d0a978fbc09390bc74feb3ea1777927267))
+
 # [31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v30.0.0...v31.0.0) (2026-08-05)
 
 
