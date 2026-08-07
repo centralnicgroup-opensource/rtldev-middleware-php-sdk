@@ -8,6 +8,7 @@ use CNIC\ClientFactory as CF;
 use CNIC\CNR\SessionClient;
 use CNIC\HttpTransport;
 use CNIC\TransportInterface;
+use CNICTEST\Support\SpyTransport;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,13 +24,57 @@ final class TransportSeamTest extends TestCase
     {
         // The default newTransport() hook must yield a real HttpTransport so
         // production behaviour is unchanged when nothing is injected.
-        $probe = new class extends SessionClient {
-            public function exposeTransport(): TransportInterface
-            {
-                return $this->transport;
-            }
-        };
-        $this->assertInstanceOf(HttpTransport::class, $probe->exposeTransport());
+        $this->assertInstanceOf(HttpTransport::class, (new SessionClient())->getTransport());
+    }
+
+    public function testSetTransportIsReadableBack(): void
+    {
+        $cl = CF::cnr();
+        $spy = new SpyTransport();
+        $this->assertSame($spy, $cl->setTransport($spy)->getTransport());
+    }
+
+    /**
+     * The command-to-wire assertion the seam existed to make possible
+     * (RSRMID-2940): performRequest() encodes the built command with
+     * getPOSTData() and hands the result to the transport, but until
+     * SpyTransport recorded `$data` the two halves were only ever asserted
+     * apart — the payload in {@see \CNICTEST\CNR\ClientTest::testGetPostDataSecured()}
+     * and the delivery here. A rewrite of either half alone would have kept
+     * both green.
+     */
+    public function testTheBytesOnTheWireAreWhatGetPostDataProduced(): void
+    {
+        $cl = CF::cnr();
+        $cl->setCredentials("test.user", "test.pw");
+        $spy = new SpyTransport();
+        $cl->setTransport($spy)->useOTESystem();
+
+        $cl->request(["COMMAND" => "StatusAccount"]);
+
+        $this->assertSame(
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"]),
+            $spy->data,
+            "the client must post exactly what getPOSTData() encodes for the same command."
+        );
+        // Unmasked: masking is for the debug log, never for the wire.
+        $this->assertStringContainsString("test.pw", $spy->data);
+    }
+
+    /**
+     * The client's close() is pure delegation, and nothing exercised it — every
+     * close() in the suite ran against a transport instance directly, so the
+     * client-to-transport hop was unasserted (RSRMID-2940).
+     */
+    public function testClientCloseDelegatesToTheTransport(): void
+    {
+        $spy = new SpyTransport();
+        $cl = CF::cnr()->setTransport($spy);
+        $this->assertFalse($spy->closed);
+
+        $cl->close();
+
+        $this->assertTrue($spy->closed, "AbstractClient::close() must close the injected transport.");
     }
 
     public function testSetTransportInjectsAndIsFluent(): void
