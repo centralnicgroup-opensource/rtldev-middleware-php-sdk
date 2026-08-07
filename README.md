@@ -117,6 +117,41 @@ Order matters between the two: `setLogSink()` rebuilds the **brand** logger arou
 
 `LoggerInterface::format()` **returns** the record rather than printing it, so you can route SDK debug output into your own logging without reimplementing a brand's format — and assert on it in your own tests without output buffering. Sensitive command values (`PASSWORD`, `AUTH`, `transferAuthInfo`) are already masked before they reach the formatter.
 
+### Testing your integration offline
+
+Nothing in the request lifecycle needs a network. `setTransport()` swaps the cURL layer for anything implementing `CNIC\TransportInterface`, so you can hand the client a canned API response and still exercise the real command building, parsing and logging:
+
+```php
+use CNIC\TransportInterface;
+
+final class CannedTransport implements TransportInterface
+{
+    public function __construct(private readonly string $raw) {}
+
+    /**
+     * @param array<int, mixed> $options
+     * @return array{0: string, 1: string|null}
+     */
+    public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
+    {
+        return [$this->raw, null]; // element [1] is the transport error; non-null means [0] is unusable
+    }
+
+    public function close(): void {}
+}
+
+$cl->setTransport(new CannedTransport("[RESPONSE]\r\nCODE=200\r\nDESCRIPTION=Command completed successfully\r\nEOF\r\n"));
+$r = $cl->request(["COMMAND" => "StatusAccount"]); // no network touched
+```
+
+Each of the client's three collaborators has a matching reader, so your own tests can assert the wiring took effect rather than reaching into the client: `getTransport()`, `getLogger()` and `getSocketConfig()`. That is how you confirm a custom logger survived the `setLogSink()`/`setCustomLogger()` ordering rule above, or that the transport double is the one in place:
+
+```php
+$transport = new CannedTransport($raw);
+assert($cl->setTransport($transport)->getTransport() === $transport);
+assert($cl->setCustomLogger($myLogger)->getLogger() === $myLogger);
+```
+
 For working, runnable examples per brand — including the CNR session flow (`saveSession()`/`reuseSession()` across two stateless requests) — see [`examples/app_CNR.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_CNR.php), [`examples/app_IBS.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_IBS.php) and [`examples/app_MONIKER.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_MONIKER.php). Those are not part of the Composer package — clone the repository to run them, as described under [Running the Demo Application](#running-the-demo-application).
 
 ## Date & time values

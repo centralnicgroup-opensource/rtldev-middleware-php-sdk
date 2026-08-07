@@ -210,6 +210,21 @@ abstract class AbstractClient
     }
 
     /**
+     * The transport this client posts through — the read half of
+     * {@see setTransport()}, mirroring {@see getSocketConfig()}.
+     *
+     * Injecting a canned {@see TransportInterface} is how an embedding
+     * application drives the request() lifecycle offline; this accessor is how
+     * it reads the double back afterwards to assert what the client handed
+     * over, without reaching past the client for a protected property.
+     * @psalm-api
+     */
+    public function getTransport(): TransportInterface
+    {
+        return $this->transport;
+    }
+
+    /**
      * Instantiate the brand's logger, writing to the given sink. Mirrors
      * {@see newTransport()}/{@see newSocketConfig()}, and exists so a sink can be
      * chosen without the brand's Logger class being named at the call site. An
@@ -243,6 +258,23 @@ abstract class AbstractClient
     {
         $this->logger = $customLogger;
         return $this;
+    }
+
+    /**
+     * The logger this client writes debug records through — the read half of
+     * {@see setCustomLogger()}/{@see setLogSink()}, mirroring
+     * {@see getSocketConfig()}.
+     *
+     * Which of the two setters last ran decides what comes back: a brand logger
+     * built around the injected sink, or the custom logger supplied verbatim.
+     * That composition rule is order-dependent, so an embedding application
+     * that installs its own logger needs a way to confirm the one it supplied
+     * is the one in place.
+     * @psalm-api
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
     }
 
     /**

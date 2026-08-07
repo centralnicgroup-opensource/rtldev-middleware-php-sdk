@@ -54,6 +54,16 @@ final class SpyTransport implements TransportInterface
     public string $userAgent = "";
 
     /**
+     * The encoded payload handed over by the client; empty until the first
+     * call. Recorded so "the bytes on the wire are what getPOSTData() produced"
+     * is assertable end to end (RSRMID-2940) rather than only in isolation.
+     */
+    public string $data = "";
+
+    /** Whether the client delegated {@see close()} down to this transport. */
+    public bool $closed = false;
+
+    /**
      * @param string $raw canned wire response to return (defaults to a CNR success)
      */
     public function __construct(private readonly string $raw = self::DEFAULT_RAW)
@@ -68,6 +78,7 @@ final class SpyTransport implements TransportInterface
     public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
     {
         $this->url = $url;
+        $this->data = $data;
         $this->timeout = $timeoutSeconds;
         $this->userAgent = $userAgent;
         $this->options = $options;
@@ -77,5 +88,6 @@ final class SpyTransport implements TransportInterface
     #[\Override]
     public function close(): void
     {
+        $this->closed = true;
     }
 }

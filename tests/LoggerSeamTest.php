@@ -10,7 +10,6 @@ use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CNRClient;
 use CNIC\CNR\Logger as CNRLogger;
 use CNIC\CNR\Response as CNRResponse;
-use CNIC\EchoSink;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\Logger as IBSLogger;
 use CNIC\LoggerInterface;
@@ -248,18 +247,30 @@ final class LoggerSeamTest extends TestCase
      * The client's default is still the echo sink, so debug mode emits the same
      * bytes as before for anyone who injects nothing.
      *
+     * Asserted on the output, not on the identity of the object in
+     * {@see AbstractLogger}'s `$sink` property (RSRMID-2940). "Standard output"
+     * is the promise the shipped default makes; that a {@see \CNIC\EchoSink}
+     * is the thing keeping it is an implementation detail, and reading a
+     * protected property to check it was the last reflection in this file that
+     * a client-side accessor could not remove.
+     *
      * @param \Closure(): AbstractClient $factory
      */
     #[DataProvider("brandClientProvider")]
     public function testTheClientDefaultsToTheEchoSink(string $clientClass, \Closure $factory): void
     {
-        $sink = (new ReflectionClass(AbstractLogger::class))
-            ->getProperty("sink")
-            ->getValue(self::readLogger($factory()));
+        $logger = self::readLogger($factory());
+        $r = self::stubResponse();
 
-        $this->assertInstanceOf(
-            EchoSink::class,
-            $sink,
+        // Buffered rather than expectOutputString(), which takes no failure
+        // message — the brand is worth naming when this breaks.
+        ob_start();
+        $logger->log("post=data", $r);
+        $written = (string) ob_get_clean();
+
+        $this->assertSame(
+            $logger->format("post=data", $r),
+            $written,
             "{$clientClass} must still default to standard output."
         );
     }
@@ -330,19 +341,17 @@ final class LoggerSeamTest extends TestCase
         $this->assertFalse($custom->used);
 
         $kept = CF::cnr()->setLogSink($sink)->setCustomLogger($custom);
-        $this->assertSame(
-            $custom,
-            (new ReflectionClass(AbstractClient::class))->getProperty("logger")->getValue($kept)
-        );
+        $this->assertSame($custom, $kept->getLogger());
     }
 
     /**
-     * The client keeps its logger private to the SDK; the seam is asserted on
-     * the instance the client actually built, not on a replica.
+     * The seam is asserted on the instance the client actually built, not on a
+     * replica — {@see AbstractClient::getLogger()} is the read half that makes
+     * that possible without reflecting on a protected property (RSRMID-2940).
      */
     private static function readLogger(AbstractClient $cl): AbstractLogger
     {
-        $logger = (new ReflectionClass(AbstractClient::class))->getProperty("logger")->getValue($cl);
+        $logger = $cl->getLogger();
         self::assertInstanceOf(AbstractLogger::class, $logger);
         return $logger;
     }
