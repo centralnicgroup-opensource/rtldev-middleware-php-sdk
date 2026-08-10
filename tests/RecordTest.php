@@ -73,6 +73,26 @@ final class RecordTest extends TestCase
         $this->assertArrayHasKey("EMPTY", $rec->getData());
     }
 
+    // --- getStringByKey() ---
+
+    public function testGetStringByKeyOfStringValue(): void
+    {
+        $rec = new Record(self::ROW);
+        $this->assertSame("mydomain.com", $rec->getStringByKey("DOMAIN"));
+    }
+
+    public function testGetStringByKeyOfNonStringValueIsNull(): void
+    {
+        $rec = new Record(["contacts" => ["firstname" => "Middle", "lastname" => "Ware"]]);
+        $this->assertNull($rec->getStringByKey("contacts"));
+    }
+
+    public function testGetStringByKeyOfMissingKeyIsNull(): void
+    {
+        $rec = new Record(self::ROW);
+        $this->assertNull($rec->getStringByKey("KEYNOTEXISTING"));
+    }
+
     // --- getDateTimeByKey() ---
 
     public function testGetDateTimeByKeyParsesDashSeparatedValue(): void

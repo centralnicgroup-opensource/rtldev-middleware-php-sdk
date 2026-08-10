@@ -195,11 +195,10 @@ class Response extends AbstractResponse implements ResponseInterface
      * Add a column to the column list
      *
      * IBS responses are JSON, so column values are arbitrary (nested arrays and
-     * objects included) and the shared CNIC\Column is used as-is. CNR narrows
-     * the same class to string values; that divergence in the *constructor*
-     * value type is why a param-typed newColumn() factory would not stay
-     * type-clean, and why this builds its column locally and hands the finished
-     * instance to the shared registerColumn() bookkeeping — see registerColumn().
+     * objects included); the shared CNIC\Column is used as-is, exactly like
+     * CNR\Response::addColumn(). Both brands build their column locally and hand
+     * the finished instance to the shared registerColumn() bookkeeping — see
+     * registerColumn().
      *
      * Protected since RSRMID-2939, and called only from populate(): records are
      * assembled from the columns once, at the end of construction, so a column
@@ -229,15 +228,6 @@ class Response extends AbstractResponse implements ResponseInterface
     protected function newResponseParser(): ResponseParserInterface
     {
         return new RP();
-    }
-
-    /**
-     * Get Page Number of current List Query
-     */
-    #[\Override]
-    public function getCurrentPageNumber(): ?int
-    {
-        return 1;
     }
 
     /**
@@ -274,39 +264,32 @@ class Response extends AbstractResponse implements ResponseInterface
     }
 
     /**
-     * Get total count of records available for the list query
+     * Get total count of records available for the list query.
+     *
+     * IBS does not paginate — it returns one full result set — so there is no
+     * TOTAL column to fall back from. `getRecordsCount()` IS the true total
+     * here, not a fallback standing in for an absent one: total == limit ==
+     * count is the whole truth for this brand. Declared `?int` only because
+     * {@see ResponseInterface} does; this brand never answers `null`.
      */
     #[\Override]
-    public function getRecordsTotalCount(): int
+    public function getRecordsTotalCount(): ?int
     {
         return $this->getRecordsCount();
     }
 
     /**
-     * Get limit(ation) setting of the current list query
-     * This is the count of requested rows
+     * Get limit(ation) setting of the current list query — the count of
+     * requested rows.
+     *
+     * Same reasoning as {@see getRecordsTotalCount()}: IBS has no limit/offset
+     * concept, so the record count is the genuine answer rather than a stand-in
+     * for a missing LIMIT column. Declared `?int` only because
+     * {@see ResponseInterface} does; this brand never answers `null`.
      */
     #[\Override]
-    public function getRecordsLimitation(): int
+    public function getRecordsLimitation(): ?int
     {
         return $this->getRecordsCount();
-    }
-
-    /**
-     * Check if this list query has a next page
-     */
-    #[\Override]
-    public function hasNextPage(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Check if this list query has a previous page
-     */
-    #[\Override]
-    public function hasPreviousPage(): bool
-    {
-        return false;
     }
 }

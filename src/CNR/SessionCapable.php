@@ -36,8 +36,7 @@ trait SessionCapable
         $this->getSocketConfig()->setPersistent(true);
         $rr = $this->request();
         if ($rr->isSuccess()) {
-            $col = $rr->getColumn("SESSIONID");
-            $this->setSession($col instanceof Column ? $col->getData()[0] : "");
+            $this->setSession($rr->getColumn("SESSIONID")?->getStringByIndex(0) ?? "");
         }
         $this->getSocketConfig()->setPersistent(false);
         return $rr;

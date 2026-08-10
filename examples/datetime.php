@@ -70,7 +70,6 @@ var_dump($rec->getDateTimeByKey("expirationdate")?->date); // "2030-07-17"
 var_dump($rec->getDateTimeByKey("note"));                  // null — not parsable, not thrown
 var_dump($rec->getDateTimeByKey("missing"));                // null — key absent
 
-/** @var Column<string> $col */
 $col = new Column("expirationdate", ["2030/07/17"]);
 var_dump($col->getDateTimeByIndex(0)?->isDateOnly()); // true
 var_dump($col->getDateTimeByIndex(1));                // null — out of range

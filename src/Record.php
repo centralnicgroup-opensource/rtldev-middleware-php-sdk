@@ -71,6 +71,22 @@ class Record implements RecordInterface
     }
 
     /**
+     * Get row data for given column, narrowed to a string.
+     *
+     * Returns `null` for a missing key or a non-string value. CNR cells are
+     * always strings; IBS/Moniker JSON cells may be nested arrays or
+     * objects, which yield null here — use {@see self::getDataByKey()} for
+     * the raw value in that case.
+     */
+    #[\Override]
+    public function getStringByKey(string $columnName): ?string
+    {
+        /** @psalm-suppress MixedAssignment getDataByKey() returns mixed by design; is_string() narrows it below */
+        $value = $this->getDataByKey($columnName);
+        return is_string($value) ? $value : null;
+    }
+
+    /**
      * Get row data for given column, parsed as a date/time value.
      *
      * Opt-in narrowing over {@see self::getDataByKey()}: returns `null` for a

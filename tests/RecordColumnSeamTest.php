@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CNICTEST;
 
-use CNIC\CNR\Column as CNRColumn;
 use CNIC\CNR\Response as CNRResponse;
 use CNIC\Column;
 use CNIC\ColumnInterface;
@@ -17,22 +16,38 @@ use ReflectionMethod;
 use ReflectionNamedType;
 
 /**
- * Locks the record/column seam collapsed in RSRMID-2923.
+ * Locks the record/column seam collapsed in RSRMID-2923 and, on top of it, the
+ * value-typing seam moved onto the interface in RSRMID-2942.
  *
- * There is exactly one Record (CNIC\Record) and one Column (CNIC\Column). The
- * brand `Record` classes were byte-identical empty subclasses and are gone; the
- * brand `Column` classes duplicated ~35 lines of the same field, constructor and
- * accessors, and only CNR\Column survives — solely to bind the value type to
- * string and narrow getDataByIndex() to ?string.
+ * There is exactly one Record (CNIC\Record) and one Column (CNIC\Column); no
+ * brand may declare its own. CNR used to own a `CNR\Column extends Column<string>`
+ * solely to narrow `getDataByIndex()` to `?string` via a generic template
+ * parameter — but `ColumnInterface` is not generic, so that narrowing was
+ * erased on every reachable path (getColumn()/getColumns(), declared on
+ * ResponseInterface) before a consumer holding the interface ever saw it.
+ * RSRMID-2942 replaced it with a native return type declared directly on
+ * ColumnInterface/RecordInterface: getStringByIndex()/getStringByKey(). The
+ * brand subclass is gone.
  *
- * This is a structural test by necessity, not by preference: re-adding an empty
- * `CNR\Record`/`IBS\Record`/`IBS\Column` marker, or re-inlining the shared
- * column body into a brand, is behaviour-preserving on the day it lands, so no
- * behavioural test can detect the erosion — only reflection can. The same
- * reasoning as tests/ResponsePaginationSeamTest.php.
+ * This is a structural test by necessity, not by preference, for two distinct
+ * failure modes, both invisible to any behavioural test:
  *
- * Deleting or weakening this test is a deliberate act: it re-opens the decision
- * recorded in docs/agents/architecture.md.
+ * - A brand re-growing its own Record/Column marker (even an empty
+ *   pass-through) is behaviour-preserving on the day it lands — the same
+ *   reasoning as tests/ResponsePaginationSeamTest.php.
+ * - The narrowing sliding back into a `@template`/`@var Column<string>`
+ *   docblock generic is *also* behaviour-preserving: every existing runtime
+ *   call still returns the same value, because Psalm/PHPStan generics are
+ *   erased at runtime. Only reflecting the interface's declared return type
+ *   can tell a native `?string` apart from a docblock-only one that a
+ *   consumer holding `ColumnInterface`/`RecordInterface` can never see.
+ *
+ * Deleting or weakening this test is a deliberate act: it re-opens the
+ * decision recorded in docs/agents/architecture.md. Revisit it only if a
+ * brand genuinely needs record/column behaviour the shared classes cannot
+ * express (at which point that brand implements RecordInterface/ColumnInterface
+ * directly, per their class docblocks), or if the string-narrowing accessor
+ * itself is replaced by some other mechanism.
  */
 final class RecordColumnSeamTest extends TestCase
 {
@@ -53,6 +68,25 @@ final class RecordColumnSeamTest extends TestCase
             $this->assertClassAbsent(
                 $ns . "\\Record",
                 "records are shared as CNIC\\Record (RSRMID-2923); an empty brand marker carries no behaviour"
+            );
+        }
+    }
+
+    /**
+     * No brand may own a Column class either. CNR's used to exist solely to
+     * narrow getDataByIndex() to ?string via a generic template parameter that
+     * ColumnInterface (not generic) erased before any consumer saw it
+     * (RSRMID-2942) — the narrowing now lives as a native return type on
+     * ColumnInterface::getStringByIndex(), so the brand subclass has nothing
+     * left to exist for.
+     */
+    public function testNoBrandDeclaresItsOwnColumn(): void
+    {
+        foreach (self::BRAND_NAMESPACES as $ns) {
+            $this->assertClassAbsent(
+                $ns . "\\Column",
+                "columns are shared as CNIC\\Column (RSRMID-2942); the value type is expressed via "
+                . "ColumnInterface::getStringByIndex(), not a per-brand subclass"
             );
         }
     }
@@ -93,22 +127,8 @@ final class RecordColumnSeamTest extends TestCase
     }
 
     /**
-     * IBS/Moniker carry arbitrary JSON values and need no narrowing, so they use
-     * the shared Column directly; a brand Column there would be a pass-through.
-     */
-    public function testOnlyCnrDeclaresAColumn(): void
-    {
-        $this->assertClassAbsent("CNIC\\IBS\\Column", "IBS uses CNIC\\Column as-is (RSRMID-2923)");
-        $this->assertClassAbsent(
-            "CNIC\\MONIKER\\Column",
-            "MONIKER reuses IBS's response layer and must not own a Column"
-        );
-        $this->assertTrue(class_exists(CNRColumn::class));
-    }
-
-    /**
-     * The shared Column must stay instantiable (IBS builds it directly) and must
-     * own the whole key/data/length/bounds body.
+     * The shared Column must stay instantiable and must own the whole
+     * key/data/length/bounds body — both brands build it directly.
      */
     public function testSharedColumnOwnsTheSharedBody(): void
     {
@@ -124,25 +144,21 @@ final class RecordColumnSeamTest extends TestCase
     }
 
     /**
-     * CNR\Column earns its existence with exactly one thing: the narrowed
-     * return type. Anything else declared there is duplication creeping back.
+     * The value-typing seam (RSRMID-2942): ColumnInterface/RecordInterface must
+     * each declare a native `?string` return type on their string-narrowing
+     * accessor. This is the mechanism that replaced the erased generic —
+     * asserting it via reflection is the only way to tell a native return type
+     * (visible to every interface-typed consumer) apart from a docblock-only
+     * `@return TValue|null`/`@var Column<string>` generic (invisible to them).
      */
-    public function testCnrColumnNarrowsNothingButGetDataByIndex(): void
+    public function testStringNarrowingIsDeclaredNativelyOnTheInterfaces(): void
     {
-        $declared = array_map(
-            static fn(ReflectionMethod $m): string => $m->getName(),
-            array_filter(
-                (new ReflectionClass(CNRColumn::class))->getMethods(),
-                static fn(ReflectionMethod $m): bool => $m->getDeclaringClass()->getName() === CNRColumn::class
-            )
-        );
-        $this->assertSame(
-            ["getDataByIndex"],
-            array_values($declared),
-            "CNR\\Column exists only to narrow getDataByIndex() to ?string; everything else is shared"
-        );
+        $type = (new ReflectionMethod(ColumnInterface::class, "getStringByIndex"))->getReturnType();
+        $this->assertInstanceOf(ReflectionNamedType::class, $type);
+        $this->assertSame("string", $type->getName());
+        $this->assertTrue($type->allowsNull());
 
-        $type = (new ReflectionMethod(CNRColumn::class, "getDataByIndex"))->getReturnType();
+        $type = (new ReflectionMethod(RecordInterface::class, "getStringByKey"))->getReturnType();
         $this->assertInstanceOf(ReflectionNamedType::class, $type);
         $this->assertSame("string", $type->getName());
         $this->assertTrue($type->allowsNull());

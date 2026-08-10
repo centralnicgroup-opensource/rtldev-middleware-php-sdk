@@ -36,6 +36,16 @@ interface RecordInterface
     public function getDataByKey(string $columnName): mixed;
 
     /**
+     * Get row data for given column, narrowed to a string.
+     *
+     * Returns `null` for a missing key or a non-string value. CNR cells are
+     * always strings; IBS/Moniker JSON cells may be nested arrays or
+     * objects, which yield null here — use {@see self::getDataByKey()} for
+     * the raw value in that case.
+     */
+    public function getStringByKey(string $columnName): ?string;
+
+    /**
      * Get row data for given column, parsed as a date/time value.
      *
      * Returns `null` for a missing key, a non-string value, or a string that

@@ -12,11 +12,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * Shared column behaviour, covered once for every brand.
  *
- * CNIC\Column is what IBS/Moniker responses instantiate directly and what
- * CNR\Column inherits, so these assertions are the single source of coverage
- * for the key/data/length/bounds contract. Brand test classes only cover what
- * is genuinely brand-specific (CNR's narrowed return type, the per-brand
- * Response wiring).
+ * CNIC\Column is what every brand's Response instantiates directly — there is
+ * no per-brand Column subclass — so these assertions are the single source of
+ * coverage for the key/data/length/bounds contract, plus the getStringByIndex()/
+ * getDateTimeByIndex() opt-in narrowing accessors declared on
+ * {@see \CNIC\ColumnInterface}. Brand test classes only cover what is
+ * genuinely brand-specific (the per-brand Response wiring).
  */
 final class ColumnTest extends TestCase
 {
@@ -42,10 +43,6 @@ final class ColumnTest extends TestCase
 
     public function testLengthOfEmptyColumn(): void
     {
-        // bound explicitly: an empty literal would otherwise infer TValue as
-        // never, which makes the out-of-bounds null a static certainty rather
-        // than the runtime behaviour under test
-        /** @var Column<string> $col */
         $col = new Column("empty", []);
         $this->assertSame(0, $col->length);
         $this->assertSame([], $col->getData());
@@ -91,11 +88,31 @@ final class ColumnTest extends TestCase
         $this->assertSame("another-scalar", $col->getDataByIndex(2));
     }
 
+    // --- getStringByIndex() ---
+
+    public function testGetStringByIndexOfStringValue(): void
+    {
+        $col = new Column("nameserver", self::NAMESERVERS);
+        $this->assertSame("ns1.ispapi.net", $col->getStringByIndex(0));
+    }
+
+    public function testGetStringByIndexOfNonStringValueIsNull(): void
+    {
+        $col = new Column("contacts", [["firstname" => "Middle", "lastname" => "Ware"]]);
+        $this->assertNull($col->getStringByIndex(0));
+    }
+
+    public function testGetStringByIndexOutOfRangeIsNull(): void
+    {
+        $col = new Column("nameserver", self::NAMESERVERS);
+        $this->assertNull($col->getStringByIndex(2));
+        $this->assertNull($col->getStringByIndex(-1));
+    }
+
     // --- getDateTimeByIndex() ---
 
     public function testGetDateTimeByIndexParsesDashSeparatedValue(): void
     {
-        /** @var Column<string> $col */
         $col = new Column("expirationdate", ["2026-07-25 07:46:34"]);
         $dt = $col->getDateTimeByIndex(0);
         $this->assertInstanceOf(ApiDateTime::class, $dt);
@@ -104,7 +121,6 @@ final class ColumnTest extends TestCase
 
     public function testGetDateTimeByIndexParsesSlashSeparatedValue(): void
     {
-        /** @var Column<string> $col */
         $col = new Column("expirationdate", ["2030/07/17"]);
         $dt = $col->getDateTimeByIndex(0);
         $this->assertInstanceOf(ApiDateTime::class, $dt);
@@ -113,7 +129,6 @@ final class ColumnTest extends TestCase
 
     public function testGetDateTimeByIndexOfDateOnlyValueHasNullTs(): void
     {
-        /** @var Column<string> $col */
         $col = new Column("expirationdate", ["2030/07/17"]);
         $dt = $col->getDateTimeByIndex(0);
         $this->assertInstanceOf(ApiDateTime::class, $dt);
@@ -122,7 +137,6 @@ final class ColumnTest extends TestCase
 
     public function testGetDateTimeByIndexOutOfRangeIsNull(): void
     {
-        /** @var Column<string> $col */
         $col = new Column("expirationdate", ["2030/07/17"]);
         $this->assertNull($col->getDateTimeByIndex(1));
         $this->assertNull($col->getDateTimeByIndex(-1));
@@ -150,7 +164,6 @@ final class ColumnTest extends TestCase
 
     public function testGetDateTimeByIndexOfUnparsableStringIsNull(): void
     {
-        /** @var Column<string> $col */
         $col = new Column("expirationdate", ["not a date"]);
         $this->assertNull($col->getDateTimeByIndex(0));
     }
