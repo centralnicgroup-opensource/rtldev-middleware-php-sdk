@@ -9,7 +9,8 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=24.10.0"
+    "node": ">=24.15.0",
+    "npm": ">=12.0.0"
   },
   "homepage": "https://centralnicgroup-opensource.github.io/rtldev-middleware-php-sdk/",
   "repository": "github:centralnicgroup-opensource/rtldev-middleware-php-sdk.git",
@@ -44,14 +45,14 @@
     "application"
   ],
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/exec": "^7.1.0",
-    "@semantic-release/git": "^10.0.1",
-    "@team-internet/semantic-release-plugins": "^1.5.0",
+    "@semantic-release/git": "^11.0.1",
+    "@team-internet/semantic-release-plugins": "^2.2.4",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.3.0",
     "prettier": "^3.9.6",
-    "semantic-release": "^25.0.8"
+    "semantic-release": "^25.0.9"
   },
   "lint-staged": {
     "**/*": [
