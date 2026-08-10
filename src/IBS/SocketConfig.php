@@ -21,7 +21,6 @@ class SocketConfig extends AbstractSocketConfig
 {
     protected string $oteUrl = "https://testapi.internet.bs/";
     protected string $liveUrl = "https://api.internet.bs/";
-    protected int $socketTimeout = 300;
 
     /**
      * IBS carries sensitive data under lower-/camel-case command keys. Declared
