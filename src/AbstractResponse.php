@@ -30,17 +30,22 @@ use Traversable;
  *     (getCode/getDescription/isError/isSuccess) — each reads a different wire
  *     shape,
  *   - the pagination primitives, likewise declared on {@see ResponseInterface}
- *     (getCurrentPageNumber, getFirstRecordIndex, getLastRecordIndex,
- *     getRecordsTotalCount, getRecordsLimitation, hasNextPage, hasPreviousPage),
- *     which this base deliberately does NOT implement — not even as single-page
- *     defaults — so a brand that forgets pagination fails at declaration time
- *     instead of silently answering "one page, no next page".
+ *     (getFirstRecordIndex, getLastRecordIndex, getRecordsTotalCount,
+ *     getRecordsLimitation) — the four methods that read a brand's own
+ *     pagination columns — which this base deliberately does NOT implement —
+ *     not even as single-page defaults — so a brand that forgets pagination
+ *     fails at declaration time instead of silently answering "one page, no
+ *     next page". The seam is drawn at the wire: a brand answers only what its
+ *     columns say, and this base does every arithmetic derivation from those
+ *     four answers (getCurrentPageNumber, hasNextPage, hasPreviousPage,
+ *     getNextPageNumber, getPreviousPageNumber, getNumberOfPages included —
+ *     RSRMID-2943 moved them here because they read no column of their own).
  *
  * None of the members in those last two groups is declared abstract *here*: they
  * are interface methods this base simply never implements, so every concrete
- * brand must supply them. Do not add base defaults for the pagination primitives
- * — see docs/agents/architecture.md for why the seam is drawn there, and
- * tests/ResponsePaginationSeamTest.php, which refuses it.
+ * brand must supply them. Do not add base defaults for the four pagination
+ * primitives — see docs/agents/architecture.md for why the seam is drawn there,
+ * and tests/ResponsePaginationSeamTest.php, which refuses it.
  *
  * CNR\Response and IBS\Response both extend this as siblings — mirroring the
  * AbstractClient / AbstractSocketConfig / AbstractResponseTemplateManager /
@@ -336,12 +341,14 @@ abstract class AbstractResponse implements ResponseInterface
      * Register an already-constructed column into the list bookkeeping.
      *
      * The bookkeeping ($columns/$columnKeys/$columnIndex) is identical for every
-     * brand; what differs is the column's value type. Rather than a param-typed
-     * newColumn() factory — which cannot stay type-clean under PHPStan L9 / Psalm
-     * L1, because CNR columns take string[] while IBS columns take mixed[] and a
-     * shared factory would have to narrow one into the other — each brand's
-     * addColumn() builds its own correctly-typed Column locally and hands the
-     * finished instance here, so this shared helper never sees the brand types.
+     * brand, and both brands build the same shared CNIC\Column: CNR responses
+     * are plaintext (always strings) and IBS/Moniker responses are JSON
+     * (arbitrary values, nested arrays and objects included), a difference
+     * expressed as a native return type on ColumnInterface::getStringByIndex()
+     * rather than a per-brand Column subclass. Each brand's addColumn() still
+     * builds its Column locally and hands the finished instance here, so this
+     * shared helper never has to construct one itself — see
+     * IBS\Response::addColumn()/CNR\Response::addColumn().
      *
      * A repeated column name is refused rather than half-registered
      * (RSRMID-2939). The three lists are one data structure: $columns/$columnKeys
@@ -378,7 +385,7 @@ abstract class AbstractResponse implements ResponseInterface
      * Add a record to the record list.
      *
      * Protected since RSRMID-2939: a record added after construction changed
-     * getRecordsCount() and, through it, the four pagination getters IBS derives
+     * getRecordsCount() and, through it, the pagination getters IBS derives
      * from it (getRecordsTotalCount/getRecordsLimitation/getLastRecordIndex/
      * getNumberOfPages) — so a caller could silently repaginate a finished
      * response. Only {@see assembleRecords()} calls this.
@@ -456,31 +463,158 @@ abstract class AbstractResponse implements ResponseInterface
     }
 
     /**
-     * Get Page Number of next list query
+     * Get Page Number of current List Query, derived from the offset grid.
+     *
+     * A pure function of {@see getFirstRecordIndex()} and
+     * {@see getRecordsLimitation()} — both wire-column primitives every brand
+     * answers for itself — so this needs no brand override (RSRMID-2943).
+     * `null` when either is unavailable, or when the limit is non-positive: a
+     * non-positive window size has no meaningful page number.
+     */
+    #[\Override]
+    public function getCurrentPageNumber(): ?int
+    {
+        $first = $this->getFirstRecordIndex();
+        $limit = $this->getRecordsLimitation();
+        if ($first === null || $limit === null || $limit <= 0) {
+            return null;
+        }
+        return intdiv($first, $limit) + 1;
+    }
+
+    /**
+     * Check if this list query has a next page.
+     *
+     * Answered from the offset grid directly — `LAST + 1 < TOTAL` — rather than
+     * from page numbers, so it agrees with {@see getNextPageNumber()} even when
+     * the current window is not aligned to a page boundary (e.g. FIRST=50,
+     * LIMIT=100 is "page 1" but its next request starts at 150, not 200).
+     *
+     * An **empty** window is the case to keep in mind: CNR answers one by
+     * echoing `LAST = FIRST` (with `COUNT = 0`), rather than by omitting LAST or
+     * reporting a row index. Observed shapes, all `QueryDomainList`:
+     *
+     *   FIRST=0,        LIMIT=0  -> count=0, first=0,        last=0,        total=1825820
+     *   FIRST=2000000,  LIMIT=0  -> count=0, first=2000000,  last=2000000,  total=1825824
+     *   FIRST=20000000, LIMIT=10 -> count=0, first=20000000, last=20000000, total=1825824
+     *
+     * The third self-terminates on the arithmetic below, because LAST echoes an
+     * offset far past TOTAL. The first two do not: `LAST + 1 < TOTAL` holds, and
+     * without a gate `CNR\Client::requestNextResponsePage()` would advance to
+     * `FIRST = 1` and re-walk the list from near the start. What stops them is
+     * the **non-positive LIMIT** gate — the older of the two guards here, which
+     * `CNR\Client` has relied on to terminate since before the offset grid
+     * existed (see tests/CNR/ClientTest.php testRequestNextResponsePageZeroLimit).
+     *
+     * The `LAST < FIRST` gate is **defensive only** — no observed CNR response
+     * does it, precisely because an empty window echoes `LAST = FIRST`. It pins
+     * the invariant the client's advance depends on: since `LAST >= FIRST`
+     * always, `FIRST = LAST + 1` strictly increases and the walk is monotonic.
+     * A future wire change (or a substitute parser) that broke that would send
+     * pagination backwards rather than failing, so it is refused here.
+     *
+     * Note that {@see getRecordsCount()} is NOT a usable gate, however much "an
+     * empty window has no next page" sounds like the same statement:
+     * {@see assembleRecords()} sizes the record list across *every* column,
+     * pagination columns included, so a CNR response carrying nothing but
+     * COLUMN/COUNT/FIRST/LAST/LIMIT/TOTAL still reports one record.
+     */
+    #[\Override]
+    public function hasNextPage(): bool
+    {
+        $limit = $this->getRecordsLimitation();
+        if ($limit === null || $limit <= 0) {
+            return false;
+        }
+        $first = $this->getFirstRecordIndex();
+        $last = $this->getLastRecordIndex();
+        $total = $this->getRecordsTotalCount();
+        if ($first === null || $last === null || $total === null) {
+            return false;
+        }
+        if ($last < $first) {
+            return false;
+        }
+        return $last + 1 < $total;
+    }
+
+    /**
+     * Check if this list query has a previous page.
+     *
+     * Answered from the offset grid directly — `FIRST > 0` — for the same
+     * reason as {@see hasNextPage()}: an unaligned window still has a
+     * well-defined "before it" even though it does not sit on a page boundary.
+     *
+     * The same LIMIT<=0 gate as {@see hasNextPage()} applies, for the same
+     * reason: a non-positive window size cannot page backward either.
+     */
+    #[\Override]
+    public function hasPreviousPage(): bool
+    {
+        $limit = $this->getRecordsLimitation();
+        if ($limit === null || $limit <= 0) {
+            return false;
+        }
+        $first = $this->getFirstRecordIndex();
+        return $first !== null && $first > 0;
+    }
+
+    /**
+     * Get Page Number of next list query.
+     *
+     * Computed from the *offset* the next request will actually start at
+     * (`getLastRecordIndex() + 1`) rather than from `getCurrentPageNumber() + 1`.
+     * The two agree on every window this can be asked about — for a full window
+     * LAST + 1 is FIRST + LIMIT, so `intdiv(LAST + 1, LIMIT) + 1` reduces to
+     * `intdiv(FIRST, LIMIT) + 2`; a short window only occurs at the tail, where
+     * {@see hasNextPage()} is already false. The offset form is used anyway for
+     * two reasons: it is the same grid {@see hasNextPage()} answers from, so the
+     * predicate and this getter cannot drift apart under a later edit, and it
+     * mirrors {@see getPreviousPageNumber()}, where the offset form and
+     * `getCurrentPageNumber() - 1` genuinely do differ on an unaligned window.
+     *
+     * The value is a page number over the aligned grid, which stays a derived
+     * view: for an unaligned window (FIRST=50, LIMIT=100) the request offsets
+     * are exact and the page number is the page that offset lands on.
+     *
+     * The `$limit`/`$last` null-checks below are unreachable while
+     * {@see hasNextPage()} holds true — it already required both to be
+     * non-null and `$limit` positive — but PHPStan level 9 cannot see across
+     * that method boundary, so they stay to keep the return type honestly
+     * `?int` rather than asserting past the analyser. Do not "simplify" them
+     * away.
      */
     #[\Override]
     public function getNextPageNumber(): ?int
     {
-        $cp = $this->getCurrentPageNumber();
-        if ($cp === null) {
+        if (!$this->hasNextPage()) {
             return null;
         }
-        $page = $cp + 1;
-        if ($page > $this->getNumberOfPages()) {
+        $limit = $this->getRecordsLimitation();
+        $last = $this->getLastRecordIndex();
+        if ($limit === null || $limit <= 0 || $last === null) {
             return null;
         }
-        return $page;
+        return intdiv($last + 1, $limit) + 1;
     }
 
     /**
-     * Get the number of pages available for this list query
+     * Get the number of pages available for this list query.
+     *
+     * `0` when either total or limit is unavailable and this response holds no
+     * records (nothing to page through); `1` when it holds records but is not
+     * itself a paginated list (an implicit single page, mirroring IBS's
+     * always-one-page model). Otherwise the ceiling of total/limit.
      */
     #[\Override]
     public function getNumberOfPages(): int
     {
         $t = $this->getRecordsTotalCount();
         $limit = $this->getRecordsLimitation();
-        if ($t && $limit) {
+        if ($t === null || $limit === null) {
+            return $this->getRecordsCount() === 0 ? 0 : 1;
+        }
+        if ($t > 0 && $limit > 0) {
             return (int)ceil($t / $limit);
         }
         return 0;
@@ -507,20 +641,32 @@ abstract class AbstractResponse implements ResponseInterface
     }
 
     /**
-     * Get Page Number of previous list query
+     * Get Page Number of previous list query.
+     *
+     * Computed from the offset the previous request would start at
+     * (`max(0, FIRST - LIMIT)`), not from `getCurrentPageNumber() - 1`: for an
+     * unaligned window the two disagree the same way {@see getNextPageNumber()}'s
+     * do, and the offset form is the one that matches what would actually be
+     * requested. For an aligned FIRST both forms reduce to the same classic
+     * value.
+     *
+     * The null-checks below are unreachable while {@see hasPreviousPage()}
+     * holds true — it already required both to be non-null and `$limit`
+     * positive — but stay for the same PHPStan-level-9 reason documented on
+     * {@see getNextPageNumber()}. Do not "simplify" them away.
      */
     #[\Override]
     public function getPreviousPageNumber(): ?int
     {
-        $cp = $this->getCurrentPageNumber();
-        if ($cp === null) {
+        if (!$this->hasPreviousPage()) {
             return null;
         }
-        $cp -= 1;
-        if ($cp === 0) {
+        $first = $this->getFirstRecordIndex();
+        $limit = $this->getRecordsLimitation();
+        if ($first === null || $limit === null || $limit <= 0) {
             return null;
         }
-        return $cp;
+        return intdiv(max(0, $first - $limit), $limit) + 1;
     }
 
     /**

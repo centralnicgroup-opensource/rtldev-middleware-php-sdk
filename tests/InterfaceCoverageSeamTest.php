@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CNICTEST;
 
-use CNIC\CNR\Column as CNRColumn;
 use CNIC\CNR\Logger as CNRLogger;
 use CNIC\CNR\Response as CNRResponse;
 use CNIC\CNR\ResponseParser as CNRResponseParser;
@@ -112,7 +111,7 @@ use SplFileInfo;
  * find a subject at all.
  * {@see self::testTheSweepActuallyExaminesTheKnownImplementors()} closes it
  * by pinning that discovery still finds a fixed, independently-verified set
- * of 13 real implementors (see {@see self::KNOWN_TOTAL_IMPLEMENTORS}) and
+ * of 12 real implementors (see {@see self::KNOWN_TOTAL_IMPLEMENTORS}) and
  * still walks a plausible number of files under `src/`. It asserts
  * **containment**, not equality — {@see self::KNOWN_TOTAL_IMPLEMENTORS} is a
  * floor, not a snapshot — so a newly added brand class is swept
@@ -169,7 +168,6 @@ final class InterfaceCoverageSeamTest extends TestCase
      * @var class-string[]
      */
     private const array KNOWN_TOTAL_IMPLEMENTORS = [
-        CNRColumn::class,
         CNRLogger::class,
         CNRResponse::class,
         CNRResponseParser::class,

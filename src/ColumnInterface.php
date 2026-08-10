@@ -43,6 +43,16 @@ interface ColumnInterface
     public function getDataByIndex(int $recordIndex): mixed;
 
     /**
+     * Get column data at given index, narrowed to a string.
+     *
+     * Returns `null` for an out-of-range index or a non-string value. CNR
+     * cells are always strings; IBS/Moniker JSON cells may be nested arrays
+     * or objects, which yield null here — use {@see self::getDataByIndex()}
+     * for the raw value in that case.
+     */
+    public function getStringByIndex(int $recordIndex): ?string;
+
+    /**
      * Get column data at given index, parsed as a date/time value.
      *
      * Returns `null` for an out-of-range index, a non-string value, or a

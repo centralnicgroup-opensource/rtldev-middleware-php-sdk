@@ -364,6 +364,159 @@ final class ResponseTest extends TestCase
         $this->assertNull($r->getPreviousPageNumber());
     }
 
+    public function testUnalignedOffsetWindowPredicatesAndPageNumbersAgree(): void
+    {
+        // RSRMID-2943: FIRST=50 is not a multiple of LIMIT=100, so "page 1" is
+        // an unaligned window (offsets 50..149) inside a 1858-record list. Pins
+        // that hasNextPage()/hasPreviousPage() and the page-number getters are
+        // all derived from the same offset grid, so they cannot disagree: the
+        // next request starts at LAST+1=150, which lands on page
+        // intdiv(150,100)+1=2, and the previous one starts at
+        // max(0,50-100)=0, landing on page 1.
+        $tpls = (new RTM())->addTemplate(
+            "unalignedWindow",
+            "[RESPONSE]\r\nPROPERTY[TOTAL][0]=1858\r\nPROPERTY[FIRST][0]=50\r\n"
+            . "PROPERTY[COUNT][0]=100\r\nPROPERTY[LAST][0]=149\r\nPROPERTY[LIMIT][0]=100\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
+        );
+        $r = new R("unalignedWindow", templates: $tpls);
+        $this->assertTrue($r->hasNextPage());
+        $this->assertEquals(2, $r->getNextPageNumber());
+        $this->assertTrue($r->hasPreviousPage());
+        $this->assertEquals(1, $r->getPreviousPageNumber());
+        $this->assertEquals(1, $r->getCurrentPageNumber());
+    }
+
+    public function testWindowAlreadyHoldingTheTailHasNoNextPage(): void
+    {
+        // The wasted-round-trip fix (RSRMID-2943): FIRST=50, LIMIT=100,
+        // LAST=149, TOTAL=150 — this window already holds the tail of the
+        // list (LAST+1 === TOTAL). The old predicate compared whole page
+        // numbers (getCurrentPageNumber() + 1 <= getNumberOfPages()) and said
+        // "true" here, because ceil(150/100) = 2 pages exist even though this
+        // window already covers every row — costing an empty follow-up
+        // request. The offset-grid predicate answers false directly.
+        $tpls = (new RTM())->addTemplate(
+            "windowHoldsTail",
+            "[RESPONSE]\r\nPROPERTY[TOTAL][0]=150\r\nPROPERTY[FIRST][0]=50\r\n"
+            . "PROPERTY[COUNT][0]=100\r\nPROPERTY[LAST][0]=149\r\nPROPERTY[LIMIT][0]=100\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
+        );
+        $r = new R("windowHoldsTail", templates: $tpls);
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+    }
+
+    public function testAbsentPaginationColumnsAreNowRepresentable(): void
+    {
+        // RSRMID-2943: a non-list response (no FIRST/LAST/LIMIT/TOTAL columns
+        // at all) that still carries rows used to have its total/limit fall
+        // back to the record count, indistinguishable from a real list whose
+        // total/limit genuinely equalled that count. Now it reports "absent"
+        // honestly, and derives a single implicit page from the record list.
+        $raw = implode("\r\n", [
+            "[RESPONSE]",
+            "CODE=200",
+            "DESCRIPTION=Command completed successfully",
+            "PROPERTY[DOMAIN][0]=mydomain1.com",
+            "PROPERTY[DOMAIN][1]=mydomain2.com",
+            "EOF"
+        ]);
+        $r = new R($raw);
+        $this->assertNull($r->getRecordsTotalCount());
+        $this->assertNull($r->getRecordsLimitation());
+        $this->assertEquals(1, $r->getNumberOfPages());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getCurrentPageNumber());
+    }
+
+    public function testZeroLimitIsDistinctFromAbsentLimit(): void
+    {
+        // RSRMID-2943: LIMIT=0 is a real, requested value (a caller explicitly
+        // asked for a zero-row window) and must stay distinguishable from "no
+        // LIMIT column at all" — the two used to collide because
+        // getRecordsLimitation() fell back to getRecordsCount() whenever the
+        // column was missing, and 0 was also what an empty record list
+        // produced.
+        // Verbatim capture of `QueryDomainList` with FIRST=0/LIMIT=0, COLUMN row
+        // included. The window is empty and CNR answers LAST = FIRST (= 0 here),
+        // not a row index — so LAST+1 < TOTAL holds and only the LIMIT<=0 gate
+        // stops requestNextResponsePage() advancing to offset 1.
+        $tpls = (new RTM())->addTemplate(
+            "zeroLimit",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=0\r\n"
+            . "PROPERTY[LAST][0]=0\r\nPROPERTY[LIMIT][0]=0\r\nPROPERTY[TOTAL][0]=1825820\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.377\r\nEOF\r\n"
+        );
+        $r = new R("zeroLimit", templates: $tpls);
+        $this->assertSame(0, $r->getRecordsLimitation());
+        $this->assertFalse($r->hasNextPage());
+
+        $absent = new R("OK", templates: self::$tpls);
+        $this->assertNull($absent->getRecordsLimitation());
+    }
+
+    public function testPastTheEndWindowWithZeroLimitHasNoNextPage(): void
+    {
+        // Verbatim capture: FIRST past the end AND LIMIT=0. CNR echoes
+        // LAST = FIRST for the empty window, so LAST+1 < TOTAL is false here on
+        // the arithmetic alone — but TOTAL is the only thing making that true,
+        // and the LIMIT<=0 gate is what the client actually relies on. Pinned
+        // next to the FIRST=0/LIMIT=0 capture above because the two differ only
+        // in FIRST, which is exactly what shows LAST tracks FIRST rather than
+        // being a flat floor.
+        $tpls = (new RTM())->addTemplate(
+            "pastTheEndZeroLimit",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=2000000\r\n"
+            . "PROPERTY[LAST][0]=2000000\r\nPROPERTY[LIMIT][0]=0\r\nPROPERTY[TOTAL][0]=1825824\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=18.906\r\nEOF\r\n"
+        );
+        $r = new R("pastTheEndZeroLimit", templates: $tpls);
+        $this->assertSame(0, $r->getRecordsLimitation());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+    }
+
+    public function testPastTheEndWindowWithPositiveLimitHasNoNextPage(): void
+    {
+        // Verbatim capture: FIRST=20000000 (past the end) with LIMIT=10, so the
+        // LIMIT<=0 gate does NOT apply and the offset arithmetic has to carry
+        // this one by itself. It does, because CNR echoes LAST = FIRST for the
+        // empty window: 20000001 < 1825824 is false. This is the shape that
+        // would break a predicate derived from whole page numbers instead.
+        $tpls = (new RTM())->addTemplate(
+            "pastTheEndLimited",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=20000000\r\n"
+            . "PROPERTY[LAST][0]=20000000\r\nPROPERTY[LIMIT][0]=10\r\nPROPERTY[TOTAL][0]=1825824\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=15.892\r\nEOF\r\n"
+        );
+        $r = new R("pastTheEndLimited", templates: $tpls);
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+    }
+
+    public function testWindowEndingBeforeItStartsHasNoNextPage(): void
+    {
+        // Synthetic, and deliberately so: NO observed CNR response answers
+        // LAST < FIRST — an empty window echoes LAST = FIRST (see the two
+        // captures above). This pins the invariant the client's advance rests
+        // on rather than a shape the API produces: because LAST >= FIRST
+        // always, requestNextResponsePage()'s FIRST = LAST+1 strictly
+        // increases and the walk is monotonic. A wire change or a substitute
+        // parser that broke that would send pagination BACKWARD — re-listing
+        // the account from near the start — instead of failing, which is why
+        // hasNextPage() refuses it rather than trusting the arithmetic.
+        $tpls = (new RTM())->addTemplate(
+            "backwardWindow",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=2000000\r\n"
+            . "PROPERTY[LAST][0]=0\r\nPROPERTY[LIMIT][0]=100\r\nPROPERTY[TOTAL][0]=1825824\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.377\r\nEOF\r\n"
+        );
+        $r = new R("backwardWindow", templates: $tpls);
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+    }
+
     public function testIteratingAResponseWithoutRecordsYieldsNothing(): void
     {
         $r = new R("OK", templates: self::$tpls);

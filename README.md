@@ -68,13 +68,22 @@ A response is fully assembled by the time you hold one, and read-only from then 
 $r = $cl->request(["COMMAND" => "QueryDomainList", "LIMIT" => "100"]);
 
 foreach ($r as $index => $rec) {
-    echo $index, ": ", $rec->getDataByKey("DOMAIN"), "\n";
+    echo $index, ": ", $rec->getStringByKey("DOMAIN"), "\n";
 }
 
 $r->getRecord(0);           // ?RecordInterface — by index, or null if out of range
 $r->getRecords();           // RecordInterface[] — the whole list
 $r->getColumn("DOMAIN");    // ?ColumnInterface — column-wise instead of row-wise
 $r->getPagination();        // COUNT / FIRST / LAST / LIMIT / TOTAL / PAGES / …
+```
+
+**Ask for the type you want.** `getDataByKey()`/`getDataByIndex()` return `mixed`, because an IBS/Moniker cell may legitimately carry a nested array or object. When you expect a plain value, the typed accessors save you the check — each returns `null` for a missing key, an out-of-range index, or a value of the wrong type, so there is nothing to narrow by hand and no annotation to write:
+
+```php
+$name   = $rec->getStringByKey("DOMAIN");             // ?string
+$expiry = $rec->getDateTimeByKey("expirationdate");   // ?ApiDateTime
+
+$name   = $r->getColumn("DOMAIN")?->getStringByIndex(0);   // same, by column
 ```
 
 `foreach` keeps its position in the loop rather than on the response, so iterating is repeatable, needs no rewind step, and two places iterating the same response cannot interfere. If you are coming from a version with `getNextRecord()`/`rewindRecordList()`, see [Migration Guide → v31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3100).

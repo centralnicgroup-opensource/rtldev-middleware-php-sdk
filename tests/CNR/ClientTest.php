@@ -802,6 +802,31 @@ final class ClientTest extends TestCase
         $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
 
+    public function testRequestNextResponsePagePastTheEnd(): void
+    {
+        // RSRMID-2943 regression guard, consumer-facing half. A caller can hand
+        // this method a window it requested past the end of the list itself —
+        // requestAllResponsePages() never builds one, since it stops while
+        // LAST+1 < TOTAL still holds. Verbatim capture: CNR answers such a
+        // window with COUNT=0 and LAST echoing FIRST, which is what makes the
+        // offset comparison terminate (20000001 < 1825824 is false) with a
+        // POSITIVE limit, where the LIMIT<=0 guard does not apply.
+        $tpls = (new RTM())->addTemplate(
+            "listPastTheEnd",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=20000000\r\n"
+            . "PROPERTY[LAST][0]=20000000\r\nPROPERTY[LIMIT][0]=10\r\nPROPERTY[TOTAL][0]=1825824\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=15.892\r\nEOF\r\n"
+        );
+        $r = new R("listPastTheEnd", [
+            "COMMAND" => "QueryDomainList",
+            "FIRST" => "20000000",
+            "LIMIT" => "10"
+        ], templates: $tpls);
+        $this->assertTrue($r->isSuccess());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull(self::$cl->requestNextResponsePage($r));
+    }
+
     public function testRequestAllResponsePagesOk(): void
     {
         self::$tape->useCassette("all-pages");

@@ -12,30 +12,53 @@ use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
 /**
- * Locks the pagination seam of AbstractResponse (RSRMID-2912, declined).
+ * Locks the pagination seam of AbstractResponse at the wire (RSRMID-2912
+ * declined, RSRMID-2918 delivered, RSRMID-2943 narrowed).
  *
- * The 7 pagination primitives are declared on ResponseInterface and left
- * unimplemented on AbstractResponse on purpose, so a brand that forgets them
- * fails at declaration time instead of silently reporting "one page, no next
- * page" and losing pages 2..N of a list. The counterpart is that the 5 derived
- * getters, which are pure functions of those primitives, DO live on the base.
+ * **Directive.** The seam is drawn at the wire: a brand Response declares
+ * exactly the four methods that read its own pagination columns
+ * (getFirstRecordIndex, getLastRecordIndex, getRecordsTotalCount,
+ * getRecordsLimitation) and nothing else. AbstractResponse owns every
+ * derivation from those four answers — including getCurrentPageNumber(),
+ * hasNextPage() and hasPreviousPage(), which read no column of their own and
+ * therefore do not belong in the brand-primitive set at all.
  *
- * This is a structural test by necessity, not by preference: hoisting
- * single-page defaults onto the base is behaviour-preserving (the defaults
- * would return exactly what IBS\Response returns today), so no behavioural
- * test can ever detect the erosion — only reflection can.
+ * **Failure mode prevented.** A brand that silently inherits column readers —
+ * whether through a hoisted base default or a shared trait — reports "one
+ * page, no next page" for a list that genuinely has more, and a consumer
+ * paging through it loses pages 2..N with no error anywhere.
  *
- * Deleting or weakening this test is therefore a deliberate act, not a passing
- * cleanup: reopen the decision first. It was taken on RSRMID-2912 (declined,
- * now closed as Cancelled since the refactor was never implemented) and is
- * recorded in full in docs/agents/architecture.md; RSRMID-2918 is the live
- * issue that delivered this guard. The one condition that would justify
- * revisiting it is a third, genuinely non-paginating brand arriving.
+ * **Why the guard must be structural.** Hoisting single-page defaults onto the
+ * base is behaviour-preserving on the day it lands: IBS already returns
+ * exactly those defaults today, so no behavioural test can distinguish "IBS
+ * answered this itself" from "IBS silently inherited a base default that
+ * happens to match its own answer". Only reflection, via getDeclaringClass(),
+ * can tell the two apart.
+ *
+ * **Revisit condition.** A brand whose "more results" signal is a cursor or
+ * opaque token rather than a record offset. For such a brand hasNextPage()
+ * genuinely becomes a wire read again (whatever the cursor field is called),
+ * and it belongs back in PRIMITIVES.
+ *
+ * **History.** RSRMID-2912 first proposed hoisting defaults and was declined,
+ * closed as Cancelled; RSRMID-2918 is the issue that actually delivered this
+ * guard, with 7 primitives (the four column readers plus
+ * getCurrentPageNumber/hasNextPage/hasPreviousPage) and 5 derived getters.
+ * RSRMID-2943 re-examined that split and found it had pinned a
+ * misclassification: getCurrentPageNumber()/hasNextPage()/hasPreviousPage()
+ * read no wire column — they are pure functions of the four column readers,
+ * exactly like getNextPageNumber()/getNumberOfPages() already were — so
+ * pinning them as "primitives" protected nothing while forcing brands to
+ * hand-roll arithmetic that could (and, for CNR, did) disagree with the
+ * equivalent page-number getters on an unaligned offset window. Narrowing to
+ * 4 primitives / 8 derived puts every predicate and page number on the same
+ * offset grid, so a predicate and its corresponding getter can no longer
+ * disagree. Full account in docs/agents/architecture.md.
  */
 final class ResponsePaginationSeamTest extends TestCase
 {
     /**
-     * Pagination primitives that read brand-specific columns/status and must be
+     * Pagination primitives that read a brand's own wire columns and must be
      * answered explicitly by every brand.
      *
      * Spelled out on purpose rather than derived from ResponseInterface minus
@@ -45,13 +68,10 @@ final class ResponsePaginationSeamTest extends TestCase
      * @var string[]
      */
     private const array PRIMITIVES = [
-        "getCurrentPageNumber",
         "getFirstRecordIndex",
         "getLastRecordIndex",
         "getRecordsTotalCount",
         "getRecordsLimitation",
-        "hasNextPage",
-        "hasPreviousPage",
     ];
 
     /**
@@ -59,15 +79,18 @@ final class ResponsePaginationSeamTest extends TestCase
      * @var string[]
      */
     private const array DERIVED_GETTERS = [
+        "getCurrentPageNumber",
         "getNextPageNumber",
         "getNumberOfPages",
         "getPagination",
         "getPreviousPageNumber",
         "getRecordsCount",
+        "hasNextPage",
+        "hasPreviousPage",
     ];
 
     /**
-     * Every brand Response must declare all 7 primitives itself. MONIKER is not
+     * Every brand Response must declare all 4 primitives itself. MONIKER is not
      * listed because it reuses IBS\Response verbatim.
      */
     public function testEachBrandDeclaresItsOwnPrimitives(): void

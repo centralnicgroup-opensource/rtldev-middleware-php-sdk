@@ -202,24 +202,41 @@ interface ResponseInterface extends \IteratorAggregate
     public function getRecordsCount(): int;
 
     /**
-     * Get total count of records available for the list query, or the count of
-     * records for a non-list response
+     * Get total count of records available for the list query, or `null` when
+     * the response carries no TOTAL column (a non-list response)
      */
-    public function getRecordsTotalCount(): int;
+    public function getRecordsTotalCount(): ?int;
 
     /**
      * Get limit(ation) setting of the current list query — the count of
-     * requested rows
+     * requested rows — or `null` when the response carries no LIMIT column.
+     * `0` is a distinct, meaningful value (LIMIT=0 was requested); it no
+     * longer collides with "absent"
      */
-    public function getRecordsLimitation(): int;
+    public function getRecordsLimitation(): ?int;
 
     /**
-     * Check if this list query has a next page
+     * Check if this list query has a next page.
+     *
+     * Answered from record offsets — `getLastRecordIndex() + 1 < getRecordsTotalCount()`
+     * — not from page arithmetic, so it agrees with {@see getNextPageNumber()} even
+     * when the current window is not aligned to a page boundary.
+     *
+     * That comparison assumes a window that actually holds rows. An empty one
+     * reports a last index that is not a row index — CNR echoes
+     * `LAST = FIRST` — so with a non-positive limit `LAST + 1 < TOTAL` can still
+     * hold and the "next" offset walks back to the start of the list. Refuse a
+     * non-positive limit before the arithmetic runs. `AbstractResponse` handles
+     * this for every brand; an implementation writing its own must too.
      */
     public function hasNextPage(): bool;
 
     /**
-     * Check if this list query has a previous page
+     * Check if this list query has a previous page.
+     *
+     * Answered from record offsets — `getFirstRecordIndex() > 0` — not from page
+     * arithmetic, so an unaligned window (e.g. FIRST=50, LIMIT=100) correctly
+     * reports true instead of hiding behind a whole-page-number comparison.
      */
     public function hasPreviousPage(): bool;
 }

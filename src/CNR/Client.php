@@ -192,18 +192,23 @@ class Client extends AbstractClient implements RoleCredentialsInterface
         // "is there a next page?" lives in one place (Response::hasNextPage())
         // rather than being re-derived from total/limit arithmetic here. This
         // also subsumes the former LIMIT<=0 guard: a non-positive page size makes
-        // getCurrentPageNumber() null, so hasNextPage() returns false and
-        // requestAllResponsePages() terminates instead of re-requesting the same
-        // page forever (see testRequestNextResponsePageZeroLimit).
+        // hasNextPage() return false, so requestAllResponsePages() terminates
+        // instead of re-requesting the same page forever (see
+        // testRequestNextResponsePageZeroLimit).
+        //
+        // The advance itself is the response's own next offset — LAST + 1 —
+        // rather than command FIRST + LIMIT: identical to the old arithmetic for
+        // an aligned page, but correct for an unaligned one, and it no longer
+        // depends on the caller having sent FIRST at all.
         if (!$currentPage->hasNextPage()) {
             return null;
         }
-        $first = 0;
-        if (array_key_exists("FIRST", $mycmd)) {
-            $first = (int) $mycmd["FIRST"];
-        }
         $limit = $currentPage->getRecordsLimitation();
-        $mycmd["FIRST"] = $first + $limit;
+        $last = $currentPage->getLastRecordIndex();
+        if ($limit === null || $limit <= 0 || $last === null) {
+            return null;
+        }
+        $mycmd["FIRST"] = $last + 1;
         $mycmd["LIMIT"] = $limit;
         return $this->request($mycmd);
     }
