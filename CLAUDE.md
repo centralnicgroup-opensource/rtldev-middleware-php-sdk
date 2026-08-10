@@ -130,14 +130,14 @@ Short reminders; full detail in the linked docs.
 
 Class inventory is derivable from `src/` in a couple of greps and is deliberately not tabulated here (see [architecture.md](docs/agents/architecture.md)). The paths worth knowing because they are **not** guessable:
 
-| Path                                                                     | Purpose                                                 |
-| ------------------------------------------------------------------------ | ------------------------------------------------------- |
-| `.github/linters/{phpcs.xml,phpstan.neon,psalm.xml,rector.php}`          | Linter/analyser/modernization configs                   |
-| `.github/phpunit.xml`                                                    | PHPUnit configuration (note `stopOnDefect="true"`)      |
-| `tests/<Brand>/cassettes/`                                               | Committed `request()` cassettes (replay is the default) |
-| `env.example.sh`                                                         | Template for required env variables (copy to `env.sh`)  |
-| `src/Exception/CnicException.php`                                        | Base of the additive `CNIC\Exception` hierarchy         |
-| `src/{ResponseInterface,ResponseParserInterface,TransportInterface}.php` | The seams brands and tests substitute through           |
+| Path                                                                     | Purpose                                                        |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| `.github/linters/{phpcs.xml,phpstan.neon,psalm.xml,rector.php}`          | Linter/analyser/modernization configs                          |
+| `.github/phpunit.xml`                                                    | PHPUnit config (`stopOnDefect` + `failOnWarning/Notice/Risky`) |
+| `tests/<Brand>/cassettes/`                                               | Committed `request()` cassettes (replay is the default)        |
+| `env.example.sh`                                                         | Template for required env variables (copy to `env.sh`)         |
+| `src/Exception/CnicException.php`                                        | Base of the additive `CNIC\Exception` hierarchy                |
+| `src/{ResponseInterface,ResponseParserInterface,TransportInterface}.php` | The seams brands and tests substitute through                  |
 
 ## Atlassian / JIRA
 

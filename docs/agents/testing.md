@@ -2,6 +2,17 @@
 
 Reference for the test harnesses that need more than a one-line rule: the cassette record/replay flow, the functional (loopback) tests, and the deliberate MONIKER/IBS duplication. CLAUDE.md carries the imperative rules and links here. Guard-test authoring rules live in [CONTRIBUTING.md → Guard tests](../../CONTRIBUTING.md#guard-tests); the decisions the guards lock are in [architecture.md](architecture.md).
 
+## A green run is a complete run (RSRMID-2964)
+
+`.github/phpunit.xml` pairs `stopOnDefect="true"` with `failOnWarning`, `failOnNotice` and `failOnRisky`. That pairing is the point: `stopOnDefect` halts on an error, failure, warning or risky result, and the three `failOn*` attributes make every one of those categories exit non-zero. Before they were set, the config displayed all six diagnostic categories and stopped on them but failed on none, so **a single "Undefined array key" in `src/` truncated the suite from 618 tests to 191 and still exited 0** — a green CI on under a third of the suite.
+
+Two consequences worth keeping in mind:
+
+- Read the **exit code**, not the summary line. A red run stops at the first defect, so its "passed" count says nothing about what else is broken — set the failing test aside temporarily if you need the rest of the picture.
+- Do not treat this config as coverage for a guard test whose subject is a PHP diagnostic. It lives in a file an unrelated change can edit, and the guard would go quietly vacuous. Assert on the diagnostic inside the test instead — see [CONTRIBUTING.md → Guard tests](../../CONTRIBUTING.md#guard-tests).
+
+`failOnSkipped` is deliberately **not** set: the functional loopback test below skips legitimately when it cannot bind a port. `failOnDeprecation` is unset pending a check that the 8.4/8.5 CI legs are deprecation-free.
+
 ## `request()`-path tests are cassette-driven (RSRMID-2910)
 
 The brand `ClientTest`s drive the full `request()`/`login()`/`logout()`/pagination lifecycle through `CNICTEST\Support\CassetteTransport`, injected via `AbstractClient::setTransport()` — the `TransportInterface` seam.

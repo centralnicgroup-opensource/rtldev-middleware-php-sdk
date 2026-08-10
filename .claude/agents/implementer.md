@@ -16,7 +16,7 @@ Project rules live in `CLAUDE.md`; read it. The traps that matter most here:
 - Do not add dependencies. Do not add mocking frameworks — register canned responses on a `ResponseTemplateManager` **instance** and pass it in (`new Response($id, templates: (new RTM())->addTemplate(…))`), or use the existing spies. The static `RTM::addTemplate()` form is gone (RSRMID-2941); do not reintroduce a static template container.
 - `MIGRATION.md` and `docs/agents/architecture.md` are only touched for a genuine `BREAKING CHANGE:`, which is a main-thread decision, not yours.
 
-Before reporting done, run `composer lint` and `composer test` and let the results stand. Note `.github/phpunit.xml` sets `stopOnDefect="true"` — a green run can mean the suite stopped early, so check how many tests actually executed.
+Before reporting done, run `composer lint` and `composer test` and let the results stand. `.github/phpunit.xml` sets `stopOnDefect="true"` alongside `failOnWarning`/`failOnNotice`/`failOnRisky`, so every category that halts the run also fails it (RSRMID-2964) — a green run is now a complete one. A red run stops at the first defect, so the remaining count says nothing about what else is broken.
 
 **Do not commit or push** unless the task explicitly says to.
 
