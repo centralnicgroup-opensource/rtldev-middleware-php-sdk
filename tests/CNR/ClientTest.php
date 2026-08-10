@@ -827,6 +827,41 @@ final class ClientTest extends TestCase
         $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
 
+    public function testAdvanceIsRefusedWhenHasNextPageDisagreesWithTheOffsets(): void
+    {
+        // Unreachable through any real response, and deliberately so. Since
+        // RSRMID-2943 the predicate and the offsets are derived from the same
+        // four readers, so hasNextPage() === true already implies a positive
+        // LIMIT and a non-null LAST — which is exactly why the re-check below
+        // it reads like dead code and would survive a "simplification" review.
+        //
+        // It is not dead: it is what stops the derivation being re-split. The
+        // subclass here is the response that does not exist yet — a brand, or a
+        // consumer subclass, whose hasNextPage() answers from something other
+        // than the offsets and so can say "yes" over a window with no LIMIT to
+        // advance by. Without the guard the very next lines compute FIRST from
+        // null and re-request the list from the top, which is the forever-loop
+        // RSRMID-2943 set out to make impossible. Drop the guard and this test
+        // fails; drop hasNextPage()'s own null checks and it still passes,
+        // because the two protect different halves of the same invariant.
+        $tpls = (new RTM())->addTemplate(
+            "listWithoutLimit",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[FIRST][0]=0\r\n"
+            . "PROPERTY[LAST][0]=1\r\nPROPERTY[TOTAL][0]=1825824\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.377\r\nEOF\r\n"
+        );
+        $r = new class ("listWithoutLimit", ["COMMAND" => "QueryDomainList"], templates: $tpls) extends R {
+            #[\Override]
+            public function hasNextPage(): bool
+            {
+                return true;
+            }
+        };
+        $this->assertTrue($r->hasNextPage());
+        $this->assertNull($r->getRecordsLimitation());
+        $this->assertNull(self::$cl->requestNextResponsePage($r));
+    }
+
     public function testRequestAllResponsePagesOk(): void
     {
         self::$tape->useCassette("all-pages");
