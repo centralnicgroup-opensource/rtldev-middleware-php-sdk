@@ -158,6 +158,7 @@ abstract class AbstractResponse implements ResponseInterface
      * @param array<string,mixed> $context context data for the response (for use in custom loggers etc., optional, has no impact on SDK behaviour)
      * @param ResponseParserInterface|null $parser parser to use instead of the brand default (see newResponseParser())
      * @param string|null $error transport error, if any; non-null means $raw is unusable and the brand's "httperror" template is substituted instead (see {@see AbstractResponseTranslator::translate()})
+     * @param ResponseTemplateManagerInterface|null $templates registry the translator resolves template ids against; null uses the brand's built-ins. Supplying one is how a caller scopes a registered template to this response instead of to the whole process (RSRMID-2941)
      */
     public function __construct(
         string $raw,
@@ -165,13 +166,14 @@ abstract class AbstractResponse implements ResponseInterface
         array $placeholders = [],
         array $context = [],
         ?ResponseParserInterface $parser = null,
-        ?string $error = null
+        ?string $error = null,
+        ?ResponseTemplateManagerInterface $templates = null
     ) {
         $cmd = $this->sanitizeCommand($cmd);
         $this->context = $context;
         $this->command = $cmd;
         $this->requestUrl = $placeholders["CONNECTION_URL"] ?? "";
-        $translated = $this->translate($raw, $cmd, $placeholders, $error);
+        $translated = $this->translate($raw, $cmd, $placeholders, $error, $templates);
         $this->raw = $translated;
         $this->populate($translated, $parser ?? $this->newResponseParser(), $cmd);
     }
@@ -183,8 +185,15 @@ abstract class AbstractResponse implements ResponseInterface
      * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $placeholders
      * @param string|null $error transport error, if any; non-null means $raw is unusable (see {@see AbstractResponseTranslator::translate()})
+     * @param ResponseTemplateManagerInterface|null $templates registry to resolve template ids against; null uses the brand's built-ins
      */
-    abstract protected function translate(string $raw, array $cmd, array $placeholders, ?string $error = null): string;
+    abstract protected function translate(
+        string $raw,
+        array $cmd,
+        array $placeholders,
+        ?string $error = null,
+        ?ResponseTemplateManagerInterface $templates = null
+    ): string;
 
     /**
      * Parse the translated response into the hash and build the column/record

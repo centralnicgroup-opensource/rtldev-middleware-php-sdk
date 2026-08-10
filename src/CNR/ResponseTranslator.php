@@ -11,6 +11,7 @@ namespace CNIC\CNR;
 
 use CNIC\AbstractResponseTranslator;
 use CNIC\CNR\ResponseTemplateManager as RTM;
+use CNIC\ResponseTemplateManagerInterface;
 
 /**
  * CNR ResponseTranslator
@@ -44,13 +45,12 @@ final class ResponseTranslator extends AbstractResponseTranslator
     ];
 
     /**
-     * The CNR static template container.
-     * @return array<string>
+     * A fresh CNR template registry holding the brand's built-ins.
      */
     #[\Override]
-    protected static function templates(): array
+    protected static function newTemplateManager(): ResponseTemplateManagerInterface
     {
-        return RTM::$templates;
+        return new RTM();
     }
 
     /**

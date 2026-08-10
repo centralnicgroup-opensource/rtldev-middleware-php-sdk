@@ -20,9 +20,18 @@ The server starts in `setUpBeforeClass()` and the class calls `markTestSkipped()
 
 ## Mocking is template-driven, never a mocking framework
 
-Register mock API responses with `ResponseTemplateManager::addTemplate()`; do not add Mockery or Prophecy. Where a substitute for a collaborator is needed, the repo uses hand-written spies against the interface seams — `CNICTEST\Support\SpyTransport` (`TransportInterface`) and `CNICTEST\Support\SpyResponseParser` (`ResponseParserInterface`). Both reach the behaviour through public API with no reflection and no subclassing, which is the property those seams exist to provide.
+Register mock API responses on a `ResponseTemplateManager` instance and hand that instance to the Response; do not add Mockery or Prophecy. Where a substitute for a collaborator is needed, the repo uses hand-written spies against the interface seams — `CNICTEST\Support\SpyTransport` (`TransportInterface`) and `CNICTEST\Support\SpyResponseParser` (`ResponseParserInterface`). Both reach the behaviour through public API with no reflection and no subclassing, which is the property those seams exist to provide.
 
-Note that `$templates` is public static state with process lifetime: `AbstractResponseTemplateManager::resetTemplates()` is `addTemplate()`'s counterpart and is per concrete brand class. A direct assignment to the public property escapes it — see the RSRMID-2924 entry in [architecture.md](architecture.md).
+```php
+$tpls = (new \CNIC\CNR\ResponseTemplateManager())
+    ->addTemplate("OK", "200", "Command completed successfully");
+
+$r = new \CNIC\CNR\Response("OK", templates: $tpls);
+```
+
+The registry is instance state (RSRMID-2941), so **there is nothing to tear down** — a template registered here cannot reach a test class that did not ask for it, and the old `resetTemplates()` is gone along with the leak it patched. A class-wide set of templates goes in a `static` property assigned from `setUpBeforeClass()`, as `tests/CNR/ResponseTest.php` does; the responses that need them pass `templates:` explicitly. Do not add a static container back — `tests/ResponseTemplateRegistrySeamTest.php` refuses it.
+
+Templates only reach the translator through that argument, so this route works for a Response built directly, not for one produced by `$client->request()`. Every mock in the suite is a direct construction; a client-level registry was deliberately not added (see the guard's revisit condition).
 
 ## MONIKER test files mirroring IBS is intentional
 

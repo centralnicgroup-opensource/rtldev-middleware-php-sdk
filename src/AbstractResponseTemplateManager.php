@@ -12,47 +12,53 @@ namespace CNIC;
 /**
  * Shared base for all registrar ResponseTemplateManager implementations.
  *
- * The template container plus its add/get/has/reset/match operations are
- * identical across brands; only the raw template strings, the generateTemplate()
+ * The template container plus its add/get/has/match operations are identical
+ * across brands; only the built-in template strings, the generateTemplate()
  * wire format, the two hash keys used for matching, and the concrete Response /
  * ResponseParser classes differ. Concrete subclasses supply those via the
- * abstract hooks below and redeclare their own $templates array.
+ * abstract hooks below.
  *
- * @psalm-consistent-constructor
+ * **The container is per instance** (RSRMID-2941). It used to be a
+ * `public static array $templates` redeclared per brand, read live by
+ * {@see AbstractResponseTranslator}, so `addTemplate()` in one test class
+ * changed response translation in every later one; the `resetTemplates()` that
+ * tried to contain that was a no-op unless `addTemplate()` had run first and
+ * could not undo a direct write to the public property at all. Both are gone.
+ * The built-ins now live in an immutable per-brand hook and are copied into
+ * each new instance, so an override is scoped to the object that received it
+ * and there is nothing left to reset. See {@see ResponseTemplateManagerInterface}.
+ *
  * @package CNIC
  */
-abstract class AbstractResponseTemplateManager
+abstract class AbstractResponseTemplateManager implements ResponseTemplateManagerInterface
 {
     /**
-     * Template container
-     * @var array<string>
+     * This registry's templates (template id => raw wire text), seeded from the
+     * brand's built-ins and mutated only by {@see addTemplate()}.
+     * @var array<array-key, string>
      */
-    public static array $templates = [];
+    private array $templates;
+
+    public function __construct()
+    {
+        $this->templates = static::builtinTemplates();
+    }
 
     /**
-     * The brand's built-in templates, captured per concrete class the first time
-     * that class' container is mutated, so {@see resetTemplates()} can restore
-     * them. Keyed by class name because each subclass redeclares $templates and
-     * therefore has a container of its own.
-     * @var array<string, array<string>>
+     * The brand's built-in templates (template id => raw wire text).
+     *
+     * Declared as a hook over a constant rather than a property so the
+     * built-ins cannot be written to: each instance gets a copy, and no route
+     * exists to change what the *next* instance starts from.
+     * @return array<array-key, string>
      */
-    private static array $builtinTemplates = [];
+    abstract protected static function builtinTemplates(): array;
 
     /**
-     * Generate API response template string for given code and description
+     * Create a brand Response instance from a template id or raw response,
+     * resolving template ids against **this** registry.
      */
-    abstract public static function generateTemplate(string $code, string $description): string;
-
-    /**
-     * Get response template instance from template container.
-     * Subclasses narrow the return type to their concrete Response.
-     */
-    abstract public static function getTemplate(string $templateId): ResponseInterface;
-
-    /**
-     * Create a brand Response instance from a template id or raw response.
-     */
-    abstract protected static function createResponse(string $raw): ResponseInterface;
+    abstract protected function createResponse(string $raw): ResponseInterface;
 
     /**
      * Instantiate the brand's response parser.
@@ -61,7 +67,7 @@ abstract class AbstractResponseTemplateManager
      * both name the same brand parser, so the shared pipeline can parse a plain
      * response without each subclass repeating the call.
      */
-    abstract protected static function newResponseParser(): ResponseParserInterface;
+    abstract protected function newResponseParser(): ResponseParserInterface;
 
     /**
      * The two response-hash keys this brand compares when matching a template
@@ -71,80 +77,67 @@ abstract class AbstractResponseTemplateManager
     abstract protected static function matchKeys(): array;
 
     /**
-     * Add response template to template container
+     * Register a template on this registry.
      * @param string $plain API plain response, or API response code when $description is given
      */
-    public static function addTemplate(string $templateId, string $plain, ?string $description = null): static
+    #[\Override]
+    public function addTemplate(string $templateId, string $plain, ?string $description = null): static
     {
-        self::$builtinTemplates[static::class] ??= static::$templates;
-        static::$templates[$templateId] = is_null($description)
+        $this->templates[$templateId] = is_null($description)
             ? $plain
-            : static::generateTemplate($plain, $description);
-        return new static();
+            : $this->generateTemplate($plain, $description);
+        return $this;
     }
 
     /**
-     * Restore the brand's built-in templates, discarding everything
-     * {@see addTemplate()} has registered since.
-     *
-     * The container is public static state with process lifetime, so a template
-     * registered for one scenario stays visible to every later one — across test
-     * classes in the same PHPUnit process, and in any long-lived consumer that
-     * registers templates per request. Call this when a scenario ends (e.g. from
-     * tearDownAfterClass()) so the next one starts from the brand defaults.
-     *
-     * Scope, stated rather than implied: this is the counterpart of
-     * {@see addTemplate()}, not a general undo. It restores what the container
-     * held the first time addTemplate() ran for *this* class, so it is per brand
-     * and a no-op when the class was never added to. A direct assignment to the
-     * public $templates property is outside its reach — closing that second
-     * writer would mean making the property non-public, which
-     * {@see \CNIC\CNR\ResponseTranslator::templates()} reads across a class
-     * boundary, so it is a separate change. Go through addTemplate().
-     * @psalm-api
+     * Every template in this registry as a Response, keyed by template id.
+     * @return array<array-key, ResponseInterface>
      */
-    public static function resetTemplates(): void
-    {
-        if (isset(self::$builtinTemplates[static::class])) {
-            static::$templates = self::$builtinTemplates[static::class];
-        }
-    }
-
-    /**
-     * Return all available response templates
-     * @return array<mixed>
-     */
-    public static function getTemplates(): array
+    #[\Override]
+    public function getTemplates(): array
     {
         $tpls = [];
-        foreach (static::$templates as $key => $raw) {
-            $tpls[$key] = static::createResponse($raw);
+        foreach ($this->templates as $key => $raw) {
+            $tpls[$key] = $this->createResponse($raw);
         }
         return $tpls;
     }
 
     /**
-     * Check if given template exists in template container
+     * Every template in this registry as its raw wire text.
+     * @return array<array-key, string>
      */
-    public static function hasTemplate(string $templateId): bool
+    #[\Override]
+    public function getRawTemplates(): array
     {
-        return array_key_exists($templateId, static::$templates);
+        return $this->templates;
+    }
+
+    /**
+     * Check if given template exists in this registry.
+     */
+    #[\Override]
+    public function hasTemplate(string $templateId): bool
+    {
+        return array_key_exists($templateId, $this->templates);
     }
 
     /**
      * Check if given API response hash matches a given template by code and description
      * @param array<string, mixed> $responseHash
      */
-    public static function isTemplateMatchHash(array $responseHash, string $templateId): bool
+    #[\Override]
+    public function isTemplateMatchHash(array $responseHash, string $templateId): bool
     {
-        return self::matches(static::getTemplate($templateId)->getHash(), $responseHash);
+        return $this->matches($this->getTemplate($templateId)->getHash(), $responseHash);
     }
 
     /**
      * Check if given API plain response matches a given template by code and description
      * @param string $plain API plain response
      */
-    public static function isTemplateMatchPlain(string $plain, string $templateId): bool
+    #[\Override]
+    public function isTemplateMatchPlain(string $plain, string $templateId): bool
     {
         // Parsed with no command on purpose: a template is not tied to one, and
         // the brand parsers that read $cmd use it only to pick their wire branch
@@ -154,20 +147,31 @@ abstract class AbstractResponseTemplateManager
         // yield the same hash. Pinned by IBS's ResponseTemplateManagerTest and its
         // ResponseParserTest; keep that assertion, it is what stops the two routes
         // diverging unnoticed.
-        return self::matches(static::getTemplate($templateId)->getHash(), static::newResponseParser()->parse($plain));
+        return $this->matches($this->getTemplate($templateId)->getHash(), $this->newResponseParser()->parse($plain));
     }
 
     /**
      * Compare two response hashes on this brand's match keys.
+     *
+     * A key absent from either hash means "no match", not a warning: the
+     * response being compared is arbitrary caller input (see
+     * {@see isTemplateMatchHash()}), so `["status" => "SUCCESS"]` against a
+     * template carrying a `message` must answer false rather than emit
+     * "Undefined array key" and then compare null (RSRMID-2941).
+     *
      * @param array<string, mixed> $templateHash
      * @param array<string, mixed> $responseHash
      */
-    private static function matches(array $templateHash, array $responseHash): bool
+    private function matches(array $templateHash, array $responseHash): bool
     {
-        [$codeKey, $descrKey] = static::matchKeys();
-        return (
-            ($templateHash[$codeKey] === $responseHash[$codeKey]) &&
-            ($templateHash[$descrKey] === $responseHash[$descrKey])
-        );
+        foreach (static::matchKeys() as $key) {
+            if (!array_key_exists($key, $templateHash) || !array_key_exists($key, $responseHash)) {
+                return false;
+            }
+            if ($templateHash[$key] !== $responseHash[$key]) {
+                return false;
+            }
+        }
+        return true;
     }
 }

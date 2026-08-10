@@ -12,15 +12,16 @@ final class ResponseTemplateManagerTest extends TestCase
 {
     public function testGetTemplateNotFound(): void
     {
-        $tpl = RTM::getTemplate("IwontExist");
+        $tpl = (new RTM())->getTemplate("IwontExist");
         $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("500 Response Template not found", $tpl->getDescription());
     }
 
     public function testGetTemplates(): void
     {
-        $tpl = RTM::getTemplates();
-        foreach (array_keys(RTM::$templates) as $key) {
+        $rtm = new RTM();
+        $tpl = $rtm->getTemplates();
+        foreach (array_keys($rtm->getRawTemplates()) as $key) {
             $this->assertArrayHasKey($key, $tpl);
         }
     }
@@ -29,35 +30,50 @@ final class ResponseTemplateManagerTest extends TestCase
     {
         $this->assertSame(
             "status=SUCCESS\r\nmessage=Command completed successfully\r\n",
-            RTM::generateTemplate("SUCCESS", "Command completed successfully")
+            (new RTM())->generateTemplate("SUCCESS", "Command completed successfully")
         );
     }
 
     public function testHasTemplate(): void
     {
-        $this->assertTrue(RTM::hasTemplate("empty"));
-        $this->assertFalse(RTM::hasTemplate("IwontExist"));
+        $rtm = new RTM();
+        $this->assertTrue($rtm->hasTemplate("empty"));
+        $this->assertFalse($rtm->hasTemplate("IwontExist"));
     }
 
     public function testIsTemplateMatchHash(): void
     {
+        $rtm = new RTM();
         $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
+        $this->assertTrue($rtm->isTemplateMatchHash($r->getHash(), "empty"));
 
         // non-matching hash returns false
-        $this->assertFalse(RTM::isTemplateMatchHash(
+        $this->assertFalse($rtm->isTemplateMatchHash(
             ["status" => "SUCCESS", "message" => "Command completed successfully"],
             "empty"
         ));
     }
 
+    public function testIsTemplateMatchHashWithAMissingMatchKeyReturnsFalse(): void
+    {
+        // A hash short of one of the brand's two match keys is ordinary caller
+        // input, not a programming error: this used to index both hashes
+        // unguarded and emit "Undefined array key" before comparing null
+        // (RSRMID-2941). Both directions matter — a missing key on either side.
+        $rtm = new RTM();
+        $this->assertFalse($rtm->isTemplateMatchHash(["status" => "FAILURE"], "empty"));
+        $this->assertFalse($rtm->isTemplateMatchHash(["message" => "whatever"], "empty"));
+        $this->assertFalse($rtm->isTemplateMatchHash([], "empty"));
+    }
+
     public function testIsTemplateMatchPlain(): void
     {
+        $rtm = new RTM();
         $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
+        $this->assertTrue($rtm->isTemplateMatchPlain($r->getPlain(), "empty"));
 
         // non-matching plain response returns false
-        $this->assertFalse(RTM::isTemplateMatchPlain(
+        $this->assertFalse($rtm->isTemplateMatchPlain(
             "status=SUCCESS\r\nmessage=Command completed successfully\r\n",
             "empty"
         ));
@@ -71,44 +87,57 @@ final class ResponseTemplateManagerTest extends TestCase
         // passing ResponseFormat=JSON here would put both on the same branch and
         // prove nothing. Matching a template must not depend on which branch
         // produced the hash. (Ref: RSRMID-2924.)
+        $rtm = new RTM();
         $r = new R("", ["Command" => "DomainInfo"]);
-        $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
-        $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
+        $this->assertTrue($rtm->isTemplateMatchHash($r->getHash(), "empty"));
+        $this->assertTrue($rtm->isTemplateMatchPlain($r->getPlain(), "empty"));
     }
 
     public function testAddTemplate(): void
     {
         // providing template in plain text
+        $rtm = new RTM();
         $tplid = "custom403";
-        RTM::addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
-        $this->assertTrue(RTM::hasTemplate($tplid));
-        $tpl = RTM::getTemplate($tplid);
+        $rtm->addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
+        $this->assertTrue($rtm->hasTemplate($tplid));
+        $tpl = $rtm->getTemplate($tplid);
         $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
 
         // providing template by status and description
         $tplid = "custom2_403";
-        RTM::addTemplate($tplid, "FAILURE", "Forbidden");
-        $this->assertTrue(RTM::hasTemplate($tplid));
-        $tpl = RTM::getTemplate($tplid);
+        $rtm->addTemplate($tplid, "FAILURE", "Forbidden");
+        $this->assertTrue($rtm->hasTemplate($tplid));
+        $tpl = $rtm->getTemplate($tplid);
         $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
     }
 
-    public function testAddTemplateReturnsSelfForChaining(): void
+    public function testAddTemplateReturnsTheSameInstanceForChaining(): void
     {
-        $this->assertInstanceOf(RTM::class, RTM::addTemplate("chainA", "FAILURE", "A"));
+        // The static predecessor returned `new static()` — a throwaway instance
+        // of an all-static class, so the return value was fluent in shape only.
+        // Now it must be the very object that received the template, or a chain
+        // would register onto something the caller never sees (RSRMID-2941).
+        $rtm = new RTM();
+        $this->assertSame($rtm, $rtm->addTemplate("chainA", "FAILURE", "A"));
 
-        RTM::addTemplate("chainB", "FAILURE", "B")::addTemplate("chainC", "FAILURE", "C");
-        $this->assertTrue(RTM::hasTemplate("chainB"));
-        $this->assertTrue(RTM::hasTemplate("chainC"));
+        $rtm->addTemplate("chainB", "FAILURE", "B")->addTemplate("chainC", "FAILURE", "C");
+        $this->assertTrue($rtm->hasTemplate("chainB"));
+        $this->assertTrue($rtm->hasTemplate("chainC"));
     }
 
-    #[\Override]
-    public static function tearDownAfterClass(): void
+    public function testRegistriesDoNotShareRegisteredTemplates(): void
     {
-        // Templates are process-wide static state — drop this class' own so
-        // they do not leak into later test classes (RSRMID-2924).
-        RTM::resetTemplates();
+        // The point of RSRMID-2941: registering a template must not be visible
+        // to anyone who did not ask for it. There is no tearDown here on
+        // purpose — nothing this class registers can outlive its own instances,
+        // which is exactly what the deleted resetTemplates() used to paper over.
+        $mine = (new RTM())->addTemplate("scoped", "FAILURE", "only mine");
+        $theirs = new RTM();
+
+        $this->assertTrue($mine->hasTemplate("scoped"));
+        $this->assertFalse($theirs->hasTemplate("scoped"));
+        $this->assertTrue($theirs->hasTemplate("empty"), "the brand's built-ins are still there");
     }
 }

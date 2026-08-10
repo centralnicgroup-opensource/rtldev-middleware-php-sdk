@@ -16,6 +16,7 @@ use CNIC\IBS\ResponseTranslator as RT;
 use CNIC\Record;
 use CNIC\ResponseInterface;
 use CNIC\ResponseParserInterface;
+use CNIC\ResponseTemplateManagerInterface;
 
 /**
  * IBS Response
@@ -69,11 +70,17 @@ class Response extends AbstractResponse implements ResponseInterface
      * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $placeholders
      * @param string|null $error transport error, if any; non-null means $raw is unusable
+     * @param ResponseTemplateManagerInterface|null $templates registry to resolve template ids against; null uses IBS's built-ins
      */
     #[\Override]
-    protected function translate(string $raw, array $cmd, array $placeholders, ?string $error = null): string
-    {
-        return RT::translate($raw, $cmd, $placeholders, $error);
+    protected function translate(
+        string $raw,
+        array $cmd,
+        array $placeholders,
+        ?string $error = null,
+        ?ResponseTemplateManagerInterface $templates = null
+    ): string {
+        return RT::translate($raw, $cmd, $placeholders, $error, $templates);
     }
 
     /**

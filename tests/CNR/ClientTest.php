@@ -761,7 +761,7 @@ final class ClientTest extends TestCase
         // count/limit come back as 0 while total reflects the full list size.
         // Without the guard in requestNextResponsePage(), $first never advances
         // and requestAllResponsePages() would loop forever.
-        RTM::addTemplate(
+        $tpls = (new RTM())->addTemplate(
             "listLimitZero",
             "[RESPONSE]\r\nPROPERTY[COUNT][0]=0\r\nPROPERTY[FIRST][0]=0\r\nPROPERTY[LAST][0]=0\r\n"
             . "PROPERTY[LIMIT][0]=0\r\nPROPERTY[TOTAL][0]=1725494\r\n"
@@ -771,7 +771,7 @@ final class ClientTest extends TestCase
             "COMMAND" => "QueryDomainList",
             "FIRST" => "0",
             "LIMIT" => "0"
-        ]);
+        ], templates: $tpls);
         $this->assertTrue($r->isSuccess());
         $this->assertSame(0, $r->getRecordsLimitation());
         $this->assertSame(1725494, $r->getRecordsTotalCount());
@@ -785,7 +785,7 @@ final class ClientTest extends TestCase
         // current page already holds the last rows, so there is no next page.
         // Response::hasNextPage() returns false here, and requestNextResponsePage()
         // must return null accordingly (termination logic is no longer duplicated).
-        RTM::addTemplate(
+        $tpls = (new RTM())->addTemplate(
             "listLastPage",
             "[RESPONSE]\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[FIRST][0]=8\r\nPROPERTY[LAST][0]=9\r\n"
             . "PROPERTY[LIMIT][0]=2\r\nPROPERTY[TOTAL][0]=10\r\n"
@@ -795,7 +795,7 @@ final class ClientTest extends TestCase
             "COMMAND" => "QueryDomainList",
             "FIRST" => "8",
             "LIMIT" => "2"
-        ]);
+        ], templates: $tpls);
         $this->assertTrue($r->isSuccess());
         $this->assertFalse($r->hasNextPage());
         $this->assertNull($r->getNextPageNumber());
@@ -995,13 +995,5 @@ final class ClientTest extends TestCase
             "ZELDA" => "1",
         ];
         $this->assertEquals($expected, $response->getCommand());
-    }
-
-    #[\Override]
-    public static function tearDownAfterClass(): void
-    {
-        // Templates are process-wide static state — drop this class' own so
-        // they do not leak into later test classes (RSRMID-2924).
-        RTM::resetTemplates();
     }
 }

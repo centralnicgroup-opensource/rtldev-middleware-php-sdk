@@ -204,47 +204,16 @@ final class ResponseParserSeamTest extends TestCase
             method_exists(AbstractResponseTemplateManager::class, "parseResponse"),
             "parseResponse() was replaced by the newResponseParser() hook — a second route would drift again"
         );
-        foreach ([CNRTemplates::class, IBSTemplates::class] as $class) {
-            $m = new ReflectionMethod($class, "newResponseParser");
-            $this->assertSame($class, $m->getDeclaringClass()->getName());
-            $this->assertInstanceOf(ResponseParserInterface::class, $m->invoke(null));
+        foreach ([new CNRTemplates(), new IBSTemplates()] as $manager) {
+            $m = new ReflectionMethod($manager, "newResponseParser");
+            $this->assertSame($manager::class, $m->getDeclaringClass()->getName());
+            $this->assertInstanceOf(ResponseParserInterface::class, $m->invoke($manager));
         }
     }
 
-    public function testResetTemplatesRestoresTheBuiltInsAndDropsRegisteredOnes(): void
-    {
-        // The container is public static state with process lifetime, so a
-        // template registered by one test class was visible to every later one.
-        $builtin = IBSTemplates::$templates;
-        IBSTemplates::addTemplate("seamLeak", "FAILURE", "leaked");
-        $this->assertTrue(IBSTemplates::hasTemplate("seamLeak"));
-
-        IBSTemplates::resetTemplates();
-
-        $this->assertFalse(IBSTemplates::hasTemplate("seamLeak"));
-        $this->assertSame($builtin, IBSTemplates::$templates);
-        $this->assertTrue(IBSTemplates::hasTemplate("empty"), "the brand's own templates must survive a reset");
-    }
-
-    public function testResetTemplatesIsPerBrand(): void
-    {
-        CNRTemplates::addTemplate("seamOnlyCNR", "200", "cnr only");
-        IBSTemplates::addTemplate("seamOnlyIBS", "SUCCESS", "ibs only");
-
-        IBSTemplates::resetTemplates();
-
-        $this->assertTrue(CNRTemplates::hasTemplate("seamOnlyCNR"), "one brand's reset must not clear another's");
-        $this->assertFalse(IBSTemplates::hasTemplate("seamOnlyIBS"));
-
-        CNRTemplates::resetTemplates();
-        $this->assertFalse(CNRTemplates::hasTemplate("seamOnlyCNR"));
-    }
-
-    #[\Override]
-    public static function tearDownAfterClass(): void
-    {
-        // Same rule this file documents (RSRMID-2924).
-        CNRTemplates::resetTemplates();
-        IBSTemplates::resetTemplates();
-    }
+    // The two resetTemplates() cases that used to close this file are gone with
+    // the state they described: the template container is no longer process-wide
+    // static, so there is nothing for a tearDownAfterClass() to put back
+    // (RSRMID-2941). Their replacement — that a registry's contents are scoped to
+    // the object holding it — is tests/ResponseTemplateRegistrySeamTest.php.
 }

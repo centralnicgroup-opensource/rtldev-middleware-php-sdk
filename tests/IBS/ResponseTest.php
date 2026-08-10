@@ -46,11 +46,12 @@ final class ResponseTest extends TestCase
         $this->assertStringContainsString("Connection timed out", $r->getDescription());
     }
 
-    public function testStaticTemplateLookupByRawId(): void
+    public function testTemplateLookupByRawId(): void
     {
         // A raw payload equal to a known template id is the sanctioned
-        // ResponseTemplateManager::addTemplate() mocking route (see
-        // AbstractResponseTranslator::resolveTemplateId()), not a leak.
+        // mocking route (see AbstractResponseTranslator::resolveTemplateId()),
+        // not a leak. "notfound" is a built-in, so it resolves against the
+        // brand default registry with nothing to register.
         $r = new R("notfound");
         $this->assertTrue($r->isError());
         $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);

@@ -15,15 +15,16 @@ final class ResponseTest extends TestCase
 
     public function testGetTemplateNotFound(): void
     {
-        $tpl = RTM::getTemplate("IwontExist");
+        $tpl = (new RTM())->getTemplate("IwontExist");
         $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("500 Response Template not found", $tpl->getDescription());
     }
 
     public function testGetTemplates(): void
     {
-        $tpl = RTM::getTemplates();
-        foreach (array_keys(RTM::$templates) as $key) {
+        $rtm = new RTM();
+        $tpl = $rtm->getTemplates();
+        foreach (array_keys($rtm->getRawTemplates()) as $key) {
             $this->assertArrayHasKey($key, $tpl);
         }
     }
@@ -31,30 +32,31 @@ final class ResponseTest extends TestCase
     public function testIsTemplateMatchHash(): void
     {
         $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
+        $this->assertTrue((new RTM())->isTemplateMatchHash($r->getHash(), "empty"));
     }
 
     public function testIsTemplateMatchPlain(): void
     {
         $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
+        $this->assertTrue((new RTM())->isTemplateMatchPlain($r->getPlain(), "empty"));
     }
 
     public function testAddTemplate(): void
     {
         // providing template in plain text
+        $rtm = new RTM();
         $tplid = "custom403";
-        RTM::addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
-        $this->assertTrue(RTM::hasTemplate($tplid));
-        $tpl = RTM::getTemplate($tplid);
+        $rtm->addTemplate($tplid, "status=FAILURE\r\nmessage=Forbidden\r\n");
+        $this->assertTrue($rtm->hasTemplate($tplid));
+        $tpl = $rtm->getTemplate($tplid);
         $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
 
         // providing template by status and description
         $tplid = "custom2_403";
-        RTM::addTemplate($tplid, "FAILURE", "Forbidden");
-        $this->assertTrue(RTM::hasTemplate($tplid));
-        $tpl = RTM::getTemplate($tplid);
+        $rtm->addTemplate($tplid, "FAILURE", "Forbidden");
+        $this->assertTrue($rtm->hasTemplate($tplid));
+        $tpl = $rtm->getTemplate($tplid);
         $this->assertEquals("FAILURE", $tpl->getHash()["status"] ?? null);
         $this->assertEquals("Forbidden", $tpl->getDescription());
     }
@@ -164,11 +166,12 @@ final class ResponseTest extends TestCase
         $this->assertEquals("ns1.ispapi.net", $nameserver[0]);
     }
 
-    public function testStaticTemplateLookupByRawId(): void
+    public function testTemplateLookupByRawId(): void
     {
         // A raw payload equal to a known template id is the sanctioned
-        // ResponseTemplateManager::addTemplate() mocking route (see
-        // AbstractResponseTranslator::resolveTemplateId()), not a leak.
+        // mocking route (see AbstractResponseTranslator::resolveTemplateId()),
+        // not a leak. "notfound" is a built-in, so it resolves against the
+        // brand default registry with nothing to register.
         $r = new R("notfound");
         $this->assertTrue($r->isError());
         $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
@@ -182,13 +185,5 @@ final class ResponseTest extends TestCase
         $this->assertTrue($r->isError());
         $this->assertEquals("FAILURE", $r->getHash()["status"] ?? null);
         $this->assertStringContainsString("Empty API response", $r->getDescription());
-    }
-
-    #[\Override]
-    public static function tearDownAfterClass(): void
-    {
-        // Templates are process-wide static state — drop this class' own so
-        // they do not leak into later test classes (RSRMID-2924).
-        RTM::resetTemplates();
     }
 }

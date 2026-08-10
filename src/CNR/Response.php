@@ -18,6 +18,7 @@ use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\ExtendedResponseInterface;
 use CNIC\Record;
 use CNIC\ResponseParserInterface;
+use CNIC\ResponseTemplateManagerInterface;
 
 /**
  * CNR Response
@@ -58,11 +59,17 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * @param array<string, string> $cmd API command used within this request
      * @param array{CONNECTION_URL?: string} $placeholders
      * @param string|null $error transport error, if any; non-null means $raw is unusable
+     * @param ResponseTemplateManagerInterface|null $templates registry to resolve template ids against; null uses CNR's built-ins
      */
     #[\Override]
-    protected function translate(string $raw, array $cmd, array $placeholders, ?string $error = null): string
-    {
-        return RT::translate($raw, $cmd, $placeholders, $error);
+    protected function translate(
+        string $raw,
+        array $cmd,
+        array $placeholders,
+        ?string $error = null,
+        ?ResponseTemplateManagerInterface $templates = null
+    ): string {
+        return RT::translate($raw, $cmd, $placeholders, $error, $templates);
     }
 
     /**
