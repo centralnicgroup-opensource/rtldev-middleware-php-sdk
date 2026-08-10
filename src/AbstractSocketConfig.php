@@ -57,6 +57,12 @@ abstract class AbstractSocketConfig
      * while the wire carried the bag's value. Throw, naming constant and setter;
      * never silently pick a winner.
      *
+     * Each entry carries the **class** that owns the setter, and the message
+     * renders it, because the four are not all on one object: `setUserAgent()`
+     * lives on {@see AbstractClient} (the SDK's identity is versioned with that
+     * class), so a bare `setUserAgent()` would point a caller holding only the
+     * config at a method it cannot reach.
+     *
      * Rejection is **eager** here, unlike {@see HttpTransport::PROTECTED_OPTIONS}
      * which is checked on the next request: the config knows immediately, and the
      * error belongs where the mistake is. Options the SDK does *not* model
@@ -67,13 +73,29 @@ abstract class AbstractSocketConfig
      * takes away legitimate tuning, narrowing it re-opens a second home. Pinned by
      * AbstractClientCurlOptionsTest::testManagedOptionsAreExactlyTheOnesWithTheirOwnSetter().
      *
-     * @var array<int, array{option: string, setter: string}>
+     * @var array<int, array{option: string, owner: class-string, setter: string}>
      */
     public const array MANAGED_OPTIONS = [
-        CURLOPT_TIMEOUT   => ["option" => "CURLOPT_TIMEOUT",   "setter" => "setSocketTimeout()"],
-        CURLOPT_USERAGENT => ["option" => "CURLOPT_USERAGENT", "setter" => "setUserAgent()"],
-        CURLOPT_PROXY     => ["option" => "CURLOPT_PROXY",     "setter" => "setProxy()"],
-        CURLOPT_REFERER   => ["option" => "CURLOPT_REFERER",   "setter" => "setReferer()"],
+        CURLOPT_TIMEOUT => [
+            "option" => "CURLOPT_TIMEOUT",
+            "owner"  => self::class,
+            "setter" => "setSocketTimeout()",
+        ],
+        CURLOPT_USERAGENT => [
+            "option" => "CURLOPT_USERAGENT",
+            "owner"  => AbstractClient::class,
+            "setter" => "setUserAgent()",
+        ],
+        CURLOPT_PROXY => [
+            "option" => "CURLOPT_PROXY",
+            "owner"  => self::class,
+            "setter" => "setProxy()",
+        ],
+        CURLOPT_REFERER => [
+            "option" => "CURLOPT_REFERER",
+            "owner"  => self::class,
+            "setter" => "setReferer()",
+        ],
     ];
 
     /**
@@ -488,14 +510,15 @@ abstract class AbstractSocketConfig
             return;
         }
         $named = array_map(
-            static fn(array $entry): string => $entry["option"] . " (use " . $entry["setter"] . ")",
+            static fn(array $entry): string => $entry["option"]
+                . " (use " . $entry["owner"] . "::" . $entry["setter"] . ")",
             array_values($rejected)
         );
         throw new UnsupportedFeatureException(
             "cURL option(s) the SDK models as configuration cannot be set through the option bag: "
             . implode(", ", $named)
-            . ". Setting one both ways would leave the getter and the wire disagreeing; use the setter,"
-            . " which is the single home for that value."
+            . ". Setting one both ways would leave the getter and the wire disagreeing; use the setter"
+            . " named above, which is the single home for that value."
         );
     }
 

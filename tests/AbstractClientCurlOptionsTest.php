@@ -196,7 +196,14 @@ final class AbstractClientCurlOptionsTest extends TestCase
     /**
      * The constant doubles as the lookup used to build the rejection message, so
      * every entry must carry its own constant's name — a mismatch would point the
-     * caller at the wrong option — and a setter that actually exists.
+     * caller at the wrong option — and a setter that actually exists **on the class
+     * the entry names as its owner**.
+     *
+     * The owner is checked rather than "either the config or the client" (RSRMID-2944):
+     * the four setters do not all live on one object, and a message naming a bare
+     * `setUserAgent()` sent a caller holding only the config to a method it cannot
+     * reach. Accepting a match on either class would let that recur — and would let
+     * a setter silently move class without the message following it.
      */
     public function testManagedOptionsNameTheirConstantAndAnExistingSetter(): void
     {
@@ -206,9 +213,29 @@ final class AbstractClientCurlOptionsTest extends TestCase
 
             $setter = rtrim($entry["setter"], "()");
             $this->assertTrue(
-                method_exists(AbstractSocketConfig::class, $setter) || method_exists(AbstractClient::class, $setter),
-                "{$entry['setter']} is named as the owner of {$entry['option']} but exists on neither the "
-                . "config nor the client"
+                method_exists($entry["owner"], $setter),
+                "{$entry['owner']}::{$entry['setter']} is named as the owner of {$entry['option']} "
+                . "but that class has no such method"
+            );
+        }
+    }
+
+    /**
+     * The owner is only useful to a caller if the thrown message actually carries
+     * it — the point of RSRMID-2944 was a reachable method name, not a more
+     * detailed constant.
+     */
+    public function testRejectionMessageNamesTheClassOwningTheSetter(): void
+    {
+        $cl = $this->cnr();
+        try {
+            $cl->setExtraCurlOptions([CURLOPT_USERAGENT => "ua"]);
+            $this->fail("expected UnsupportedFeatureException");
+        } catch (UnsupportedFeatureException $e) {
+            $this->assertStringContainsString(
+                AbstractClient::class . "::setUserAgent()",
+                $e->getMessage(),
+                "the user agent lives on the client, and the message must say so"
             );
         }
     }
