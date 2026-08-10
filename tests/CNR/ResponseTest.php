@@ -517,6 +517,40 @@ final class ResponseTest extends TestCase
         $this->assertNull($r->getNextPageNumber());
     }
 
+    public function testAWindowWithNoTotalHasNoNextPage(): void
+    {
+        // Synthetic, like the gate above, but read the scope of this one
+        // carefully before treating it as a behavioural guard, because it is
+        // not one and a later reader should not have to re-derive that.
+        //
+        // hasNextPage() null-checks FIRST, LAST and TOTAL together. On CNR only
+        // TOTAL can actually be null by the time that line runs: reaching it
+        // needs a positive LIMIT, a LIMIT column means getRecordsCount() >= 1,
+        // and both getFirstRecordIndex() and getLastRecordIndex() fall back to
+        // a record-derived value rather than null once there is a record. The
+        // other two clauses are there for the analysers — `$last < $first` and
+        // `$last + 1 < $total` need int, not ?int — and for a future brand
+        // whose readers have no such fallback.
+        //
+        // The TOTAL clause is inert as well: PHP coerces the null to 0, so
+        // `2 < null` is false and the answer would be the same without it. So
+        // what this test pins is the RSRMID-2943 ?int contract — an absent
+        // pagination column reads as null, not as 0 — and that hasNextPage()
+        // answers false for a response that cannot say how long the list is.
+        // Do not "prove" it by deleting a clause and expecting red.
+        $tpls = (new RTM())->addTemplate(
+            "listWithoutTotal",
+            "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[FIRST][0]=0\r\n"
+            . "PROPERTY[LAST][0]=1\r\nPROPERTY[LIMIT][0]=100\r\n"
+            . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.377\r\nEOF\r\n"
+        );
+        $r = new R("listWithoutTotal", templates: $tpls);
+        $this->assertSame(100, $r->getRecordsLimitation());
+        $this->assertNull($r->getRecordsTotalCount());
+        $this->assertFalse($r->hasNextPage());
+        $this->assertNull($r->getNextPageNumber());
+    }
+
     public function testIteratingAResponseWithoutRecordsYieldsNothing(): void
     {
         $r = new R("OK", templates: self::$tpls);
