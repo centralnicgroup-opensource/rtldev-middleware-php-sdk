@@ -223,7 +223,7 @@ final class ClientConfigSeamTest extends TestCase
 
     /**
      * The accessor is the point of the change: without it every configuration
-     * value needed a hand-written forwarder or was unreachable, which is why ~26
+     * value needed a hand-written forwarder or was unreachable, which is why 18
      * of them accumulated and why this was the repo's highest-churn file.
      *
      * @param \Closure(): AbstractClient $factory
