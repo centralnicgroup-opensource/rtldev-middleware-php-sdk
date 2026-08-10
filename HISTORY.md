@@ -1,3 +1,39 @@
+# [32.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v31.1.0...v32.0.0) (2026-08-10)
+
+
+### Bug Fixes
+
+* **config:** name the owning class in the managed cURL option rejection ([8a4aead](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/8a4aead23505d92d515e1bd1cc98cb979316bfe4))
+
+
+### Features
+
+* **response:** narrow the column and pagination seams ([a26e846](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/a26e8463b0ed61eae25d2ec99013229d0aee88be))
+* **response:** scope the template registry to an instance ([d6d329e](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d6d329e7a1fd95642c55c8deca62bf45511c0983))
+
+
+### BREAKING CHANGES
+
+* **response:** `CNR\Column` is deleted -- use `CNIC\Column` and read
+values through `ColumnInterface::getStringByIndex()` /
+`RecordInterface::getStringByKey()`, adding both methods if you implement
+either interface. `ResponseInterface::getRecordsTotalCount()` and
+`getRecordsLimitation()` return `?int`, so an implementation must widen its
+return types and a consumer must handle `null` on a non-list response;
+`getPagination()["TOTAL"]`/`["LIMIT"]`/`["CURRENTPAGE"]` are `null` there
+too. A brand `Response` no longer declares `getCurrentPageNumber()`,
+`hasNextPage()` or `hasPreviousPage()`, and `hasPreviousPage()` now answers
+`FIRST > 0`, so it reports true on an unaligned window where it used to
+report false.
+
+See [MIGRATION.md → v32.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3200)
+* **response:** the response-template registry is an instance, not
+`public static array $templates`; `resetTemplates()` is removed. Register
+on a `ResponseTemplateManager` instance and pass it as
+`new Response($id, templates: $registry)`.
+
+See [MIGRATION.md → v32.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3200)
+
 # [31.1.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v31.0.0...v31.1.0) (2026-08-07)
 
 
