@@ -28,6 +28,8 @@ Two rules follow, and they cut in opposite directions:
 
 Then prove the guard is not vacuous: apply the mutation it is supposed to refuse, confirm the guard fails, and confirm the rest of the suite stays green — that green suite is the whole argument for the test existing. Note that `.github/phpunit.xml` sets `stopOnDefect="true"`, so a plain `composer test` halts at the first failure; set the guard aside temporarily to observe the "nothing else fails" half.
 
+**Check the exit code, not the summary line**, and be specific about what your mutation actually produces. A guard whose subject is a PHP diagnostic rather than a wrong value needs particular care: the config now sets `failOnWarning`/`failOnNotice`/`failOnRisky` so a warning does fail the build (RSRMID-2964), but a guard that leans on that alone goes vacuous the day someone edits those attributes back out. If the thing you are refusing is a diagnostic, assert on it inside the test — install a `set_error_handler`, capture, and assert nothing was raised. [tests/ResponseTemplateRegistrySeamTest.php](tests/ResponseTemplateRegistrySeamTest.php) does this, and its docblock says why.
+
 ## Code of Conduct
 
 ### Our Pledge

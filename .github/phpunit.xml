@@ -9,6 +9,9 @@
          displayDetailsOnTestsThatTriggerErrors="true"
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
+         failOnWarning="true"
+         failOnNotice="true"
+         failOnRisky="true"
          stopOnDefect="true">
 
     <extensions>
