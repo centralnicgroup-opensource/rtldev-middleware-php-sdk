@@ -12,7 +12,7 @@ Facts below; the class inventory is derivable from `src/` and the **full deep di
 
 - **Namespace root:** `CNIC\` mapped to `src/` (PSR-4). Brand sub-namespaces: `CNR`, `IBS`, `MONIKER`.
 - **Shared abstracts (in `CNIC\`):** `AbstractClient`, `AbstractSocketConfig`, `HttpTransport`, `AbstractResponseTemplateManager`, `AbstractResponseTranslator`, `AbstractResponse`. Shared **concretes:** `Record`, `Column` (templated on its value type), `ApiDateTime`. Enum: `System` (`OTE`/`LIVE`) — derived from the configured URL, never stored.
-- **Brands are siblings, not parent/child:** `CNR\Response`/`IBS\Response` both extend `AbstractResponse`. `MONIKER\Client extends IBS\Client` (same platform; only `SocketConfig` differs) and reuses IBS's Response. There is no brand `Record`, and `CNR\Column extends CNIC\Column<string>` is the only brand `Column`.
+- **Brands are siblings, not parent/child:** `CNR\Response`/`IBS\Response` both extend `AbstractResponse`. `MONIKER\Client extends IBS\Client` (same platform; only `SocketConfig` differs) and reuses IBS's Response. No brand declares a `Record` or a `Column` — both are shared concretes, and a value-type narrowing goes in a native return type on the interface (`getStringByIndex()`/`getStringByKey()`), never in a generic.
 - **Response construction is a template method:** brands implement the `translate()`/`populate()`/`newRecord()`/`newResponseParser()` hooks — never reimplement `AbstractResponse::__construct()`.
 - **The `request()` lifecycle is a template method too** (`AbstractClient::performRequest()`), and public `request(array $cmd = [], string $path = "")` is symmetric across brands. Vary a brand only through `buildCommand()`/`newResponse()`/`newSocketConfig()`.
 - **Config-driven:** each `SocketConfig` (extends `AbstractSocketConfig`) carries endpoints/params/flags as typed properties (no `config.json`).
@@ -27,7 +27,7 @@ Facts below; the class inventory is derivable from `src/` and the **full deep di
 
 Three directives have no guard test and therefore live here:
 
-- Do **not** "symmetrise" columns onto a `newColumn()` factory like records — infeasible under PHPStan L9 / Psalm L1; keep the `registerColumn(ColumnInterface)` shape. (RSRMID-2899)
+- Do **not** "symmetrise" columns onto a `newColumn()` factory like records — keep the `registerColumn(ColumnInterface)` shape. The original "infeasible under PHPStan L9 / Psalm L1" argument died with `CNR\Column`; re-run the analysers before reopening, and do not quote it. (RSRMID-2899, RSRMID-2942)
 - Do **not** rewrite date columns in the response data. Do **not** grow `CNIC\ApiDateTime` beyond an opt-in UTC-only **parser** — accepting both `-` and `/` separators is in scope, but no `in($tz)`, no locale formatting, no `ext-intl`, no markup helpers. (RSRMID-2318; RSRMID-2926)
 - Do **not** make `dateTime` fall back to `date` for date-only values — `ts` and `dateTime` are null _together_. (RSRMID-2318)
 
