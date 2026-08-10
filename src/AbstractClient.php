@@ -36,7 +36,7 @@ use CNIC\System;
  * the documented ergonomic surface (`$cl->useOTESystem()->setCredentials(...)`)
  * and they read and write the config's state rather than a copy of it, so a
  * forwarder cannot disagree with the config. A *new* setting needs no forwarder —
- * `getSocketConfig()` is the accessor whose absence let ~26 of these accumulate.
+ * `getSocketConfig()` is the accessor whose absence let these 18 accumulate.
  *
  * Only capabilities every brand can actually honour live here. In particular
  * `getSession()`/`setSession()` do **not** — API sessions are a CNR concept and
