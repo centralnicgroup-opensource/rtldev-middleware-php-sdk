@@ -8,6 +8,7 @@ use CNIC\CNR\Column as CNRColumn;
 use CNIC\CNR\Logger as CNRLogger;
 use CNIC\CNR\Response as CNRResponse;
 use CNIC\CNR\ResponseParser as CNRResponseParser;
+use CNIC\CNR\ResponseTemplateManager as CNRTemplates;
 use CNIC\Column;
 use CNIC\ColumnInterface;
 use CNIC\EchoSink;
@@ -15,12 +16,14 @@ use CNIC\HttpTransport;
 use CNIC\IBS\Logger as IBSLogger;
 use CNIC\IBS\Response as IBSResponse;
 use CNIC\IBS\ResponseParser as IBSResponseParser;
+use CNIC\IBS\ResponseTemplateManager as IBSTemplates;
 use CNIC\LoggerInterface;
 use CNIC\LogSinkInterface;
 use CNIC\Record;
 use CNIC\RecordInterface;
 use CNIC\ResponseInterface;
 use CNIC\ResponseParserInterface;
+use CNIC\ResponseTemplateManagerInterface;
 use CNIC\TransportInterface;
 use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
@@ -56,11 +59,12 @@ use SplFileInfo;
  * {@see ResponsePaginationSeamTest}. Reflection comparing the implementation
  * against the interface is therefore the only instrument that can.
  *
- * Only 7 interfaces are swept as **total contracts** — ones meant to fully
+ * Only 8 interfaces are swept as **total contracts** — ones meant to fully
  * describe their implementors: {@see \CNIC\ResponseInterface},
  * {@see \CNIC\RecordInterface}, {@see \CNIC\ColumnInterface},
  * {@see \CNIC\TransportInterface}, {@see \CNIC\ResponseParserInterface},
- * {@see \CNIC\LoggerInterface}, {@see \CNIC\LogSinkInterface}.
+ * {@see \CNIC\LoggerInterface}, {@see \CNIC\LogSinkInterface},
+ * {@see \CNIC\ResponseTemplateManagerInterface}.
  * {@see \CNIC\ExtendedResponseInterface} and
  * {@see \CNIC\RoleCredentialsInterface} are deliberately excluded from that
  * role — they are additive capability interfaces (CLAUDE.md, "Core vs.
@@ -85,13 +89,13 @@ use SplFileInfo;
  * nothing left for this sweep to add there.
  *
  * The allow-list below is intentionally empty. After RSRMID-2927 removed
- * `IBS\Response::getStatus()` the sweep is green across all 7 contracts with
+ * `IBS\Response::getStatus()` the sweep is green across all 8 contracts with
  * zero exceptions — keep it that way rather than adding an exception "just in
  * case"; a stray or widened method found here is a defect to fix, not a
  * reason to grow the list.
  *
  * Revisit this guard only if a genuinely new "total" interface is introduced
- * (add it to {@see self::TOTAL_INTERFACES}) or if one of the current 7 stops
+ * (add it to {@see self::TOTAL_INTERFACES}) or if one of the current 8 stops
  * being meant to fully describe its implementors (move it to the excluded
  * set alongside `ExtendedResponseInterface`/`RoleCredentialsInterface`, with
  * the same justification these carry).
@@ -108,7 +112,7 @@ use SplFileInfo;
  * find a subject at all.
  * {@see self::testTheSweepActuallyExaminesTheKnownImplementors()} closes it
  * by pinning that discovery still finds a fixed, independently-verified set
- * of 11 real implementors (see {@see self::KNOWN_TOTAL_IMPLEMENTORS}) and
+ * of 13 real implementors (see {@see self::KNOWN_TOTAL_IMPLEMENTORS}) and
  * still walks a plausible number of files under `src/`. It asserts
  * **containment**, not equality — {@see self::KNOWN_TOTAL_IMPLEMENTORS} is a
  * floor, not a snapshot — so a newly added brand class is swept
@@ -142,6 +146,7 @@ final class InterfaceCoverageSeamTest extends TestCase
         ResponseParserInterface::class,
         LoggerInterface::class,
         LogSinkInterface::class,
+        ResponseTemplateManagerInterface::class,
     ];
 
     /**
@@ -168,12 +173,14 @@ final class InterfaceCoverageSeamTest extends TestCase
         CNRLogger::class,
         CNRResponse::class,
         CNRResponseParser::class,
+        CNRTemplates::class,
         Column::class,
         EchoSink::class,
         HttpTransport::class,
         IBSLogger::class,
         IBSResponse::class,
         IBSResponseParser::class,
+        IBSTemplates::class,
         Record::class,
     ];
 

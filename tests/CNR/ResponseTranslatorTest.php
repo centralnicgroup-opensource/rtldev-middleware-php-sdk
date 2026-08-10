@@ -53,7 +53,7 @@ final class ResponseTranslatorTest extends TestCase
     public function testIsTemplateMatchHash(): void
     {
         $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchHash($r->getHash(), "empty"));
+        $this->assertTrue((new RTM())->isTemplateMatchHash($r->getHash(), "empty"));
     }
 
     /**
@@ -62,7 +62,7 @@ final class ResponseTranslatorTest extends TestCase
     public function testIsTemplateMatchPlain(): void
     {
         $r = new R("");
-        $this->assertTrue(RTM::isTemplateMatchPlain($r->getPlain(), "empty"));
+        $this->assertTrue((new RTM())->isTemplateMatchPlain($r->getPlain(), "empty"));
     }
 
     /**

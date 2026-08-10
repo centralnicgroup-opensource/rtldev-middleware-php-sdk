@@ -13,7 +13,7 @@ Project rules live in `CLAUDE.md`; read it. The traps that matter most here:
 - **Guard tests are load-bearing.** If a `tests/*SeamTest.php`, `tests/ResponseInterfaceConsumerTest.php`, `tests/AbstractClientConfigDriftTest.php`, `tests/HttpTransportCurlOptionsTest.php` or `tests/Functional/HttpTransportTest.php` starts failing, you are undoing a settled decision, not fixing a stale test. Stop and report it. Never delete or weaken one as a cleanup.
 - **Exceptions** come from the `CNIC\Exception` hierarchy. Never a bare `\Exception`.
 - Every new or modified file carries `declare(strict_types=1);`, typed properties, and return types.
-- Do not add dependencies. Do not add mocking frameworks — use `ResponseTemplateManager::addTemplate()` or the existing spies.
+- Do not add dependencies. Do not add mocking frameworks — register canned responses on a `ResponseTemplateManager` **instance** and pass it in (`new Response($id, templates: (new RTM())->addTemplate(…))`), or use the existing spies. The static `RTM::addTemplate()` form is gone (RSRMID-2941); do not reintroduce a static template container.
 - `MIGRATION.md` and `docs/agents/architecture.md` are only touched for a genuine `BREAKING CHANGE:`, which is a main-thread decision, not yours.
 
 Before reporting done, run `composer lint` and `composer test` and let the results stand. Note `.github/phpunit.xml` sets `stopOnDefect="true"` — a green run can mean the suite stopped early, so check how many tests actually executed.

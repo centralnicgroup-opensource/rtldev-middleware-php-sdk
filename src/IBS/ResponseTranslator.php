@@ -11,6 +11,7 @@ namespace CNIC\IBS;
 
 use CNIC\AbstractResponseTranslator;
 use CNIC\IBS\ResponseTemplateManager as RTM;
+use CNIC\ResponseTemplateManagerInterface;
 
 /**
  * IBS ResponseTranslator
@@ -37,13 +38,12 @@ final class ResponseTranslator extends AbstractResponseTranslator
     private const array DESCRIPTION_RAW_PATTERN_MAP = [];
 
     /**
-     * The IBS static template container.
-     * @return array<string>
+     * A fresh IBS template registry holding the brand's built-ins.
      */
     #[\Override]
-    protected static function templates(): array
+    protected static function newTemplateManager(): ResponseTemplateManagerInterface
     {
-        return RTM::$templates;
+        return new RTM();
     }
 
     /**

@@ -17,7 +17,7 @@ Facts below; the class inventory is derivable from `src/` and the **full deep di
 - **The `request()` lifecycle is a template method too** (`AbstractClient::performRequest()`), and public `request(array $cmd = [], string $path = "")` is symmetric across brands. Vary a brand only through `buildCommand()`/`newResponse()`/`newSocketConfig()`.
 - **Config-driven:** each `SocketConfig` (extends `AbstractSocketConfig`) carries endpoints/params/flags as typed properties (no `config.json`).
 - **Connection configuration lives on the `SocketConfig`, never on the client** — reach it via `AbstractClient::getSocketConfig()` (covariant `CNR\Client::getSocketConfig(): CNR\SocketConfig` is the one narrowing point).
-- **Type-hint against interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `ExtendedResponseInterface`, `RoleCredentialsInterface`, `ResponseParserInterface`, `TransportInterface`, `LoggerInterface`, `LogSinkInterface`.
+- **Type-hint against interfaces:** `ColumnInterface`, `RecordInterface`, `ResponseInterface`, `ExtendedResponseInterface`, `RoleCredentialsInterface`, `ResponseParserInterface`, `ResponseTemplateManagerInterface`, `TransportInterface`, `LoggerInterface`, `LogSinkInterface`.
 - **An interface declaration must match its implementation's signature** — a parameter that exists only on the implementation is unreachable to the interface-typed consumers this project mandates. Adding one to the interface is **breaking**.
 - **Public API symbols** are annotated `@psalm-api` to suppress unused-symbol warnings.
 
@@ -76,7 +76,7 @@ Rules below; harness detail (cassettes, functional tests, spies) is in [docs/age
 
 - **Framework:** PHPUnit 12+, config `.github/phpunit.xml`. Test namespace `CNICTEST\` mirroring `CNIC\`.
 - **Test classes:** always `final class` extending `\PHPUnit\Framework\TestCase`; methods `testDescriptiveName` in camelCase.
-- **Mocking:** register mock API responses via `ResponseTemplateManager::addTemplate()`, or use the hand-written spies (`SpyTransport`, `SpyResponseParser`) — do **not** add Mockery or Prophecy.
+- **Mocking:** register mock API responses on a `ResponseTemplateManager` **instance** and hand it to the Response — `new Response($templateId, templates: (new RTM())->addTemplate(…))` — or use the hand-written spies (`SpyTransport`, `SpyResponseParser`). Do **not** add Mockery or Prophecy, and do **not** reintroduce a static template container (RSRMID-2941).
 - **Shared state:** `static` properties + `setUpBeforeClass()` for one-time client setup.
 - **No real API calls in unit tests.** `request()`-path tests replay committed cassettes offline (`composer test`); re-record against OT&E only with `composer test:record` when the exercised API behaviour changes. `tests/Functional/` is the one deliberate exception — a loopback HTTP server, skipped if it cannot bind a port.
 - **Direct parser tests live in `tests/<Brand>/ResponseParserTest.php`** — keep parse assertions out of `ResponseTest.php`.
@@ -173,7 +173,7 @@ Opus decides, Sonnet implements: plan and review in the main thread, hand the me
 - Read, display, or expose the contents of `env.sh` — it contains secrets
 - Add dependencies without explicit request — this is a lightweight SDK
 - Throw a bare `\Exception` or declare exception types outside `CNIC\Exception`
-- Use mocking frameworks (Mockery, Prophecy) — use ResponseTemplateManager or the repo's spies
+- Use mocking frameworks (Mockery, Prophecy) — use a `ResponseTemplateManager` instance or the repo's spies
 - Add `@author` tags to docblocks
 - Add `Co-Authored-By:` trailers to commit messages
 

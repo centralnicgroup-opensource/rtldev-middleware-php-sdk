@@ -18,7 +18,7 @@ namespace CNIC;
  * fallback, the two description-map rewrite loops, findMatch(), and placeholder
  * replacement. Only a few narrow points differ, supplied by the abstract hooks
  * below:
- *   - the static template container (templates())
+ *   - the brand's default template registry (newTemplateManager())
  *   - the two description rewrite maps (descriptionRegexMap()/descriptionRawPatternMap())
  *   - the response field carrying the human-readable text (fieldName():
  *     "description" for CNR, "message" for IBS)
@@ -37,10 +37,13 @@ namespace CNIC;
 abstract class AbstractResponseTranslator
 {
     /**
-     * The brand's static template container (id => raw template string).
-     * @return array<string>
+     * The brand's default template registry, used when the caller supplies none.
+     *
+     * A factory, not a shared instance: handing every caller the same object
+     * would put the process-global container back that RSRMID-2941 removed —
+     * one `addTemplate()` on it would be visible to every later translate().
      */
-    abstract protected static function templates(): array;
+    abstract protected static function newTemplateManager(): ResponseTemplateManagerInterface;
 
     /**
      * plain-string description keys for translation; keys are preg_quote'd before matching
@@ -74,28 +77,34 @@ abstract class AbstractResponseTranslator
      * @param array<string, string> $cmd requested API command
      * @param array{CONNECTION_URL?: string} $placeholders
      * @param string|null $error transport error, if any (see {@see AbstractClient::performRequest()}); non-null means $raw is unusable and the "httperror" template is substituted instead
+     * @param ResponseTemplateManagerInterface|null $templates registry to resolve template ids against; null uses the brand's built-ins (see {@see newTemplateManager()})
      */
-    public static function translate(string $raw, array $cmd, array $placeholders = [], ?string $error = null): string
-    {
+    public static function translate(
+        string $raw,
+        array $cmd,
+        array $placeholders = [],
+        ?string $error = null,
+        ?ResponseTemplateManagerInterface $templates = null
+    ): string {
         $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
 
-        $templates = static::templates();
+        $rawTemplates = ($templates ?? static::newTemplateManager())->getRawTemplates();
 
         // Explicit call for a static template, or a declared transport failure
-        $templateId = self::resolveTemplateId($newraw, $error, $templates);
+        $templateId = self::resolveTemplateId($newraw, $error, $rawTemplates);
         if ($templateId !== null) {
             // don't use getTemplate as it leads to endless loop as of again
             // creating a response instance
-            $newraw = $templates[$templateId];
+            $newraw = $rawTemplates[$templateId];
             if ($error !== null && $error !== "") {
                 $newraw = preg_replace("/\{HTTPERROR\}/", " (" . $error . ")", $newraw) ?? $newraw;
             }
         }
 
         // Missing or empty required field(s) in API response
-        if (static::hasMissingRequiredFields($newraw) && array_key_exists("invalid", $templates)) {
-            $newraw = $templates["invalid"];
+        if (static::hasMissingRequiredFields($newraw) && array_key_exists("invalid", $rawTemplates)) {
+            $newraw = $rawTemplates["invalid"];
         }
 
         // generic API response description rewrite
@@ -126,18 +135,18 @@ abstract class AbstractResponseTranslator
      *
      * A non-null $error resolves to "httperror", taking priority over $raw —
      * this is what replaced the former "httperror|" sentinel that used to be
-     * smuggled through $raw itself — but ONLY if $templates actually declares
-     * that id. templates() is an abstract hook: a third-party brand
-     * translator's container need not include "httperror" at all, and
-     * indexing $templates["httperror"] unconditionally would degrade an
+     * smuggled through $raw itself — but ONLY if $rawTemplates actually
+     * declares that id. The registry is caller-supplied: a third-party brand's
+     * need not include "httperror" at all, and indexing
+     * $rawTemplates["httperror"] unconditionally would degrade an
      * Undefined-array-key warning into a TypeError a few lines later. Null
      * here, same as any other unmatched id, keeps that a quiet fallback
      * instead of a crash — mirroring the "invalid" lookup a few lines down in
      * translate(), which is guarded by the same array_key_exists() shape.
      *
-     * Otherwise $raw is checked against $templates: a raw payload equal to a
+     * Otherwise $raw is checked against $rawTemplates: a raw payload equal to a
      * known template id (e.g. "empty", "invalid", or one registered via
-     * {@see AbstractResponseTemplateManager::addTemplate()}) is the sanctioned
+     * {@see ResponseTemplateManagerInterface::addTemplate()}) is the sanctioned
      * mocking route CLAUDE.md documents for tests — constructing a
      * Response/Translator call with the template id as $raw is how a test
      * exercises a specific canned response without a real API round-trip.
@@ -145,18 +154,18 @@ abstract class AbstractResponseTranslator
      * response that does not match any known id resolves to null and is used
      * as-is by the caller.
      *
-     * $templates is passed in rather than re-fetched via templates(): the
+     * $rawTemplates is passed in rather than re-read from the registry: the
      * caller already bound one snapshot for the rest of translate(), and a
-     * second call would resolve the id against a possibly different snapshot
+     * second read would resolve the id against a possibly different snapshot
      * than the one it is then dereferenced against.
-     * @param array<string> $templates the caller's already-bound templates() snapshot
+     * @param array<array-key, string> $rawTemplates the caller's already-bound registry snapshot
      */
-    private static function resolveTemplateId(string $raw, ?string $error, array $templates): ?string
+    private static function resolveTemplateId(string $raw, ?string $error, array $rawTemplates): ?string
     {
         if ($error !== null) {
-            return array_key_exists("httperror", $templates) ? "httperror" : null;
+            return array_key_exists("httperror", $rawTemplates) ? "httperror" : null;
         }
-        return array_key_exists($raw, $templates) ? $raw : null;
+        return array_key_exists($raw, $rawTemplates) ? $raw : null;
     }
 
     /**

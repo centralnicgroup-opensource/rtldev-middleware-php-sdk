@@ -21,11 +21,19 @@ final class ResponseTest extends TestCase
      */
     public static string $pw;
 
+    /**
+     * This class' template registry. Instance state, so the templates below
+     * reach only the responses explicitly built against it (RSRMID-2941) —
+     * which is why there is no tearDownAfterClass() putting anything back.
+     */
+    public static RTM $tpls;
+
     #[\Override]
     public static function setUpBeforeClass(): void
     {
-        RTM::addTemplate("OK", "200", "Command completed successfully")
-            ::addTemplate("listP0", "[RESPONSE]\r\nPROPERTY[TOTAL][0]=2701\r\nPROPERTY[FIRST][0]=0\r\nPROPERTY[DOMAIN][0]=0-60motorcycletimes.com\r\nPROPERTY[DOMAIN][1]=0-be-s01-0.com\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[LAST][0]=1\r\nPROPERTY[LIMIT][0]=2\r\nDESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n");
+        self::$tpls = (new RTM())
+            ->addTemplate("OK", "200", "Command completed successfully")
+            ->addTemplate("listP0", "[RESPONSE]\r\nPROPERTY[TOTAL][0]=2701\r\nPROPERTY[FIRST][0]=0\r\nPROPERTY[DOMAIN][0]=0-60motorcycletimes.com\r\nPROPERTY[DOMAIN][1]=0-be-s01-0.com\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[LAST][0]=1\r\nPROPERTY[LIMIT][0]=2\r\nDESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n");
         self::$user = (string) getenv("RTLDEV_MW_CI_USER_CNR");
         self::$pw = (string) getenv("RTLDEV_MW_CI_USERPASSWORD_CNR");
     }
@@ -65,25 +73,25 @@ final class ResponseTest extends TestCase
     public function testGetContext(): void
     {
         $context = ["traceId" => "abc123", "attempt" => 1];
-        $r = new R("OK", [], [], $context);
+        $r = new R("OK", [], [], $context, templates: self::$tpls);
         $this->assertSame($context, $r->getContext());
     }
 
     public function testGetCurrentPageNumberEntries(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $this->assertEquals(1, $r->getCurrentPageNumber());
     }
 
     public function testGetCurrentPageNumberNoEntries(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertNull($r->getCurrentPageNumber());
     }
 
     public function testGetFirstRecordIndexNoFirstNoRows(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertNull($r->getFirstRecordIndex());
     }
 
@@ -103,27 +111,27 @@ final class ResponseTest extends TestCase
 
     public function testGetColumns(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $cols = $r->getColumns();
         $this->assertEquals(6, count($cols));
     }
 
     public function testGetColumnIndexExists(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $this->assertEquals("0-60motorcycletimes.com", $r->getColumnIndex("DOMAIN", 0));
     }
 
     public function testGetColumnIndexNotExists(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $data = $r->getColumnIndex("COLUMN_NOT_EXISTS", 0);
         $this->assertNull($data);
     }
 
     public function testGetColumnKeys(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $colKeys = $r->getColumnKeys();
         $this->assertCount(6, $colKeys);
         $this->assertContains("COUNT", $colKeys);
@@ -137,7 +145,7 @@ final class ResponseTest extends TestCase
 
     public function testGetRecordRows(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
         $this->assertEquals([
@@ -152,13 +160,13 @@ final class ResponseTest extends TestCase
 
     public function testGetRecordNoRows(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertNull($r->getRecord(0));
     }
 
     public function testGetListHash(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $lh = $r->getListHash();
         $this->assertCount(2, $lh["LIST"]);
         $this->assertEquals($lh["meta"]["columns"], $r->getColumnKeys(true));
@@ -215,7 +223,7 @@ final class ResponseTest extends TestCase
         // The listP0 fixture holds two rows: the first carries the pagination
         // columns alongside DOMAIN, the second only DOMAIN. Iteration walks both
         // and stops — no cursor, no rewind (RSRMID-2939).
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
 
         $rows = [];
         foreach ($r as $index => $rec) {
@@ -229,7 +237,7 @@ final class ResponseTest extends TestCase
 
     public function testGetPagination(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $pager = $r->getPagination();
         $this->assertArrayHasKey("COUNT", $pager);
         $this->assertArrayHasKey("CURRENTPAGE", $pager);
@@ -246,7 +254,7 @@ final class ResponseTest extends TestCase
     {
         // What the removed cursor could not do: walk the rows twice and get the
         // same rows both times, with nothing to reset in between (RSRMID-2939).
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
 
         $first = [];
         foreach ($r as $rec) {
@@ -263,31 +271,31 @@ final class ResponseTest extends TestCase
 
     public function testHasNextPageNoRows(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertEquals(false, $r->hasNextPage());
     }
 
     public function testHasNextPageRows(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $this->assertEquals(true, $r->hasNextPage());
     }
 
     public function testHasPreviousPageNoRows1(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertEquals(false, $r->hasPreviousPage());
     }
 
     public function testHasPreviousPageNoRows2(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $this->assertEquals(false, $r->hasPreviousPage());
     }
 
     public function testGetLastRecordIndexNoRows(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertNull($r->getLastRecordIndex());
     }
 
@@ -307,13 +315,13 @@ final class ResponseTest extends TestCase
 
     public function testGetNextPageNumberNoRows(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertNull($r->getNextPageNumber());
     }
 
     public function testGetNextPageNumberRows(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $this->assertEquals(2, $r->getNextPageNumber());
     }
 
@@ -322,14 +330,17 @@ final class ResponseTest extends TestCase
         // Single-page list (FIRST=0, LIMIT=10, TOTAL=2): the last page has no
         // next page, so getNextPageNumber() must honour the documented null
         // contract rather than clamping to the current page number.
-        RTM::addTemplate(
+        // Registered on a local registry, not the class-wide one: this template
+        // is needed by exactly one test, and widening its scope would be the
+        // shared-bag pattern in miniature (RSRMID-2941).
+        $tpls = (new RTM())->addTemplate(
             "listLastPage",
             "[RESPONSE]\r\nPROPERTY[TOTAL][0]=2\r\nPROPERTY[FIRST][0]=0\r\n"
             . "PROPERTY[DOMAIN][0]=example1.com\r\nPROPERTY[DOMAIN][1]=example2.com\r\n"
             . "PROPERTY[COUNT][0]=2\r\nPROPERTY[LAST][0]=1\r\nPROPERTY[LIMIT][0]=10\r\n"
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
         );
-        $r = new R("listLastPage");
+        $r = new R("listLastPage", templates: $tpls);
         $this->assertEquals(1, $r->getNumberOfPages());
         $this->assertFalse($r->hasNextPage());
         $this->assertNull($r->getNextPageNumber());
@@ -337,25 +348,25 @@ final class ResponseTest extends TestCase
 
     public function testGetNumberOfPages(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertEquals(0, $r->getNumberOfPages());
     }
 
     public function testGetPreviousPageNumberNoRows(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertNull($r->getPreviousPageNumber());
     }
 
     public function testGetPreviousPageNumberRows(): void
     {
-        $r = new R("listP0");
+        $r = new R("listP0", templates: self::$tpls);
         $this->assertNull($r->getPreviousPageNumber());
     }
 
     public function testIteratingAResponseWithoutRecordsYieldsNothing(): void
     {
-        $r = new R("OK");
+        $r = new R("OK", templates: self::$tpls);
         $this->assertSame([], iterator_to_array($r));
     }
 
@@ -427,13 +438,5 @@ final class ResponseTest extends TestCase
     {
         $r = new R("[RESPONSE]\r\ncode=423\r\ndescription=Empty API response. Probably unreachable API end point\r\nEOF\r\n");
         $this->assertEquals(true, $r->isTmpError());
-    }
-
-    #[\Override]
-    public static function tearDownAfterClass(): void
-    {
-        // Templates are process-wide static state — drop this class' own so
-        // they do not leak into later test classes (RSRMID-2924).
-        RTM::resetTemplates();
     }
 }

@@ -23,10 +23,12 @@ use CNIC\ResponseParserInterface;
 final class ResponseTemplateManager extends AbstractResponseTemplateManager
 {
     /**
-     * Template container
-     * @var array<string>
+     * CNR's built-in templates. A constant, not a property: each registry
+     * instance copies these at construction and mutates only its copy, so there
+     * is no route by which one caller's override reaches another (RSRMID-2941).
+     * @var array<array-key, string>
      */
-    public static array $templates = [
+    private const array BUILTIN_TEMPLATES = [
         "404" => "[RESPONSE]\r\nCODE=421\r\nDESCRIPTION=Page not found\r\nEOF\r\n",
         "500" => "[RESPONSE]\r\nCODE=500\r\nDESCRIPTION=Internal server error\r\nEOF\r\n",
         "empty" => "[RESPONSE]\r\nCODE=423\r\nDESCRIPTION=Empty API response. Probably unreachable API end point {CONNECTION_URL}\r\nEOF\r\n",
@@ -39,37 +41,49 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
     ];
 
     /**
+     * @return array<array-key, string>
+     */
+    #[\Override]
+    protected static function builtinTemplates(): array
+    {
+        return self::BUILTIN_TEMPLATES;
+    }
+
+    /**
      * Generate API response template string for given code and description
      */
     #[\Override]
-    public static function generateTemplate(string $code, string $description): string
+    public function generateTemplate(string $code, string $description): string
     {
         return "[RESPONSE]\r\nCODE=" . $code . "\r\nDESCRIPTION=" . $description . "\r\nEOF\r\n";
     }
 
     /**
-     * Get response template instance from template container
+     * Get response template instance from this registry
      */
     #[\Override]
-    public static function getTemplate(string $templateId): Response
+    public function getTemplate(string $templateId): Response
     {
-        return self::createResponse(self::hasTemplate($templateId) ? $templateId : "notfound");
+        return $this->createResponse($this->hasTemplate($templateId) ? $templateId : "notfound");
     }
 
     /**
      * Create a CNR Response instance from a template id or raw response.
+     *
+     * The registry is handed to the Response so a template id resolves against
+     * *this* object — that hand-off is what replaced the global lookup.
      */
     #[\Override]
-    protected static function createResponse(string $raw): Response
+    protected function createResponse(string $raw): Response
     {
-        return new Response($raw);
+        return new Response($raw, templates: $this);
     }
 
     /**
      * Instantiate the CNR response parser.
      */
     #[\Override]
-    protected static function newResponseParser(): ResponseParserInterface
+    protected function newResponseParser(): ResponseParserInterface
     {
         return new RP();
     }
