@@ -4,28 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce2a6ad6acd64f86e747ddceba28b204",
+    "content-hash": "042229c020bc6a437fdba594770e0097",
     "packages": [
         {
             "name": "centralnic-reseller/idn-converter",
-            "version": "v1.0.5",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator.git",
-                "reference": "149017db1279f509f4d80c3fa7e73cc6794f8143"
+                "reference": "1175a59427b04c8be1be2e981c6a6d51fa45d3b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/zipball/149017db1279f509f4d80c3fa7e73cc6794f8143",
-                "reference": "149017db1279f509f4d80c3fa7e73cc6794f8143",
+                "url": "https://api.github.com/repos/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/zipball/1175a59427b04c8be1be2e981c6a6d51fa45d3b0",
+                "reference": "1175a59427b04c8be1be2e981c6a6d51fa45d3b0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4.0"
+                "ext-intl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^8.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^10.0",
-                "squizlabs/php_codesniffer": "^3.9 || ^4.0"
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^11.0",
+                "rector/rector": "^2.0",
+                "slevomat/coding-standard": "^8.0",
+                "squizlabs/php_codesniffer": "^3.9 || ^4.0",
+                "vimeo/psalm": "^6.0"
             },
             "type": "library",
             "extra": {
@@ -56,9 +63,9 @@
             ],
             "support": {
                 "issues": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/issues",
-                "source": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/tree/v1.0.5"
+                "source": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/tree/v2.0.0"
             },
-            "time": "2026-05-28T12:25:22+00:00"
+            "time": "2026-07-02T16:43:56+00:00"
         }
     ],
     "packages-dev": [
