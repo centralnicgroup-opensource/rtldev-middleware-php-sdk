@@ -68,6 +68,27 @@ final class ResponseTranslatorTest extends TestCase
     }
 
     /**
+     * Test that a raw body of literally "0" is NOT treated as an empty response
+     *
+     * Regression guard for RSRMID-2945: translate() used to read
+     * `$raw === '' || $raw === '0'`, an artifact of expanding a falsy check
+     * (both "" and "0" are false in PHP), so a real "0" payload was reported to
+     * the caller as an empty response. "0" matches no registered template id and
+     * carries no status field, so it must fall through to the "invalid" template
+     * like any other unparseable body — never to "empty".
+     */
+    public function testLiteralZeroBodyIsNotTreatedAsEmpty(): void
+    {
+        $raw = RT::translate("0", []);
+
+        $this->assertStringNotContainsString("Empty API response", $raw);
+
+        $hash = (new RP())->parse($raw);
+        $this->assertSame("FAILURE", $hash["status"]);
+        $this->assertSame("423 Invalid API response. Contact Support", $hash["message"]);
+    }
+
+    /**
      * Test explicit static template lookup by id
      */
     public function testStaticTemplateLookup(): void
