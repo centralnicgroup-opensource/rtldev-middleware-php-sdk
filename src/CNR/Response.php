@@ -14,7 +14,7 @@ use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
 use CNIC\Column;
 use CNIC\ColumnInterface;
-use CNIC\Exception\UnsupportedFeatureException;
+use CNIC\Exception\MalformedResponseException;
 use CNIC\ExtendedResponseInterface;
 use CNIC\Record;
 use CNIC\ResponseParserInterface;
@@ -132,12 +132,12 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * the loop leaves only the one MixedAssignment below to suppress — the same
      * trade already made in AbstractResponse::assembleRecords().
      * @return string[]
-     * @throws UnsupportedFeatureException if the entry is not an array, or a cell is not a string
+     * @throws MalformedResponseException if the entry is not an array, or a cell is not a string
      */
     private static function stringCells(string $key, mixed $values): array
     {
         if (!is_array($values)) {
-            throw new UnsupportedFeatureException(
+            throw new MalformedResponseException(
                 "CNR columns are string lists: PROPERTY[{$key}] is a " . get_debug_type($values) . "."
             );
         }
@@ -145,7 +145,7 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
         /** @psalm-suppress MixedAssignment the loop variable is mixed by design; is_string() narrows it below */
         foreach ($values as $cell) {
             if (!is_string($cell)) {
-                throw new UnsupportedFeatureException(
+                throw new MalformedResponseException(
                     "CNR columns are string-valued: PROPERTY[{$key}] carries a " . get_debug_type($cell) . "."
                 );
             }

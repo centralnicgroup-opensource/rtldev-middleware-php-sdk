@@ -509,17 +509,7 @@ abstract class AbstractSocketConfig
         if ($rejected === []) {
             return;
         }
-        $named = array_map(
-            static fn(array $entry): string => $entry["option"]
-                . " (use " . $entry["owner"] . "::" . $entry["setter"] . ")",
-            array_values($rejected)
-        );
-        throw new UnsupportedFeatureException(
-            "cURL option(s) the SDK models as configuration cannot be set through the option bag: "
-            . implode(", ", $named)
-            . ". Setting one both ways would leave the getter and the wire disagreeing; use the setter"
-            . " named above, which is the single home for that value."
-        );
+        throw UnsupportedFeatureException::sdkManagedCurlOptions($rejected, self::class);
     }
 
     /**
