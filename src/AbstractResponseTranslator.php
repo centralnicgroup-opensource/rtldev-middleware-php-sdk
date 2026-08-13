@@ -86,8 +86,13 @@ abstract class AbstractResponseTranslator
         ?string $error = null,
         ?ResponseTemplateManagerInterface $templates = null
     ): string {
-        $newraw = $raw === '' || $raw === '0' ? "empty" : $raw;
         // Hint: Empty API Response (replace {CONNECTION_URL} later)
+        // Only a genuinely empty body is "empty". A literal "0" body is a real
+        // payload and must reach the normal resolve/parse path: the former
+        // `|| $raw === '0'` arm was an artifact of expanding a falsy check
+        // (empty($raw)/!$raw), for which "" and "0" are both false, and never a
+        // deliberate rule (RSRMID-2945).
+        $newraw = $raw === '' ? "empty" : $raw;
 
         $rawTemplates = ($templates ?? static::newTemplateManager())->getRawTemplates();
 
