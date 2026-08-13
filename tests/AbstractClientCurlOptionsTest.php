@@ -223,7 +223,9 @@ final class AbstractClientCurlOptionsTest extends TestCase
     /**
      * The owner is only useful to a caller if the thrown message actually carries
      * it — the point of RSRMID-2944 was a reachable method name, not a more
-     * detailed constant.
+     * detailed constant. Kept alongside the structured
+     * {@see UnsupportedFeatureException::getReplacementSetters()} assertion
+     * (RSRMID-2967) rather than replaced by it, for the same reason.
      */
     public function testRejectionMessageNamesTheClassOwningTheSetter(): void
     {
@@ -237,19 +239,23 @@ final class AbstractClientCurlOptionsTest extends TestCase
                 $e->getMessage(),
                 "the user agent lives on the client, and the message must say so"
             );
+            $this->assertSame(
+                [CURLOPT_USERAGENT => AbstractClient::class . "::setUserAgent()"],
+                $e->getReplacementSetters()
+            );
         }
     }
 
     /**
-     * @return array<string, array{0: int, 1: string}>
+     * @return array<string, array{0: int, 1: string, 2: class-string}>
      */
     public static function managedOptionProvider(): array
     {
         return [
-            "CURLOPT_TIMEOUT" => [CURLOPT_TIMEOUT, "setSocketTimeout()"],
-            "CURLOPT_USERAGENT" => [CURLOPT_USERAGENT, "setUserAgent()"],
-            "CURLOPT_PROXY" => [CURLOPT_PROXY, "setProxy()"],
-            "CURLOPT_REFERER" => [CURLOPT_REFERER, "setReferer()"],
+            "CURLOPT_TIMEOUT" => [CURLOPT_TIMEOUT, "setSocketTimeout()", AbstractSocketConfig::class],
+            "CURLOPT_USERAGENT" => [CURLOPT_USERAGENT, "setUserAgent()", AbstractClient::class],
+            "CURLOPT_PROXY" => [CURLOPT_PROXY, "setProxy()", AbstractSocketConfig::class],
+            "CURLOPT_REFERER" => [CURLOPT_REFERER, "setReferer()", AbstractSocketConfig::class],
         ];
     }
 
@@ -257,28 +263,33 @@ final class AbstractClientCurlOptionsTest extends TestCase
      * Rejection, not a silent winner. Before RSRMID-2921 all four landed in the
      * bag and quietly beat the setter that owns them on the wire, so `getProxy()`
      * and the request disagreed with no signal anywhere.
+     *
+     * The provider now carries the expected owner too (RSRMID-2967), so the
+     * replacement setter can be pinned exactly instead of by suffix.
      */
     #[DataProvider("managedOptionProvider")]
-    public function testManagedOptionsAreRejectedFromTheBag(int $opt, string $setter): void
+    public function testManagedOptionsAreRejectedFromTheBag(int $opt, string $setter, string $owner): void
     {
         $cl = $this->cnr();
         try {
             $cl->setExtraCurlOptions([$opt => "whatever"]);
             $this->fail("expected UnsupportedFeatureException for option {$opt}");
         } catch (UnsupportedFeatureException $e) {
-            $this->assertStringContainsString($setter, $e->getMessage(), "the message must name the setter to use");
+            $this->assertSame([$opt => $owner . "::" . $setter], $e->getReplacementSetters());
         }
     }
 
-    public function testRejectionMessageListsEveryOffendingOption(): void
+    public function testRejectionPinsEveryOffendingOption(): void
     {
         $cl = $this->cnr();
         try {
             $cl->setExtraCurlOptions([CURLOPT_PROXY => "p", CURLOPT_REFERER => "r"]);
             $this->fail("expected UnsupportedFeatureException");
         } catch (UnsupportedFeatureException $e) {
-            $this->assertStringContainsString("CURLOPT_PROXY", $e->getMessage());
-            $this->assertStringContainsString("CURLOPT_REFERER", $e->getMessage());
+            $this->assertSame(
+                [CURLOPT_PROXY => "CURLOPT_PROXY", CURLOPT_REFERER => "CURLOPT_REFERER"],
+                $e->getRejectedCurlOptions()
+            );
         }
     }
 

@@ -52,7 +52,7 @@ Three directives have no guard test and therefore live here:
 ### Class Patterns
 
 - Setters use fluent interface (return `$this`).
-- **Exceptions:** throw from the `CNIC\Exception` hierarchy (base `CnicException extends \Exception`). Reuse `UnsupportedFeatureException` (capability absent on this platform/response, or a transport-owned cURL option/header), `PaginationException`, `InvalidConfigurationException` (config value out of range), `InvalidDateTimeException`; add a `CnicException` subclass for a genuinely new failure mode — the hierarchy is additive, so that needs no major bump. Never throw a bare `\Exception` or declare an exception type outside `CNIC\Exception`. Rationale: [architecture.md](docs/agents/architecture.md).
+- **Exceptions:** throw from the `CNIC\Exception` hierarchy (base `CnicException extends \Exception`). Reuse `UnsupportedFeatureException` (capability absent on this platform/response, or a transport-owned cURL option/header), `MalformedResponseException` (API sent an unrepresentable shape), `PaginationException`, `InvalidConfigurationException` (config value out of range), `InvalidDateTimeException`; add a `CnicException` subclass for a genuinely new failure mode — the hierarchy is additive, so that needs no major bump. Never throw a bare `\Exception` or declare an exception type outside `CNIC\Exception`. Rationale: [architecture.md](docs/agents/architecture.md).
 - Password fields must be sanitized before logging: `$cmd["PASSWORD"] = "***"`
 
 ### File Header

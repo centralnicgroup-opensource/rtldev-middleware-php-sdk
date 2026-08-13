@@ -100,6 +100,11 @@ final class HttpTransportCurlOptionsTest extends TestCase
      * message must name the option the caller actually passed, not just say
      * "invalid option" — the caller has an integer constant in hand and no way
      * to map it back without help.
+     *
+     * Retained on purpose (RSRMID-2967) even though {@see getRejectedCurlOptions()}
+     * now carries the same information machine-readably: this pins the
+     * human-readable wording so it cannot silently rot while the accessors carry
+     * the machine-readable contract.
      */
     public function testRejectionMessageNamesTheOffendingOption(): void
     {
@@ -112,7 +117,12 @@ final class HttpTransportCurlOptionsTest extends TestCase
         }
     }
 
-    public function testRejectionMessageListsEveryOffendingOption(): void
+    /**
+     * The structured context (RSRMID-2967), not the message, is now the
+     * machine-readable contract: every rejected option must be pinned exactly,
+     * keyed by its cURL constant, alongside the class that owns the rejection.
+     */
+    public function testRejectionPinsEveryOffendingOptionAndTheOwningClass(): void
     {
         $t = new HttpTransport();
         try {
@@ -122,8 +132,11 @@ final class HttpTransportCurlOptionsTest extends TestCase
             ]);
             $this->fail("expected UnsupportedFeatureException");
         } catch (UnsupportedFeatureException $e) {
-            $this->assertStringContainsString("CURLOPT_URL", $e->getMessage());
-            $this->assertStringContainsString("CURLOPT_HEADER", $e->getMessage());
+            $this->assertSame(
+                [CURLOPT_URL => "CURLOPT_URL", CURLOPT_HEADER => "CURLOPT_HEADER"],
+                $e->getRejectedCurlOptions()
+            );
+            $this->assertSame(HttpTransport::class, $e->getOwningClass());
         }
     }
 
@@ -186,7 +199,12 @@ final class HttpTransportCurlOptionsTest extends TestCase
         $t->post("http://127.0.0.1:1/", "x=1", 5, "UA", [CURLOPT_HTTPHEADER => [$header]]);
     }
 
-    public function testHeaderRejectionMessageNamesTheOffendingHeader(): void
+    /**
+     * Structured context (RSRMID-2967): the already-lower-cased header name and
+     * the owning class must be pinned exactly, not merely substring-matched out
+     * of the message.
+     */
+    public function testHeaderRejectionPinsTheOffendingHeaderAndTheOwningClass(): void
     {
         $t = new HttpTransport();
         try {
@@ -195,7 +213,8 @@ final class HttpTransportCurlOptionsTest extends TestCase
             ]);
             $this->fail("expected UnsupportedFeatureException");
         } catch (UnsupportedFeatureException $e) {
-            $this->assertStringContainsString("content-length", $e->getMessage());
+            $this->assertSame("content-length", $e->getRejectedHeaderName());
+            $this->assertSame(HttpTransport::class, $e->getOwningClass());
         }
     }
 
@@ -212,5 +231,47 @@ final class HttpTransportCurlOptionsTest extends TestCase
         $t = new HttpTransport();
         $this->expectException(\TypeError::class);
         $t->post("http://127.0.0.1:1/", "x=1", 5, "UA", [CURLOPT_HTTPHEADER => "X-Nope: 1"]);
+    }
+
+    /**
+     * The actionable use of getRejectedCurlOptions() (RSRMID-2967): a caller
+     * holding a bag that mixes protected and unmanaged keys can strip exactly
+     * the refused ones and retry with what is left. Pure array assertion — no
+     * second request is attempted here.
+     */
+    public function testRejectedCurlOptionsCanBeStrippedFromTheOriginalBagForARetry(): void
+    {
+        $bag = [
+            CURLOPT_URL => "http://evil.test/",
+            CURLOPT_HEADER => 1,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+        ];
+        $t = new HttpTransport();
+        try {
+            $t->post("http://127.0.0.1:1/", "x=1", 5, "UA", $bag);
+            $this->fail("expected UnsupportedFeatureException");
+        } catch (UnsupportedFeatureException $e) {
+            $this->assertSame(
+                [CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4],
+                array_diff_key($bag, $e->getRejectedCurlOptions())
+            );
+        }
+    }
+
+    /**
+     * A protected option is dropped, not redirected — there is no setter to
+     * replace it with, unlike the SDK-managed options rejected by
+     * AbstractSocketConfig::setExtraCurlOptions().
+     */
+    public function testProtectedOptionRejectionHasNoReplacementSetters(): void
+    {
+        $t = new HttpTransport();
+        try {
+            $t->post("http://127.0.0.1:1/", "x=1", 5, "UA", [CURLOPT_RETURNTRANSFER => 0]);
+            $this->fail("expected UnsupportedFeatureException");
+        } catch (UnsupportedFeatureException $e) {
+            $this->assertSame([], $e->getReplacementSetters());
+        }
     }
 }

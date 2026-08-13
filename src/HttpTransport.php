@@ -165,12 +165,7 @@ final class HttpTransport implements TransportInterface
         if ($rejected === []) {
             return;
         }
-        $names = array_values($rejected);
-        throw new UnsupportedFeatureException(
-            "cURL option(s) owned by " . self::class . " cannot be overridden: " . implode(", ", $names)
-            . ". They define the request envelope the response parser depends on, or the TLS verification"
-            . " posture; remove them from the option bag."
-        );
+        throw UnsupportedFeatureException::transportOwnedCurlOptions($rejected, self::class);
     }
 
     /**
@@ -204,11 +199,7 @@ final class HttpTransport implements TransportInterface
         foreach (array_filter($extra, "is_string") as $line) {
             $name = self::headerName($line);
             if (isset($owned[$name])) {
-                throw new UnsupportedFeatureException(
-                    "HTTP header(s) owned by " . self::class . " cannot be overridden: " . $name
-                    . ". Content-Type/Content-Length describe the POST body and Connection follows from"
-                    . " the reused handle; add your own headers instead of restating these."
-                );
+                throw UnsupportedFeatureException::transportOwnedHeader($name, self::class);
             }
             $owned[$name] = true;
             $base[] = $line;
