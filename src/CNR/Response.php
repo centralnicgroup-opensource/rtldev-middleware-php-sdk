@@ -381,7 +381,10 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
             "LIST" => $lh,
             "meta" => [
                 "columns" => $columns,
-                "pg" => $this->getPagination()
+                // toArray(), not the Paginator itself: this projection is a table
+                // renderer's payload and its key set is consumer-facing, so it
+                // stays the array it has always been (RSRMID-2965).
+                "pg" => $this->getPagination()->toArray()
             ]
         ];
     }

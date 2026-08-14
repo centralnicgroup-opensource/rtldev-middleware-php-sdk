@@ -20,8 +20,9 @@ final class ResponseNavigationTest extends TestCase
 
     /**
      * A three-record list response mirroring Domain/List: the "domain" list
-     * column drives the record count, "domaincount" is the count/metadata
-     * column stripped by getColumnKeys(true).
+     * column drives the record count, while "domaincount" and "status" are
+     * response metadata and never become columns at all (RSRMID-2965) — the
+     * count key is what the pagination primitives read.
      */
     private function listResponse(): R
     {
@@ -132,7 +133,7 @@ final class ResponseNavigationTest extends TestCase
     public function testPaginationMetadata(): void
     {
         $r = $this->listResponse();
-        $pg = $r->getPagination();
+        $pg = $r->getPagination()->toArray();
 
         $this->assertEquals(3, $pg["COUNT"]);
         $this->assertEquals(1, $pg["CURRENTPAGE"]);
@@ -148,11 +149,12 @@ final class ResponseNavigationTest extends TestCase
     public function testPageNavigationHelpers(): void
     {
         $r = $this->listResponse();
-        $this->assertEquals(1, $r->getCurrentPageNumber());
+        $pg = $r->getPagination();
+        $this->assertEquals(1, $pg->getCurrentPageNumber());
         $this->assertEquals(0, $r->getFirstRecordIndex());
-        $this->assertEquals(1, $r->getNumberOfPages());
-        $this->assertFalse($r->hasNextPage());
-        $this->assertFalse($r->hasPreviousPage());
+        $this->assertEquals(1, $pg->getNumberOfPages());
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertFalse($pg->hasPreviousPage());
     }
 
     // --- getLastRecordIndex (regression for the cross-instance static leak) ---

@@ -209,19 +209,19 @@ class Client extends AbstractClient implements RoleCredentialsInterface
         if (array_key_exists("LAST", $mycmd)) {
             throw new PaginationException("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         }
-        // Delegate the termination decision to the Response pagination helper so
-        // "is there a next page?" lives in one place (Response::hasNextPage())
-        // rather than being re-derived from total/limit arithmetic here. This
-        // also subsumes the former LIMIT<=0 guard: a non-positive page size makes
-        // hasNextPage() return false, so requestAllResponsePages() terminates
-        // instead of re-requesting the same page forever (see
+        // Delegate the termination decision to the paginator so "is there a next
+        // page?" lives in one place (Paginator::hasNextPage()) rather than being
+        // re-derived from total/limit arithmetic here. This also subsumes the
+        // former LIMIT<=0 guard: a non-positive page size makes hasNextPage()
+        // return false, so requestAllResponsePages() terminates instead of
+        // re-requesting the same page forever (see
         // testRequestNextResponsePageZeroLimit).
         //
         // The advance itself is the response's own next offset — LAST + 1 —
         // rather than command FIRST + LIMIT: identical to the old arithmetic for
         // an aligned page, but correct for an unaligned one, and it no longer
         // depends on the caller having sent FIRST at all.
-        if (!$currentPage->hasNextPage()) {
+        if (!$currentPage->getPagination()->hasNextPage()) {
             return null;
         }
         $limit = $currentPage->getRecordsLimitation();

@@ -80,13 +80,13 @@ final class ResponseTest extends TestCase
     public function testGetCurrentPageNumberEntries(): void
     {
         $r = new R("listP0", templates: self::$tpls);
-        $this->assertEquals(1, $r->getCurrentPageNumber());
+        $this->assertEquals(1, $r->getPagination()->getCurrentPageNumber());
     }
 
     public function testGetCurrentPageNumberNoEntries(): void
     {
         $r = new R("OK", templates: self::$tpls);
-        $this->assertNull($r->getCurrentPageNumber());
+        $this->assertNull($r->getPagination()->getCurrentPageNumber());
     }
 
     public function testGetFirstRecordIndexNoFirstNoRows(): void
@@ -174,7 +174,7 @@ final class ResponseTest extends TestCase
         $lh = $r->getListHash();
         $this->assertCount(2, $lh["LIST"]);
         $this->assertEquals($lh["meta"]["columns"], $r->getColumnKeys());
-        $this->assertEquals($lh["meta"]["pg"], $r->getPagination());
+        $this->assertEquals($lh["meta"]["pg"], $r->getPagination()->toArray());
     }
 
     public function testMetaKeyRegexDoesNotStripRealColumns(): void
@@ -239,17 +239,27 @@ final class ResponseTest extends TestCase
 
     public function testGetPagination(): void
     {
+        // The whole array, in order, rather than nine assertArrayHasKey() calls:
+        // this projection is published as getListHash()["meta"]["pg"], so its keys
+        // AND their values are consumer-facing. RSRMID-2965 moved the derivation
+        // to CNIC\Paginator on the requirement that the array stay identical for a
+        // real list response, and assertSame compares arrays key-for-key in order,
+        // so a reordered, renamed or re-derived key fails here. (For a response
+        // carrying no pagination metadata at all, FIRST/LAST are now null where
+        // v32 answered 0/count-1 — that change is deliberate and documented in
+        // MIGRATION.md; it is not this fixture.)
         $r = new R("listP0", templates: self::$tpls);
-        $pager = $r->getPagination();
-        $this->assertArrayHasKey("COUNT", $pager);
-        $this->assertArrayHasKey("CURRENTPAGE", $pager);
-        $this->assertArrayHasKey("FIRST", $pager);
-        $this->assertArrayHasKey("LAST", $pager);
-        $this->assertArrayHasKey("LIMIT", $pager);
-        $this->assertArrayHasKey("NEXTPAGE", $pager);
-        $this->assertArrayHasKey("PAGES", $pager);
-        $this->assertArrayHasKey("PREVIOUSPAGE", $pager);
-        $this->assertArrayHasKey("TOTAL", $pager);
+        $this->assertSame([
+            "COUNT" => 2,
+            "CURRENTPAGE" => 1,
+            "FIRST" => 0,
+            "LAST" => 1,
+            "LIMIT" => 2,
+            "NEXTPAGE" => 2,
+            "PAGES" => 1351,
+            "PREVIOUSPAGE" => null,
+            "TOTAL" => 2701
+        ], $r->getPagination()->toArray());
     }
 
     public function testIterationIsRepeatableWithoutARewindStep(): void
@@ -274,25 +284,25 @@ final class ResponseTest extends TestCase
     public function testHasNextPageNoRows(): void
     {
         $r = new R("OK", templates: self::$tpls);
-        $this->assertEquals(false, $r->hasNextPage());
+        $this->assertEquals(false, $r->getPagination()->hasNextPage());
     }
 
     public function testHasNextPageRows(): void
     {
         $r = new R("listP0", templates: self::$tpls);
-        $this->assertEquals(true, $r->hasNextPage());
+        $this->assertEquals(true, $r->getPagination()->hasNextPage());
     }
 
     public function testHasPreviousPageNoRows1(): void
     {
         $r = new R("OK", templates: self::$tpls);
-        $this->assertEquals(false, $r->hasPreviousPage());
+        $this->assertEquals(false, $r->getPagination()->hasPreviousPage());
     }
 
     public function testHasPreviousPageNoRows2(): void
     {
         $r = new R("listP0", templates: self::$tpls);
-        $this->assertEquals(false, $r->hasPreviousPage());
+        $this->assertEquals(false, $r->getPagination()->hasPreviousPage());
     }
 
     public function testGetLastRecordIndexNoRows(): void
@@ -346,13 +356,13 @@ final class ResponseTest extends TestCase
     public function testGetNextPageNumberNoRows(): void
     {
         $r = new R("OK", templates: self::$tpls);
-        $this->assertNull($r->getNextPageNumber());
+        $this->assertNull($r->getPagination()->getNextPageNumber());
     }
 
     public function testGetNextPageNumberRows(): void
     {
         $r = new R("listP0", templates: self::$tpls);
-        $this->assertEquals(2, $r->getNextPageNumber());
+        $this->assertEquals(2, $r->getPagination()->getNextPageNumber());
     }
 
     public function testGetNextPageNumberLastPage(): void
@@ -371,27 +381,28 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
         );
         $r = new R("listLastPage", templates: $tpls);
-        $this->assertEquals(1, $r->getNumberOfPages());
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $pg = $r->getPagination();
+        $this->assertEquals(1, $pg->getNumberOfPages());
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
     }
 
     public function testGetNumberOfPages(): void
     {
         $r = new R("OK", templates: self::$tpls);
-        $this->assertEquals(0, $r->getNumberOfPages());
+        $this->assertEquals(0, $r->getPagination()->getNumberOfPages());
     }
 
     public function testGetPreviousPageNumberNoRows(): void
     {
         $r = new R("OK", templates: self::$tpls);
-        $this->assertNull($r->getPreviousPageNumber());
+        $this->assertNull($r->getPagination()->getPreviousPageNumber());
     }
 
     public function testGetPreviousPageNumberRows(): void
     {
         $r = new R("listP0", templates: self::$tpls);
-        $this->assertNull($r->getPreviousPageNumber());
+        $this->assertNull($r->getPagination()->getPreviousPageNumber());
     }
 
     public function testUnalignedOffsetWindowPredicatesAndPageNumbersAgree(): void
@@ -410,11 +421,12 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
         );
         $r = new R("unalignedWindow", templates: $tpls);
-        $this->assertTrue($r->hasNextPage());
-        $this->assertEquals(2, $r->getNextPageNumber());
-        $this->assertTrue($r->hasPreviousPage());
-        $this->assertEquals(1, $r->getPreviousPageNumber());
-        $this->assertEquals(1, $r->getCurrentPageNumber());
+        $pg = $r->getPagination();
+        $this->assertTrue($pg->hasNextPage());
+        $this->assertEquals(2, $pg->getNextPageNumber());
+        $this->assertTrue($pg->hasPreviousPage());
+        $this->assertEquals(1, $pg->getPreviousPageNumber());
+        $this->assertEquals(1, $pg->getCurrentPageNumber());
     }
 
     public function testWindowAlreadyHoldingTheTailHasNoNextPage(): void
@@ -433,8 +445,9 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.023\r\nEOF\r\n"
         );
         $r = new R("windowHoldsTail", templates: $tpls);
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $pg = $r->getPagination();
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
     }
 
     public function testAbsentPaginationColumnsAreNowRepresentable(): void
@@ -453,11 +466,12 @@ final class ResponseTest extends TestCase
             "EOF"
         ]);
         $r = new R($raw);
+        $pg = $r->getPagination();
         $this->assertNull($r->getRecordsTotalCount());
         $this->assertNull($r->getRecordsLimitation());
-        $this->assertEquals(1, $r->getNumberOfPages());
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getCurrentPageNumber());
+        $this->assertEquals(1, $pg->getNumberOfPages());
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getCurrentPageNumber());
     }
 
     public function testZeroLimitIsDistinctFromAbsentLimit(): void
@@ -480,7 +494,7 @@ final class ResponseTest extends TestCase
         );
         $r = new R("zeroLimit", templates: $tpls);
         $this->assertSame(0, $r->getRecordsLimitation());
-        $this->assertFalse($r->hasNextPage());
+        $this->assertFalse($r->getPagination()->hasNextPage());
 
         $absent = new R("OK", templates: self::$tpls);
         $this->assertNull($absent->getRecordsLimitation());
@@ -502,9 +516,10 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=18.906\r\nEOF\r\n"
         );
         $r = new R("pastTheEndZeroLimit", templates: $tpls);
+        $pg = $r->getPagination();
         $this->assertSame(0, $r->getRecordsLimitation());
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
     }
 
     public function testPastTheEndWindowWithPositiveLimitHasNoNextPage(): void
@@ -521,8 +536,9 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=15.892\r\nEOF\r\n"
         );
         $r = new R("pastTheEndLimited", templates: $tpls);
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $pg = $r->getPagination();
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
     }
 
     public function testWindowEndingBeforeItStartsHasNoNextPage(): void
@@ -543,8 +559,9 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.377\r\nEOF\r\n"
         );
         $r = new R("backwardWindow", templates: $tpls);
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $pg = $r->getPagination();
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
     }
 
     public function testAWindowWithNoTotalHasNoNextPage(): void
@@ -575,10 +592,11 @@ final class ResponseTest extends TestCase
             . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nQUEUETIME=0\r\nRUNTIME=0.377\r\nEOF\r\n"
         );
         $r = new R("listWithoutTotal", templates: $tpls);
+        $pg = $r->getPagination();
         $this->assertSame(100, $r->getRecordsLimitation());
         $this->assertNull($r->getRecordsTotalCount());
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
     }
 
     public function testIteratingAResponseWithoutRecordsYieldsNothing(): void

@@ -131,11 +131,6 @@ interface ResponseInterface extends \IteratorAggregate
     public function getContext(): array;
 
     /**
-     * Get Page Number of current List Query, or null for a non-list response
-     */
-    public function getCurrentPageNumber(): ?int;
-
-    /**
      * Get Index of first row in this response — the offset the current window
      * starts at, or `null` when the response carries no pagination metadata (a
      * non-list response).
@@ -159,25 +154,18 @@ interface ResponseInterface extends \IteratorAggregate
     public function getLastRecordIndex(): ?int;
 
     /**
-     * Get Page Number of next list query, or null if there is no next page
+     * Get the paginator for this response's list window.
+     *
+     * Everything derived from the four primitives above — page numbers, the
+     * page count and the has-next/has-previous predicates — is answered by
+     * {@see Paginator} rather than by this interface (RSRMID-2965). It reads no
+     * wire payload, so pagination arithmetic can be exercised without one, and a
+     * caller who never pages is not carrying six methods for it.
+     *
+     * The former array is `getPagination()->toArray()`, unchanged in keys and
+     * order.
      */
-    public function getNextPageNumber(): ?int;
-
-    /**
-     * Get the number of pages available for this list query
-     */
-    public function getNumberOfPages(): int;
-
-    /**
-     * Get object containing all paging data
-     * @return array<string, int|null> paginator data
-     */
-    public function getPagination(): array;
-
-    /**
-     * Get Page Number of previous list query, or null if there is no previous page
-     */
-    public function getPreviousPageNumber(): ?int;
+    public function getPagination(): Paginator;
 
     /**
      * Get Record at given index, or null if the index does not exist
@@ -212,40 +200,15 @@ interface ResponseInterface extends \IteratorAggregate
 
     /**
      * Get total count of records available for the list query, or `null` when
-     * the response carries no TOTAL column (a non-list response)
+     * the response carries no TOTAL metadata (a non-list response)
      */
     public function getRecordsTotalCount(): ?int;
 
     /**
      * Get limit(ation) setting of the current list query — the count of
-     * requested rows — or `null` when the response carries no LIMIT column.
+     * requested rows — or `null` when the response carries no LIMIT metadata.
      * `0` is a distinct, meaningful value (LIMIT=0 was requested); it no
      * longer collides with "absent"
      */
     public function getRecordsLimitation(): ?int;
-
-    /**
-     * Check if this list query has a next page.
-     *
-     * Answered from record offsets — `getLastRecordIndex() + 1 < getRecordsTotalCount()`
-     * — not from page arithmetic, so it agrees with {@see getNextPageNumber()} even
-     * when the current window is not aligned to a page boundary.
-     *
-     * That comparison assumes a window that actually holds rows. An empty one
-     * reports a last index that is not a row index — CNR echoes
-     * `LAST = FIRST` — so with a non-positive limit `LAST + 1 < TOTAL` can still
-     * hold and the "next" offset walks back to the start of the list. Refuse a
-     * non-positive limit before the arithmetic runs. `AbstractResponse` handles
-     * this for every brand; an implementation writing its own must too.
-     */
-    public function hasNextPage(): bool;
-
-    /**
-     * Check if this list query has a previous page.
-     *
-     * Answered from record offsets — `getFirstRecordIndex() > 0` — not from page
-     * arithmetic, so an unaligned window (e.g. FIRST=50, LIMIT=100) correctly
-     * reports true instead of hiding behind a whole-page-number comparison.
-     */
-    public function hasPreviousPage(): bool;
 }
