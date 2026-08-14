@@ -14,6 +14,7 @@ use CNIC\CNR\SessionClient;
 use CNIC\CNR\SocketConfig as SC;
 use CNIC\Exception\PaginationException;
 use CNIC\IDNA\Factory\ConverterFactory;
+use CNIC\Paginator;
 use CNIC\RoleCredentialsInterface;
 use CNIC\System;
 use CNICTEST\Support\Cassettes;
@@ -828,7 +829,7 @@ final class ClientTest extends TestCase
     {
         // Final page of a multi-page list (FIRST=8, LIMIT=2, TOTAL=10): the
         // current page already holds the last rows, so there is no next page.
-        // Response::hasNextPage() returns false here, and requestNextResponsePage()
+        // Paginator::hasNextPage() returns false here, and requestNextResponsePage()
         // must return null accordingly (termination logic is no longer duplicated).
         $tpls = (new RTM())->addTemplate(
             "listLastPage",
@@ -841,9 +842,10 @@ final class ClientTest extends TestCase
             "FIRST" => "8",
             "LIMIT" => "2"
         ], templates: $tpls);
+        $pg = $r->getPagination();
         $this->assertTrue($r->isSuccess());
-        $this->assertFalse($r->hasNextPage());
-        $this->assertNull($r->getNextPageNumber());
+        $this->assertFalse($pg->hasNextPage());
+        $this->assertNull($pg->getNextPageNumber());
         $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
 
@@ -868,11 +870,11 @@ final class ClientTest extends TestCase
             "LIMIT" => "10"
         ], templates: $tpls);
         $this->assertTrue($r->isSuccess());
-        $this->assertFalse($r->hasNextPage());
+        $this->assertFalse($r->getPagination()->hasNextPage());
         $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
 
-    public function testAdvanceIsRefusedWhenHasNextPageDisagreesWithTheOffsets(): void
+    public function testAdvanceIsRefusedWhenGetPaginationDisagreesWithTheOffsets(): void
     {
         // Unreachable through any real response, and deliberately so. Since
         // RSRMID-2943 the predicate and the offsets are derived from the same
@@ -882,13 +884,14 @@ final class ClientTest extends TestCase
         //
         // It is not dead: it is what stops the derivation being re-split. The
         // subclass here is the response that does not exist yet — a brand, or a
-        // consumer subclass, whose hasNextPage() answers from something other
-        // than the offsets and so can say "yes" over a window with no LIMIT to
-        // advance by. Without the guard the very next lines compute FIRST from
-        // null and re-request the list from the top, which is the forever-loop
-        // RSRMID-2943 set out to make impossible. Drop the guard and this test
-        // fails; drop hasNextPage()'s own null checks and it still passes,
-        // because the two protect different halves of the same invariant.
+        // consumer subclass, whose getPagination() answers from something other
+        // than its own offsets and so can hand back a Paginator saying "yes" over
+        // a window with no LIMIT to advance by. Without the guard the very next
+        // lines compute FIRST from null and re-request the list from the top,
+        // which is the forever-loop RSRMID-2943 set out to make impossible. Drop
+        // the guard and this test fails; drop Paginator::hasNextPage()'s own null
+        // checks and it still passes, because the two protect different halves
+        // of the same invariant.
         $tpls = (new RTM())->addTemplate(
             "listWithoutLimit",
             "[RESPONSE]\r\nPROPERTY[COLUMN][0]=domain\r\nPROPERTY[COUNT][0]=2\r\nPROPERTY[FIRST][0]=0\r\n"
@@ -897,12 +900,15 @@ final class ClientTest extends TestCase
         );
         $r = new class ("listWithoutLimit", ["COMMAND" => "QueryDomainList"], templates: $tpls) extends R {
             #[\Override]
-            public function hasNextPage(): bool
+            public function getPagination(): Paginator
             {
-                return true;
+                // A fabricated grid (LIMIT=10) that disagrees with this response's
+                // own wire data (no LIMIT column at all), so hasNextPage() answers
+                // true from an offset the response itself cannot advance by.
+                return new Paginator(0, 1, 1825824, 10, 2);
             }
         };
-        $this->assertTrue($r->hasNextPage());
+        $this->assertTrue($r->getPagination()->hasNextPage());
         $this->assertNull($r->getRecordsLimitation());
         $this->assertNull(self::$cl->requestNextResponsePage($r));
     }
