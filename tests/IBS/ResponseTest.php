@@ -126,8 +126,10 @@ final class ResponseTest extends TestCase
         ], $r->getHash()["contacts"]);
         $this->assertEquals("ns1.ispapi.net", $nameserver[0]);
 
-        // One column per top-level JSON key: 10 total
-        $this->assertCount(10, $r->getColumns());
+        // One column per top-level JSON key, except response metadata
+        // (RSRMID-2965): "transactid" and "status" are never registered as
+        // columns, so 10 keys yield 8 columns.
+        $this->assertCount(8, $r->getColumns());
         $colKeys = $r->getColumnKeys();
         $this->assertContains("domain", $colKeys);
         $this->assertContains("nameserver", $colKeys);

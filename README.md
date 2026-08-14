@@ -98,8 +98,30 @@ foreach ($r as $index => $rec) {
 $r->getRecord(0);           // ?RecordInterface — by index, or null if out of range
 $r->getRecords();           // RecordInterface[] — the whole list
 $r->getColumn("DOMAIN");    // ?ColumnInterface — column-wise instead of row-wise
-$r->getPagination();        // COUNT / FIRST / LAST / LIMIT / TOTAL / PAGES / …
+$r->getColumnKeys();        // string[] — the data columns, in wire order
 ```
+
+**Rows are data only.** What the API sends _about_ the response — CNR's `TOTAL`/`FIRST`/`LAST`/`COUNT`/`LIMIT`, IBS/Moniker's `status`/`message`/`code`/`transactid` and count keys — is not a column and is not part of any row, so every row of one response carries the same keys and an empty list has no rows at all. Read that metadata where it belongs: `isSuccess()`/`getCode()`/`getDescription()` for the status, `getHash()` for the raw value, and the paginator for the counters.
+
+### Paging through a list
+
+`getPagination()` hands you a `CNIC\Paginator` — a value object over the window this response describes:
+
+```php
+$pg = $r->getPagination();
+
+$pg->getCurrentPageNumber();    // ?int — null if this response is not a paginated list
+$pg->getNumberOfPages();        // int
+$pg->hasNextPage();             // bool
+$pg->getNextPageNumber();       // ?int — null on the last page
+$pg->hasPreviousPage();
+$pg->getPreviousPageNumber();
+$pg->toArray();                 // COUNT / CURRENTPAGE / FIRST / LAST / LIMIT / NEXTPAGE / PAGES / PREVIOUSPAGE / TOTAL
+```
+
+The four numbers it is built from stay on the response, because they are what the brand read off the wire: `getFirstRecordIndex()`, `getLastRecordIndex()`, `getRecordsTotalCount()` and `getRecordsLimitation()`. Each answers `null` when this response carries no such metadata, which is how a non-list response says so rather than reporting itself as page 1 of something. `getRecordsCount()`, separately, is how many rows you actually got.
+
+For CNR you rarely need any of it by hand — `CNR\Client::requestNextResponsePage()` and `requestAllResponsePages()` walk the offsets for you.
 
 **Ask for the type you want.** `getDataByKey()`/`getDataByIndex()` return `mixed`, because an IBS/Moniker cell may legitimately carry a nested array or object. When you expect a plain value, the typed accessors save you the check — each returns `null` for a missing key, an out-of-range index, or a value of the wrong type, so there is nothing to narrow by hand and no annotation to write:
 

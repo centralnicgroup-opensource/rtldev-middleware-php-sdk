@@ -32,11 +32,13 @@ use Traversable;
  *   - the pagination primitives, likewise declared on {@see ResponseInterface}
  *     (getFirstRecordIndex, getLastRecordIndex, getRecordsTotalCount,
  *     getRecordsLimitation) — the four methods that read a brand's own
- *     pagination columns — which this base deliberately does NOT implement —
+ *     pagination metadata off its hash (metadata is not column data since
+ *     RSRMID-2965 — see {@see AbstractResponse::$metaKeys}) — which this base
+ *     deliberately does NOT implement —
  *     not even as single-page defaults — so a brand that forgets pagination
  *     fails at declaration time instead of silently answering "one page, no
  *     next page". The seam is drawn at the wire: a brand answers only what its
- *     columns say, and this base does every arithmetic derivation from those
+ *     own metadata says, and this base does every arithmetic derivation from those
  *     four answers (getCurrentPageNumber, hasNextPage, hasPreviousPage,
  *     getNextPageNumber, getPreviousPageNumber, getNumberOfPages included —
  *     RSRMID-2943 moved them here because they read no column of their own).
@@ -94,13 +96,30 @@ abstract class AbstractResponse implements ResponseInterface
     protected array $hash = [];
 
     /**
-     * Regex for pagination related column keys, stripped in getColumnKeys(true).
-     * Brand-specific: each brand sets the keys its list endpoints emit. The
-     * neutral default (matches only the empty string, i.e. no real key) strips
-     * nothing, so a brand that does not paginate needs no override.
+     * Regex for the response-level metadata keys this brand's wire format mixes
+     * in among the data keys — pagination counters and, on brands that carry
+     * them, the transaction-level status fields.
+     *
+     * **Metadata is not column data (RSRMID-2965).** A key matching this is
+     * never registered as a column, so it appears in neither
+     * {@see getColumnKeys()}, {@see getColumns()} nor any assembled record; the
+     * pagination primitives read it straight off {@see $hash} instead. It used to
+     * become a one-cell column beside a 200-cell data column, which made
+     * {@see assembleRecords()} size the record list as if the metadata were a
+     * row: an empty window carrying nothing but counters reported one phantom
+     * record whose entire content was metadata, and a populated list put the
+     * metadata on row 0 only. Both follow from the modelling error, not from the
+     * row assembly — which needed no change once the column set became correct.
+     *
+     * Brand-specific: each brand sets the keys its own endpoints emit, and the
+     * two sets stay independent on purpose — CNR's QueryDomainHistoryList
+     * returns a data column named STATUS, which a set shared with IBS would
+     * silently delete. The neutral default (matches only the empty string, i.e.
+     * no real key) excludes nothing, so a brand without metadata keys needs no
+     * override.
      * @var non-empty-string
      */
-    protected string $paginationKeys = "/^$/";
+    protected string $metaKeys = "/^$/";
 
     /**
      * Column names available in this response
@@ -419,17 +438,20 @@ abstract class AbstractResponse implements ResponseInterface
 
     /**
      * Get Column Names
-     * @param bool $filterPaginationKeys strip pagination columns
+     *
+     * Data columns only. There is nothing left to filter here since
+     * RSRMID-2965: a brand's populate() never registers a metadata key as a
+     * column, so the list this returns is already free of them and the former
+     * `getColumnKeys(bool $filterPaginationKeys)` — with its preg_grep over
+     * every call — has no work to do. Do not re-add the flag: it existed only
+     * because metadata was mixed into the column pool, and a boolean parameter
+     * on a public interface is the cost that modelling error was charging every
+     * consumer.
      * @return string[]
      */
     #[\Override]
-    public function getColumnKeys(bool $filterPaginationKeys = false): array
+    public function getColumnKeys(): array
     {
-        if ($filterPaginationKeys) {
-            // Ensure that preg_grep always returns an array
-            $paginationKeys = preg_grep($this->paginationKeys, $this->columnKeys, PREG_GREP_INVERT) ?: [];
-            return array_values($paginationKeys);
-        }
         return $this->columnKeys;
     }
 
@@ -513,11 +535,13 @@ abstract class AbstractResponse implements ResponseInterface
      * A future wire change (or a substitute parser) that broke that would send
      * pagination backwards rather than failing, so it is refused here.
      *
-     * Note that {@see getRecordsCount()} is NOT a usable gate, however much "an
-     * empty window has no next page" sounds like the same statement:
-     * {@see assembleRecords()} sizes the record list across *every* column,
-     * pagination columns included, so a CNR response carrying nothing but
-     * COLUMN/COUNT/FIRST/LAST/LIMIT/TOTAL still reports one record.
+     * Note that {@see getRecordsCount()} is still NOT the gate to use, however
+     * much "an empty window has no next page" sounds like the same statement. It
+     * reports how many rows *this* response holds — which, since RSRMID-2965, is
+     * honestly 0 for the empty windows above — and says nothing about whether
+     * more exist beyond them. A server that answered an empty window mid-list
+     * would terminate the walk on that reading, while the limit gate refuses only
+     * what was actually requested: a window of no rows.
      */
     #[\Override]
     public function hasNextPage(): bool
@@ -737,5 +761,19 @@ abstract class AbstractResponse implements ResponseInterface
         return array_key_exists($key, $this->hash) && is_array($this->hash[$key])
             ? $this->hash[$key]
             : [];
+    }
+
+    /**
+     * Is this wire key response metadata rather than data?
+     *
+     * The one place {@see $metaKeys} is matched, called from each brand's
+     * populate() before it registers a column. Shared so that "which keys are
+     * metadata" is answered identically for every brand while *what* those keys
+     * are stays brand-specific — see {@see $metaKeys} for why the two sets must
+     * not be merged.
+     */
+    protected function isMetaKey(string $key): bool
+    {
+        return preg_match($this->metaKeys, $key) === 1;
     }
 }

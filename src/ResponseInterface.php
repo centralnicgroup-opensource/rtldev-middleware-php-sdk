@@ -94,21 +94,18 @@ interface ResponseInterface extends \IteratorAggregate
     public function getColumnIndex(string $columnName, int $recordIndex): mixed;
 
     /**
-     * Get Column Names
+     * Get Column Names — the response's data columns, in wire order.
      *
-     * Pass true to strip the pagination/metadata columns the brand's list
-     * endpoints emit alongside the real data (CNR: TOTAL, FIRST, LAST, COUNT,
-     * LIMIT; IBS: the total_ prefixed keys and domaincount), leaving only the
-     * columns a caller wants to render. Which keys count as pagination is
-     * brand-specific — see the $paginationKeys property on each brand's Response.
-     *
-     * The parameter is declared here, not only on the implementation, because
-     * consumers are expected to type against this interface: an interface
-     * declaration narrower than the implementation makes the capability
-     * unreachable to exactly those consumers. Keep the two in step.
+     * Never includes the brand's response metadata (CNR: TOTAL, FIRST, LAST,
+     * COUNT, LIMIT; IBS: transactid, status, message, code, the total_ prefixed
+     * keys and domaincount). Those are not columns at all since RSRMID-2965 —
+     * read them through {@see self::getPagination()} and the status accessors
+     * instead of {@see self::getColumn()}/{@see self::getColumnIndex()}. The
+     * former `getColumnKeys(true)` that stripped them is gone: with the column
+     * set correct there is nothing left to strip.
      * @return string[] Array of Column Names
      */
-    public function getColumnKeys(bool $filterPaginationKeys = false): array;
+    public function getColumnKeys(): array;
 
     /**
      * Get List of Columns
@@ -139,13 +136,25 @@ interface ResponseInterface extends \IteratorAggregate
     public function getCurrentPageNumber(): ?int;
 
     /**
-     * Get Index of first row in this response
+     * Get Index of first row in this response — the offset the current window
+     * starts at, or `null` when the response carries no pagination metadata (a
+     * non-list response).
+     *
+     * A pure read of the brand's own wire metadata since RSRMID-2965: it no
+     * longer falls back to `0` because rows happen to be present, so "this is
+     * page 1" and "this is not a list" are distinguishable answers.
      */
     public function getFirstRecordIndex(): ?int;
 
     /**
-     * Get last record index of the current list query, or null for a non-list
-     * response
+     * Get last record index of the current list query, or `null` when the
+     * response carries no pagination metadata (a non-list response).
+     *
+     * Also a pure wire read since RSRMID-2965 — no `getRecordsCount() - 1`
+     * fallback. Note it is an *offset into the whole result set*, not an index
+     * into {@see self::getRecords()}: the window FIRST=100, LIMIT=10 answers
+     * `109` here, while its last row is `getRecord(9)`. The two coincide on the
+     * first page only.
      */
     public function getLastRecordIndex(): ?int;
 

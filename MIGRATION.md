@@ -36,6 +36,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v30.0.0 | 8.3+         | Transport error is a declared `?string $error` parameter, not a `"httperror\|"` prefix on the raw payload; `nocurl` template gone                                                                                                                                                                                                                             | Add the parameter if you override `newResponse()`/`translate()`; return `["", $error]` (not bytes) on failure if you implement `TransportInterface`                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | → v31.0.0 | 8.3+         | `Response` is sealed after construction: the two mutators and the four record-cursor methods are off `ResponseInterface`                                                                                                                                                                                                                                      | Replace `getNextRecord()` loops with `foreach ($r as $rec)` (it yields the first row too) and `getCurrentRecord()` with `getRecord(0)`; take `populate()`'s three new arguments if you subclass                                                                                                                                                                                                                                                                                                                                                                                           |
 | → v32.0.0 | 8.3+         | The response-template registry is an instance, not `public static array $templates`; `resetTemplates()` removed; `CNR\Column` deleted in favour of `?string` accessors on the interfaces; `getRecordsTotalCount()`/`getRecordsLimitation()` are `?int` and a brand `Response` no longer declares `getCurrentPageNumber()`/`hasNextPage()`/`hasPreviousPage()` | Call `(new ResponseTemplateManager())->addTemplate(…)` and pass the registry as `new Response($id, templates: $registry)`; delete `resetTemplates()` calls; take `translate()`'s new argument if you subclass; swap `CNR\Column`/`@var Column<string>` for `getStringByIndex()`/`getStringByKey()`, and add both methods if you implement `ColumnInterface`/`RecordInterface`; widen your `ResponseInterface` implementation's return types and handle `null` from `getRecordsTotalCount()`/`getRecordsLimitation()`; re-check any `hasPreviousPage()` check against an unaligned `FIRST` |
+| → v33.0.0 | 8.3+         | Pagination/status metadata is no longer column data; `getColumnKeys()` lost its `bool` parameter; the four pagination primitives answer `null` instead of standing in; the six derived pagination getters moved to a new `CNIC\Paginator`, returned by `getPagination()`                                                                                      | Read metadata through `getPagination()`, `getHash()` and the status accessors instead of `getColumn()`/records; drop the `getColumnKeys(true)` argument; re-point `hasNextPage()`/page-number calls at `getPagination()` (`toArray()` for the old array); expect `0` records, not `1`, from an empty list                                                                                                                                                                                                                                                                                 |
 
 Two things to respect throughout:
 
@@ -1446,6 +1447,106 @@ public function getRecordsLimitation(): ?int { … }
 Delete any `getCurrentPageNumber()`/`hasNextPage()`/`hasPreviousPage()` override that only reproduced the shared arithmetic — `AbstractResponse` now supplies it from your `getFirstRecordIndex()`/`getLastRecordIndex()`/`getRecordsTotalCount()`/`getRecordsLimitation()`. An override that does something genuinely brand-specific still works; it now overrides shared arithmetic rather than filling an interface hole the base left open.
 
 **Why this happened:** `getCurrentPageNumber()`, `hasNextPage()` and `hasPreviousPage()` read no wire column of their own — they were always pure functions of the four column readers, exactly like the derived getters that stayed on the base all along. Pinning them as brand-declared "primitives" protected nothing, and let CNR's hand-written versions compute from whole page numbers while the sibling getters (`getNextPageNumber()`, `getNumberOfPages()`) computed from record offsets — two arithmetic paths over the same four numbers that agree only when `FIRST` happens to be a multiple of `LIMIT`. On an unaligned offset window (CNR's list API is offset-based: `FIRST`/`LAST`/`LIMIT`/`TOTAL`), the two paths disagreed: `hasNextPage()` could answer `true` for a window that already held the tail of the list (an avoidable empty request), and `hasPreviousPage()` could answer `false` for a window with fifty preceding rows. Deriving every predicate and page number from the same offset grid removes the possibility of disagreement, aligned or not. (Ref: RSRMID-2943.)
+
+---
+
+## → v33.0.0 — response metadata is not column data; pagination arithmetic moved to `CNIC\Paginator`
+
+**What changed:** the keys a brand's wire format uses to describe the _response_ — CNR's `TOTAL`/`FIRST`/`LAST`/`COUNT`/`LIMIT`, IBS/Moniker's `transactid`/`status`/`message`/`code`/`domaincount`/`total_*` — are no longer registered as columns. They appear in no `getColumnKeys()`, no `getColumns()`, no `getColumn()` and in no record. Three things follow:
+
+1. `getColumnKeys(bool $filterPaginationKeys)` is now `getColumnKeys()`. There is nothing left to filter.
+2. The four pagination primitives are pure reads of that metadata, with no fallbacks: `getFirstRecordIndex()`, `getLastRecordIndex()`, `getRecordsTotalCount()` and `getRecordsLimitation()` answer `null` when the metadata is absent, on every brand.
+3. Row counts and row shapes changed for the responses that were being mis-modelled — see "Rows" below.
+
+Separately, the pagination _arithmetic_ moved off `ResponseInterface` into a new value object, `CNIC\Paginator`: `getPagination()` returns one instead of an array, and `getCurrentPageNumber()`, `getNextPageNumber()`, `getPreviousPageNumber()`, `getNumberOfPages()`, `hasNextPage()` and `hasPreviousPage()` are declared on it rather than on the response. `ResponseInterface` goes from 29 methods to 23.
+
+**Who is affected:** anyone reading pagination or status metadata through `getColumn()`/`getColumnIndex()`/`getColumnKeys()` or off a record; anyone calling any of the six moved getters on a response; anyone passing an argument to `getColumnKeys()`; anyone consuming `getPagination()` as an array; anyone counting the records of a list that can come back empty; anyone implementing `ResponseInterface` directly or subclassing a brand `Response`.
+
+**What to respect — metadata:**
+
+```php
+// BEFORE (v32) — metadata was a one-cell column beside your data columns
+$total  = $r->getColumn("TOTAL")?->getStringByIndex(0);      // CNR
+$status = $ibs->getColumn("status")?->getStringByIndex(0);   // IBS/Moniker
+$keys   = $r->getColumnKeys(true);                           // …then filter it back out
+
+// AFTER (v33) — metadata is answered by the accessors that own it
+$total  = $r->getRecordsTotalCount();          // ?int, no string parsing
+$status = $ibs->getHash()["status"] ?? null;   // or isSuccess()/isError()/getCode()/getDescription()
+$keys   = $r->getColumnKeys();                 // data columns only, always
+```
+
+**What to respect — pagination:**
+
+```php
+// BEFORE (v32)
+if ($r->hasNextPage()) {
+    $page = $r->getCurrentPageNumber();
+    $of   = $r->getNumberOfPages();
+}
+$pg = $r->getPagination();          // array<string, int|null>
+
+// AFTER (v33) — ask the response for its paginator, once
+$pg = $r->getPagination();          // CNIC\Paginator
+if ($pg->hasNextPage()) {
+    $page = $pg->getCurrentPageNumber();
+    $of   = $pg->getNumberOfPages();
+}
+$pg->toArray();                     // the identical array<string, int|null>, same keys, same order
+```
+
+`toArray()` is byte-for-byte what `getPagination()` used to return, so `CNR\Response::getListHash()["meta"]["pg"]` is unchanged in shape and in declared type. The four primitives (`getFirstRecordIndex()`, `getLastRecordIndex()`, `getRecordsTotalCount()`, `getRecordsLimitation()`) stay on `ResponseInterface` — they are wire reads, not arithmetic.
+
+**What to respect — `null` where a number used to appear.** Every one of these was a stand-in for metadata the response did not carry:
+
+```php
+// A CNR response with rows but no pagination metadata (any non-list command):
+$r->getFirstRecordIndex();   // BEFORE: 0            AFTER: null
+$r->getLastRecordIndex();    // BEFORE: count - 1    AFTER: null
+
+// An IBS/Moniker response with no count key (Domain/Info, Domain/Check, …):
+$r->getFirstRecordIndex();   // BEFORE: 0            AFTER: null
+$r->getLastRecordIndex();    // BEFORE: count - 1    AFTER: null
+$r->getRecordsTotalCount();  // BEFORE: record count AFTER: null
+$r->getRecordsLimitation();  // BEFORE: record count AFTER: null
+$r->getPagination()->getCurrentPageNumber(); // BEFORE: 1  AFTER: null
+```
+
+`getNumberOfPages()` is unaffected by this: it still answers `1` for a response that holds rows but is not a paginated list (an implicit single page) and `0` when there is nothing to page through. `getRecordsCount()` is also unchanged — it counts the rows this response holds, and remains what `getRecord()` bounds-checks against.
+
+**Rows:** an empty list used to report **one record consisting entirely of metadata**, and a populated IBS list put its metadata on **row 0 only**. Both are gone:
+
+```php
+// An empty CNR window (COUNT=0), or an empty IBS list ({"status":"SUCCESS","domaincount":0}):
+$r->getRecordsCount();   // BEFORE: 1 (a phantom row of counters)   AFTER: 0
+$r->getRecord(0);        // BEFORE: a Record of metadata            AFTER: null
+
+// An IBS list of three domains — every row now carries the same keys:
+// BEFORE: row 0 => ["status" => "SUCCESS", "domain" => "a.com"], rows 1-2 => ["domain" => …]
+// AFTER:  rows 0-2 => ["domain" => …]
+```
+
+If you were reading `$r->getRecord(0)?->getDataByKey("status")`, read `$r->getHash()["status"]` (or `isSuccess()`) instead. If you guarded a list loop with `getRecordsCount() > 1` to skip the phantom row, drop the guard — it now skips a real row.
+
+**If you implement `ResponseInterface` yourself:** remove the `bool` parameter from `getColumnKeys()`, change `getPagination()` to return `CNIC\Paginator`, and delete your `getCurrentPageNumber()`/`getNextPageNumber()`/`getPreviousPageNumber()`/`getNumberOfPages()`/`hasNextPage()`/`hasPreviousPage()` implementations — the interface no longer declares them, and `AbstractResponse::getPagination()` builds the paginator from your four primitives:
+
+```php
+// AFTER (v33) — if you extend AbstractResponse, this is already done for you
+public function getPagination(): \CNIC\Paginator
+{
+    return new \CNIC\Paginator(
+        $this->getFirstRecordIndex(),
+        $this->getLastRecordIndex(),
+        $this->getRecordsTotalCount(),
+        $this->getRecordsLimitation(),
+        $this->getRecordsCount()
+    );
+}
+```
+
+**If you subclass a brand `Response`:** the protected `$paginationKeys` property is renamed `$metaKeys`, and it now decides which keys never become columns rather than which ones get filtered later. A subclass that set `$paginationKeys` must rename it, or its keys silently return to the column pool. If you override `populate()`, skip metadata keys with the new `protected function isMetaKey(string $key): bool`.
+
+**Why this happened:** the counters were being modelled as data. A one-cell `TOTAL` column sat beside a 200-cell `DOMAIN` column, and `assembleRecords()` sizes the record list as the maximum over _every_ column — so metadata sized rows. That produced the phantom record and the uneven row shape above, and the SDK paid for the modelling error in three more places: a brand regex, a filter parameter on the public interface, and a documented hazard note telling `hasNextPage()` not to trust the record count. Removing the metadata from the column pool fixed all of it without touching the row assembly, which was correct all along given a correct column set. The stand-in fallbacks went with it: once metadata has one home, "this response is not a list" is expressible, so it no longer has to be reported as page 1 of something. The arithmetic then had no reason to stay on the response — it reads no column, holds no state and needs no payload, so it became a value object that can be constructed and tested directly instead of through a hand-authored API response. (Ref: RSRMID-2965.)
 
 ---
 

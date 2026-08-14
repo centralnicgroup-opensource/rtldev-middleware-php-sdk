@@ -95,8 +95,11 @@ final class ResponseTest extends TestCase
         $this->assertNull($r->getFirstRecordIndex());
     }
 
-    public function testGetFirstRecordIndexNoFirstRows(): void
+    public function testGetFirstRecordIndexNoFirstCounter(): void
     {
+        // RSRMID-2965: rows present but no FIRST counter on the wire is
+        // answered honestly as null — the former "0 because there are rows"
+        // fallback is gone.
         $r = implode("\r\n", [
             "[RESPONSE]",
             "CODE=200",
@@ -106,14 +109,17 @@ final class ResponseTest extends TestCase
             "EOF"
         ]);
         $r = new R($r);
-        $this->assertEquals(0, $r->getFirstRecordIndex());
+        $this->assertNull($r->getFirstRecordIndex());
     }
 
     public function testGetColumns(): void
     {
+        // RSRMID-2965: listP0 carries 6 PROPERTY entries (TOTAL, FIRST,
+        // DOMAIN, COUNT, LAST, LIMIT), but only DOMAIN is real column data —
+        // the other five are pagination metadata and are never registered.
         $r = new R("listP0", templates: self::$tpls);
         $cols = $r->getColumns();
-        $this->assertEquals(6, count($cols));
+        $this->assertEquals(1, count($cols));
     }
 
     public function testGetColumnIndexExists(): void
@@ -131,30 +137,28 @@ final class ResponseTest extends TestCase
 
     public function testGetColumnKeys(): void
     {
+        // RSRMID-2965: COUNT/FIRST/LAST/LIMIT/TOTAL are pagination metadata,
+        // never registered as columns — DOMAIN is the only real column left.
         $r = new R("listP0", templates: self::$tpls);
         $colKeys = $r->getColumnKeys();
-        $this->assertCount(6, $colKeys);
-        $this->assertContains("COUNT", $colKeys);
+        $this->assertCount(1, $colKeys);
         $this->assertContains("DOMAIN", $colKeys);
-        $this->assertContains("FIRST", $colKeys);
-        $this->assertContains("LAST", $colKeys);
-        $this->assertContains("LIMIT", $colKeys);
-        $this->assertContains("TOTAL", $colKeys);
+        foreach (["COUNT", "FIRST", "LAST", "LIMIT", "TOTAL"] as $metaKey) {
+            $this->assertNotContains($metaKey, $colKeys);
+        }
     }
 
 
     public function testGetRecordRows(): void
     {
+        // RSRMID-2965: the pagination counters never became columns, so the
+        // assembled row carries only the real DOMAIN data — no COUNT/FIRST/
+        // LAST/LIMIT/TOTAL cells riding along on row 0.
         $r = new R("listP0", templates: self::$tpls);
         $rec = $r->getRecord(0);
         $this->assertNotNull($rec);
         $this->assertEquals([
-            "COUNT" => "2",
-            "DOMAIN" => "0-60motorcycletimes.com",
-            "FIRST" => "0",
-            "LAST" => "1",
-            "LIMIT" => "2",
-            "TOTAL" => "2701"
+            "DOMAIN" => "0-60motorcycletimes.com"
         ], $rec->getData());
     }
 
@@ -169,17 +173,18 @@ final class ResponseTest extends TestCase
         $r = new R("listP0", templates: self::$tpls);
         $lh = $r->getListHash();
         $this->assertCount(2, $lh["LIST"]);
-        $this->assertEquals($lh["meta"]["columns"], $r->getColumnKeys(true));
+        $this->assertEquals($lh["meta"]["columns"], $r->getColumnKeys());
         $this->assertEquals($lh["meta"]["pg"], $r->getPagination());
     }
 
-    public function testPaginationKeysDoNotStripRealColumns(): void
+    public function testMetaKeyRegexDoesNotStripRealColumns(): void
     {
-        // RSRMID-2854: columns whose names merely *contain* a pagination keyword
-        // as a substring (COUNTRY -> COUNT, FIRSTNAME -> FIRST) must NOT be
-        // treated as pagination metadata. Only the exact keys TOTAL/COUNT/LIMIT/
-        // FIRST/LAST are pagination columns and get stripped by getColumnKeys(true)
-        // and getListHash().
+        // RSRMID-2854/RSRMID-2965: columns whose names merely *contain* a
+        // meta keyword as a substring (COUNTRY -> COUNT, FIRSTNAME -> FIRST)
+        // must NOT be treated as response metadata. Only the exact keys
+        // TOTAL/COUNT/LIMIT/FIRST/LAST are metadata, and since RSRMID-2965
+        // they are never registered as columns at all — there is no
+        // "filtering" step left for getColumnKeys()/getListHash() to perform.
         $raw = implode("\r\n", [
             "[RESPONSE]",
             "CODE=200",
@@ -197,23 +202,20 @@ final class ResponseTest extends TestCase
         ]);
         $r = new R($raw);
 
-        // unfiltered keys list everything
-        $allKeys = $r->getColumnKeys();
-        $this->assertContains("FIRSTNAME", $allKeys);
-        $this->assertContains("COUNTRY", $allKeys);
+        // the look-alike columns survive as real data
+        $keys = $r->getColumnKeys();
+        $this->assertContains("FIRSTNAME", $keys);
+        $this->assertContains("COUNTRY", $keys);
 
-        // filtered keys keep the real columns but drop the genuine pagination keys
-        $filtered = $r->getColumnKeys(true);
-        $this->assertContains("FIRSTNAME", $filtered);
-        $this->assertContains("COUNTRY", $filtered);
-        foreach (["TOTAL", "COUNT", "LIMIT", "FIRST", "LAST"] as $pgKey) {
-            $this->assertNotContains($pgKey, $filtered);
+        // the genuine metadata keys never became columns
+        foreach (["TOTAL", "COUNT", "LIMIT", "FIRST", "LAST"] as $metaKey) {
+            $this->assertNotContains($metaKey, $keys);
         }
 
-        // list hash rows retain the real columns and drop the pagination keys
+        // list hash rows carry only the real columns
         $lh = $r->getListHash();
         $this->assertSame(["columns", "pg"], array_keys($lh["meta"]));
-        $this->assertEquals($filtered, $lh["meta"]["columns"]);
+        $this->assertEquals($keys, $lh["meta"]["columns"]);
         $this->assertSame(["FIRSTNAME" => "Adrian", "COUNTRY" => "PL"], $lh["LIST"][0]);
         $this->assertSame(["FIRSTNAME" => "John", "COUNTRY" => "US"], $lh["LIST"][1]);
     }
@@ -299,8 +301,12 @@ final class ResponseTest extends TestCase
         $this->assertNull($r->getLastRecordIndex());
     }
 
-    public function testGetLastRecordIndexNoLastRows(): void
+    public function testGetLastRecordIndexNoLastCounter(): void
     {
+        // RSRMID-2965: rows present but no LAST counter on the wire is
+        // answered honestly as null — the former `getRecordsCount() - 1`
+        // fallback (decision 5 of RSRMID-2965) is gone, so this no longer
+        // reports a record index for a question about a result-set offset.
         $r = implode("\r\n", [
             "[RESPONSE]",
             "CODE=200",
@@ -310,7 +316,31 @@ final class ResponseTest extends TestCase
             "EOF"
         ]);
         $r = new R($r);
-        $this->assertEquals(1, $r->getLastRecordIndex());
+        $this->assertNull($r->getLastRecordIndex());
+    }
+
+    public function testEmptyWindowWithOnlyMetaKeysHasZeroRecords(): void
+    {
+        // RSRMID-2965 acceptance criterion: a PROPERTY block carrying nothing
+        // but the pagination counters (no data column at all) reports zero
+        // records instead of one phantom record assembled entirely from
+        // metadata.
+        $raw = implode("\r\n", [
+            "[RESPONSE]",
+            "CODE=200",
+            "DESCRIPTION=Command completed successfully",
+            "PROPERTY[COUNT][0]=0",
+            "PROPERTY[FIRST][0]=0",
+            "PROPERTY[LAST][0]=0",
+            "PROPERTY[LIMIT][0]=0",
+            "PROPERTY[TOTAL][0]=12345",
+            "EOF"
+        ]);
+        $r = new R($raw);
+        $this->assertSame(0, $r->getRecordsCount());
+        $this->assertSame([], $r->getColumns());
+        $this->assertSame(0, $r->getRecordsLimitation());
+        $this->assertSame(12345, $r->getRecordsTotalCount());
     }
 
     public function testGetNextPageNumberNoRows(): void
