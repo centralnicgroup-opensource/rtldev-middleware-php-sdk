@@ -28,6 +28,22 @@ use CNIC\IBS\Client as IBSClient;
 class Client extends IBSClient
 {
     /**
+     * Narrowed one step further than {@see IBSClient::__construct()}: this brand
+     * shares the IBS platform but not its endpoints, so accepting an
+     * `IBS\SocketConfig` here would let a Moniker client silently talk to the IBS
+     * host. Refusing it at the call site is the whole reason the parameter is
+     * narrowed per brand rather than typed `?AbstractSocketConfig` once
+     * (RSRMID-2966).
+     *
+     * @param SocketConfig|null $socketConfig Moniker connection configuration to
+     *        adopt; null builds the brand default
+     */
+    public function __construct(?SocketConfig $socketConfig = null)
+    {
+        parent::__construct($socketConfig);
+    }
+
+    /**
      * Instantiate MONIKER SocketConfig
      */
     #[\Override]

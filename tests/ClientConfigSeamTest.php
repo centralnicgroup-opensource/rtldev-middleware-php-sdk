@@ -13,6 +13,7 @@ use CNIC\AbstractClient;
 use CNIC\AbstractSocketConfig;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CNRClient;
+use CNIC\CNR\SessionClient;
 use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\SocketConfig as IBSSocketConfig;
@@ -70,6 +71,18 @@ final class ClientConfigSeamTest extends TestCase
      * Configuration reachable through the client, each answered by the config.
      * The client's forwarders are kept for ergonomics; what must stay true is
      * that they are forwarders.
+     *
+     * These are the **same-name** forwarders, which is all
+     * {@see testEveryClientConfigMethodHasACounterpartOnTheConfig()} can check: it
+     * looks the method up by the identical name on the config. `getPOSTData` was
+     * missing until RSRMID-2966 — 16 entries against 17 same-name forwarders, a
+     * one-writer gap that no failure could reveal.
+     *
+     * `setCredentials` is the 18th forwarder and deliberately **not** here: it fans
+     * out to `setLogin()` + `setPassword()`, so the config has no method of that
+     * name and listing it would fail the counterpart assertion. It gets its own
+     * check in {@see testSetCredentialsFansOutToTheConfigsCredentialWriters()}.
+     * 17 + 1 is the 18 that AbstractClient's class docblock counts.
      * @var string[]
      */
     private const array FORWARDED_METHODS = [
@@ -89,6 +102,7 @@ final class ClientConfigSeamTest extends TestCase
         "setSocketTimeout",
         "setExtraCurlOptions",
         "resetCurlOptions",
+        "getPOSTData",
     ];
 
     /**
@@ -178,6 +192,42 @@ final class ClientConfigSeamTest extends TestCase
                 $config->hasMethod($method),
                 "AbstractSocketConfig::{$method}() must exist — {$clientClass}::{$method}() has to forward "
                 . "to it rather than answer from client-side state."
+            );
+        }
+    }
+
+    /**
+     * The 18th forwarder, checked separately because it is the one that does not
+     * share a name with what it forwards to: `setCredentials()` fans out to the
+     * config's two credential writers. Listing it in FORWARDED_METHODS would fail
+     * the counterpart assertion above and read as a defect in the seam rather than
+     * a property of this one method.
+     *
+     * Scope, stated honestly: this pins that the credential surface the forwarder
+     * targets still exists in two halves, nothing about the forwarder's body. What
+     * the two writers *do* — clear the CNR session id — is behavioural and covered
+     * by {@see testTheCredentialsClearSessionInvariantSurvivesAPreBuiltConfig()}.
+     *
+     * Renaming either writer while `CNR\SocketConfig` overrides it is already a
+     * fatal error, since those overrides carry `#[\Override]`; this catches the
+     * mutation the language does not, namely dropping the pair from both levels at
+     * once in favour of one combined setter.
+     *
+     * @param class-string<AbstractClient> $clientClass
+     */
+    #[DataProvider("clientProvider")]
+    public function testSetCredentialsFansOutToTheConfigsCredentialWriters(string $clientClass): void
+    {
+        $this->assertTrue(
+            (new ReflectionClass($clientClass))->hasMethod("setCredentials"),
+            "{$clientClass}::setCredentials() must exist."
+        );
+        $config = new ReflectionClass(AbstractSocketConfig::class);
+        foreach (["setLogin", "setPassword"] as $writer) {
+            $this->assertTrue(
+                $config->hasMethod($writer),
+                "AbstractSocketConfig::{$writer}() must exist — {$clientClass}::setCredentials() fans out to "
+                . "setLogin() + setPassword() rather than answering from client-side state (RSRMID-2921)."
             );
         }
     }
@@ -327,5 +377,292 @@ final class ClientConfigSeamTest extends TestCase
         $this->assertTrue($cfg->isOTE());
         $this->assertSame("http://p.example:8080", $cfg->getProxy());
         $this->assertSame(9, $cfg->getSocketTimeout());
+    }
+
+    /**
+     * The name every brand constructor and every factory method must use for the
+     * config parameter. Named arguments bind to the *implementation*, not to a
+     * shared abstract or interface, so `CF::cnr(socketConfig: $cfg)` keeps working
+     * only while all seven declarations agree on the spelling.
+     */
+    private const string CONFIG_PARAMETER = "socketConfig";
+
+    /**
+     * The construction routes each brand offers, paired with the config instance
+     * handed over. A fresh config per route on purpose: reusing one across both
+     * would quietly assert that two clients may share a config, which is a
+     * consequence of adopt-by-reference and not a property this guard pins.
+     *
+     * @return array<string, array{0: \Closure(): list<array{0: AbstractSocketConfig, 1: AbstractClient}>}>
+     */
+    public static function constructionProvider(): array
+    {
+        return [
+            "CNR" => [static function (): array {
+                $direct = new CNRSocketConfig();
+                $viaFactory = new CNRSocketConfig();
+                return [[$direct, new CNRClient($direct)], [$viaFactory, CF::cnr($viaFactory)]];
+            }],
+            "IBS" => [static function (): array {
+                $direct = new IBSSocketConfig();
+                $viaFactory = new IBSSocketConfig();
+                return [[$direct, new IBSClient($direct)], [$viaFactory, CF::ibs($viaFactory)]];
+            }],
+            "MONIKER" => [static function (): array {
+                $direct = new MONIKERSocketConfig();
+                $viaFactory = new MONIKERSocketConfig();
+                return [[$direct, new MONIKERClient($direct)], [$viaFactory, CF::moniker($viaFactory)]];
+            }],
+        ];
+    }
+
+    /**
+     * Every client whose constructor parameter must be narrowed to its own brand's
+     * config, and the class it must be narrowed to. `SessionClient` is listed
+     * although it declares no constructor: it inherits CNR's, and it is what
+     * `CF::cnr()` actually returns, so a narrowing that stopped covering it would
+     * stop covering the SDK's primary CNR entry point.
+     *
+     * @return array<string, array{0: class-string<AbstractClient>, 1: class-string<AbstractSocketConfig>}>
+     */
+    public static function brandConfigTypeProvider(): array
+    {
+        return [
+            "CNR" => [CNRClient::class, CNRSocketConfig::class],
+            "CNR session" => [SessionClient::class, CNRSocketConfig::class],
+            "IBS" => [IBSClient::class, IBSSocketConfig::class],
+            "MONIKER" => [MONIKERClient::class, MONIKERSocketConfig::class],
+        ];
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: class-string<AbstractSocketConfig>}>
+     */
+    public static function factoryMethodProvider(): array
+    {
+        return [
+            "cnr" => ["cnr", CNRSocketConfig::class],
+            "ibs" => ["ibs", IBSSocketConfig::class],
+            "moniker" => ["moniker", MONIKERSocketConfig::class],
+        ];
+    }
+
+    /**
+     * A supplied config is **adopted, not copied**: `getSocketConfig()` hands back
+     * the caller's own instance (RSRMID-2966).
+     *
+     * The failure mode is a defensive `clone` in a constructor. That is the exact
+     * shape RSRMID-2921 removed — configuration with two homes — reintroduced as a
+     * copy the caller cannot see, and it is behaviour-preserving on the day it
+     * lands: the clone agrees with the original until one of the two is written.
+     * Identity is therefore the assertion, and the write-through check behind it is
+     * what makes the identity claim mean something rather than restate `assertSame`.
+     *
+     * Revisit only if a config becomes genuinely immutable, at which point copying
+     * costs nothing and this guard has no defect left to prevent.
+     *
+     * @param \Closure(): list<array{0: AbstractSocketConfig, 1: AbstractClient}> $routes
+     */
+    #[DataProvider("constructionProvider")]
+    public function testASuppliedConfigIsAdoptedNotCopied(\Closure $routes): void
+    {
+        foreach ($routes() as [$cfg, $cl]) {
+            $this->assertSame(
+                $cfg,
+                $cl->getSocketConfig(),
+                $cl::class . " must adopt the supplied config, not a copy of it: a clone would give "
+                . "configuration a second home again (RSRMID-2921/RSRMID-2966)."
+            );
+
+            // The identity above is only interesting because writes still cross it.
+            $cfg->setSocketTimeout(17);
+            $this->assertSame(17, $cl->getSocketTimeout());
+            $cl->setReferer("https://adopted.example/");
+            $this->assertSame("https://adopted.example/", $cfg->getReferer());
+        }
+    }
+
+    /**
+     * Each brand narrows the constructor parameter to its own config subtype.
+     *
+     * Widening it back to `?AbstractSocketConfig` is what this refuses. That change
+     * type-checks, breaks no call site, and passes every behavioural test —
+     * `new MONIKER\Client(new IBS\SocketConfig())` would then be legal and silently
+     * point a Moniker client at the IBS host, because the two brands differ in
+     * nothing but their endpoints. Only reflection on the declared type can refuse
+     * it up front; a behavioural test would have to wait for someone to make the
+     * mistake. PHP exempts constructors from LSP under class inheritance, which is
+     * the sole reason the narrowing is expressible at all — do not "fix" a brand by
+     * widening it to match the parent.
+     *
+     * Revisit if a brand's config genuinely has no subtype of its own, or if two
+     * brands become endpoint-identical.
+     *
+     * @param class-string<AbstractClient> $clientClass
+     * @param class-string<AbstractSocketConfig> $configClass
+     */
+    #[DataProvider("brandConfigTypeProvider")]
+    public function testEveryBrandConstructorNarrowsItsConfigParameter(
+        string $clientClass,
+        string $configClass
+    ): void {
+        $ctor = (new ReflectionClass($clientClass))->getConstructor();
+        $this->assertNotNull($ctor, "{$clientClass} must reach a constructor.");
+        $params = $ctor->getParameters();
+        $this->assertCount(
+            1,
+            $params,
+            "{$clientClass}'s constructor takes the config and nothing else — client behaviour "
+            . "(context, transport, logger, user agent) keeps its setters (RSRMID-2966)."
+        );
+        $type = $params[0]->getType();
+        $this->assertInstanceOf(\ReflectionNamedType::class, $type);
+        $this->assertSame(
+            $configClass,
+            $type->getName(),
+            "{$clientClass}'s config parameter must be narrowed to {$configClass}; a wider type lets a "
+            . "foreign brand's config through, and endpoints are the only difference between IBS and MONIKER."
+        );
+        $this->assertTrue($type->allowsNull(), "{$clientClass}'s config parameter must be nullable.");
+    }
+
+    /**
+     * The parameter stays optional, which is what makes the whole change additive:
+     * every `new SessionClient()` / `ClientFactory::cnr()` in the wild takes the
+     * null branch and runs the code it always ran. Making it required is the one
+     * way this becomes a breaking change, and it would break no test in this repo
+     * that a default could not paper over — hence a structural pin.
+     *
+     * @param class-string<AbstractClient> $clientClass
+     * @param class-string<AbstractSocketConfig> $configClass
+     */
+    #[DataProvider("brandConfigTypeProvider")]
+    public function testTheConfigParameterStaysOptional(string $clientClass, string $configClass): void
+    {
+        $ctor = (new ReflectionClass($clientClass))->getConstructor();
+        $this->assertNotNull($ctor);
+        $this->assertSame(
+            0,
+            $ctor->getNumberOfRequiredParameters(),
+            "{$clientClass} must stay constructible with no arguments — supplying a {$configClass} is "
+            . "additive, and requiring it would break every existing consumer (RSRMID-2966)."
+        );
+    }
+
+    /**
+     * All seven declarations spell the parameter identically.
+     *
+     * Named arguments bind to the implementation rather than to the abstract or
+     * interface a consumer typed against, so `CF::cnr(socketConfig: $cfg)` survives
+     * only while the spelling agrees everywhere. A rename on one brand is invisible
+     * to PHPStan and passes every positional call site, so nothing else in the
+     * toolchain would report it.
+     */
+    public function testTheConfigParameterIsSpelledTheSameEverywhere(): void
+    {
+        foreach (self::brandConfigTypeProvider() as [$clientClass]) {
+            $ctor = (new ReflectionClass($clientClass))->getConstructor();
+            $this->assertNotNull($ctor);
+            $this->assertSame(
+                self::CONFIG_PARAMETER,
+                $ctor->getParameters()[0]->getName(),
+                "{$clientClass}'s config parameter must be named \$" . self::CONFIG_PARAMETER
+                . " — named arguments bind to the implementation, so a per-brand spelling breaks callers."
+            );
+        }
+        foreach (self::factoryMethodProvider() as [$method, $configClass]) {
+            $rm = new ReflectionMethod(CF::class, $method);
+            $this->assertSame(
+                self::CONFIG_PARAMETER,
+                $rm->getParameters()[0]->getName(),
+                "ClientFactory::{$method}()'s config parameter must be named \$" . self::CONFIG_PARAMETER . "."
+            );
+            $type = $rm->getParameters()[0]->getType();
+            $this->assertInstanceOf(\ReflectionNamedType::class, $type);
+            $this->assertSame(
+                $configClass,
+                $type->getName(),
+                "ClientFactory::{$method}() must accept {$configClass}, matching the brand client it builds."
+            );
+            $this->assertSame(
+                0,
+                $rm->getNumberOfRequiredParameters(),
+                "ClientFactory::{$method}() must stay callable with no arguments."
+            );
+        }
+    }
+
+    /**
+     * CNR's credentials-clear-session invariant has to hold when the config arrives
+     * pre-built, which is the one behavioural risk a construction seam carries here:
+     * the rule lives entirely on the config
+     * ({@see \CNIC\CNR\SocketConfig::setLogin()} and `setPassword()` each clear the
+     * session id), so adopting a caller's config must neither pre-empt it nor
+     * reorder it.
+     *
+     * Both directions, because adopt-by-reference is what makes the second one work:
+     * a write through the client is seen by the caller's config, and a write through
+     * the caller's config is seen by the client.
+     */
+    public function testTheCredentialsClearSessionInvariantSurvivesAPreBuiltConfig(): void
+    {
+        $cfg = (new CNRSocketConfig())->setLogin("myaccountid")->setSession("sess-123");
+        $cl = CF::cnr($cfg);
+        $this->assertSame("sess-123", $cl->getSession(), "a pre-built session must reach the client");
+
+        $cl->setCredentials("myaccountid", "mypassword");
+        $this->assertNull(
+            $cl->getSession(),
+            "setting credentials must still discard the active session when the config was supplied "
+            . "pre-built — a session and a password are alternative credentials on the wire."
+        );
+
+        $cfg->setSession("sess-456");
+        $this->assertSame(
+            "sess-456",
+            $cl->getSession(),
+            "a write through the caller's own config must be visible through the client it was handed to."
+        );
+    }
+
+    /**
+     * @return array<string, array{0: \Closure(): AbstractClient, 1: class-string<AbstractSocketConfig>}>
+     */
+    public static function defaultConstructionProvider(): array
+    {
+        return [
+            "CNR" => [static fn(): AbstractClient => CF::cnr(), CNRSocketConfig::class],
+            "IBS" => [static fn(): AbstractClient => CF::ibs(), IBSSocketConfig::class],
+            "MONIKER" => [static fn(): AbstractClient => CF::moniker(), MONIKERSocketConfig::class],
+        ];
+    }
+
+    /**
+     * The null branch still mints the brand's own config — the half of the
+     * constructor that existed before RSRMID-2966, and the reason that change is
+     * additive rather than a migration.
+     *
+     * Asserted on the exact class, not with `instanceof`:
+     * `MONIKER\SocketConfig extends IBS\SocketConfig`, so an
+     * `instanceof IBSSocketConfig` check would pass for Moniker and hide exactly the
+     * endpoint mix-up the narrowing guard above exists to prevent.
+     *
+     * @param \Closure(): AbstractClient $factory
+     * @param class-string<AbstractSocketConfig> $configClass
+     */
+    #[DataProvider("defaultConstructionProvider")]
+    public function testOmittingTheConfigStillYieldsTheBrandsOwnConfig(
+        \Closure $factory,
+        string $configClass
+    ): void {
+        $cl = $factory();
+        $cfg = $cl->getSocketConfig();
+        $this->assertSame(
+            $configClass,
+            $cfg::class,
+            "a default-constructed client must build its own brand's config exactly, not a parent brand's."
+        );
+        $this->assertSame($cfg, $cl->getSocketConfig(), "the default config must be built once, not per call.");
+        $this->assertSame($cfg->getLiveUrl(), $cfg->getURL(), "a default-constructed client starts on LIVE");
     }
 }

@@ -26,7 +26,8 @@ use CNIC\System;
  * ## Where configuration lives
  *
  * Not here. Connection configuration has one home — {@see AbstractSocketConfig} —
- * reachable through {@see getSocketConfig()}. What lives here is client
+ * reachable through {@see getSocketConfig()} and supplyable through
+ * {@see __construct()}. What lives here is client
  * *behaviour*: the logger and debug flag, the response context, the transport
  * instance, and the SDK's own identity (`VERSION`/`$userAgent`, versioned with this class
  * and released from it). Do not add a copy of a config-owned value; guarded by
@@ -36,7 +37,10 @@ use CNIC\System;
  * the documented ergonomic surface (`$cl->useOTESystem()->setCredentials(...)`)
  * and they read and write the config's state rather than a copy of it, so a
  * forwarder cannot disagree with the config. A *new* setting needs no forwarder —
- * `getSocketConfig()` is the accessor whose absence let these 18 accumulate.
+ * `getSocketConfig()` is the accessor whose absence let these 18 accumulate, and
+ * since RSRMID-2966 the constructor covers the one case the accessor could not,
+ * configuring a client before it exists. With both halves present a forwarder
+ * carries no capability of its own, which is what makes the freeze cost nothing.
  *
  * Only capabilities every brand can actually honour live here. In particular
  * `getSession()`/`setSession()` do **not** — API sessions are a CNR concept and
@@ -94,14 +98,36 @@ abstract class AbstractClient
     protected TransportInterface $transport;
 
     /**
-     * Constructor
+     * Constructor.
+     *
+     * The `$socketConfig` parameter is the build half of the configuration seam
+     * whose read half is {@see getSocketConfig()} (RSRMID-2966). Before it, a
+     * {@see AbstractSocketConfig} could be built standalone but never supplied, so
+     * configuring a client meant a setter sequence over the forwarders below —
+     * during which the client is already pointed at LIVE, the default system.
+     * Handing over a finished config means the client does not exist until its
+     * configuration is complete.
+     *
+     * Purely additive: omit the argument and the brand mints its own default
+     * exactly as before. Brands narrow this parameter to their own config subtype
+     * so a cross-brand config is an analysis error rather than a runtime one; see
+     * {@see \CNIC\CNR\Client::__construct()}.
+     *
+     * @param AbstractSocketConfig|null $socketConfig connection configuration to
+     *        adopt; null has the brand build its default via {@see newSocketConfig()}
      */
-    public function __construct()
+    public function __construct(?AbstractSocketConfig $socketConfig = null)
     {
         $this->transport = $this->newTransport();
-        // Seeds itself: the config's constructor selects LIVE (the default system)
-        // and the brand's default cURL options. No client-side URL copy to seed.
-        $this->socketConfig = $this->newSocketConfig();
+        // Without an argument the config seeds itself: its constructor selects LIVE
+        // (the default system) and the brand's default cURL options. No client-side
+        // URL copy to seed, either way.
+        //
+        // A supplied config is adopted *by reference*, never copied: getSocketConfig()
+        // hands back the caller's own instance, so a write through either route stays
+        // visible through the other. Do not defensively clone it — that reintroduces
+        // the two-homes drift RSRMID-2921 closed, in the form of a silent copy.
+        $this->socketConfig = $socketConfig ?? $this->newSocketConfig();
         $this->logger = $this->newLogger(new EchoSink());
     }
 

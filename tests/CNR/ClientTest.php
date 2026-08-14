@@ -11,6 +11,7 @@ use CNIC\CNR\Client as CL;
 use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
 use CNIC\CNR\SessionClient;
+use CNIC\CNR\SocketConfig as SC;
 use CNIC\Exception\PaginationException;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\RoleCredentialsInterface;
@@ -92,10 +93,17 @@ final class ClientTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * The credentials are this test's precondition, so they are stated by the
+     * config it is built from rather than written onto the shared client and
+     * hand-undone afterwards (RSRMID-2966). The `setCredentials()` reset that used
+     * to close this test was load-bearing for the three tests below, which assert
+     * an *absence* of credentials — a coupling nothing in either test mentioned.
+     */
     public function testGetPostDataSecured(): void
     {
-        self::$cl->setCredentials(self::$user, self::$pw);
-        $enc = self::$cl->getPOSTData([
+        $cl = CF::cnr((new SC())->setLogin(self::$user)->setPassword(self::$pw));
+        $enc = $cl->getPOSTData([
             "COMMAND" => "CheckAuthentication",
             "SUBUSER" => self::$user,
             "PASSWORD" => self::$pw
@@ -111,8 +119,6 @@ final class ClientTest extends TestCase
             ])
         ]);
 
-        self::$cl->setCredentials();
-
         $this->assertEquals(
             $expected,
             $enc
@@ -123,7 +129,8 @@ final class ClientTest extends TestCase
     {
         // AUTH (EPP transfer authorization code) must be masked in the secured
         // POST body used for debug logging, not only PASSWORD (RSRMID-2897).
-        $enc = self::$cl->getPOSTData([
+        // Credential-free by construction, not by whatever ran before.
+        $enc = (new SessionClient())->getPOSTData([
             "COMMAND" => "TransferDomain",
             "DOMAIN" => "example.com",
             "AUTH" => "sup3r-s3cr3t-auth"
@@ -143,7 +150,7 @@ final class ClientTest extends TestCase
 
     public function testGetPostDataObj(): void
     {
-        $enc = self::$cl->getPOSTData([
+        $enc = (new SessionClient())->getPOSTData([
             "COMMAND" => "ModifyDomain",
             "AUTH" => "gwrgwqg%&\\44t3*"
         ]);
@@ -155,7 +162,7 @@ final class ClientTest extends TestCase
 
     public function testGetPostDataNull(): void
     {
-        $enc = self::$cl->getPOSTData([
+        $enc = (new SessionClient())->getPOSTData([
             "COMMAND" => "ModifyDomain",
             "AUTH" => null
         ]);
@@ -164,16 +171,17 @@ final class ClientTest extends TestCase
 
     public function testGetSession(): void
     {
-        $sessid = self::$cl->getSession();
-        $this->assertNull($sessid);
+        // A fresh client has no session. On the shared client that held only while
+        // no earlier test had left one behind.
+        $this->assertNull((new SessionClient())->getSession());
     }
 
     public function testGetSessionIdSet(): void
     {
         $sess = "testsession12345";
-        $sessid = self::$cl->setSession($sess)->getSession();
-        $this->assertEquals($sessid, $sess);
-        self::$cl->setSession();
+        // Own client, so the trailing setSession() reset this test used to need is
+        // gone with it.
+        $this->assertEquals($sess, (new SessionClient())->setSession($sess)->getSession());
     }
 
     public function testGetUrl(): void
@@ -210,17 +218,20 @@ final class ClientTest extends TestCase
     public function testGetSystem(): void
     {
         // LIVE is the default; isOTE() must agree with getSystem()
-        $this->assertSame(System::LIVE, self::$cl->getSystem());
-        $this->assertFalse(self::$cl->isOTE());
+        $cl = new SessionClient();
+        $this->assertSame(System::LIVE, $cl->getSystem());
+        $this->assertFalse($cl->isOTE());
 
-        self::$cl->useOTESystem();
-        $this->assertSame(System::OTE, self::$cl->getSystem());
-        $this->assertTrue(self::$cl->isOTE());
+        $cl->useOTESystem();
+        $this->assertSame(System::OTE, $cl->getSystem());
+        $this->assertTrue($cl->isOTE());
 
-        // restore default so later tests keep the expected baseline
-        self::$cl->useLIVESystem();
-        $this->assertSame(System::LIVE, self::$cl->getSystem());
-        $this->assertFalse(self::$cl->isOTE());
+        // No "restore the baseline" step: the client is this test's own, so nothing
+        // later can observe the switch. Stating the same selection at construction
+        // is the other half of that (RSRMID-2966).
+        $ote = CF::cnr((new SC())->useOTESystem());
+        $this->assertSame(System::OTE, $ote->getSystem());
+        $this->assertTrue($ote->isOTE());
     }
 
     public function testGetUserAgent(): void
@@ -270,84 +281,111 @@ final class ClientTest extends TestCase
 
     public function testSetUrl(): void
     {
-        $oldurl = self::$cl->getURL();
+        // Own client, so there is no URL to put back afterwards — the shared client
+        // is what made that restore necessary, not setURL() itself.
+        $cl = new SessionClient();
+        $oldurl = $cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
         if (is_string($hostname) && $hostname !== "") {
             $newurl = str_replace($hostname, "127.0.0.1", $oldurl);
-            $url = self::$cl->setURL($newurl)->getURL();
-            $this->assertEquals($url, $newurl);
-            self::$cl->setURL($oldurl);
+            $this->assertEquals($newurl, $cl->setURL($newurl)->getURL());
         }
     }
 
+    /**
+     * A session with no login beside it. The precondition is the *absence* of
+     * credentials, which the config states outright; on the shared client it was
+     * true only because testGetPostDataSecured() happened to end with a
+     * `setCredentials()` reset several tests earlier (RSRMID-2966).
+     */
     public function testSetSessionSet(): void
     {
-        self::$cl->setSession("12345678");
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals($tmp, "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount");
+        $cl = CF::cnr((new SC())->setSession("12345678"));
+        $this->assertEquals(
+            "s_sessionid=12345678&s_command=COMMAND%3DStatusAccount",
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
+        );
     }
 
     public function testSetSessionCredentials(): void
     {
-        // credentials have to be unset when session id is set
-        self::$cl->setRoleCredentials("myaccountid", "myrole", "mypassword")
+        // credentials have to be unset when session id is set.
+        // Own client rather than a pre-built config: the fan-out through
+        // setRoleCredentials() is what this test is about, so it has to run through
+        // the client's own setters.
+        $cl = new SessionClient();
+        $cl->setRoleCredentials("myaccountid", "myrole", "mypassword")
             ->setSession("12345678");
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
         $this->assertEquals(
             "s_login=myaccountid%3Amyrole&s_sessionid=12345678&s_command=COMMAND%3DStatusAccount",
-            $tmp
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
         );
     }
 
+    /**
+     * setSession("") drops the session and leaves no password behind it, so the next
+     * request carries only the login.
+     *
+     * That login is this test's precondition and now arrives with the config. It
+     * used to be whatever testSetSessionCredentials() had left on the shared client,
+     * which made the two tests silently order-dependent — reordering or running
+     * either alone changed the result. The role separator comes from the config
+     * rather than being spelled `":"` here, so the expectation still cannot drift
+     * from the SDK's own answer.
+     */
     public function testSetSessionReset(): void
     {
-        self::$cl->setSession();
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
+        $cfg = new SC();
+        $cl = CF::cnr(
+            $cfg->setLogin("myaccountid" . $cfg->getRoleSeparator() . "myrole")->setSession("12345678")
+        );
+        $cl->setSession();
         $this->assertEquals(
             "s_login=myaccountid%3Amyrole&s_command=COMMAND%3DStatusAccount",
-            $tmp
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
         );
     }
 
     public function testSaveReuseSession(): void
     {
+        // The saving client's state is stated at construction, so this test no
+        // longer inherits a login from testSetSessionCredentials() nor has to reset
+        // the shared client on the way out.
+        $cfg = new SC();
+        $source = CF::cnr(
+            $cfg->setLogin("myaccountid" . $cfg->getRoleSeparator() . "myrole")->setSession("12345678")
+        );
         $session = [];
-        self::$cl->setSession("12345678")
-            ->saveSession($session);
+        $source->saveSession($session);
+
         $cl2 = new SessionClient();
         $cl2->reuseSession($session);
-        $tmp = $cl2->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
         $this->assertEquals(
             "s_login=myaccountid%3Amyrole&s_sessionid=12345678&s_command=COMMAND%3DStatusAccount",
-            $tmp
+            $cl2->getPOSTData(["COMMAND" => "StatusAccount"])
         );
-        self::$cl->setSession();
     }
 
     public function testSetCredentialsSet(): void
     {
-        self::$cl->setCredentials("myaccountid", "mypassword");
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals($tmp, "s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
+        $cl = new SessionClient();
+        $cl->setCredentials("myaccountid", "mypassword");
+        $this->assertEquals(
+            "s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount",
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
+        );
     }
 
     public function testSetCredentialsReset(): void
     {
-        self::$cl->setCredentials();
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
+        // Reset from a config that carries credentials, so the empty result is the
+        // reset's doing and not the starting state's.
+        $cl = CF::cnr((new SC())->setLogin("myaccountid")->setPassword("mypassword"));
+        $cl->setCredentials();
+        $this->assertEquals(
+            "s_command=COMMAND%3DStatusAccount",
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
+        );
     }
 
     public function testImplementsRoleCredentialsInterface(): void
@@ -360,20 +398,27 @@ final class ClientTest extends TestCase
 
     public function testSetRoleCredentialsSet(): void
     {
-        self::$cl->setRoleCredentials("myaccountid", "myroleid", "mypassword");
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals($tmp, "s_login=myaccountid%3Amyroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount");
+        $cl = new SessionClient();
+        $cl->setRoleCredentials("myaccountid", "myroleid", "mypassword");
+        $this->assertEquals(
+            "s_login=myaccountid%3Amyroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount",
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
+        );
     }
 
     public function testSetRoleCredentialsReset(): void
     {
-        self::$cl->setRoleCredentials();
-        $tmp = self::$cl->getPOSTData([
-            "COMMAND" => "StatusAccount"
-        ]);
-        $this->assertEquals($tmp, "s_command=COMMAND%3DStatusAccount");
+        // Starts from a role login supplied by the config, so the empty result
+        // proves the reset rather than the starting state.
+        $cfg = new SC();
+        $cl = CF::cnr(
+            $cfg->setLogin("myaccountid" . $cfg->getRoleSeparator() . "myroleid")->setPassword("mypassword")
+        );
+        $cl->setRoleCredentials();
+        $this->assertEquals(
+            "s_command=COMMAND%3DStatusAccount",
+            $cl->getPOSTData(["COMMAND" => "StatusAccount"])
+        );
     }
 
     public function testLoginCredsOk(): void

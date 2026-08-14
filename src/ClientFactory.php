@@ -10,8 +10,11 @@ declare(strict_types=1);
 namespace CNIC;
 
 use CNIC\CNR\SessionClient;
+use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\IBS\Client as IBSClient;
+use CNIC\IBS\SocketConfig as IBSSocketConfig;
 use CNIC\MONIKER\Client as MONIKERClient;
+use CNIC\MONIKER\SocketConfig as MONIKERSocketConfig;
 
 /**
  * ClientFactory
@@ -34,10 +37,17 @@ use CNIC\MONIKER\Client as MONIKERClient;
  *   method at all.
  *
  * All further configuration — credentials, referer, user-agent, proxy, logging
- * and OT&E/sandbox mode — is the caller's responsibility via the client's fluent
- * setters. This keeps the SDK platform-agnostic and transport-faithful: the
- * caller normalizes input (e.g. HTML-entity decoding of WHMCS-stored passwords)
- * before handing it to the client.
+ * and OT&E/sandbox mode — is the caller's responsibility. This keeps the SDK
+ * platform-agnostic and transport-faithful: the caller normalizes input (e.g.
+ * HTML-entity decoding of WHMCS-stored passwords) before handing it to the client.
+ *
+ * There are two routes, and both stay supported. Pass a pre-built brand
+ * {@see \CNIC\AbstractSocketConfig} when the connection settings are known up
+ * front — the client is then correct the moment it exists, rather than starting on
+ * LIVE and being corrected by a setter sequence. Or omit it and use the client's
+ * fluent setters, which is the shorter route when the settings are not yet known.
+ * The parameter is optional on purpose: `cnr()` with no argument behaves exactly as
+ * it always has (RSRMID-2966).
  *
  * @psalm-api
  * @package CNIC
@@ -46,25 +56,38 @@ class ClientFactory
 {
     /**
      * CentralNic Reseller (CNR, fka RRPproxy) client.
+     *
+     * @param CNRSocketConfig|null $socketConfig pre-built CNR connection
+     *        configuration to adopt; null builds the brand default
      */
-    public static function cnr(): SessionClient
+    public static function cnr(?CNRSocketConfig $socketConfig = null): SessionClient
     {
-        return new SessionClient();
+        return new SessionClient($socketConfig);
     }
 
     /**
      * Internet.bs (IBS) client.
+     *
+     * @param IBSSocketConfig|null $socketConfig pre-built IBS connection
+     *        configuration to adopt; null builds the brand default
      */
-    public static function ibs(): IBSClient
+    public static function ibs(?IBSSocketConfig $socketConfig = null): IBSClient
     {
-        return new IBSClient();
+        return new IBSClient($socketConfig);
     }
 
     /**
      * Moniker client (same platform as IBS; only the endpoints differ).
+     *
+     * The parameter is a Moniker config, not an IBS one — the endpoints are the
+     * difference between the brands, so an IBS config here is refused at the call
+     * site rather than silently pointing a Moniker client at the IBS host.
+     *
+     * @param MONIKERSocketConfig|null $socketConfig pre-built Moniker connection
+     *        configuration to adopt; null builds the brand default
      */
-    public static function moniker(): MONIKERClient
+    public static function moniker(?MONIKERSocketConfig $socketConfig = null): MONIKERClient
     {
-        return new MONIKERClient();
+        return new MONIKERClient($socketConfig);
     }
 }
