@@ -13,7 +13,6 @@ use CNIC\AbstractResponse;
 use CNIC\CNR\ResponseParser as RP;
 use CNIC\CNR\ResponseTranslator as RT;
 use CNIC\Column;
-use CNIC\ColumnInterface;
 use CNIC\Exception\MalformedResponseException;
 use CNIC\ExtendedResponseInterface;
 use CNIC\Record;
@@ -44,14 +43,23 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     protected array $sensitiveFields = SensitiveFields::KEYS;
 
     /**
-     * Regex for pagination related column keys.
-     * The alternation is grouped so the ^…$ anchors apply to every keyword;
-     * without the group only TOTAL/LAST are anchored and COUNT|LIMIT|FIRST
-     * would match anywhere, wrongly stripping real columns such as COUNTRY,
-     * FIRSTNAME, DISCOUNT or ACCOUNT from getColumnKeys()/getListHash().
+     * Regex for CNR's pagination metadata keys — the five counters the API
+     * returns *inside* PROPERTY, interleaved with the data columns
+     * (PROPERTY[TOTAL][0] next to PROPERTY[DOMAIN][0..n]).
+     *
+     * These five names are reserved for pagination on this brand by definition:
+     * a command answering one of them as data is an API defect, not a case for
+     * the SDK to disambiguate. The alternation is grouped so the ^…$ anchors
+     * apply to every keyword; without the group only TOTAL/LAST are anchored and
+     * COUNT|LIMIT|FIRST would match anywhere, wrongly excluding real columns such
+     * as COUNTRY, FIRSTNAME, DISCOUNT or ACCOUNT.
+     *
+     * Since RSRMID-2965 a match is not registered as a column at all and the
+     * pagination primitives below read PROPERTY directly — see
+     * {@see \CNIC\AbstractResponse::$metaKeys}.
      * @var non-empty-string
      */
-    protected string $paginationKeys = "/^(TOTAL|COUNT|LIMIT|FIRST|LAST)$/";
+    protected string $metaKeys = "/^(TOTAL|COUNT|LIMIT|FIRST|LAST)$/";
 
     /**
      * Translate the raw API response into its canonical form using the CNR
@@ -77,6 +85,16 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * lists from it. CNR exposes its columns under the PROPERTY sub-array and
      * assembles records only when properties are present.
      *
+     * The five pagination counters arrive in that same PROPERTY block, and are
+     * deliberately skipped rather than registered (RSRMID-2965): they are
+     * response metadata, and a one-cell TOTAL "column" beside a 200-cell DOMAIN
+     * one made {@see \CNIC\AbstractResponse::assembleRecords()} count the
+     * metadata as a row. The primitives below read them back off the hash. Their
+     * cells are still validated by {@see stringCells()} before being dropped, so
+     * a parser handing CNR a non-string keeps failing at construction wherever it
+     * put it — the guarantee does not get quietly narrower for the keys that
+     * stopped being columns.
+     *
      * $cmd is forwarded to keep the parse call uniform across brands even though
      * the CNR parser ignores it — see ResponseParserInterface::parse().
      * @param array<string, string> $cmd API command used within this request, already sanitized
@@ -91,7 +109,11 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
         if ($properties !== []) {
             foreach (array_keys($properties) as $k) {
                 $key = strval($k);
-                $this->addColumn($key, self::stringCells($key, $properties[$k]));
+                $cells = self::stringCells($key, $properties[$k]);
+                if ($this->isMetaKey($key)) {
+                    continue;
+                }
+                $this->addColumn($key, $cells);
             }
             $this->assembleRecords();
         }
@@ -277,52 +299,64 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     }
 
     /**
-     * Coerce a raw pagination column value to a base-10 integer.
+     * Read one of CNR's pagination counters, as a base-10 integer.
      *
-     * getStringByIndex() already narrows to ?string (CNR cells are always
-     * strings, unlike IBS's, which may carry nested arrays/objects); this
-     * just re-narrows a missing/absent value to null so the caller can fall
-     * back.
+     * The counters live in the PROPERTY block but are not columns (see
+     * populate()), so this reads the parsed hash — `PROPERTY[<key>][0]`, a
+     * counter being a one-cell entry by construction — rather than
+     * getColumn(). An absent key, or an entry without a first cell, is `null`:
+     * "this response carries no such counter", never a stand-in value
+     * (RSRMID-2943, RSRMID-2965).
+     *
+     * The is_array()/is_string() narrowing is what the analysers need from an
+     * `array<string, mixed>` hash. It is not a second line of defence against a
+     * malformed wire: populate() has already refused a non-string cell through
+     * {@see stringCells()}, so no constructed response can reach those returns.
      */
-    private function columnInt(?string $value): ?int
+    private function metaInt(string $key): ?int
     {
-        return $value === null ? null : intval($value, 10);
+        $properties = $this->getHashArray("PROPERTY");
+        if (!array_key_exists($key, $properties) || !is_array($properties[$key])) {
+            return null;
+        }
+        $cells = $properties[$key];
+        if (!isset($cells[0]) || !is_string($cells[0])) {
+            return null;
+        }
+        return intval($cells[0], 10);
     }
 
     /**
-     * Get Index of first row in this response
+     * Get Index of first row in this response — the offset the current window
+     * starts at, or `null` when this response carries no FIRST counter (a
+     * non-list response).
+     *
+     * No "0 because there are rows" fallback (RSRMID-2965): that stand-in made
+     * every response that happened to hold a row claim to be the first page of
+     * a list.
      */
     #[\Override]
     public function getFirstRecordIndex(): ?int
     {
-        $col = $this->getColumn("FIRST");
-        if ($col instanceof ColumnInterface) {
-            return $this->columnInt($col->getStringByIndex(0)) ?? 0;
-        }
-        if ($this->getRecordsCount() !== 0) {
-            return 0;
-        }
-        return null;
+        return $this->metaInt("FIRST");
     }
 
     /**
-     * Get last record index of the current list query
+     * Get last record index of the current list query, or `null` when this
+     * response carries no LAST counter.
+     *
+     * Reported exactly as CNR reports it, including the one shape that is not a
+     * row index: an **empty** window echoes `LAST = FIRST` (with `COUNT = 0`)
+     * rather than omitting LAST. Callers must not read it as "the offset of a row
+     * that exists" — `hasNextPage()` is where that shape is accounted for.
+     * The former `getRecordsCount() - 1` fallback is gone
+     * (RSRMID-2965): it answered a *record index* to a question about a *result-set
+     * offset*, which agreed with the wire on the first page only.
      */
     #[\Override]
     public function getLastRecordIndex(): ?int
     {
-        $col = $this->getColumn("LAST");
-        if ($col instanceof ColumnInterface) {
-            $l = $this->columnInt($col->getStringByIndex(0));
-            if ($l !== null) {
-                return $l;
-            }
-        }
-        $c = $this->getRecordsCount();
-        if ($c !== 0) {
-            return $c - 1;
-        }
-        return null;
+        return $this->metaInt("LAST");
     }
 
     /**
@@ -332,16 +366,16 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
     #[\Override]
     public function getListHash(): array
     {
-        // Resolve the pagination-stripped column set once (regex runs a single
-        // time inside getColumnKeys(true)); reuse it to filter every row via
-        // array_intersect_key instead of a per-cell preg_match. Record data keys
-        // are always a subset of the column keys (see assembleRecords()), so this
-        // yields output identical to unsetting each pagination-matching cell.
-        $columns = $this->getColumnKeys(true);
-        $keepKeys = array_flip($columns);
+        // The column set is already metadata-free (RSRMID-2965), so there is no
+        // filtering left to do here: the pagination counters never became
+        // columns, and record data keys are always a subset of the column keys
+        // (see assembleRecords()). This is what the array_intersect_key pass over
+        // every row — itself introduced to avoid a per-cell preg_match — was
+        // paying for.
+        $columns = $this->getColumnKeys();
         $lh = [];
         foreach ($this->records as $rec) {
-            $lh[] = array_intersect_key($rec->getData(), $keepKeys);
+            $lh[] = $rec->getData();
         }
         return [
             "LIST" => $lh,
@@ -354,32 +388,30 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
 
     /**
      * Get total count of records available for the list query, or `null` when
-     * this response carries no TOTAL column (a non-list response).
+     * this response carries no TOTAL counter (a non-list response).
      *
-     * No `getRecordsCount()` fallback (RSRMID-2943): a non-list response now
+     * No `getRecordsCount()` fallback (RSRMID-2943): a non-list response
      * reports "no total" honestly instead of a count that only happened to
      * equal the record count.
      */
     #[\Override]
     public function getRecordsTotalCount(): ?int
     {
-        $col = $this->getColumn("TOTAL");
-        return $col instanceof ColumnInterface ? $this->columnInt($col->getStringByIndex(0)) : null;
+        return $this->metaInt("TOTAL");
     }
 
     /**
      * Get limit(ation) setting of the current list query — the count of
-     * requested rows — or `null` when this response carries no LIMIT column.
+     * requested rows — or `null` when this response carries no LIMIT counter.
      *
      * No `getRecordsCount()` fallback (RSRMID-2943), for the same reason as
      * {@see getRecordsTotalCount()}: `0` is a real, requested limit and must
-     * stay distinguishable from "this response carries no LIMIT column at
+     * stay distinguishable from "this response carries no LIMIT counter at
      * all".
      */
     #[\Override]
     public function getRecordsLimitation(): ?int
     {
-        $col = $this->getColumn("LIMIT");
-        return $col instanceof ColumnInterface ? $this->columnInt($col->getStringByIndex(0)) : null;
+        return $this->metaInt("LIMIT");
     }
 }

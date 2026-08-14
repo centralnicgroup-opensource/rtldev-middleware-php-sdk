@@ -49,52 +49,69 @@ final class ResponseInterfaceConsumerTest extends TestCase
     }
 
     /**
-     * getColumnKeys(true) must be callable through the interface.
+     * A consumer holding only the interface sees data columns, and cannot reach
+     * response metadata through the column accessors at all.
      *
-     * Before RSRMID-2918 the interface declared getColumnKeys() with no
-     * parameter while AbstractResponse implemented it with one, so this line
-     * was a static-analysis error for any interface-typed consumer even though
-     * it ran correctly.
+     * This replaces the guard's original subject. Until RSRMID-2965 the
+     * capability tested here was `getColumnKeys(true)`, whose whole reason for
+     * existing was that pagination metadata sat in the column pool and consumers
+     * needed it filtered back out; the parameter was the drift RSRMID-2918 found
+     * (interface declared none, implementation had one) and it is now retired
+     * along with the modelling error behind it. What is worth pinning from a
+     * consumer's seat is the replacement rule: the column accessors answer about
+     * data, and metadata is reached through the pagination and status accessors
+     * instead.
      */
-    public function testConsumerCanStripPaginationColumnsThroughTheInterface(): void
+    public function testConsumerSeesOnlyDataColumnsThroughTheInterface(): void
     {
         $r = self::cnrListResponse();
 
-        $all = $r->getColumnKeys();
-        $this->assertContains("FIRSTNAME", $all);
-        $this->assertContains("COUNT", $all, "unfiltered keys must still list pagination columns");
-
-        $filtered = $r->getColumnKeys(true);
-        $this->assertContains("FIRSTNAME", $filtered);
-        foreach (["TOTAL", "COUNT", "LIMIT", "FIRST", "LAST"] as $paginationKey) {
-            $this->assertNotContains($paginationKey, $filtered);
+        $keys = $r->getColumnKeys();
+        $this->assertContains("FIRSTNAME", $keys);
+        foreach (["TOTAL", "COUNT", "LIMIT", "FIRST", "LAST"] as $metaKey) {
+            $this->assertNotContains($metaKey, $keys, "metadata is not a column");
+            $this->assertNull($r->getColumn($metaKey), "and must not be reachable as one");
+            $this->assertNull($r->getColumnIndex($metaKey, 0), "nor cell by cell");
         }
     }
 
     /**
-     * The default must stay "keep everything", so an existing no-argument call
-     * through the interface is unaffected by the signature widening.
+     * The rule is brand-neutral: it holds on a brand whose metadata keys differ
+     * entirely from CNR's.
      */
-    public function testOmittingTheArgumentKeepsEveryColumn(): void
-    {
-        $r = self::cnrListResponse();
-        $this->assertSame($r->getColumnKeys(), $r->getColumnKeys(false));
-    }
-
-    /**
-     * The capability is brand-neutral: it is declared on the shared interface,
-     * so it must work on a brand whose pagination keys differ entirely.
-     */
-    public function testItWorksForEveryBrandThroughTheInterface(): void
+    public function testItHoldsForEveryBrandThroughTheInterface(): void
     {
         $r = new IBSResponse('{"status":"SUCCESS","domaincount":"1","domain":["example.com"]}');
         $this->assertInstanceOf(ResponseInterface::class, $r);
 
-        $consumer = static fn(ResponseInterface $resp): array => $resp->getColumnKeys(true);
-        $filtered = $consumer($r);
+        $consumer = static fn(ResponseInterface $resp): array => $resp->getColumnKeys();
+        $keys = $consumer($r);
 
-        $this->assertContains("domain", $filtered);
-        $this->assertNotContains("domaincount", $filtered, "IBS pagination key must be stripped");
+        $this->assertContains("domain", $keys);
+        $this->assertNotContains("domaincount", $keys, "IBS count key is metadata, not a column");
+        $this->assertNotContains("status", $keys, "so is the transaction status");
+    }
+
+    /**
+     * Pagination stays reachable through the interface — with the metadata gone
+     * from the column pool, the primitives are the only route to it, so a
+     * consumer typed against the interface must be able to ask.
+     *
+     * Static, like the rest of this file: the closure's declared parameter and
+     * return types are the assertion, and both analysers cover tests/, so a
+     * primitive narrowed or dropped from the interface fails `composer lint`
+     * rather than only the suite.
+     */
+    public function testConsumerReachesPaginationThroughTheInterface(): void
+    {
+        $consumer = static fn(ResponseInterface $resp): array => [
+            $resp->getFirstRecordIndex(),
+            $resp->getLastRecordIndex(),
+            $resp->getRecordsTotalCount(),
+            $resp->getRecordsLimitation(),
+        ];
+
+        $this->assertSame([0, 1, 2, 2], $consumer(self::cnrListResponse()));
     }
 
     /**

@@ -193,6 +193,12 @@ final class ResponseSealSeamTest extends TestCase
      * declared element type ever stopped being RecordInterface this would fail
      * `composer lint` rather than the suite. Asserting `instanceof` at runtime
      * instead would be reported as already-narrowed and prove nothing.
+     *
+     * The row *shapes* are asserted alongside, because they used to be uneven:
+     * this fixture reported `status,domain` for row 0 and `domain` for row 1,
+     * since the response's status was registered as a one-cell column and
+     * therefore landed on the first row only. Metadata is not column data since
+     * RSRMID-2965, so every row of one response now carries the same keys.
      */
     public function testAConsumerIteratesRecordsThroughTheInterface(): void
     {
@@ -203,7 +209,7 @@ final class ResponseSealSeamTest extends TestCase
             $seen[] = $keyOf($rec);
         }
 
-        $this->assertSame(["status,domain", "domain"], $seen);
+        $this->assertSame(["domain", "domain"], $seen);
     }
 
     /**
@@ -270,7 +276,7 @@ final class ResponseSealSeamTest extends TestCase
             // expected — assert the state it protected below
         }
 
-        $this->assertSame(["status", "domain"], $r->getColumnKeys(), "no name may be listed twice");
+        $this->assertSame(["item", "domain"], $r->getColumnKeys(), "no name may be listed twice");
         $this->assertCount(2, $r->getColumns(), "no column may be present that getColumn() cannot return");
         foreach ($r->getColumnKeys() as $key) {
             $this->assertNotNull($r->getColumn($key), "every listed key must resolve to a column");
@@ -288,7 +294,7 @@ final class ResponseSealSeamTest extends TestCase
     {
         $r = self::registrar();
 
-        $this->assertSame(1, $r->getRecordsCount(), "the status-only fixture assembles one row");
+        $this->assertSame(1, $r->getRecordsCount(), "the one-data-column fixture assembles one row");
         $r->assembleAgain();
         $this->assertSame(1, $r->getRecordsCount(), "a second assembly must replace the rows, not append them");
     }
@@ -311,12 +317,18 @@ final class ResponseSealSeamTest extends TestCase
      * An IBS response exposing the two protected hooks this file needs to drive.
      *
      * A subclass rather than reflection: these are the seams a brand legitimately
-     * uses, so calling them the way a brand does is the honest exercise. The
-     * fixture is a status-only response — one column, one record.
+     * uses, so calling them the way a brand does is the honest exercise.
+     *
+     * The fixture carries exactly one data column ("item") and one record. It
+     * used to be status-only and rely on the status becoming that column; since
+     * RSRMID-2965 response metadata is not column data, so a status-only payload
+     * would assemble no columns and no records at all — and "domain" is avoided
+     * as the data key so the duplicate-name tests below can register it
+     * themselves.
      */
     private static function registrar(): IBSResponse&ColumnRegistrar
     {
-        return new class ('{"status":"SUCCESS"}') extends IBSResponse implements ColumnRegistrar {
+        return new class ('{"status":"SUCCESS","item":["a"]}') extends IBSResponse implements ColumnRegistrar {
             /**
              * @param array<array-key, mixed> $data
              */

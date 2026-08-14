@@ -39,24 +39,50 @@ use CNIC\ResponseTemplateManagerInterface;
 class Response extends AbstractResponse implements ResponseInterface
 {
     /**
-     * Regex for the count/metadata column keys IBS emits alongside a list.
+     * The count keys IBS emits alongside a list, as a regex alternation.
      *
-     * Derived from the real IBS list endpoints: Domain/List carries
-     * "domaincount", while Url-/EmailForward/List use "total_rules" and
-     * DnsRecord/List "total_records". The alternation is fully anchored so it
-     * matches those keys exactly and never as a substring. In particular the
-     * loose ".*count" form is avoided on purpose: Domain/Count returns one
-     * top-level key per TLD the reseller holds, and ".discount" is a real gTLD,
-     * so a key literally named "discount" can occur and must NOT be treated as
-     * metadata. "totaldomains" (Domain/Count's grand total) is intentionally
-     * NOT matched either — it is meaningful aggregate data, not list metadata.
+     * Kept apart from the rest of {@see $metaKeys} because on this brand the
+     * count keys are also a **lookup pattern**, not just an exclusion list: the
+     * same fact arrives under four different names depending on the endpoint —
+     * Domain/List carries "domaincount", Url-/EmailForward/List "total_rules",
+     * DnsRecord/List "total_records", Nameserver/List "total_hosts" — so
+     * {@see getRecordsTotalCount()} has to *scan* the hash for whichever one is
+     * present. Do not "simplify" it into a plain array of names, and do not fold
+     * it into $metaKeys: matching that would find "transactid" first.
      *
-     * Used only to strip these columns in getColumnKeys(true)/getListHash().
-     * It does NOT drive getLastRecordIndex(): IBS returns the full result set
-     * in a single page, so the last index is the record-grounded count - 1.
+     * The alternation is anchored by both regexes below so it matches these keys
+     * exactly and never as a substring. In particular the loose ".*count" form is
+     * avoided on purpose: Domain/Count returns one top-level key per TLD the
+     * reseller holds, and ".discount" is a real gTLD, so a key literally named
+     * "discount" can occur and must NOT be treated as metadata. "totaldomains"
+     * (Domain/Count's grand total) is intentionally not matched either —
+     * Domain/Count is a portfolio-structure query, not a list, and its total is
+     * meaningful aggregate data.
+     */
+    private const string COUNT_KEYS = "total_.*|domaincount";
+
+    /**
+     * Anchored form of {@see COUNT_KEYS}, for the count-key scan.
      * @var non-empty-string
      */
-    protected string $paginationKeys = "/^(total_.*|domaincount)$/";
+    private const string COUNT_KEY_PATTERN = "/^(" . self::COUNT_KEYS . ")$/";
+
+    /**
+     * Regex for IBS's response metadata keys — the count keys above plus the
+     * transaction-level fields every IBS response carries at the root
+     * (transactid, status, message, code).
+     *
+     * The transaction fields are metadata for the same reason the counters are
+     * (RSRMID-2965): they describe the *response*, not a row. Registering them as
+     * columns put "status" on row 0 of a domain list and on no other row, and made
+     * an empty list — which returns status and domaincount and no "domain" key at
+     * all — report one phantom row consisting entirely of metadata. They stay
+     * reachable where they belong: {@see getCode()}, {@see getDescription()},
+     * {@see isError()}/{@see isSuccess()} and {@see \CNIC\AbstractResponse::getHash()}
+     * all read the hash, not the columns.
+     * @var non-empty-string
+     */
+    protected string $metaKeys = "/^(transactid|status|message|code|" . self::COUNT_KEYS . ")$/";
 
     /**
      * IBS carries sensitive data under lower-/camel-case command keys. Declared
@@ -89,9 +115,15 @@ class Response extends AbstractResponse implements ResponseInterface
      * between the JSON and plain-text wire shapes, which is why the command
      * arrives as an argument rather than off $this (see
      * AbstractResponse::__construct()). IBS responses are flat key => value maps;
-     * each hash entry becomes a column, list values kept as-is and anything else
-     * wrapped into a single-cell list so the shared record assembly can iterate
-     * them.
+     * each **data** entry becomes a column, list values kept as-is and anything
+     * else wrapped into a single-cell list so the shared record assembly can
+     * iterate them.
+     *
+     * The metadata entries are skipped (RSRMID-2965) — see {@see $metaKeys} for
+     * which ones and why. That is the whole fix for both of this brand's row
+     * defects: uniform row shape, because "status" is no longer a one-cell column
+     * landing on row 0 of an n-row list, and 0 records instead of 1 for an empty
+     * list, because nothing is left to size a row from.
      * @param array<string, string> $cmd API command used within this request, already sanitized
      */
     #[\Override]
@@ -100,6 +132,9 @@ class Response extends AbstractResponse implements ResponseInterface
         $this->hash = $parser->parse($raw, $cmd);
         $colKeys = array_map(strval(...), array_keys($this->hash));
         foreach ($colKeys as $k) {
+            if ($this->isMetaKey($k)) {
+                continue;
+            }
             $this->addColumn($k, is_array($this->hash[$k]) && array_is_list($this->hash[$k]) ? $this->hash[$k] : [$this->hash[$k]]);
         }
         $this->assembleRecords();
@@ -231,65 +266,91 @@ class Response extends AbstractResponse implements ResponseInterface
     }
 
     /**
-     * Get Index of first row in this response
+     * The value of whichever count key this response carries, or `null` if it
+     * carries none.
+     *
+     * The single wire read all four pagination primitives below are built from:
+     * IBS returns the full result set in one page, so the count key is the only
+     * pagination fact on the wire, and first/last/total/limit are four questions
+     * about it. Scans for the first root key matching {@see COUNT_KEY_PATTERN}
+     * because the key's name is endpoint-dependent — see {@see COUNT_KEYS}.
+     *
+     * Numeric strings are accepted as well as ints: the JSON wire is not
+     * consistent about quoting counts.
      */
-    #[\Override]
-    public function getFirstRecordIndex(): ?int
+    private function metaCount(): ?int
     {
-        return 0;
-    }
-
-    /**
-     * Get last record index of the current list query
-     */
-    #[\Override]
-    public function getLastRecordIndex(): ?int
-    {
-        // IBS returns the full result set in a single page — there is no
-        // limit/offset/page cursor — so the last index is simply count - 1,
-        // grounded in the actual record list (mirrors CNR\Response).
-        //
-        // We deliberately do NOT derive this from a "count" column (e.g.
-        // domaincount, total_rules, total_records). That field equals the row
-        // count when the list is populated (so it is redundant), but on an
-        // empty list it is 0 while the meta keys (transactid/status/...) still
-        // form one record — which made the old count-key logic underflow LAST
-        // to -1, contradicting FIRST=0/COUNT=1. Grounding LAST in the records
-        // keeps the pagination block internally coherent in every case.
-        $c = $this->getRecordsCount();
-        if ($c !== 0) {
-            return $c - 1;
+        foreach (array_keys($this->hash) as $key) {
+            if (preg_match(self::COUNT_KEY_PATTERN, $key) === 1 && is_numeric($this->hash[$key])) {
+                return intval($this->hash[$key]);
+            }
         }
         return null;
     }
 
     /**
-     * Get total count of records available for the list query.
+     * Get Index of first row in this response — `0` for a list, `null` for a
+     * response that is not one.
      *
-     * IBS does not paginate — it returns one full result set — so there is no
-     * TOTAL column to fall back from. `getRecordsCount()` IS the true total
-     * here, not a fallback standing in for an absent one: total == limit ==
-     * count is the whole truth for this brand. Declared `?int` only because
-     * {@see ResponseInterface} does; this brand never answers `null`.
+     * IBS's single page always starts at offset 0, so the only question is
+     * whether this response describes a list at all; the presence of a count key
+     * is what answers it. The former unconditional `0` was a stand-in
+     * (RSRMID-2965) that made every Domain/Info or Domain/Check look like the
+     * first page of a list.
+     */
+    #[\Override]
+    public function getFirstRecordIndex(): ?int
+    {
+        return $this->metaCount() === null ? null : 0;
+    }
+
+    /**
+     * Get last record index of the current list query, or `null` when this
+     * response carries no count key, or carries one that counts nothing.
+     *
+     * `count - 1`, from the wire count rather than from the record list
+     * (RSRMID-2965). An empty list answers `null`, not `-1`: with the metadata no
+     * longer forming a phantom row there is no row for an index to point at, and
+     * `-1` was never a usable answer anyway — it was the artefact that made the
+     * old code abandon the count key altogether.
+     */
+    #[\Override]
+    public function getLastRecordIndex(): ?int
+    {
+        $total = $this->metaCount();
+        return $total === null || $total <= 0 ? null : $total - 1;
+    }
+
+    /**
+     * Get total count of records available for the list query, or `null` when
+     * this response carries no count key (it is not a list).
+     *
+     * No `getRecordsCount()` (RSRMID-2965): the wire count is the brand's own
+     * answer to "how many are there", and the record count is a property of the
+     * rows this object holds — {@see \CNIC\AbstractResponse::getRecord()}'s bounds
+     * authority, which must stay grounded in the array it indexes. They agree on
+     * every honest IBS list, and conflating them is what let a phantom row
+     * masquerade as a total.
      */
     #[\Override]
     public function getRecordsTotalCount(): ?int
     {
-        return $this->getRecordsCount();
+        return $this->metaCount();
     }
 
     /**
      * Get limit(ation) setting of the current list query — the count of
-     * requested rows.
+     * requested rows — or `null` when this response carries no count key.
      *
-     * Same reasoning as {@see getRecordsTotalCount()}: IBS has no limit/offset
-     * concept, so the record count is the genuine answer rather than a stand-in
-     * for a missing LIMIT column. Declared `?int` only because
-     * {@see ResponseInterface} does; this brand never answers `null`.
+     * IBS has no limit/offset concept: one request returns the whole result set,
+     * so the window size *is* the total and both read the same count key. This is
+     * not a stand-in for an absent LIMIT — it is what a single-page brand's limit
+     * means — and it keeps the shared derivation answering "1 page, no next page"
+     * from arithmetic rather than from a brand special case.
      */
     #[\Override]
     public function getRecordsLimitation(): ?int
     {
-        return $this->getRecordsCount();
+        return $this->metaCount();
     }
 }

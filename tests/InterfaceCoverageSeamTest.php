@@ -50,7 +50,10 @@ use SplFileInfo;
  *   against an interface `getColumnKeys()` with none (the RSRMID-2918 defect,
  *   fixed in commit 4b3ff7b by widening the interface to match). PHP allows
  *   this silently — an added *optional* parameter is legal widening under
- *   LSP — so nothing short of comparing both signatures catches it.
+ *   LSP — so nothing short of comparing both signatures catches it. That
+ *   parameter is gone since RSRMID-2965 (metadata stopped being column data, so
+ *   there was nothing left to filter) — the example is kept as the defect shape,
+ *   not as a live signature.
  *
  * Both are behaviour-preserving on the day they land: every existing test
  * calls these methods on the *concrete* class and passes either way, so no

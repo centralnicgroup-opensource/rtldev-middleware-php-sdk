@@ -49,6 +49,20 @@ final class ResponseNavigationTest extends TestCase
         );
     }
 
+    public function testListProducesUniformRowShape(): void
+    {
+        // RSRMID-2965 acceptance criterion: every row of a domain list has
+        // the same data keys — "status"/"domaincount" no longer land on row
+        // 0 only (or anywhere), since neither is a column any more.
+        $r = $this->listResponse();
+        $this->assertEquals(3, $r->getRecordsCount());
+        $shapes = [];
+        foreach ($r->getRecords() as $rec) {
+            $shapes[] = array_keys($rec->getData());
+        }
+        $this->assertSame([["domain"], ["domain"], ["domain"]], $shapes);
+    }
+
     public function testTwoIterationsOfOneResponseDoNotInterfere(): void
     {
         // The property the removed cursor (RSRMID-2939) could not provide: the
@@ -91,12 +105,26 @@ final class ResponseNavigationTest extends TestCase
         $this->assertNull($r->getRecord(3));
     }
 
-    public function testStatusOnlyResponseHasSingleRecord(): void
+    public function testStatusOnlyResponseHasZeroRecords(): void
     {
-        // a status-only response has exactly one column -> exactly one record
+        // RSRMID-2965: "status" is response metadata, not a column. The
+        // single record this used to report consisted entirely of that
+        // metadata (a phantom row); a status-only response now has zero
+        // columns and zero records.
         $r = new R('{"status":"SUCCESS"}', self::JSONCMD);
-        $this->assertEquals(1, $r->getRecordsCount());
-        $this->assertNotNull($r->getRecord(0));
+        $this->assertEquals(0, $r->getRecordsCount());
+        $this->assertNull($r->getRecord(0));
+    }
+
+    public function testEmptyListReportsZeroRecords(): void
+    {
+        // RSRMID-2965 acceptance criterion: an empty list — status plus a
+        // zero count key, no data column at all — reports zero records
+        // rather than one phantom record made of metadata.
+        $r = new R('{"status":"SUCCESS","domaincount":0}', self::JSONCMD);
+        $this->assertEquals(0, $r->getRecordsCount());
+        $this->assertSame([], $r->getColumns());
+        $this->assertSame(0, $r->getRecordsTotalCount());
     }
 
     // --- pagination metadata ---
@@ -129,13 +157,16 @@ final class ResponseNavigationTest extends TestCase
 
     // --- getLastRecordIndex (regression for the cross-instance static leak) ---
 
-    public function testGetLastRecordIndexIsComputedPerInstance(): void
+    public function testGetLastRecordIndexIsComputedPerResponse(): void
     {
-        // Two independent responses with different record counts. Before the fix
-        // a method-scoped `static $last` cached the first result and poisoned the
-        // second (returning null). Each must now report its own count - 1.
-        $a = new R('{"status":"SUCCESS","item":["a","b","c","d","e"]}', self::JSONCMD); // 5 rows
-        $b = new R('{"status":"SUCCESS","item":["x","y"]}', self::JSONCMD);             // 2 rows
+        // Two independent responses with different counts. Before the fix a
+        // method-scoped `static $last` cached the first result and poisoned
+        // the second (returning null). Each must now report its own count - 1
+        // — read from its own count key (RSRMID-2965: getLastRecordIndex() no
+        // longer falls back to getRecordsCount(), so each fixture needs a
+        // real count key of its own to have anything to read).
+        $a = new R('{"status":"SUCCESS","total_records":5,"item":["a","b","c","d","e"]}', self::JSONCMD); // 5 rows
+        $b = new R('{"status":"SUCCESS","total_records":2,"item":["x","y"]}', self::JSONCMD);             // 2 rows
 
         $this->assertEquals(4, $a->getLastRecordIndex()); // 5 - 1
         $this->assertEquals(1, $b->getLastRecordIndex()); // 2 - 1
@@ -143,14 +174,15 @@ final class ResponseNavigationTest extends TestCase
         $this->assertEquals(4, $a->getLastRecordIndex());
     }
 
-    public function testGetLastRecordIndexFallsBackToCountWithoutCountColumn(): void
+    public function testGetLastRecordIndexIsNullWithoutCountColumn(): void
     {
-        // No pagination/count column: fall back to the single-page model and
-        // report count - 1 (mirrors CNR\Response), so FIRST/LAST form a coherent
-        // pair instead of FIRST=0 / LAST=null. Here the response holds a single
-        // record, so the last index is 0.
+        // RSRMID-2965: the `count - 1` fallback onto getRecordsCount() is
+        // gone. With no count key on the wire, getLastRecordIndex() answers
+        // null honestly instead of a value that only happened to match the
+        // record count on a single-page list.
         $r = new R('{"status":"SUCCESS","domain":["a.com"]}', self::JSONCMD);
-        $this->assertEquals(0, $r->getLastRecordIndex());
+        $this->assertEquals(1, $r->getRecordsCount());
+        $this->assertNull($r->getLastRecordIndex());
     }
 
     public function testGetLastRecordIndexIsNullWhenNoRecords(): void
@@ -177,36 +209,41 @@ final class ResponseNavigationTest extends TestCase
         $this->assertNull($r->getColumnIndex("doesnotexist", 0));
     }
 
-    public function testGetColumnKeysFiltersPaginationColumns(): void
+    public function testGetColumnKeysExcludesMetadata(): void
     {
+        // RSRMID-2965: "status" and "domaincount" are response metadata and
+        // are never registered as columns at all — there is no filtering
+        // step left for getColumnKeys() to perform.
         $r = $this->listResponse();
-        $this->assertEquals(["status", "domaincount", "domain"], $r->getColumnKeys());
-        // the "domaincount" count/metadata column is stripped when filtering
-        $this->assertEquals(["status", "domain"], $r->getColumnKeys(true));
+        $this->assertEquals(["domain"], $r->getColumnKeys());
     }
 
     /**
-     * Lock in the anchored pagination-key regex against the real IBS column
+     * Lock in the anchored meta-key regex against the real IBS column
      * shapes. The count/metadata keys emitted by the list endpoints
-     * (domaincount, total_rules, total_records) must be stripped, while
-     * genuine data columns that merely contain those substrings must not be
-     * — including "totaldomains" (Domain/Count's aggregate sum) and a TLD key
-     * literally named "discount" (".discount" is a real gTLD in Domain/Count).
+     * (domaincount, total_rules, total_records) must never become columns,
+     * while genuine data columns that merely contain those substrings must
+     * still become columns — including "totaldomains" (Domain/Count's
+     * aggregate sum) and a TLD key literally named "discount" (".discount" is
+     * a real gTLD in Domain/Count).
      */
-    public function testGetColumnKeysFilteringMatchesRealKeyShapes(): void
+    public function testMetaKeyRegexMatchesRealKeyShapesOnly(): void
     {
-        // stripped: the documented count/metadata keys
+        // excluded: the documented count/metadata keys
         foreach (["domaincount", "total_rules", "total_records"] as $key) {
             $r = new R('{"status":"SUCCESS","' . $key . '":2,"domain":["a.com","b.com"]}', self::JSONCMD);
-            $this->assertNotContains($key, $r->getColumnKeys(true), "$key should be stripped");
+            $this->assertNotContains($key, $r->getColumnKeys(), "$key should never become a column");
         }
 
-        // kept: aggregate data and substring look-alikes must survive filtering
+        // kept: aggregate data and substring look-alikes must survive as
+        // columns. "status" is genuine metadata here, unlike before
+        // RSRMID-2965, and is asserted absent rather than kept.
         $r = new R('{"status":"SUCCESS","com":2655,"discount":4,"totaldomains":4142}', self::JSONCMD);
-        $kept = $r->getColumnKeys(true);
-        foreach (["status", "com", "discount", "totaldomains"] as $key) {
+        $kept = $r->getColumnKeys();
+        foreach (["com", "discount", "totaldomains"] as $key) {
             $this->assertContains($key, $kept, "$key must not be stripped");
         }
+        $this->assertNotContains("status", $kept, "status is response metadata, not a column");
     }
 
     public function testGetCommandAndPlain(): void
