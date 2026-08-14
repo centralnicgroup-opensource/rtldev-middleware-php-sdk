@@ -35,6 +35,25 @@ use CNIC\RoleCredentialsInterface;
 class Client extends AbstractClient implements RoleCredentialsInterface
 {
     /**
+     * Narrowed from {@see AbstractClient::__construct()}'s `?AbstractSocketConfig`,
+     * mirroring the covariant {@see newSocketConfig()} factory below.
+     *
+     * The narrowing is the point: `new Client(new \CNIC\IBS\SocketConfig())` has to
+     * be an analysis error at the call site, not an
+     * {@see UnsupportedFeatureException} thrown later from {@see getSocketConfig()}.
+     * PHP exempts constructors from LSP under class inheritance, so a subclass may
+     * narrow a parameter here where it could not on any other method; PHPStan and
+     * Psalm both accept the declaration and enforce it against callers.
+     *
+     * @param SocketConfig|null $socketConfig CNR connection configuration to adopt;
+     *        null builds the brand default
+     */
+    public function __construct(?SocketConfig $socketConfig = null)
+    {
+        parent::__construct($socketConfig);
+    }
+
+    /**
      * Instantiate CNR SocketConfig
      */
     #[\Override]
@@ -58,11 +77,13 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * two places to keep in step. Consumers holding `CNR\Client` therefore reach
      * `getSession()`/`setPersistent()` with no narrowing of their own.
      *
-     * The guard is unreachable in practice, since newSocketConfig() above is the
-     * only writer and it is covariant. It throws rather than `assert()`ing
-     * because `assert()` is compiled out when `zend.assertions` is disabled,
-     * which would turn a subclass that returned the wrong config into an
-     * undefined-method fatal instead of a named SDK exception.
+     * The guard is unreachable for correctly-typed callers. There are two writers
+     * of the property — the covariant newSocketConfig() above and the constructor
+     * parameter (RSRMID-2966) — and both are narrowed to `SocketConfig`, so neither
+     * can seat a foreign config without an analysis error at the call site first. It
+     * throws rather than `assert()`ing because `assert()` is compiled out when
+     * `zend.assertions` is disabled, which would turn a subclass that returned the
+     * wrong config into an undefined-method fatal instead of a named SDK exception.
      * @throws UnsupportedFeatureException if a subclass supplied a non-CNR config
      */
     #[\Override]

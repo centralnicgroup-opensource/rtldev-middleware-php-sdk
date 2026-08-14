@@ -30,6 +30,24 @@ use CNIC\LogSinkInterface;
 class Client extends AbstractClient
 {
     /**
+     * Narrowed from {@see AbstractClient::__construct()}'s `?AbstractSocketConfig`
+     * to this brand's config, mirroring the covariant {@see newSocketConfig()}
+     * below — see {@see \CNIC\CNR\Client::__construct()} for why the narrowing is
+     * load-bearing and why PHP permits it here (RSRMID-2966).
+     *
+     * {@see \CNIC\MONIKER\Client} narrows it one step further: the two brands share
+     * this platform but not its endpoints, so a Moniker client must refuse an IBS
+     * config rather than silently talk to the IBS host.
+     *
+     * @param SocketConfig|null $socketConfig IBS connection configuration to adopt;
+     *        null builds the brand default
+     */
+    public function __construct(?SocketConfig $socketConfig = null)
+    {
+        parent::__construct($socketConfig);
+    }
+
+    /**
      * Instantiate IBS SocketConfig
      */
     #[\Override]

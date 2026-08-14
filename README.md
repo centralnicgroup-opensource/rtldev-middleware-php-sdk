@@ -60,6 +60,30 @@ Two brand differences the snippet is deliberately explicit about:
 
 **Type against the interfaces, not the concrete classes.** Depending on `CNIC\ResponseInterface`, `CNIC\ColumnInterface`, `CNIC\RecordInterface` and `CNIC\LoggerInterface` is what keeps future majors from breaking you; code that reaches for `CNIC\CNR\Response` or uses `method_exists()` fallbacks is what does not survive them.
 
+### Configuring a client up front
+
+When the connection settings are already known — the usual case in a registrar module reading them from stored configuration — build the brand's `SocketConfig` and hand it to the factory. This is the **recommended** route, and the one to reach for whenever the settings do not depend on anything the client does:
+
+```php
+use CNIC\ClientFactory;
+use CNIC\CNR\SocketConfig;
+
+$cfg = new SocketConfig();
+$testMode ? $cfg->useOTESystem() : $cfg->useLIVESystem();
+$cfg->setLogin($user)
+    ->setPassword($password)     // or ->setSession($sessionId) to resume a session
+    ->setSocketTimeout(60);
+
+$cl = ClientFactory::cnr($cfg);  // correct the moment it exists
+```
+
+Two reasons to prefer it over the setter sequence:
+
+- **No misconfigured window.** A default-constructed client is aimed at **LIVE**, so a `useOTESystem()` call that is skipped by a branch — or never reached because something threw first — leaves you sending real requests. A client built from a finished config is never in a state you did not ask for.
+- **The ordering rules are confined to one object.** Credentials and sessions are alternative credentials on the wire, so on CNR `setLogin()`/`setPassword()` discard an active session and `setSession()` discards the password — the newer one wins. Those rules apply wherever you write them, but on a config you resolve them once, while building, instead of across a client's lifetime.
+
+The parameter is optional and every brand takes its own config type — `ClientFactory::moniker()` wants a `MONIKER\SocketConfig`, not an IBS one, because the endpoints are what differ between those two brands. `ClientFactory::cnr()` with no argument behaves exactly as before, and the fluent setters shown earlier remain fully supported; use them when the settings are not yet known at construction time. Anything that is _not_ connection configuration — the response context, a custom logger or log sink, the user agent, a replacement transport — keeps its setter either way.
+
 ### Reading the rows of a list response
 
 A response is fully assembled by the time you hold one, and read-only from then on. Walk its records with `foreach` — the response is iterable — or address them by index:
