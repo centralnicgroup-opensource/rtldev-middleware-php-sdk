@@ -28,11 +28,26 @@ namespace CNIC;
  * override scoped — do not reintroduce a static container, a singleton, or a
  * `reset()` that only exists because the state outlives its user.
  *
- * The seam has two production-relevant shapes, which is what justifies it being
- * an interface rather than a concrete class: a Response built with no registry
- * gets the brand's built-ins, and one built with a registry gets exactly what
- * that object holds. See {@see AbstractResponse::__construct()}'s $templates
- * argument.
+ * This is the **pipeline contract**: exactly what
+ * {@see AbstractResponseTranslator::translate()} and
+ * {@see AbstractResponse::__construct()}'s `$templates` argument consume, and
+ * nothing more. The single production call site is {@see getRawTemplates()}.
+ *
+ * **It is deliberately not a polymorphism seam** (RSRMID-2968). It has one
+ * direct implementer, {@see AbstractResponseTemplateManager}; both brand
+ * classes and the one test double inherit that. It is kept as an interface
+ * because it is the *narrowing point* — it is what lets the pipeline hold a
+ * registry without being able to reach Response production — and because it
+ * documents the contract a third-party brand must satisfy. Do not justify it
+ * by claiming adapter-substitutability it does not have.
+ *
+ * **Nothing that produces a {@see ResponseInterface} may be declared here.**
+ * Response production lives on {@see ResponseTemplateFactoryInterface}, which
+ * the pipeline never types against. Merging the two back would put
+ * `translate()` within reach of `getTemplate()`, whose Response re-enters
+ * `translate()` — the recursion that
+ * {@see AbstractResponseTranslator::translate()} currently avoids only by a
+ * hand-written comment. Pinned by `tests/ResponseTemplateFactorySeamTest.php`.
  *
  * @psalm-api
  * @package CNIC
@@ -64,43 +79,14 @@ interface ResponseTemplateManagerInterface
     public function hasTemplate(string $templateId): bool;
 
     /**
-     * The Response for the given template id, or the brand's "notfound"
-     * template when this registry holds no such id.
-     *
-     * The Response is built against **this** registry, so a template registered
-     * here resolves here and nowhere else.
-     */
-    public function getTemplate(string $templateId): ResponseInterface;
-
-    /**
-     * Every template in this registry as a Response, keyed by template id.
-     * @return array<array-key, ResponseInterface>
-     */
-    public function getTemplates(): array;
-
-    /**
      * Every template in this registry as its raw wire text, keyed by template
      * id — the snapshot {@see AbstractResponseTranslator::translate()} resolves
      * ids against.
      *
-     * Distinct from {@see getTemplates()} on purpose: the translator needs the
-     * strings, and building a Response per entry to translate one response
-     * would recurse.
+     * Distinct from {@see ResponseTemplateFactoryInterface::getTemplates()} on
+     * purpose: the translator needs the strings, and building a Response per
+     * entry to translate one response would recurse.
      * @return array<array-key, string>
      */
     public function getRawTemplates(): array;
-
-    /**
-     * Whether the given API response hash matches a template held here, on this
-     * brand's two match keys (CNR: CODE/DESCRIPTION, IBS: status/message).
-     * @param array<string, mixed> $responseHash
-     */
-    public function isTemplateMatchHash(array $responseHash, string $templateId): bool;
-
-    /**
-     * Whether the given API plain response matches a template held here, on
-     * this brand's two match keys.
-     * @param string $plain API plain response
-     */
-    public function isTemplateMatchPlain(string $plain, string $templateId): bool;
 }

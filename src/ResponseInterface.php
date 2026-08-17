@@ -16,7 +16,7 @@ namespace CNIC;
  * response can be asked, not how it is built: construction is deliberately NOT
  * part of this interface, and must not be re-added. Responses are created by the
  * brand factory hooks (AbstractClient::newResponse() and
- * AbstractResponseTemplateManager::createResponse()), each instantiating its own
+ * AbstractResponseTemplateManager::createResponseFromTemplateId()), each instantiating its own
  * concrete Response, so nothing in the SDK — or in a consumer — ever constructs
  * through this type. Put construction concerns on the factory hooks instead.
  * Rationale: the interface-declaration entry in docs/agents/architecture.md.

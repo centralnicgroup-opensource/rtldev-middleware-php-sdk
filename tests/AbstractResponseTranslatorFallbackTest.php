@@ -65,13 +65,13 @@ final class AbstractResponseTranslatorFallbackTest extends TestCase
             #[\Override]
             public function getTemplate(string $templateId): ResponseInterface
             {
-                return $this->createResponse($this->hasTemplate($templateId) ? $templateId : "invalid");
+                return $this->createResponseFromTemplateId($this->hasTemplate($templateId) ? $templateId : "invalid");
             }
 
             #[\Override]
-            protected function createResponse(string $raw): ResponseInterface
+            protected function createResponseFromTemplateId(string $templateId): ResponseInterface
             {
-                return new IBSResponse($raw, templates: $this);
+                return new IBSResponse($templateId, templates: $this);
             }
 
             #[\Override]
