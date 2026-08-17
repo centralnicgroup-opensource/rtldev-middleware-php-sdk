@@ -26,11 +26,14 @@ namespace CNIC;
  * could not undo a direct write to the public property at all. Both are gone.
  * The built-ins now live in an immutable per-brand hook and are copied into
  * each new instance, so an override is scoped to the object that received it
- * and there is nothing left to reset. See {@see ResponseTemplateManagerInterface}.
+ * and there is nothing left to reset. See
+ * {@see ResponseTemplateManagerInterface} for the registry contract and
+ * {@see ResponseTemplateFactoryInterface} for the Response-production contract
+ * this class also implements.
  *
  * @package CNIC
  */
-abstract class AbstractResponseTemplateManager implements ResponseTemplateManagerInterface
+abstract class AbstractResponseTemplateManager implements ResponseTemplateManagerInterface, ResponseTemplateFactoryInterface
 {
     /**
      * This registry's templates (template id => raw wire text), seeded from the
@@ -55,10 +58,17 @@ abstract class AbstractResponseTemplateManager implements ResponseTemplateManage
     abstract protected static function builtinTemplates(): array;
 
     /**
-     * Create a brand Response instance from a template id or raw response,
-     * resolving template ids against **this** registry.
+     * Create a brand Response instance from a **template id**, resolving it
+     * against **this** registry.
+     *
+     * Never handed wire text (RSRMID-2968): the previous `createResponse(string
+     * $raw)` carried both meanings — {@see getTemplate()} passed an id,
+     * {@see getTemplates()} passed wire text — and the two only agreed because
+     * {@see AbstractResponseTranslator::translate()} substitutes a raw payload
+     * equal to a known id. Register a template whose wire text equals another
+     * template's id and they diverged.
      */
-    abstract protected function createResponse(string $raw): ResponseInterface;
+    abstract protected function createResponseFromTemplateId(string $templateId): ResponseInterface;
 
     /**
      * Instantiate the brand's response parser.
@@ -96,9 +106,11 @@ abstract class AbstractResponseTemplateManager implements ResponseTemplateManage
     #[\Override]
     public function getTemplates(): array
     {
+        // Keyed by id and built *from* the id, so this route and
+        // getTemplate() cannot disagree.
         $tpls = [];
-        foreach ($this->templates as $key => $raw) {
-            $tpls[$key] = $this->createResponse($raw);
+        foreach (array_keys($this->templates) as $key) {
+            $tpls[$key] = $this->createResponseFromTemplateId((string)$key);
         }
         return $tpls;
     }

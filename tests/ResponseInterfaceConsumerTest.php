@@ -119,7 +119,7 @@ final class ResponseInterfaceConsumerTest extends TestCase
      *
      * The other half of the same drift: construction is the job of the brand
      * factory hooks (AbstractClient::newResponse(),
-     * AbstractResponseTemplateManager::createResponse()), each of which builds
+     * AbstractResponseTemplateManager::createResponseFromTemplateId()), each of which builds
      * its own concrete Response — nothing constructs through this interface, so
      * a __construct() declaration here constrains implementers for no caller's
      * benefit.

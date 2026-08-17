@@ -65,7 +65,7 @@ use ReflectionNamedType;
  * **Revisit condition.** Only a concrete, stated need to build a response
  * incrementally *from outside* the brand's `populate()` hook — which today does
  * not exist: responses are born from `AbstractClient::newResponse()` and
- * `AbstractResponseTemplateManager::createResponse()`, each handing the whole raw
+ * `AbstractResponseTemplateManager::createResponseFromTemplateId()`, each handing the whole raw
  * payload to a constructor. A substitute {@see ResponseParserInterface} is the
  * supported way to control what a response contains, and it needs no mutator. If
  * that changes, the replacement must make the assembly order part of a type, not

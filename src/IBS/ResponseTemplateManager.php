@@ -65,19 +65,20 @@ final class ResponseTemplateManager extends AbstractResponseTemplateManager
     #[\Override]
     public function getTemplate(string $templateId): Response
     {
-        return $this->createResponse($this->hasTemplate($templateId) ? $templateId : "notfound");
+        return $this->createResponseFromTemplateId($this->hasTemplate($templateId) ? $templateId : "notfound");
     }
 
     /**
-     * Create an IBS Response instance from a template id or raw response.
+     * Create an IBS Response instance from a template id.
      *
-     * The registry is handed to the Response so a template id resolves against
-     * *this* object — that hand-off is what replaced the global lookup.
+     * The registry is handed to the Response so the template id resolves
+     * against *this* object — that hand-off is what replaced the global
+     * lookup.
      */
     #[\Override]
-    protected function createResponse(string $raw): Response
+    protected function createResponseFromTemplateId(string $templateId): Response
     {
-        return new Response($raw, templates: $this);
+        return new Response($templateId, templates: $this);
     }
 
     /**

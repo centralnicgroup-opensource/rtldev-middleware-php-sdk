@@ -22,6 +22,7 @@ use CNIC\Record;
 use CNIC\RecordInterface;
 use CNIC\ResponseInterface;
 use CNIC\ResponseParserInterface;
+use CNIC\ResponseTemplateFactoryInterface;
 use CNIC\ResponseTemplateManagerInterface;
 use CNIC\TransportInterface;
 use FilesystemIterator;
@@ -74,12 +75,13 @@ use SplFileInfo;
  * {@see ResponsePaginationSeamTest}. Reflection comparing the implementation
  * against the interface is therefore the only instrument that can.
  *
- * Only 8 interfaces are swept as **total contracts** — ones meant to fully
+ * Only 9 interfaces are swept as **total contracts** — ones meant to fully
  * describe their implementors: {@see \CNIC\ResponseInterface},
  * {@see \CNIC\RecordInterface}, {@see \CNIC\ColumnInterface},
  * {@see \CNIC\TransportInterface}, {@see \CNIC\ResponseParserInterface},
  * {@see \CNIC\LoggerInterface}, {@see \CNIC\LogSinkInterface},
- * {@see \CNIC\ResponseTemplateManagerInterface}.
+ * {@see \CNIC\ResponseTemplateManagerInterface},
+ * {@see \CNIC\ResponseTemplateFactoryInterface}.
  * {@see \CNIC\ExtendedResponseInterface} and
  * {@see \CNIC\RoleCredentialsInterface} are deliberately excluded from that
  * role — they are additive capability interfaces (CLAUDE.md, "Core vs.
@@ -100,11 +102,11 @@ use SplFileInfo;
  * unimplemented), and so is `__construct` — already guarded, for
  * `ResponseInterface`, by
  * {@see ResponseInterfaceConsumerTest::testTheInterfaceDeclaresNoConstructor()},
- * and none of the other 6 total interfaces declares one either, so there is
+ * and none of the remaining total interfaces declares one either, so there is
  * nothing left for this sweep to add there.
  *
  * The allow-list below is intentionally empty. After RSRMID-2927 removed
- * `IBS\Response::getStatus()` the sweep is green across all 8 contracts with
+ * `IBS\Response::getStatus()` the sweep is green across all 9 contracts with
  * zero exceptions — keep it that way rather than adding an exception "just in
  * case"; a stray or widened method found here is a defect to fix, not a
  * reason to grow the list. The property sweep has no allow-list at all, which
@@ -122,7 +124,7 @@ use SplFileInfo;
  * defects, and they are its entire designed surface.
  *
  * Revisit this guard only if a genuinely new "total" interface is introduced
- * (add it to {@see self::TOTAL_INTERFACES}), if one of the current 8 stops
+ * (add it to {@see self::TOTAL_INTERFACES}), if one of the current 9 stops
  * being meant to fully describe its implementors (move it to the excluded
  * set alongside `ExtendedResponseInterface`/`RoleCredentialsInterface`, with
  * the same justification these carry), or if the source language ceiling ever
@@ -178,6 +180,7 @@ final class InterfaceCoverageSeamTest extends TestCase
         LoggerInterface::class,
         LogSinkInterface::class,
         ResponseTemplateManagerInterface::class,
+        ResponseTemplateFactoryInterface::class,
     ];
 
     /**
