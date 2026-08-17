@@ -36,7 +36,7 @@ Semantic versioning applies: **only major bumps (`X.0.0`) can break your code.**
 | → v30.0.0 | 8.3+         | Transport error is a declared `?string $error` parameter, not a `"httperror\|"` prefix on the raw payload; `nocurl` template gone                                                                                                                                                                                                                             | Add the parameter if you override `newResponse()`/`translate()`; return `["", $error]` (not bytes) on failure if you implement `TransportInterface`                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | → v31.0.0 | 8.3+         | `Response` is sealed after construction: the two mutators and the four record-cursor methods are off `ResponseInterface`                                                                                                                                                                                                                                      | Replace `getNextRecord()` loops with `foreach ($r as $rec)` (it yields the first row too) and `getCurrentRecord()` with `getRecord(0)`; take `populate()`'s three new arguments if you subclass                                                                                                                                                                                                                                                                                                                                                                                           |
 | → v32.0.0 | 8.3+         | The response-template registry is an instance, not `public static array $templates`; `resetTemplates()` removed; `CNR\Column` deleted in favour of `?string` accessors on the interfaces; `getRecordsTotalCount()`/`getRecordsLimitation()` are `?int` and a brand `Response` no longer declares `getCurrentPageNumber()`/`hasNextPage()`/`hasPreviousPage()` | Call `(new ResponseTemplateManager())->addTemplate(…)` and pass the registry as `new Response($id, templates: $registry)`; delete `resetTemplates()` calls; take `translate()`'s new argument if you subclass; swap `CNR\Column`/`@var Column<string>` for `getStringByIndex()`/`getStringByKey()`, and add both methods if you implement `ColumnInterface`/`RecordInterface`; widen your `ResponseInterface` implementation's return types and handle `null` from `getRecordsTotalCount()`/`getRecordsLimitation()`; re-check any `hasPreviousPage()` check against an unaligned `FIRST` |
-| → v33.0.0 | 8.3+         | Pagination/status metadata is no longer column data; `getColumnKeys()` lost its `bool` parameter; the four pagination primitives answer `null` instead of standing in; the six derived pagination getters moved to a new `CNIC\Paginator`, returned by `getPagination()`                                                                                      | Read metadata through `getPagination()`, `getHash()` and the status accessors instead of `getColumn()`/records; drop the `getColumnKeys(true)` argument; re-point `hasNextPage()`/page-number calls at `getPagination()` (`toArray()` for the old array); expect `0` records, not `1`, from an empty list                                                                                                                                                                                                                                                                                 |
+| → v33.0.0 | 8.3+         | Pagination/status metadata is no longer column data; `getColumnKeys()` lost its `bool` parameter; the four pagination primitives answer `null` instead of standing in; the six derived pagination getters moved to a new `CNIC\Paginator`, returned by `getPagination()`; `Column::$length` replaced by `ColumnInterface::getLength()`                        | Read metadata through `getPagination()`, `getHash()` and the status accessors instead of `getColumn()`/records; drop the `getColumnKeys(true)` argument; re-point `hasNextPage()`/page-number calls at `getPagination()` (`toArray()` for the old array); expect `0` records, not `1`, from an empty list; swap `$col->length` for `$col->getLength()`, and add the method if you implement `ColumnInterface`                                                                                                                                                                             |
 
 Two things to respect throughout:
 
@@ -1450,7 +1450,9 @@ Delete any `getCurrentPageNumber()`/`hasNextPage()`/`hasPreviousPage()` override
 
 ---
 
-## → v33.0.0 — response metadata is not column data; pagination arithmetic moved to `CNIC\Paginator`
+<a id="-v3300"></a>
+
+## → v33.0.0 — response metadata is not column data; pagination arithmetic moved to `CNIC\Paginator`; `Column::$length` is an accessor
 
 **What changed:** the keys a brand's wire format uses to describe the _response_ — CNR's `TOTAL`/`FIRST`/`LAST`/`COUNT`/`LIMIT`, IBS/Moniker's `transactid`/`status`/`message`/`code`/`domaincount`/`total_*` — are no longer registered as columns. They appear in no `getColumnKeys()`, no `getColumns()`, no `getColumn()` and in no record. Three things follow:
 
@@ -1543,6 +1545,18 @@ public function getPagination(): \CNIC\Paginator
     );
 }
 ```
+
+**`Column::$length` is now `getLength()`.** The public readonly property is gone; the count is read through `ColumnInterface` like everything else a column can be asked:
+
+```php
+// BEFORE (v32)
+$n = $col->length;
+
+// AFTER (v33)
+$n = $col->getLength();
+```
+
+If you implement `ColumnInterface` directly, add `public function getLength(): int`. The property had to go rather than merely gain a companion accessor: a PHP 8.3 interface cannot declare a property, so `$length` was reachable only by narrowing to the concrete `CNIC\Column` — the one thing this guide tells you not to do. (Ref: RSRMID-2971.)
 
 **If you subclass a brand `Response`:** the protected `$paginationKeys` property is renamed `$metaKeys`, and it now decides which keys never become columns rather than which ones get filtered later. A subclass that set `$paginationKeys` must rename it, or its keys silently return to the column pool. If you override `populate()`, skip metadata keys with the new `protected function isMetaKey(string $key): bool`.
 

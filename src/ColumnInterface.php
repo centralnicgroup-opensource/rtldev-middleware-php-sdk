@@ -31,6 +31,16 @@ interface ColumnInterface
     public function getKey(): string;
 
     /**
+     * Get the number of data entries this column holds
+     *
+     * Declared here rather than left as the `public readonly int $length`
+     * property it was until RSRMID-2971: a PHP 8.3 interface cannot declare a
+     * property, so that property was reachable only by narrowing to
+     * {@see Column} — the one thing this project tells consumers not to do.
+     */
+    public function getLength(): int;
+
+    /**
      * Get column data
      *
      * @return array<array-key, mixed>

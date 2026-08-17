@@ -6,6 +6,7 @@ namespace CNICTEST;
 
 use CNIC\ApiDateTime;
 use CNIC\Column;
+use CNIC\ColumnInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -35,16 +36,21 @@ final class ColumnTest extends TestCase
         $this->assertSame(self::NAMESERVERS, $col->getData());
     }
 
+    /**
+     * Read through an interface-typed handle on purpose: until RSRMID-2971
+     * the length was a public property, which no PHP 8.3 interface can
+     * declare, so this line could not have been written at all.
+     */
     public function testLength(): void
     {
         $col = new Column("nameserver", self::NAMESERVERS);
-        $this->assertSame(2, $col->length);
+        $this->assertSame(2, (static fn(ColumnInterface $c): int => $c->getLength())($col));
     }
 
     public function testLengthOfEmptyColumn(): void
     {
         $col = new Column("empty", []);
-        $this->assertSame(0, $col->length);
+        $this->assertSame(0, $col->getLength());
         $this->assertSame([], $col->getData());
         $this->assertNull($col->getDataByIndex(0));
     }
