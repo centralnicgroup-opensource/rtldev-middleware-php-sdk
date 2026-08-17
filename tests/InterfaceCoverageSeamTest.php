@@ -30,15 +30,16 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use RuntimeException;
 use SplFileInfo;
 
 /**
- * Sweeps every concrete class in src/ for a public method that CLAUDE.md's
- * "type-hint against interfaces" directive cannot actually deliver on
- * (RSRMID-2927).
+ * Sweeps every concrete class in src/ for a public *member* — method or
+ * property — that CLAUDE.md's "type-hint against interfaces" directive cannot
+ * actually deliver on (RSRMID-2927; widened to properties by RSRMID-2971).
  *
- * Two defect shapes, both silent to an interface-typed consumer:
+ * Three defect shapes, all silent to an interface-typed consumer:
  *
  * - **Stray** — a public method the class declares that is not part of any
  *   CNIC interface it implements. An interface-typed caller can never reach
@@ -55,8 +56,20 @@ use SplFileInfo;
  *   there was nothing left to filter) — the example is kept as the defect shape,
  *   not as a live signature.
  *
- * Both are behaviour-preserving on the day they land: every existing test
- * calls these methods on the *concrete* class and passes either way, so no
+ * - **Public property** — unreachable *by construction*, not by omission: a
+ *   PHP 8.3 interface cannot declare a property at all, so no interface
+ *   declaration exists that could make one reachable. That is why
+ *   {@see self::testNoConcreteClassExposesAPublicProperty()} is an absolute
+ *   check rather than a comparison — a concrete class implementing a total
+ *   contract may expose none, and the fix is always the same: make the
+ *   property non-public and declare an accessor. `Column::$length` was one of
+ *   these until RSRMID-2971 replaced it with `ColumnInterface::getLength()`.
+ *   Static properties count too: `ResponseTemplateManager::$templates` was a
+ *   `public static array` until RSRMID-2941, reachable only by naming the
+ *   concrete class, and this sweep would now refuse it.
+ *
+ * All three are behaviour-preserving on the day they land: every existing test
+ * reaches these members on the *concrete* class and passes either way, so no
  * functional test can see them arrive — the same reasoning as
  * {@see ResponsePaginationSeamTest}. Reflection comparing the implementation
  * against the interface is therefore the only instrument that can.
@@ -94,16 +107,32 @@ use SplFileInfo;
  * `IBS\Response::getStatus()` the sweep is green across all 8 contracts with
  * zero exceptions — keep it that way rather than adding an exception "just in
  * case"; a stray or widened method found here is a defect to fix, not a
- * reason to grow the list.
+ * reason to grow the list. The property sweep has no allow-list at all, which
+ * is deliberate: adding `Column::$length` to one was the alternative
+ * RSRMID-2971 explicitly refused, because an exception list turns a guarantee
+ * into an inventory of the places it does not hold.
+ *
+ * The subject set is "concrete classes implementing a total contract", which
+ * deliberately leaves out the interface-free value objects: {@see \CNIC\ApiDateTime}
+ * keeps its five public readonly properties and {@see \CNIC\Paginator} exposes
+ * none. Neither implements an interface, so neither makes the reachability
+ * promise this sweep enforces — a consumer names those types directly because
+ * there is nothing else to name. Do not "complete" the sweep by widening it to
+ * every class under src/: that would report ApiDateTime's properties as
+ * defects, and they are its entire designed surface.
  *
  * Revisit this guard only if a genuinely new "total" interface is introduced
- * (add it to {@see self::TOTAL_INTERFACES}) or if one of the current 8 stops
+ * (add it to {@see self::TOTAL_INTERFACES}), if one of the current 8 stops
  * being meant to fully describe its implementors (move it to the excluded
  * set alongside `ExtendedResponseInterface`/`RoleCredentialsInterface`, with
- * the same justification these carry).
+ * the same justification these carry), or if the source language ceiling ever
+ * moves past 8.3 — PHP 8.4 lets an interface declare a property, at which
+ * point the property check could become a comparison like the method one
+ * instead of an absolute refusal. That ceiling is pinned for as long as WHMCS
+ * ships ionCube-encoded (CLAUDE.md), so it is not a near-term revisit.
  *
- * **A second, narrower guard protects the sweep's own discovery.** The single
- * assertion above lives inside a loop over
+ * **A third, narrower guard protects the sweeps' own discovery.** Both
+ * assertions above live inside a loop over
  * {@see self::concreteClassesImplementingATotalInterface()}; if that ever
  * returned an empty array — an autoload/Composer regression, a moved `src/`,
  * a changed PSR-4 prefix, a botched directory rename — `$failures` would
@@ -243,6 +272,48 @@ final class InterfaceCoverageSeamTest extends TestCase
                         $class
                     );
                 }
+            }
+        }
+
+        $this->assertSame([], $failures, implode("\n", $failures));
+    }
+
+    /**
+     * No concrete class implementing a "total" interface may expose a public
+     * property.
+     *
+     * Absolute, not a comparison: PHP 8.3 interfaces cannot declare
+     * properties, so unlike a stray method — which becomes reachable the
+     * moment someone adds it to the interface — a public property has no
+     * declaration that could ever make it reachable to an interface-typed
+     * consumer. The only fix is to make it non-public and expose an accessor,
+     * which is what RSRMID-2971 did to `Column::$length`
+     * ({@see \CNIC\ColumnInterface::getLength()}).
+     *
+     * Covers static properties as well as instance ones, and inherited ones
+     * as well as locally declared: what matters is what a consumer holding
+     * this class can reach, not where it was written.
+     */
+    public function testNoConcreteClassExposesAPublicProperty(): void
+    {
+        $failures = [];
+
+        foreach (self::concreteClassesImplementingATotalInterface() as $class) {
+            $rc = new ReflectionClass($class);
+
+            foreach ($rc->getProperties(ReflectionProperty::IS_PUBLIC) as $p) {
+                $declaredBy = $p->getDeclaringClass()->getName();
+                $failures[] = sprintf(
+                    "%s::$%s is a public property%s. A PHP 8.3 interface cannot declare a property, so it "
+                    . "is unreachable to the interface-typed consumers CLAUDE.md mandates — they would have "
+                    . "to narrow to %s to read it. Make it non-public and declare an accessor on the "
+                    . "relevant interface instead (as ColumnInterface::getLength() does for what used to be "
+                    . "Column::\$length).",
+                    $class,
+                    $p->getName(),
+                    $declaredBy === $class ? "" : " (inherited from {$declaredBy})",
+                    $class
+                );
             }
         }
 

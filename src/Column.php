@@ -31,8 +31,12 @@ class Column implements ColumnInterface
 {
     /**
      * count of column data entries
+     *
+     * Not public: a PHP 8.3 interface cannot declare a property, so a public
+     * one is unreachable to the interface-typed consumers CLAUDE.md mandates
+     * — it was, until RSRMID-2971. Read it through {@see self::getLength()}.
      */
-    public readonly int $length;
+    private readonly int $length;
 
     /**
      * Constructor
@@ -53,6 +57,15 @@ class Column implements ColumnInterface
     public function getKey(): string
     {
         return $this->columnName;
+    }
+
+    /**
+     * Get the number of data entries this column holds
+     */
+    #[\Override]
+    public function getLength(): int
+    {
+        return $this->length;
     }
 
     /**
