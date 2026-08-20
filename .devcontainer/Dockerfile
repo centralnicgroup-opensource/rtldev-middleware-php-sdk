@@ -31,7 +31,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Applied to the running PHP build's scan directory by
-# supporting_files/scripts/post-create.sh -- that directory does not exist until
-# the PHP Feature has run, which is why these are staged here rather than copied
-# into place.
+# supporting_files/scripts/apply-php-config.sh -- that directory belongs to the
+# PHP the Feature installs, which is why these are staged here rather than
+# copied into place.
 COPY ${CONFIGURATION_DIR_PATH}/php/ /opt/php-config/
