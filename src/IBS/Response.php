@@ -204,8 +204,28 @@ class Response extends AbstractResponse implements ResponseInterface
      * FAILURE is the only IBS status that signals an error. Every other status
      * means the command itself succeeded — "SUCCESS" for ordinary commands, and
      * for Domain/Check specifically "AVAILABLE"/"UNAVAILABLE", which report the
-     * domain's registrability rather than a failure. Missing/empty statuses are
-     * normalised to FAILURE upstream by ResponseTranslator's fallback templates.
+     * domain's registrability rather than a failure.
+     *
+     * **Reading the root status only is correct for every observed response**
+     * (RSRMID-2972). Both Domain/Create failure shapes recorded in RTLDEV-16781
+     * carry a top-level `status=FAILURE`: the pre-flight one puts `code` and
+     * `message` beside it, the provisioning one puts them under `product[0]`
+     * instead. What the API omits on a provisioning failure is the code and the
+     * message — never the status. That is why {@see getCode()} and
+     * {@see getDescription()} need a `product[0]` fallback and this method does
+     * not.
+     *
+     * A payload carrying a status *only* under `product[0]` would survive the
+     * translator — {@see ResponseTranslator::hasMissingRequiredFields()} is
+     * deliberately lenient — and would then be reported here as a success while
+     * {@see getCode()} read the nested failure code, so the two would disagree.
+     * No such response is known to exist, so no branch is added for it: pinning
+     * a shape the API does not emit would be dead code. Reconsider only against
+     * a real capture.
+     *
+     * The earlier claim here — that missing or empty statuses are "normalised to
+     * FAILURE upstream by ResponseTranslator's fallback templates" — was wrong
+     * for a nested-only status and is what made the root-only read look unsafe.
      */
     #[\Override]
     public function isError(): bool
