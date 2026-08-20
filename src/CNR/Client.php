@@ -13,6 +13,7 @@ use CNIC\AbstractClient;
 use CNIC\CNR\Logger as L;
 use CNIC\CNR\Response;
 use CNIC\CommandFormatter;
+use CNIC\CommandRedactor;
 use CNIC\Exception\PaginationException;
 use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\LogSinkInterface;
@@ -60,7 +61,38 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     public function __construct(?SocketConfig $socketConfig = null)
     {
         parent::__construct($socketConfig);
+        // Two steps because Psalm cannot infer a bare `new \WeakMap()`'s template
+        // parameters from the assignment target — it widens to WeakMap<object, mixed>
+        // and reports the narrowing as a PropertyTypeCoercion.
+        /** @var \WeakMap<Response, array<string, string>> $sentCommands */
+        $sentCommands = new \WeakMap();
+        $this->sentCommands = $sentCommands;
     }
+
+    /**
+     * The exact, still-unmasked command handed to {@see newResponse()} for every
+     * Response this client produced, so {@see requestNextResponsePage()} can
+     * continue a paginated query with the parameters that were actually sent
+     * rather than with the response's deliberately lossy copy (RSRMID-2975).
+     *
+     * Keyed weakly: an entry disappears together with the Response it describes,
+     * so walking a long list does not accumulate commands for pages the caller
+     * has already dropped.
+     *
+     * **It lives beside the Response, not on it, and that is the whole point.**
+     * {@see \CNIC\AbstractResponse} masks the brand's sensitive command keys
+     * *before* storing the command precisely so their values can never be read
+     * back off a Response — which is what keeps `print_r($response)`,
+     * `var_dump()`, `json_encode()` and a custom logger free of an EPP auth code.
+     * An `$unmaskedCommand` property with a `getUnmaskedCommand()` accessor would
+     * fix this bug just as well and undo that guarantee at the same time: it grants
+     * no capability the caller lacks (it already holds the command it passed to
+     * {@see request()}), only new accidental-leak surface, and `__debugInfo()`
+     * would cover only `var_dump()` of the four. Do not move it onto the Response.
+     *
+     * @var \WeakMap<Response, array<string, string>>
+     */
+    private \WeakMap $sentCommands;
 
     /**
      * Instantiate CNR SocketConfig
@@ -258,7 +290,9 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     #[\Override]
     protected function newResponse(string $raw, array $cmd, array $cfg, ?string $error = null): Response
     {
-        return new Response($raw, $cmd, $cfg, $this->context, error: $error);
+        $response = new Response($raw, $cmd, $cfg, $this->context, error: $error);
+        $this->sentCommands[$response] = $cmd;
+        return $response;
     }
 
     /**
@@ -283,12 +317,66 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     }
 
     /**
+     * The command to continue $currentPage's query with.
+     *
+     * Command data comes from the command, pagination state from the response —
+     * this method is the first half of that split. Reading the command off the
+     * response instead was RSRMID-2975: `getCommand()` answers the *masked* copy,
+     * so a list command carrying `AUTH` or `PASSWORD` (an EPP transfer auth code,
+     * an account password field) had the literal mask re-sent as that parameter's
+     * value on page 2 onward. Not a display artifact — it reached the wire. Note
+     * what it is *not*: the client's own credentials travel as `s_login`/`s_pw`
+     * off the {@see SocketConfig} and were never in the command, so every page
+     * authenticated correctly and the damage was a corrupted *parameter* — which
+     * the API may well accept, answering page 2 from a different result set than
+     * page 1 rather than failing outright.
+     *
+     * A Response this client did not itself produce — constructed directly, or
+     * returned by a different client instance — is not in the map. Falling back to
+     * its masked command is safe exactly when nothing in it was masked, which is
+     * the overwhelmingly common case and continues to work untouched; when
+     * something *was* masked there is no unmasked copy anywhere to recover, so
+     * this throws rather than putting the mask on the wire. Detection is by value
+     * rather than by key, so it holds for a subclass that widened
+     * `$sensitiveFields` beyond {@see SensitiveFields::KEYS}; the only false
+     * positive is a caller legitimately sending the literal `"***"`.
+     *
+     * @return array<string, string>
+     * @throws PaginationException if $currentPage came from elsewhere and its command is masked
+     */
+    private function continuationCommand(Response $currentPage): array
+    {
+        if (isset($this->sentCommands[$currentPage])) {
+            /** @var array<string, string> $sent Psalm's WeakMap stub types offsetGet as TValue|null */
+            $sent = $this->sentCommands[$currentPage];
+            return $sent;
+        }
+        $cmd = $currentPage->getCommand();
+        if (in_array(CommandRedactor::MASK, $cmd, true)) {
+            throw new PaginationException(
+                "Cannot continue pagination from a Response this client did not produce: its command still "
+                . "carries the redaction mask (\"" . CommandRedactor::MASK . "\") in place of a sensitive "
+                . "parameter, and re-sending it would put the mask on the wire. Pass a Response returned by "
+                . "this client's own request()."
+            );
+        }
+        return $cmd;
+    }
+
+    /**
      * Request the next page of list entries for the current list query
-     * @throws PaginationException in case Command Parameter LAST is in use while using this method
+     *
+     * The continuation is assembled from two sources, deliberately: the command
+     * that produced $currentPage ({@see continuationCommand()}) and $currentPage's
+     * own pagination state. Response data — `LIMIT`, `LAST` — is not masked and is
+     * read straight off the response; command parameters are not.
+     *
+     * @throws PaginationException in case Command Parameter LAST is in use while using this method,
+     *         or if $currentPage was produced elsewhere and its command is masked
      */
     public function requestNextResponsePage(Response $currentPage): ?Response
     {
-        $mycmd = $currentPage->getCommand();
+        $mycmd = $this->continuationCommand($currentPage);
         if (array_key_exists("LAST", $mycmd)) {
             throw new PaginationException("Parameter LAST in use. Please remove it to avoid issues in requestNextPage.");
         }
