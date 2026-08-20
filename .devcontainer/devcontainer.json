@@ -1,39 +1,81 @@
 {
+  // Everything shared with the other RTLDEV middleware repositories lives in the
+  // devbase Feature, not here. What stays in this file is what a Feature cannot
+  // set — the name, the workspace paths, the remote user, initializeCommand and
+  // the host mounts — plus what is genuinely specific to *this* repository: the
+  // PHP runtime, the PHP editor tooling, and the PHP ini provisioning.
+  //
+  // Feature options and troubleshooting:
+  // https://github.com/centralnicgroup-opensource/rtldev-middleware-devcontainer-features
   "name": "dstack-phpsdk",
   "build": {
     "context": ".",
     "dockerfile": "Dockerfile"
   },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/rtldev-middleware-php-sdk,type=bind,consistency=cached",
-  "workspaceFolder": "/usr/share/rtldev-middleware-php-sdk",
+
+  // localWorkspaceFolderBasename is the repository directory name, so these two
+  // cannot drift apart from it or from each other. Resolves to the same
+  // /usr/share/rtldev-middleware-php-sdk as before.
+  "workspaceMount": "source=${localWorkspaceFolder},target=/usr/share/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+  "workspaceFolder": "/usr/share/${localWorkspaceFolderBasename}",
   "shutdownAction": "stopContainer",
-  "initializeCommand": "mkdir -p ${localEnv:HOME}/.claude",
+
+  // Host-side preflight for the binds at the bottom of this file: Docker creates
+  // a missing bind source itself, as a root-owned *directory*. For ~/.ssh and
+  // ~/.claude that yields a directory nobody in the container can write to; for
+  // ~/.gitconfig it yields a directory where git expects a file, on the host too.
+  // Creating them first is idempotent and cheap. Runs on the host, so it cannot
+  // move into a Feature.
+  "initializeCommand": {
+    "claude-state": "mkdir -p ${localEnv:HOME}/.claude",
+    "ssh-dir": "mkdir -p ${localEnv:HOME}/.ssh",
+    "gitconfig": "touch ${localEnv:HOME}/.gitconfig"
+  },
+
+  "features": {
+    // The language this repository is written in stays with the repository.
+    "ghcr.io/devcontainers/features/php:1": {
+      "version": "8.3",
+      "installComposer": true,
+      "extensions": "xdebug"
+    },
+
+    // The shared behaviour layer: zsh with the team prompt, commitizen, pnpm,
+    // the gh credential helper, persistent shell history, dependency
+    // installation, the on-attach toolchain banner, and the RTK binary the
+    // committed ~/.claude/settings.json hook looks for.
+    //
+    // It declares Node LTS, the GitHub CLI and the Claude Code CLI as its own
+    // dependencies, so none of the three is listed here and their digests move
+    // with a devbase release instead of a per-repository Dependabot PR. Do NOT
+    // re-declare node:2 to change its version: one Feature id with two option
+    // sets counts as two Features under the spec's equality rule, so Node would
+    // install twice into the same nvm path.
+    "ghcr.io/centralnicgroup-opensource/rtldev-middleware-devcontainer-features/devbase:1": {}
+  },
+
   "customizations": {
     "vscode": {
+      // PHP tooling only. devbase contributes the shared layer — GitHub Actions,
+      // GitHub PRs, Remote Containers, Containers, both Claude extensions,
+      // shellcheck / shell-format / vscode-yaml — plus the zsh terminal profile
+      // and the shellcheck/npm settings that go with them.
       "extensions": [
-        "github.vscode-github-actions",
-        "gitHub.vscode-pull-request-github",
-        "ms-vscode-remote.remote-containers",
         "devsense.phptools-vscode",
-        "ms-azuretools.vscode-containers",
         "xdebug.php-debug",
         "neilbrayfield.php-docblocker",
-        "anthropic.claude-vscode",
-        "ms-vscode.live-server",
         "SanderRonde.phpstan-vscode",
-        "anthropic.claude-code"
+        "ms-vscode.live-server"
       ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "zsh",
-        "terminal.integrated.profiles.linux": {
-          "zsh": {
-            "path": "/bin/zsh"
-          }
-        },
         "php.validate.executablePath": "/usr/local/php/current/bin/php",
         "php.executablePath": "/usr/local/php/current/bin/php",
         "php.suggest.basic": false,
         "phpunit.config": ".github/phpunit.xml",
+        // Absolute rather than ${containerWorkspaceFolder}: PHP Tools spawns
+        // this without a shell, and an unresolved variable here fails at test
+        // time. A repository rename means editing this one line — which fails
+        // loudly (no such file) rather than silently skipping env.sh.
         "phpunit.command": "zsh /usr/share/rtldev-middleware-php-sdk/.devcontainer/supporting_files/scripts/phpunit-wrapper.sh \"${php}\" ${phpargs} -d xdebug.mode=coverage \"${phpunit}\" ${phpunitargs}",
         "php.problems.exclude": {
           "**/vendor/**": true,
@@ -42,25 +84,26 @@
       }
     }
   },
+
   "remoteUser": "vscode",
-  "features": {
-    "ghcr.io/devcontainers/features/php:1": {
-      "version": "8.3",
-      "installComposer": true,
-      "extensions": "xdebug"
-    },
-    "ghcr.io/devcontainers/features/node:2": {
-      "version": "lts"
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
-  },
+
+  // .ssh and .gitconfig make git work as it does on the host; /WSL_USER is what
+  // devbase's history persistence reads; .claude carries the Claude Code session
+  // state including the RTK hook. Kept here because a Feature cannot mount.
+  //
+  // ${localEnv:HOME}${localEnv:USERPROFILE} resolves to whichever of the two the
+  // host defines. On a host defining *both* it resolves to neither and Docker
+  // mounts an empty directory; devbase reports that on post-create rather than
+  // silently losing history.
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly",
     "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
     "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/WSL_USER,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind,consistency=cached"
   ],
-  "postCreateCommand": "zsh /post-create.sh",
-  "postAttachCommand": "zsh /usr/share/rtldev-middleware-php-sdk/.devcontainer/supporting_files/scripts/post-attach.sh"
+
+  // No postAttachCommand: devbase supplies the banner and the env.sh autoload.
+  // This runs *after* devbase's own post-create, so composer/pnpm dependencies
+  // are already installed by the time it applies the PHP ini files.
+  "postCreateCommand": "zsh .devcontainer/supporting_files/scripts/post-create.sh"
 }
