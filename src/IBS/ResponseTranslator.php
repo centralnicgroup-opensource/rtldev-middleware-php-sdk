@@ -77,6 +77,24 @@ final class ResponseTranslator extends AbstractResponseTranslator
      * IBS falls back to the "invalid" template when status is missing (JSON or
      * plain) or present but empty. message is optional in success cases and is
      * deliberately not checked.
+     *
+     * **The JSON arm is deliberately unanchored** (RSRMID-2972). `/"status":/i`
+     * cannot tell a top-level status from one nested under `product[0]`, so a
+     * payload whose only status sits inside a product satisfies the check and
+     * passes through untouched. Keep it that way. A stricter pattern would make
+     * this return true, and
+     * {@see \CNIC\AbstractResponseTranslator::translate()} replaces the payload
+     * *wholesale* with the "invalid" template — destroying `product[0].code` and
+     * `product[0].message` before {@see Response::getCode()} could read them.
+     * Those are exactly the fields RTLDEV-16781 exists to surface, so tightening
+     * this regex would discard the data the fallback downstream was added to
+     * recover.
+     *
+     * The provisioning failure shape this protects always carries a top-level
+     * status too, so the leniency is not currently load-bearing for any observed
+     * response — it is load-bearing for the *class* of payload, and the cost of
+     * being wrong is silent data loss rather than a visible error. See
+     * {@see Response::isError()} for the shapes the API actually sends.
      */
     #[\Override]
     protected static function hasMissingRequiredFields(string $raw): bool

@@ -91,6 +91,81 @@ final class ResponseTest extends TestCase
         $this->assertEquals(100005, $r->getCode());
     }
 
+    /**
+     * The generic Domain/Create failure shape — code and message at the top
+     * level. Pins the first half of getCode()/getDescription(): remove the
+     * top-level lookup and this fails while the product[0] test below passes.
+     *
+     * Fixture is a faithful JSON translation of the plain-text capture in
+     * RTLDEV-16781, not a verbatim one — that ticket predates the
+     * ResponseFormat=JSON switch it prompted.
+     */
+    public function testJsonErrorResponsePreFlightShapeReadsCodeAndMessageFromTopLevel(): void
+    {
+        $cmd = ["ResponseFormat" => "JSON"];
+        $json = (string) json_encode([
+            "transactid" => "4d91116180d6d3f2f7d739613a8ac692",
+            "status" => "FAILURE",
+            "message" => "Domain \"ibswhmcstestdomain279.com\" is not available for registration",
+            "code" => 100017,
+        ]);
+        $r = new R($json, $cmd);
+
+        $this->assertTrue($r->isError(), "top-level status=FAILURE must be reported as an error");
+        $this->assertSame(100017, $r->getCode());
+        $this->assertSame(
+            "Domain \"ibswhmcstestdomain279.com\" is not available for registration",
+            $r->getDescription()
+        );
+    }
+
+    /**
+     * The provisioning Domain/Create failure shape — top-level status, but code
+     * and message only under product[0]. This is the shape the
+     * getCode()/getDescription() fallback exists for, so it pins the second half:
+     * remove the product[0] lookup and this fails while the pre-flight test above
+     * passes. Both must stay.
+     *
+     * The fallback is **not transitional**. It compensates for a genuine API
+     * defect recorded in RTLDEV-16781, which is still To Do and unassigned, so
+     * the compensation is indefinite — do not read it as scaffolding awaiting
+     * removal (RSRMID-2972).
+     *
+     * Same caveat as above: a faithful JSON translation of a plain-text capture,
+     * where the flat product_0_* keys nest into a product list. Provoking this
+     * shape against OT&E is not reliably reproducible — it is a provisioning
+     * failure, not a pre-flight one, so Domain/Create against an already-taken
+     * domain yields the pre-flight shape instead. The capture is the source of
+     * truth; do not try to reproduce it live.
+     *
+     * Known limitation, deliberately unhandled: only product[0] is read. IBS has
+     * no batch-create endpoint, so there is never a second product. Revisit by
+     * patch if one appears.
+     */
+    public function testJsonErrorResponseProvisioningShapeReadsCodeAndMessageFromFirstProduct(): void
+    {
+        $cmd = ["ResponseFormat" => "JSON"];
+        $json = (string) json_encode([
+            "transactid" => "5b555572ed58ad1eae44e8c774b8498c",
+            "status" => "FAILURE",
+            "product" => [
+                [
+                    "status" => "FAILURE",
+                    "message" => "Failed to provide \"ibswhmcstestdomain312.com\"!",
+                    "code" => 100049,
+                ],
+            ],
+        ]);
+        $r = new R($json, $cmd);
+
+        // isError() reads the root status only, which is correct here precisely
+        // because the API always sends top-level status and omits only code and
+        // message on a provisioning failure. See IBS\Response::isError().
+        $this->assertTrue($r->isError(), "top-level status=FAILURE must be reported as an error");
+        $this->assertSame(100049, $r->getCode(), "the code must come from product[0] when absent up top");
+        $this->assertSame("Failed to provide \"ibswhmcstestdomain312.com\"!", $r->getDescription());
+    }
+
     public function testJsonDomainInfoResponse(): void
     {
         $cmd = ["ResponseFormat" => "JSON"];
