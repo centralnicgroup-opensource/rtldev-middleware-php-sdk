@@ -991,6 +991,111 @@ final class ClientTest extends TestCase
         }
     }
 
+    /**
+     * A list response with a next page, for the pagination-continuation tests
+     * below. Two records of a ten-record total, so hasNextPage() is true and
+     * LIMIT/LAST are both usable.
+     */
+    private const string PAGED_LIST = "[RESPONSE]\r\nPROPERTY[DOMAIN][0]=a.com\r\nPROPERTY[DOMAIN][1]=b.com\r\n"
+        . "PROPERTY[COUNT][0]=2\r\nPROPERTY[FIRST][0]=0\r\nPROPERTY[LAST][0]=1\r\n"
+        . "PROPERTY[LIMIT][0]=2\r\nPROPERTY[TOTAL][0]=10\r\n"
+        . "DESCRIPTION=Command completed successfully\r\nCODE=200\r\nEOF\r\n";
+
+    /**
+     * Page 2 must carry the command parameters that were actually sent, not the
+     * response's masked copy of them (RSRMID-2975).
+     *
+     * `AUTH` and `PASSWORD` are masked *before* the command is stored on a
+     * Response, so `getCommand()` can only ever answer `"***"` for them — asserted
+     * here too, because the fix must not have loosened that. Building the
+     * continuation from `getCommand()` therefore re-sent the literal mask as the
+     * parameter's value, and it reached the wire: this test reads the encoded body
+     * out of the transport spy rather than any client-side bag, so it fails if the
+     * mask is on the wire even when every in-process accessor looks right.
+     *
+     * Note which half of the request is affected. The client's own credentials
+     * travel as `s_login`/`s_pw` off the SocketConfig and were never in the
+     * command, so authentication was fine on every page; what broke was a
+     * *command parameter*, which the API may accept — answering page 2 from a
+     * different result set than page 1 rather than erroring. That silence is why
+     * this went unnoticed, and why the assertion is on the bytes.
+     */
+    public function testRequestNextResponsePageSendsTheUnmaskedCommandParameters(): void
+    {
+        $spy = new SpyTransport(self::PAGED_LIST);
+        $cl = (new CL())->setTransport($spy);
+        $cl->setCredentials("myaccountid", "mypassword");
+
+        $r = $cl->request([
+            "COMMAND" => "QueryDomainList",
+            "AUTH"    => "s3cr3t-auth-code",
+            "LIMIT"   => 2,
+            "FIRST"   => 0
+        ]);
+        $this->assertTrue($r->isSuccess(), $r->getPlain());
+        $this->assertStringContainsString("AUTH%3Ds3cr3t-auth-code", $spy->data, "page 1 sends the real value");
+        $this->assertSame("***", $r->getCommand()["AUTH"], "the response must still answer masked");
+
+        $nr = $cl->requestNextResponsePage($r);
+
+        $this->assertNotNull($nr);
+        $this->assertStringContainsString(
+            "AUTH%3Ds3cr3t-auth-code",
+            $spy->data,
+            "page 2 must re-send the parameter that was sent, not the mask"
+        );
+        $this->assertStringNotContainsString("AUTH%3D%2A%2A%2A", $spy->data);
+        $this->assertStringContainsString("FIRST%3D2", $spy->data, "and it must still advance the offset");
+    }
+
+    /**
+     * A Response this client did not produce is not in its command map, and
+     * falling back to the response's own command is correct exactly when nothing
+     * in it was masked. That is the overwhelmingly common case — no list command
+     * carries `AUTH` — so it must keep working untouched rather than being
+     * collateral damage of RSRMID-2975.
+     *
+     * Pins the non-regression half of the fix: a guard that refused every foreign
+     * Response would also pass the test above.
+     */
+    public function testRequestNextResponsePageStillContinuesAForeignResponseWithNothingMasked(): void
+    {
+        $tpls = (new RTM())->addTemplate("pagedList", self::PAGED_LIST);
+        $r = new R("pagedList", ["COMMAND" => "QueryDomainList", "LIMIT" => "2"], templates: $tpls);
+        $cl = (new CL())->setTransport(new SpyTransport(self::PAGED_LIST));
+        $cl->setCredentials("myaccountid", "mypassword");
+
+        $nr = $cl->requestNextResponsePage($r);
+
+        $this->assertNotNull($nr);
+        $this->assertTrue($nr->isSuccess(), $nr->getPlain());
+    }
+
+    /**
+     * A foreign Response whose command *was* masked has no unmasked copy anywhere
+     * — not on the response, not in this client's map — so there is nothing to
+     * recover and the only honest options are to throw or to put the mask on the
+     * wire. It throws (RSRMID-2975): silently sending `"***"` as a parameter value
+     * is the defect itself, and a caller cannot tell it happened.
+     *
+     * Detection is by value, not by key, so it also holds for a Response subclass
+     * that widened $sensitiveFields past CNR\SensitiveFields::KEYS.
+     */
+    public function testRequestNextResponsePageRefusesAForeignResponseWithAMaskedCommand(): void
+    {
+        $tpls = (new RTM())->addTemplate("pagedList", self::PAGED_LIST);
+        $r = new R(
+            "pagedList",
+            ["COMMAND" => "QueryDomainList", "AUTH" => "s3cr3t-auth-code", "LIMIT" => "2"],
+            templates: $tpls
+        );
+        $cl = (new CL())->setTransport(new SpyTransport(self::PAGED_LIST));
+
+        $this->expectException(PaginationException::class);
+        $this->expectExceptionMessage("Cannot continue pagination from a Response this client did not produce");
+        $cl->requestNextResponsePage($r);
+    }
+
     public function testSetProxy(): void
     {
         $this->assertEquals(self::$cl->getProxy(), null);
