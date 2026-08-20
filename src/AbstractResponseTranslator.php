@@ -47,15 +47,39 @@ abstract class AbstractResponseTranslator
 
     /**
      * plain-string description keys for translation; keys are preg_quote'd before matching
+     *
+     * Defaults to no rewrites (RSRMID-2970). A brand that rewrites nothing used to
+     * have to say so in four members — two empty private constants and two hooks
+     * returning them — which is boilerplate asserting an absence, not a decision
+     * recorded.
+     *
+     * **This is not the "never no-op" case.** That directive (see
+     * {@see \CNIC\CNR\Client}, RSRMID-2920) is about a *capability the platform
+     * cannot honour*, where a silent discard hides a caller's mistake. An empty
+     * rewrite map is the opposite: a complete and truthful answer to "which
+     * messages does this brand rewrite?", from a brand whose answer is "none".
+     * Nothing is discarded and no caller is misled — the two rewrite loops in
+     * {@see translate()} iterate over nothing, exactly as they did over an empty
+     * constant.
+     *
      * @return array<string, string>
      */
-    abstract protected static function descriptionRegexMap(): array;
+    protected static function descriptionRegexMap(): array
+    {
+        return [];
+    }
 
     /**
      * raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)
+     *
+     * Defaults to no rewrites, for the reasons on {@see descriptionRegexMap()}.
+     *
      * @return array<string, string>
      */
-    abstract protected static function descriptionRawPatternMap(): array;
+    protected static function descriptionRawPatternMap(): array
+    {
+        return [];
+    }
 
     /**
      * Name of the response field carrying the human-readable text
