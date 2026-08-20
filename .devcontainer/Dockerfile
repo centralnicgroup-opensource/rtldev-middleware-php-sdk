@@ -1,41 +1,37 @@
+# Development image for this repository.
+#
+# Deliberately thin. The package installs, timezone, zsh configuration and
+# commitizen setup that used to live here are now in the devbase Feature:
+# https://github.com/centralnicgroup-opensource/rtldev-middleware-devcontainer-features
+#
+# Add a layer here only for something the Feature cannot express -- as the two
+# below are: a system library the PHP build needs, and an image-level config file.
+
 FROM mcr.microsoft.com/devcontainers/base:2-ubuntu-24.04
 
-ENV DEBIAN_FRONTEND=noninteractive
-# Set a default value for ZSH_CUSTOM if it's not already set
-ENV ZSH_CUSTOM=/home/vscode/.oh-my-zsh/custom
+# No ENV DEBIAN_FRONTEND here on purpose: set at image level it persists into the
+# running container, so an interactive `apt` in a shell session also loses its
+# frontend. The layer below sets it for itself.
 ENV TERM=xterm-256color
-ARG TZ=Europe/Berlin
-ENV TZ=$TZ
 
 ARG CONFIGURATION_DIR_PATH=supporting_files/configuration
-ARG SCRIPTS_DIR_PATH=supporting_files/scripts
 
-# Install non-PHP system packages
+# php8.3-intl only. The devcontainer PHP Feature installs a custom PHP build that
+# does not compile bundled extensions like intl; this system package has the same
+# PHP API version, and configuration/php/intl.ini loads its .so.
+#
+# Everything else that used to be installed here (wget jq git zip unzip curl
+# shellcheck) comes from devbase's commonPackages.
 # hadolint ignore=DL3008
-RUN apt-get update \
-    && apt-get -y upgrade \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && apt-get -y install --no-install-recommends \
-       wget jq git zip unzip curl \
        php8.3-intl \
-       shellcheck \
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Time Zone
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Copy shell scripts and config files
-COPY ${SCRIPTS_DIR_PATH}/ /usr/local/bin/
-COPY ${SCRIPTS_DIR_PATH}/post-create.sh /post-create.sh
+# Applied to the running PHP build's scan directory by
+# supporting_files/scripts/post-create.sh -- that directory does not exist until
+# the PHP Feature has run, which is why these are staged here rather than copied
+# into place.
 COPY ${CONFIGURATION_DIR_PATH}/php/ /opt/php-config/
-
-######################### DEVELOPMENT ENVIRONMENT ADDITIONS ###############################
-# zsh and commitizen (cz) configurations
-ARG USERNAME="vscode"
-ARG USERHOME="/home/${USERNAME}"
-RUN set -eux; \
-    usermod --shell /usr/bin/zsh -aG www-data ${USERNAME}
-
-# copy zsh and commitizen configuration files
-COPY --chown=${USERNAME}:${USERNAME} ${CONFIGURATION_DIR_PATH}/home/ ${USERHOME}/
