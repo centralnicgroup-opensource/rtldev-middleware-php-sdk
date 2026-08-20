@@ -102,11 +102,14 @@ setup_pnpm_global_packages() {
     # Ensure pnpm global-bin-dir matches PNPM_HOME (avoids PATH mismatch)
     pnpm config set global-bin-dir "$PNPM_HOME" 2>/dev/null || true
 
-    # Install global packages with error handling
+    # Install global packages with error handling.
+    # Only what a developer invokes by hand belongs here: `cz` for commits.
+    # semantic-release is NOT in this list on purpose -- releases run in CI from
+    # the devDependency, and semantic-release-cli is a one-shot setup wizard for
+    # a repository that is already configured.
     local packages=(
         "commitizen@latest"
         "cz-conventional-changelog@latest"
-        "semantic-release-cli@latest"
     )
 
     log_detail "Installing packages: ${packages[*]}"
