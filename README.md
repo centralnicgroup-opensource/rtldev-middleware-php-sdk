@@ -56,7 +56,7 @@ $cl->close();
 Two brand differences the snippet is deliberately explicit about:
 
 - **The `$path` argument.** `request(array $cmd = [], string $path = "")` is symmetric across all brands, but only CNR has a meaningful default (`api/call.cgi`). On IBS/Moniker the path _is_ the operation, so omitting it sends the request to the bare host.
-- **Sessions and role logins are CNR-only, by type.** `login()`, `logout()`, `saveSession()`, `getSession()`/`setSession()` and `setRoleCredentials()` exist on the CNR client and **do not exist** on `IBS\Client`/`MONIKER\Client` — calling one is a static-analysis error at the call site, not a runtime surprise. See [Migration Guide → v22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2200).
+- **Sessions and role logins are CNR-only, by type.** `login()`, `logout()`, `saveSession()`/`reuseSession()`, `getSession()`/`setSession()` and `setRoleCredentials()` exist on the CNR client and **do not exist** on `IBS\Client`/`MONIKER\Client` — calling one is a static-analysis error at the call site, not a runtime surprise. See [Migration Guide → v22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2200).
 
 **Type against the interfaces, not the concrete classes.** Depending on `CNIC\ResponseInterface`, `CNIC\ColumnInterface`, `CNIC\RecordInterface` and `CNIC\LoggerInterface` is what keeps future majors from breaking you; code that reaches for `CNIC\CNR\Response` or uses `method_exists()` fallbacks is what does not survive them.
 
@@ -268,11 +268,9 @@ Run `composer demo:datetime` for a runnable tour — it needs no credentials and
 
 ## Dev Container
 
-If you want to contribute, we recommend using Visual Studio Code and to follow the below setup instructions:
+If you want to contribute, we recommend Visual Studio Code with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers): open the repository and choose **Reopen in Container**. Docker and VS Code are the only host prerequisites — PHP 8.3 with Xdebug, Composer, Node, and the whole lint and test toolchain come with the container.
 
-- Add an entry in your hosts file: `127.0.0.1         devsdk.centralnicreseller.net`
-
-PHP SDK Data can be accessed via apache server at this url: `http://devsdk.centralnicreseller.net`
+The shared half of that environment (zsh with the team prompt, commitizen, the `gh` credential helper, persistent shell history, dependency installation and the on-attach toolchain banner) comes from the [devbase Feature](https://github.com/centralnicgroup-opensource/rtldev-middleware-devcontainer-features), so this repository's own `.devcontainer/` only adds what is specific to PHP.
 
 ### Environment variables (`env.sh`)
 
