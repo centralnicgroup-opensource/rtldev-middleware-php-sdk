@@ -375,7 +375,7 @@ final class AbstractClientConfigDriftTest extends TestCase
      * does, because the invariant is correct (a session and a password are
      * alternative credentials and the newer one is authoritative) — what was
      * missing was anyone saying so. Pinned here so the ordering
-     * `CNR\SessionCapable::reuseSession()` depends on stays deliberate.
+     * `CNR\Client::reuseSession()` depends on stays deliberate.
      */
     public function testSettingCredentialsDiscardsAnActiveCnrSession(): void
     {

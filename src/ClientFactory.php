@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace CNIC;
 
-use CNIC\CNR\SessionClient;
+use CNIC\CNR\Client as CNRClient;
 use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\SocketConfig as IBSSocketConfig;
@@ -25,7 +25,7 @@ use CNIC\MONIKER\SocketConfig as MONIKERSocketConfig;
  * `request($cmd, $path)`) and brand-specific alike — is available directly, with
  * no `assert`/`instanceof` narrowing for the normal path:
  *
- * - {@see cnr()} yields a {@see \CNIC\CNR\SessionClient} with CNR session
+ * - {@see cnr()} yields a {@see \CNIC\CNR\Client} with CNR session
  *   handling (`getSession()`/`setSession()`/`login()`/`logout()`/`saveSession()`)
  *   and role credentials (`setRoleCredentials()`, from
  *   {@see \CNIC\RoleCredentialsInterface}).
@@ -60,9 +60,9 @@ class ClientFactory
      * @param CNRSocketConfig|null $socketConfig pre-built CNR connection
      *        configuration to adopt; null builds the brand default
      */
-    public static function cnr(?CNRSocketConfig $socketConfig = null): SessionClient
+    public static function cnr(?CNRSocketConfig $socketConfig = null): CNRClient
     {
-        return new SessionClient($socketConfig);
+        return new CNRClient($socketConfig);
     }
 
     /**

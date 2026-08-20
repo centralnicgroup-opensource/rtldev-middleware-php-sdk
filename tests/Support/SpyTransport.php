@@ -65,9 +65,16 @@ final class SpyTransport implements TransportInterface
 
     /**
      * @param string $raw canned wire response to return (defaults to a CNR success)
+     * @param string|null $error canned transport error; non-null means $raw is
+     *        unusable, which is how a cURL failure (timeout, DNS, refused
+     *        connection) reaches the client. Added in RSRMID-2969 so the
+     *        transport-error branches of the CNR session lifecycle are reachable
+     *        offline instead of only against a live API.
      */
-    public function __construct(private readonly string $raw = self::DEFAULT_RAW)
-    {
+    public function __construct(
+        private readonly string $raw = self::DEFAULT_RAW,
+        private readonly ?string $error = null
+    ) {
     }
 
     /**
@@ -82,7 +89,7 @@ final class SpyTransport implements TransportInterface
         $this->timeout = $timeoutSeconds;
         $this->userAgent = $userAgent;
         $this->options = $options;
-        return [$this->raw, null];
+        return [$this->raw, $this->error];
     }
 
     #[\Override]

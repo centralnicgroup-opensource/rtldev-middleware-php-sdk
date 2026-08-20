@@ -478,7 +478,7 @@ abstract class AbstractClient
      * `setPassword()` clear the session id, because a session and a password are
      * alternative credentials on the wire and the newer one is authoritative. The
      * invariant is deliberate and pinned by a test —
-     * `CNR\SessionCapable::reuseSession()` depends on it, restoring the login first
+     * `CNR\Client::reuseSession()` depends on it, restoring the login first
      * and the session second. Set the session *after* the credentials, never before.
      * @param string $login empty string resets the stored login
      * @param string $password empty string resets the stored password

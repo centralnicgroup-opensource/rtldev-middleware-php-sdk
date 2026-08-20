@@ -31,7 +31,7 @@ Idiomatic code for the **current** major, whatever that is when you read this â€
 use CNIC\ClientFactory;
 
 // --- CNR (CentralNic Reseller, fka RRPproxy) ---
-$cl = ClientFactory::cnr();                // returns a fully-typed CNR\SessionClient
+$cl = ClientFactory::cnr();                // returns a fully-typed CNR\Client
 $cl->useOTESystem()                        // omit for LIVE (the default)
    ->setCredentials($user, $password);     // or ->setRoleCredentials($acct, $role, $pw)
 // CNR has one fixed script path, so request() defaults it â€” pass a command only.

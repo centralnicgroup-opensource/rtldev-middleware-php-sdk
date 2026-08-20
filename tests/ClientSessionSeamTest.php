@@ -70,6 +70,18 @@ final class ClientSessionSeamTest extends TestCase
     ];
 
     /**
+     * The session *lifecycle*, as opposed to the accessors above. Folded onto
+     * CNR\Client from a one-host trait in RSRMID-2969.
+     * @var string[]
+     */
+    private const array CLIENT_SESSION_LIFECYCLE_METHODS = [
+        "login",
+        "logout",
+        "saveSession",
+        "reuseSession",
+    ];
+
+    /**
      * @return array<string, array{0: class-string<AbstractSocketConfig>}>
      */
     public static function sessionlessConfigProvider(): array
@@ -187,7 +199,8 @@ final class ClientSessionSeamTest extends TestCase
     }
 
     /**
-     * CNR keeps the whole capability, in one place.
+     * CNR keeps the whole capability, in one place — and since RSRMID-2969 "one
+     * place" includes the lifecycle, not just the accessors.
      */
     public function testCnrRetainsTheSessionCapability(): void
     {
@@ -196,8 +209,51 @@ final class ClientSessionSeamTest extends TestCase
             $this->assertTrue($config->hasMethod($method), "CNR\\SocketConfig must own {$method}().");
         }
         $client = new ReflectionClass(CNRClient::class);
-        foreach (self::CLIENT_SESSION_METHODS as $method) {
+        foreach ([...self::CLIENT_SESSION_METHODS, ...self::CLIENT_SESSION_LIFECYCLE_METHODS] as $method) {
             $this->assertTrue($client->hasMethod($method), "CNR\\Client must own {$method}().");
+        }
+    }
+
+    /**
+     * The CNR session lifecycle lives on the client itself, and the trait plus
+     * subclass it used to arrive through stay retired (RSRMID-2969).
+     *
+     * Distinct from {@see testEmptySessionClientSubclassesAreGone()} because the
+     * reason differs. IBS/Moniker's subclasses were deleted for advertising a
+     * capability the platform does not have; CNR's was deleted for adding nothing
+     * — a 97-line trait with exactly one host, used by a 21-line subclass that
+     * declared only `use`, behind a factory that never once handed out the
+     * session-less parent. The trait even carried `@psalm-require-extends Client`,
+     * which is a trait conceding it was only ever part of this class.
+     *
+     * Structural because re-extracting is behaviour-preserving on the day it
+     * lands: a trait composed back into CNR\Client, or a subclass reinstated in
+     * front of it, keeps every call site working and every other test green,
+     * while restoring the three-file hop to find `login()`. If a session-less CNR
+     * client ever becomes a real use case, that is a new type with a narrower
+     * contract — not this indirection restored.
+     *
+     * String class names on purpose: referencing retired symbols as `::class`
+     * would make static analysis resolve names that must no longer exist.
+     */
+    public function testTheCnrSessionLifecycleIsNotBehindATraitOrSubclass(): void
+    {
+        $this->assertFalse(
+            class_exists("CNIC\\CNR\\SessionClient"),
+            "CNR\\SessionClient is retired; CF::cnr() hands out CNR\\Client and the lifecycle is on it."
+        );
+        $this->assertFalse(
+            trait_exists("CNIC\\CNR\\SessionCapable"),
+            "the session lifecycle belongs on CNR\\Client, not in a trait with one possible host."
+        );
+
+        $client = new ReflectionClass(CNRClient::class);
+        foreach (self::CLIENT_SESSION_LIFECYCLE_METHODS as $method) {
+            $this->assertSame(
+                CNRClient::class,
+                $client->getMethod($method)->getDeclaringClass()->getName(),
+                "{$method}() must be declared by CNR\\Client itself."
+            );
         }
     }
 

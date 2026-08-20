@@ -13,7 +13,6 @@ use CNIC\AbstractClient;
 use CNIC\AbstractSocketConfig;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CNRClient;
-use CNIC\CNR\SessionClient;
 use CNIC\CNR\SocketConfig as CNRSocketConfig;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\SocketConfig as IBSSocketConfig;
@@ -418,10 +417,13 @@ final class ClientConfigSeamTest extends TestCase
 
     /**
      * Every client whose constructor parameter must be narrowed to its own brand's
-     * config, and the class it must be narrowed to. `SessionClient` is listed
-     * although it declares no constructor: it inherits CNR's, and it is what
-     * `CF::cnr()` actually returns, so a narrowing that stopped covering it would
-     * stop covering the SDK's primary CNR entry point.
+     * config, and the class it must be narrowed to.
+     *
+     * One row per brand since RSRMID-2969. There used to be a second CNR row for
+     * `SessionClient`, which declared no constructor of its own and inherited
+     * CNR's; with the session lifecycle folded onto `CNR\Client` and that subclass
+     * retired, `CNR\Client` *is* what `CF::cnr()` returns, so the extra row would
+     * now assert the same thing twice under a different name.
      *
      * @return array<string, array{0: class-string<AbstractClient>, 1: class-string<AbstractSocketConfig>}>
      */
@@ -429,7 +431,6 @@ final class ClientConfigSeamTest extends TestCase
     {
         return [
             "CNR" => [CNRClient::class, CNRSocketConfig::class],
-            "CNR session" => [SessionClient::class, CNRSocketConfig::class],
             "IBS" => [IBSClient::class, IBSSocketConfig::class],
             "MONIKER" => [MONIKERClient::class, MONIKERSocketConfig::class],
         ];
@@ -528,7 +529,7 @@ final class ClientConfigSeamTest extends TestCase
 
     /**
      * The parameter stays optional, which is what makes the whole change additive:
-     * every `new SessionClient()` / `ClientFactory::cnr()` in the wild takes the
+     * every `new CNR\Client()` / `ClientFactory::cnr()` in the wild takes the
      * null branch and runs the code it always ran. Making it required is the one
      * way this becomes a breaking change, and it would break no test in this repo
      * that a default could not paper over — hence a structural pin.

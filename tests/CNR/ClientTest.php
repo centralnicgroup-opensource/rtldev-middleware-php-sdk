@@ -10,7 +10,6 @@ use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CL;
 use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
-use CNIC\CNR\SessionClient;
 use CNIC\CNR\SocketConfig as SC;
 use CNIC\Exception\PaginationException;
 use CNIC\IDNA\Factory\ConverterFactory;
@@ -19,11 +18,12 @@ use CNIC\RoleCredentialsInterface;
 use CNIC\System;
 use CNICTEST\Support\Cassettes;
 use CNICTEST\Support\CassetteTransport;
+use CNICTEST\Support\SpyTransport;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase
 {
-    public static SessionClient $cl;
+    public static CL $cl;
     /**
      * @var CassetteTransport record/replay transport driving the request() path
      */
@@ -131,7 +131,7 @@ final class ClientTest extends TestCase
         // AUTH (EPP transfer authorization code) must be masked in the secured
         // POST body used for debug logging, not only PASSWORD (RSRMID-2897).
         // Credential-free by construction, not by whatever ran before.
-        $enc = (new SessionClient())->getPOSTData([
+        $enc = (new CL())->getPOSTData([
             "COMMAND" => "TransferDomain",
             "DOMAIN" => "example.com",
             "AUTH" => "sup3r-s3cr3t-auth"
@@ -151,7 +151,7 @@ final class ClientTest extends TestCase
 
     public function testGetPostDataObj(): void
     {
-        $enc = (new SessionClient())->getPOSTData([
+        $enc = (new CL())->getPOSTData([
             "COMMAND" => "ModifyDomain",
             "AUTH" => "gwrgwqg%&\\44t3*"
         ]);
@@ -163,7 +163,7 @@ final class ClientTest extends TestCase
 
     public function testGetPostDataNull(): void
     {
-        $enc = (new SessionClient())->getPOSTData([
+        $enc = (new CL())->getPOSTData([
             "COMMAND" => "ModifyDomain",
             "AUTH" => null
         ]);
@@ -174,7 +174,7 @@ final class ClientTest extends TestCase
     {
         // A fresh client has no session. On the shared client that held only while
         // no earlier test had left one behind.
-        $this->assertNull((new SessionClient())->getSession());
+        $this->assertNull((new CL())->getSession());
     }
 
     public function testGetSessionIdSet(): void
@@ -182,7 +182,7 @@ final class ClientTest extends TestCase
         $sess = "testsession12345";
         // Own client, so the trailing setSession() reset this test used to need is
         // gone with it.
-        $this->assertEquals($sess, (new SessionClient())->setSession($sess)->getSession());
+        $this->assertEquals($sess, (new CL())->setSession($sess)->getSession());
     }
 
     public function testGetUrl(): void
@@ -200,7 +200,7 @@ final class ClientTest extends TestCase
      */
     public function testRequestResolvesConnectionUrl(): void
     {
-        $cl = new SessionClient();
+        $cl = new CL();
         $tape = Cassettes::attach($cl, self::$cassetteDir);
         $tape->useCassette("resolve-connection-url");
         $cl->setCredentials(self::$user, self::$pw)->useOTESystem();
@@ -219,7 +219,7 @@ final class ClientTest extends TestCase
     public function testGetSystem(): void
     {
         // LIVE is the default; isOTE() must agree with getSystem()
-        $cl = new SessionClient();
+        $cl = new CL();
         $this->assertSame(System::LIVE, $cl->getSystem());
         $this->assertFalse($cl->isOTE());
 
@@ -266,7 +266,7 @@ final class ClientTest extends TestCase
     {
         // use a dedicated client so credential/context state does not leak
         // into the shared static client used by the other tests
-        $cl = new SessionClient();
+        $cl = new CL();
         $tape = Cassettes::attach($cl, self::$cassetteDir);
         $tape->useCassette("set-context");
         $context = ["traceId" => "abc123", "attempt" => 1];
@@ -284,7 +284,7 @@ final class ClientTest extends TestCase
     {
         // Own client, so there is no URL to put back afterwards — the shared client
         // is what made that restore necessary, not setURL() itself.
-        $cl = new SessionClient();
+        $cl = new CL();
         $oldurl = $cl->getURL();
         $hostname = parse_url($oldurl, PHP_URL_HOST);
         if (is_string($hostname) && $hostname !== "") {
@@ -314,7 +314,7 @@ final class ClientTest extends TestCase
         // Own client rather than a pre-built config: the fan-out through
         // setRoleCredentials() is what this test is about, so it has to run through
         // the client's own setters.
-        $cl = new SessionClient();
+        $cl = new CL();
         $cl->setRoleCredentials("myaccountid", "myrole", "mypassword")
             ->setSession("12345678");
         $this->assertEquals(
@@ -359,7 +359,7 @@ final class ClientTest extends TestCase
         $session = [];
         $source->saveSession($session);
 
-        $cl2 = new SessionClient();
+        $cl2 = new CL();
         $cl2->reuseSession($session);
         $this->assertEquals(
             "s_login=myaccountid%3Amyrole&s_sessionid=12345678&s_command=COMMAND%3DStatusAccount",
@@ -369,7 +369,7 @@ final class ClientTest extends TestCase
 
     public function testSetCredentialsSet(): void
     {
-        $cl = new SessionClient();
+        $cl = new CL();
         $cl->setCredentials("myaccountid", "mypassword");
         $this->assertEquals(
             "s_login=myaccountid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount",
@@ -399,7 +399,7 @@ final class ClientTest extends TestCase
 
     public function testSetRoleCredentialsSet(): void
     {
-        $cl = new SessionClient();
+        $cl = new CL();
         $cl->setRoleCredentials("myaccountid", "myroleid", "mypassword");
         $this->assertEquals(
             "s_login=myaccountid%3Amyroleid&s_pw=mypassword&s_command=COMMAND%3DStatusAccount",
@@ -455,8 +455,69 @@ final class ClientTest extends TestCase
         //$this->assertEquals($r->isError(), true, $r->getPlain());
     }
 
-    //TODO -> not covered: login failed; http timeout
-    //TODO -> not covered: login succeeded; no session returned
+    /**
+     * login() with the API reachable but returning no SESSIONID.
+     *
+     * The success branch runs, so setSession() is called — with the empty string
+     * the null-coalesce supplies. getSession() then answers null rather than "",
+     * which is the distinction that matters to a caller deciding whether it holds
+     * a usable session.
+     *
+     * Driven through the transport seam rather than a cassette (RSRMID-2969):
+     * these two branches were marked "not covered" for as long as the lifecycle
+     * sat in a trait only reachable through SessionClient, and they were always
+     * reachable offline — nobody had written them.
+     */
+    public function testLoginSucceedsWithNoSessionIdReturned(): void
+    {
+        $cl = (new CL())->setTransport(new SpyTransport());
+        $cl->setCredentials("myaccountid", "mypassword");
+
+        $r = $cl->login();
+
+        $this->assertTrue($r->isSuccess(), $r->getPlain());
+        $this->assertNull($cl->getSession(), "no SESSIONID on the wire must leave no session, not an empty one");
+        $this->assertFalse(
+            $cl->getSocketConfig()->getPersistent(),
+            "login() makes the connection persistent for its own request only and must put it back"
+        );
+    }
+
+    /**
+     * login() when the transport fails outright — a cURL timeout, where $raw is
+     * unusable and the error arrives as the declared parameter (RSRMID-2937).
+     *
+     * Note which predicate this lands on. CNR is three-state (2xx/4xx/5xx) and a
+     * transport failure is code 421, so it is a **temporary** error:
+     * `isTmpError()` is true while `isError()` is false. That is precisely why
+     * {@see \CNIC\CNR\Client::login()} guards its session write on
+     * `isSuccess()` and not on `!isError()` — the latter would treat a timeout as
+     * good enough and overwrite a live session with the empty string the
+     * null-coalesce supplies. Asserted here so the guard cannot be "simplified"
+     * into the negation without a red test.
+     *
+     * So the failure branch leaves the session alone: a timed-out login has not
+     * established anything. persistent is still put back, because that happens
+     * after the branch rather than inside it.
+     */
+    public function testLoginFailsOnATransportError(): void
+    {
+        $cl = (new CL())->setTransport(new SpyTransport("", "Connection timed out"));
+        $cl->setCredentials("myaccountid", "mypassword")->setSession("PRE-EXISTING");
+
+        $r = $cl->login();
+
+        $this->assertFalse($r->isSuccess(), $r->getPlain());
+        $this->assertTrue($r->isTmpError(), "a transport failure is CNR code 421 — temporary, not a 5xx");
+        $this->assertFalse($r->isError(), "421 is not a hard error; login() must not rely on isError() here");
+        $this->assertStringContainsString("Connection timed out", $r->getDescription());
+        $this->assertSame(
+            "PRE-EXISTING",
+            $cl->getSession(),
+            "a failed login must not touch the session it did not replace"
+        );
+        $this->assertFalse($cl->getSocketConfig()->getPersistent());
+    }
 
     public function testLogoutOk(): void
     {
@@ -488,7 +549,7 @@ final class ClientTest extends TestCase
      */
     public function testRequestCurlExecFail2(): void
     {
-        $cl = new SessionClient();
+        $cl = new CL();
         $tape = new CassetteTransport(null, self::$cassetteDir, false);
         $cl->setTransport($tape);
         $tape->useCassette("conn-error");

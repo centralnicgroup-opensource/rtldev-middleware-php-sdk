@@ -43,7 +43,7 @@ Three directives have no guard test and therefore live here:
 
 ### Naming
 
-- Classes: PascalCase (e.g., `ResponseParser`, `SessionClient`)
+- Classes: PascalCase (e.g., `ResponseParser`, `ResponseTemplateManager`)
 - Methods: camelCase (e.g., `getColumnIndex`, `hasNextPage`)
 - Properties: camelCase with visibility (`protected array $context = []`)
 - Constants: UPPER_SNAKE_CASE

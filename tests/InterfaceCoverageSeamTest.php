@@ -87,7 +87,7 @@ use SplFileInfo;
  * role — they are additive capability interfaces (CLAUDE.md, "Core vs.
  * extended Response contract"), not meant to describe everything their
  * implementor exposes. Treating either as total would flood this test with
- * false positives: `CNR\Client`/`CNR\SessionClient` implement
+ * false positives: `CNR\Client` implements
  * `RoleCredentialsInterface` and legitimately expose ~20 further public
  * methods that interface was never meant to cover. Both still count on the
  * right-hand side, as *declaring* interfaces contributing method signatures
@@ -372,7 +372,7 @@ final class InterfaceCoverageSeamTest extends TestCase
             if (!class_exists($fqcn)) {
                 if (interface_exists($fqcn) || trait_exists($fqcn) || enum_exists($fqcn)) {
                     // Legitimately not a class — e.g. ResponseInterface,
-                    // CNR\SessionCapable (a trait), System (an enum).
+                    // System (an enum).
                     continue;
                 }
                 // A PSR-4 path under src/ that resolves to none of
