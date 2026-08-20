@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CNICTEST;
 
 use CNIC\ClientFactory as CF;
-use CNIC\CNR\SessionClient;
+use CNIC\CNR\Client;
 use CNIC\HttpTransport;
 use CNIC\TransportInterface;
 use CNICTEST\Support\SpyTransport;
@@ -24,7 +24,7 @@ final class TransportSeamTest extends TestCase
     {
         // The default newTransport() hook must yield a real HttpTransport so
         // production behaviour is unchanged when nothing is injected.
-        $this->assertInstanceOf(HttpTransport::class, (new SessionClient())->getTransport());
+        $this->assertInstanceOf(HttpTransport::class, (new Client())->getTransport());
     }
 
     public function testSetTransportIsReadableBack(): void

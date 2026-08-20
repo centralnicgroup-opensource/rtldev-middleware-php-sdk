@@ -22,12 +22,21 @@ use CNIC\RoleCredentialsInterface;
  * CNR API Client
  *
  * Home of the two capabilities the CNR platform has and the flat IBS/Moniker
- * platform does not: **API sessions** (`getSession()`/`setSession()`, plus
- * `login()`/`logout()` via the {@see SessionCapable} trait on
- * {@see SessionClient}) and **role credentials**
- * ({@see \CNIC\RoleCredentialsInterface}). Both read state that only
- * {@see SocketConfig} carries, which is why they live here rather than on
- * {@see AbstractClient} — see the note there.
+ * platform does not: **API sessions** — the accessors
+ * {@see getSession()}/{@see setSession()} plus the lifecycle
+ * {@see login()}/{@see logout()}/{@see saveSession()}/{@see reuseSession()} —
+ * and **role credentials** ({@see \CNIC\RoleCredentialsInterface}). Both read
+ * state that only {@see SocketConfig} carries, which is why they live here
+ * rather than on {@see AbstractClient} — see the note there.
+ *
+ * The lifecycle methods were a `SessionCapable` trait used by a `SessionClient`
+ * subclass until RSRMID-2969. The trait had one host, the subclass added nothing
+ * else, and nothing in the SDK ever produced a session-less CNR client — so the
+ * split bought a distinction no code made, at the price of three file opens to
+ * find `login()`. It also carried a `@psalm-require-extends Client`, which is
+ * the trait admitting it was only ever a part of this class. Do not reintroduce
+ * either: if a genuinely session-less CNR client ever becomes a real use case,
+ * that is a new type with a narrower contract, not a trait extracted back out.
  *
  * @psalm-api
  * @package CNIC\CNR
@@ -123,6 +132,80 @@ class Client extends AbstractClient implements RoleCredentialsInterface
     public function setSession(string $session = ""): static
     {
         $this->getSocketConfig()->setSession($session);
+        return $this;
+    }
+
+    /**
+     * Perform API login to start session-based communication.
+     *
+     * The connection is made persistent for the duration of the login request
+     * only, then put back: the session id, not the socket, is what the following
+     * requests reuse.
+     */
+    public function login(): Response
+    {
+        $this->getSocketConfig()->setPersistent(true);
+        $rr = $this->request();
+        if ($rr->isSuccess()) {
+            $this->setSession($rr->getColumn("SESSIONID")?->getStringByIndex(0) ?? "");
+        }
+        $this->getSocketConfig()->setPersistent(false);
+        return $rr;
+    }
+
+    /**
+     * Perform API logout to close the API session in use.
+     *
+     * The transport is closed whether or not the command succeeded — a failed
+     * StopSession still leaves a connection this client will not reuse.
+     */
+    public function logout(): Response
+    {
+        $rr = $this->request(["COMMAND" => "StopSession"]);
+        if ($rr->isSuccess()) {
+            $this->setSession();
+        }
+        $this->close();
+        return $rr;
+    }
+
+    /**
+     * Apply session data to a PHP session object
+     *
+     * @param array<string,mixed> $session php session instance ($_SESSION)
+     */
+    public function saveSession(array &$session): static
+    {
+        $session["socketcfg"] = [
+            "login"   => $this->getSocketConfig()->getLogin(),
+            "session" => $this->getSocketConfig()->getSession()
+        ];
+        return $this;
+    }
+
+    /**
+     * Rebuild connection settings from a PHP session object.
+     *
+     * The two calls are ordered, not interchangeable: `setCredentials()` clears
+     * the session id (a session and a password are alternative credentials, and
+     * CNR's SocketConfig treats the newer one as authoritative), so restoring the
+     * session second is what makes this work.
+     *
+     * @param array<string,mixed> $session php session object ($_SESSION)
+     */
+    public function reuseSession(array $session): static
+    {
+        if (
+            isset($session["socketcfg"]) &&
+            is_array($session["socketcfg"]) &&
+            isset($session["socketcfg"]["login"]) &&
+            is_string($session["socketcfg"]["login"]) &&
+            isset($session["socketcfg"]["session"]) &&
+            is_string($session["socketcfg"]["session"])
+        ) {
+            $this->setCredentials($session["socketcfg"]["login"]);
+            $this->setSession($session["socketcfg"]["session"]);
+        }
         return $this;
     }
 
