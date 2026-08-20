@@ -1,3 +1,66 @@
+# [33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v32.0.0...v33.0.0) (2026-08-20)
+
+
+* feat(client)!: fold the CNR session lifecycle onto CNR\Client ([ec3e48d](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/ec3e48ddc991ef92029008c30923e2ef7d95ebbc))
+* feat(column)!: replace Column::$length with an interface-reachable getLength() ([91e63ef](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/91e63ef2c1982243abaa602a7f81f3d927fb000f))
+* feat(response)!: extract Paginator ([b84b7fb](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b84b7fbe965dab4468e4e6aa3fae49c091922b92))
+* feat(templates)!: split the Response factory off the template registry ([22d65fb](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/22d65fbdb6fdf1504e5faa37990c0f31af32b92c))
+* fix(client)!: continue CNR pagination with the command that was sent ([b50cd88](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/b50cd888dbe61fac9e720cff1394052f945f1348))
+* fix(response)!: stop treating pagination meta as column data ([f86539c](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/f86539cfe1b6558d9d28b529d8b45c6c28909077))
+
+
+### Bug Fixes
+
+* **translator:** stop treating a literal "0" body as an empty response ([af20745](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/af207450b621ec7df2fb6f8f333f6965f5410e3c))
+
+
+### Features
+
+* **client:** accept a pre-built SocketConfig at construction ([31cc6f6](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/31cc6f690bc51e467ca3913a91c545e38fb26ed0))
+* **exception:** give UnsupportedFeatureException structured context ([53133d4](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/53133d47738a11e99eee1d3e9647e5bd5bfc357e))
+
+
+### BREAKING CHANGES
+
+* CNR\Client::requestNextResponsePage() throws PaginationException when handed a Response it did not produce whose command carries a masked AUTH/PASSWORD, rather than putting the mask on the wire. A foreign Response with no sensitive command keys still continues as before.
+
+See [MIGRATION.md → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3300)
+* CNIC\CNR\SessionClient and CNIC\CNR\SessionCapable are
+removed, with no alias; ClientFactory::cnr() declares CNIC\CNR\Client as its
+return type. Rename the type — the four session methods are unchanged in
+signature and behaviour.
+
+See [MIGRATION.md → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3300)
+* ResponseTemplateManagerInterface no longer declares
+getTemplate(), getTemplates(), isTemplateMatchHash() or
+isTemplateMatchPlain() — they moved to CNIC\ResponseTemplateFactoryInterface.
+The concrete brand managers still answer all eight calls, so only
+interface-typed handles are affected. The protected hook
+AbstractResponseTemplateManager::createResponse() is renamed
+createResponseFromTemplateId(), and getTemplates() resolves each entry by
+id rather than by wire text.
+
+See [MIGRATION.md → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3300)
+* Column::$length is removed; read the count through
+ColumnInterface::getLength(). Anyone implementing ColumnInterface directly must
+add the method.
+
+See [MIGRATION.md → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3300)
+* getPagination() returns CNIC\Paginator, not
+array<string,int|null> — call ->toArray() for the array. getCurrentPageNumber(),
+getNextPageNumber(), getPreviousPageNumber(), getNumberOfPages(),
+hasNextPage() and hasPreviousPage() are no longer on ResponseInterface or
+AbstractResponse; reach them through getPagination().
+
+See [MIGRATION.md → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3300)
+* getColumnKeys() no longer takes a bool; pagination and
+status metadata is unreachable through getColumn()/getColumnIndex()/records;
+the four pagination primitives answer null instead of standing in; an empty
+list reports 0 records instead of 1, and IBS list rows no longer carry the
+response status on row 0.
+
+See [MIGRATION.md → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3300)
+
 # [32.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v31.1.0...v32.0.0) (2026-08-10)
 
 
