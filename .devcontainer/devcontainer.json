@@ -102,8 +102,18 @@
     "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind,consistency=cached"
   ],
 
+  // onCreateCommand, NOT postCreateCommand -- this is load-bearing.
+  //
+  // centralnic-reseller/idn-converter requires ext-intl, which this repository
+  // only has once the script has copied intl.ini into PHP's scan directory.
+  // devbase installs project dependencies from its own postCreateCommand, and a
+  // Feature's hooks run before the consuming devcontainer.json's hooks of the
+  // same phase -- so running this at postCreateCommand puts it after composer,
+  // which then fails with "your lock file does not contain a compatible set of
+  // packages". onCreateCommand is the first create-phase command, so it lands
+  // ahead of every postCreateCommand. It also gets xdebug.mode=coverage in place
+  // before composer runs, instead of composer stalling on step-debug connects.
+  //
   // No postAttachCommand: devbase supplies the banner and the env.sh autoload.
-  // This runs *after* devbase's own post-create, so composer/pnpm dependencies
-  // are already installed by the time it applies the PHP ini files.
-  "postCreateCommand": "zsh .devcontainer/supporting_files/scripts/post-create.sh"
+  "onCreateCommand": "zsh .devcontainer/supporting_files/scripts/apply-php-config.sh"
 }

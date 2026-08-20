@@ -1,31 +1,41 @@
 #!/usr/bin/env zsh
 # shellcheck shell=bash
 #
-# Repository-specific postCreateCommand: PHP ini provisioning.
+# Repository-specific PHP ini provisioning. Wired to onCreateCommand -- read the
+# ordering note below before moving it.
 #
 # Everything that used to be in this file -- pnpm, the global packages,
 # zsh-autosuggestions, the gh credential helper, composer/pnpm dependency
-# installation and the .zsh_history symlink -- is the devbase Feature's job now
-# and has already run by the time this script starts. Do not re-add any of it
-# here; if something shared is missing, raise it against the Feature so every
-# consuming repository gets the fix:
+# installation and the .zsh_history symlink -- is the devbase Feature's job now.
+# Do not re-add any of it here; if something shared is missing, raise it against
+# the Feature so every consuming repository gets the fix:
 # https://github.com/centralnicgroup-opensource/rtldev-middleware-devcontainer-features
 #
 # What is left is the one step no Feature can own, because it is specific to how
 # this repository runs PHP:
 #
-#   * zz-custom.ini pins xdebug.mode=coverage, without which `composer test`
-#     produces no coverage at all.
 #   * intl.ini loads the system php8.3-intl .so, because the devcontainer PHP
 #     Feature builds PHP without bundled intl.
+#   * zz-custom.ini pins xdebug.mode=coverage, without which `composer test`
+#     produces no coverage at all.
 #
 # Both files are baked into the image at /opt/php-config (see Dockerfile) and
 # copied into the running PHP build's scan directory here, because that
-# directory only exists once the PHP Feature has installed PHP.
+# directory belongs to the PHP the Feature installed.
+#
+# ORDERING -- this must run at onCreateCommand, not postCreateCommand.
+# centralnic-reseller/idn-converter requires ext-intl, which only exists once
+# intl.ini above is in place. devbase installs project dependencies from its own
+# postCreateCommand, and a Feature's lifecycle hooks run before the consuming
+# devcontainer.json's hooks of the same phase -- so as a postCreateCommand this
+# lands *after* composer has already run and failed with "your lock file does not
+# contain a compatible set of packages". onCreateCommand is the first of the
+# three create-phase commands, which puts it ahead of every postCreateCommand.
+# The same ordering keeps xdebug out of step-debug mode while composer runs.
 
 set -euo pipefail
 
-readonly SCRIPT_NAME="post-create.sh"
+readonly SCRIPT_NAME="apply-php-config"
 readonly PHP_CONFIG_SRC="/opt/php-config"
 
 log() { echo "=> [${SCRIPT_NAME}] $*"; }
