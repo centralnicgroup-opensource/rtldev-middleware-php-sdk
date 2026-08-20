@@ -20,22 +20,12 @@ use CNIC\ResponseTemplateManagerInterface;
  */
 final class ResponseTranslator extends AbstractResponseTranslator
 {
-    // NOTE: IBS has no brand-specific message rewrites yet, so both maps below are
-    // intentionally empty. While they stay empty the two rewrite loops in the shared
-    // translate() pipeline iterate over nothing and findMatch() is never reached — the
-    // maps become live as soon as an entry is added here.
-
-    /**
-     * plain-string description keys for translation; keys are preg_quote'd before matching
-     * @var array<string, string>
-     */
-    private const array DESCRIPTION_REGEX_MAP = [];
-
-    /**
-     * raw regex pattern keys for translation; keys are used as-is (not preg_quote'd)
-     * @var array<string, string>
-     */
-    private const array DESCRIPTION_RAW_PATTERN_MAP = [];
+    // NOTE: IBS has no brand-specific message rewrites, so it declares neither
+    // description map and inherits the empty defaults from
+    // AbstractResponseTranslator (RSRMID-2970). The two rewrite loops in the shared
+    // translate() pipeline therefore iterate over nothing and findMatch() is never
+    // reached. To add the first IBS rewrite, override the relevant hook here — see
+    // CNR\ResponseTranslator for the shape.
 
     /**
      * A fresh IBS template registry holding the brand's built-ins.
@@ -44,24 +34,6 @@ final class ResponseTranslator extends AbstractResponseTranslator
     protected static function newTemplateManager(): ResponseTemplateManagerInterface
     {
         return new RTM();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    #[\Override]
-    protected static function descriptionRegexMap(): array
-    {
-        return self::DESCRIPTION_REGEX_MAP;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    #[\Override]
-    protected static function descriptionRawPatternMap(): array
-    {
-        return self::DESCRIPTION_RAW_PATTERN_MAP;
     }
 
     /**
