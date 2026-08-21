@@ -173,16 +173,32 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      * The connection is made persistent for the duration of the login request
      * only, then put back: the session id, not the socket, is what the following
      * requests reuse.
+     *
+     * "For the duration" includes a duration that ends in a throw, which is why
+     * the reset sits in a `finally` rather than on the line after the call
+     * (RSRMID-2980). `request()` is not throw-free — a transport-owned cURL
+     * option or a restated transport-owned header raises
+     * {@see UnsupportedFeatureException} out of {@see \CNIC\HttpTransport::post()},
+     * and `setExtraCurlOptions()` deliberately does not pre-empt that check. An
+     * unconditional reset on the following line was therefore skippable, and a
+     * skipped reset leaves `persistent` stuck true, so every later request on
+     * this client silently asks the API for a session.
+     *
+     * Only the reset is unconditional. The session write stays inside the
+     * success branch: a login that threw established nothing.
      */
     public function login(): Response
     {
         $this->getSocketConfig()->setPersistent(true);
-        $rr = $this->request();
-        if ($rr->isSuccess()) {
-            $this->setSession($rr->getColumn("SESSIONID")?->getStringByIndex(0) ?? "");
+        try {
+            $rr = $this->request();
+            if ($rr->isSuccess()) {
+                $this->setSession($rr->getColumn("SESSIONID")?->getStringByIndex(0) ?? "");
+            }
+            return $rr;
+        } finally {
+            $this->getSocketConfig()->setPersistent(false);
         }
-        $this->getSocketConfig()->setPersistent(false);
-        return $rr;
     }
 
     /**
@@ -190,15 +206,26 @@ class Client extends AbstractClient implements RoleCredentialsInterface
      *
      * The transport is closed whether or not the command succeeded — a failed
      * StopSession still leaves a connection this client will not reuse.
+     *
+     * "Whether or not it succeeded" includes "whether or not it returned at
+     * all", which is why the close sits in a `finally` (RSRMID-2980). A throw
+     * out of `request()` — see {@see login()} for the reachable path — used to
+     * skip the close on the following line and leak the transport's connection
+     * handle for the rest of this client's lifetime. Clearing the session stays
+     * on the success branch: an unconfirmed StopSession is no reason to forget a
+     * session id that may still be live server-side.
      */
     public function logout(): Response
     {
-        $rr = $this->request(["COMMAND" => "StopSession"]);
-        if ($rr->isSuccess()) {
-            $this->setSession();
+        try {
+            $rr = $this->request(["COMMAND" => "StopSession"]);
+            if ($rr->isSuccess()) {
+                $this->setSession();
+            }
+            return $rr;
+        } finally {
+            $this->close();
         }
-        $this->close();
-        return $rr;
     }
 
     /**

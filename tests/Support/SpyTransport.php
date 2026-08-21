@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace CNICTEST\Support;
 
+use CNIC\Exception\CnicException;
 use CNIC\TransportInterface;
 
 /**
@@ -70,16 +71,35 @@ final class SpyTransport implements TransportInterface
      *        connection) reaches the client. Added in RSRMID-2969 so the
      *        transport-error branches of the CNR session lifecycle are reachable
      *        offline instead of only against a live API.
+     * @param CnicException|null $throw canned throw from {@see post()}, raised
+     *        instead of returning. A transport error and a transport *throw* are
+     *        different events that reach the client differently: the former
+     *        arrives as element [1] and becomes a 421 response, the latter
+     *        propagates out of `request()` and past every line after it. Added in
+     *        RSRMID-2980 to observe what a client does with the state and the
+     *        resources it owns when the call it wraps does not return — see
+     *        {@see \CNIC\CNR\Client::login()} for the production path that throws.
+     *
+     *        Typed to `CnicException`, not `\Throwable`: {@see \CNIC\TransportInterface::post()}
+     *        declares only {@see \CNIC\Exception\UnsupportedFeatureException}, and
+     *        this project throws nothing outside the `CNIC\Exception` hierarchy.
+     *        A double that can raise a `\TypeError` would widen the seam's
+     *        contract rather than reproduce it.
      */
     public function __construct(
         private readonly string $raw = self::DEFAULT_RAW,
-        private readonly ?string $error = null
+        private readonly ?string $error = null,
+        private readonly ?CnicException $throw = null
     ) {
     }
 
     /**
+     * The arguments are recorded before a canned throw is raised, so a test can
+     * still assert on what reached the transport of a call that failed.
+     *
      * @param array<int, mixed> $options
      * @return array{0: string, 1: string|null}
+     * @throws CnicException the canned $throw, when one was supplied
      */
     #[\Override]
     public function post(string $url, string $data, int $timeoutSeconds, string $userAgent, array $options = []): array
@@ -89,6 +109,9 @@ final class SpyTransport implements TransportInterface
         $this->timeout = $timeoutSeconds;
         $this->userAgent = $userAgent;
         $this->options = $options;
+        if ($this->throw instanceof CnicException) {
+            throw $this->throw;
+        }
         return [$this->raw, $this->error];
     }
 

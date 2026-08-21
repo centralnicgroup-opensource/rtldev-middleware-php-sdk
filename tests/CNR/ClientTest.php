@@ -12,6 +12,8 @@ use CNIC\CNR\Response as R;
 use CNIC\CNR\ResponseTemplateManager as RTM;
 use CNIC\CNR\SocketConfig as SC;
 use CNIC\Exception\PaginationException;
+use CNIC\Exception\UnsupportedFeatureException;
+use CNIC\HttpTransport;
 use CNIC\IDNA\Factory\ConverterFactory;
 use CNIC\Paginator;
 use CNIC\RoleCredentialsInterface;
@@ -470,13 +472,21 @@ final class ClientTest extends TestCase
      */
     public function testLoginSucceedsWithNoSessionIdReturned(): void
     {
-        $cl = (new CL())->setTransport(new SpyTransport());
+        $spy = new SpyTransport();
+        $cl = (new CL())->setTransport($spy);
         $cl->setCredentials("myaccountid", "mypassword");
 
         $r = $cl->login();
 
         $this->assertTrue($r->isSuccess(), $r->getPlain());
         $this->assertNull($cl->getSession(), "no SESSIONID on the wire must leave no session, not an empty one");
+        // Both halves of "persistent for its own request only", or the pair of
+        // assertions cannot tell the reset apart from never setting it at all.
+        $this->assertStringContainsString(
+            "persistent=1",
+            $spy->data,
+            "login()'s own request is the one that must carry persistent=1"
+        );
         $this->assertFalse(
             $cl->getSocketConfig()->getPersistent(),
             "login() makes the connection persistent for its own request only and must put it back"
@@ -519,6 +529,50 @@ final class ClientTest extends TestCase
         $this->assertFalse($cl->getSocketConfig()->getPersistent());
     }
 
+    /**
+     * login() when request() throws rather than returning (RSRMID-2980).
+     *
+     * Driven through the **real** HttpTransport rather than a double, so the
+     * throw being reachable is a fact about production code: `post()` rejects a
+     * transport-owned cURL option before it touches the handle, and
+     * `setExtraCurlOptions()` deliberately does not pre-empt that check (which
+     * options a transport owns is its own business, and the transport is
+     * injectable). That is the "reachable, not hypothetical" path the ticket
+     * named.
+     *
+     * The URL is pointed at a closed local port even so. Nothing is sent today —
+     * the rejection happens first — but that guarantee is borrowed from
+     * `HttpTransport::PROTECTED_OPTIONS`, and a client built by `new CL()`
+     * defaults to the **LIVE** endpoint. Narrowing that constant would turn this
+     * test into a production request on its way to `fail()`, so the offline
+     * guarantee is made local instead of borrowed.
+     *
+     * Before the fix, `setPersistent(false)` sat on the line after the call and
+     * was skipped by the throw, leaving `persistent` stuck true — every later
+     * request on this client would then silently ask the API for a session. The
+     * assertion is on the state *after* the exception, so moving the reset back
+     * out of the `finally` fails here.
+     */
+    public function testLoginPutsPersistentBackWhenTheRequestThrows(): void
+    {
+        $cl = (new CL())->setTransport(new HttpTransport());
+        $cl->setCredentials("myaccountid", "mypassword");
+        $cl->getSocketConfig()->setURL("http://127.0.0.1:1/");
+        $cl->getSocketConfig()->setExtraCurlOptions([CURLOPT_POSTFIELDS => "hijacked"]);
+
+        try {
+            $cl->login();
+            $this->fail("a transport-owned cURL option must make login() throw");
+        } catch (UnsupportedFeatureException) {
+            // expected — the assertion below is the actual subject
+        }
+
+        $this->assertFalse(
+            $cl->getSocketConfig()->getPersistent(),
+            "a login that threw must still put persistent back, or every later request asks for a session"
+        );
+    }
+
     public function testLogoutOk(): void
     {
         self::$tape->useCassette("logout-ok");
@@ -537,6 +591,50 @@ final class ClientTest extends TestCase
         $r = self::$cl->logout();
         $this->assertInstanceOf(R::class, $r);
         $this->assertEquals($r->isError(), true);
+    }
+
+    /**
+     * logout() when request() throws rather than returning (RSRMID-2980).
+     *
+     * The counterpart to {@see testLoginPutsPersistentBackWhenTheRequestThrows},
+     * which carries the argument for why the throw is reachable. This one needs
+     * a spy rather than the real transport: what is under test is that `close()`
+     * reached the transport, and HttpTransport offers nothing to assert that on.
+     * The spy raises the same exception the real one would.
+     *
+     * Before the fix, `close()` sat on the line after the call and was skipped
+     * by the throw, leaking the connection handle for the client's remaining
+     * lifetime. The session is asserted untouched as well: clearing it belongs
+     * to the success branch, so a StopSession that never completed must not make
+     * this client forget an id that may still be live server-side.
+     */
+    public function testLogoutClosesTheTransportWhenTheRequestThrows(): void
+    {
+        $spy = new SpyTransport(
+            throw: UnsupportedFeatureException::transportOwnedCurlOptions(
+                [CURLOPT_POSTFIELDS => "CURLOPT_POSTFIELDS"],
+                HttpTransport::class
+            )
+        );
+        $cl = (new CL())->setTransport($spy);
+        $cl->setCredentials("myaccountid")->setSession("STILL-LIVE");
+
+        try {
+            $cl->logout();
+            $this->fail("a throwing transport must make logout() throw");
+        } catch (UnsupportedFeatureException) {
+            // expected — the assertions below are the actual subject
+        }
+
+        $this->assertTrue(
+            $spy->closed,
+            "a logout that threw must still close the transport, or the connection handle leaks"
+        );
+        $this->assertSame(
+            "STILL-LIVE",
+            $cl->getSession(),
+            "an unconfirmed StopSession must not clear a session id that may still be live server-side"
+        );
     }
 
     /**
