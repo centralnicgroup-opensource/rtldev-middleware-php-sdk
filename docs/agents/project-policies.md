@@ -19,6 +19,16 @@ There are **two independent axes** here — the runtime versions the SDK is allo
 - **The ceiling is set by the most restrictive consumer, which is WHMCS.** The SDK is _also_ used in our **Blesta Domain Registrar Integration**, which is **not** PHP-version-restricted (no ionCube-encoding constraint). Blesta would happily accept newer syntax — but because the same SDK sources ship into WHMCS too, the WHMCS/ionCube limit is the binding one and the 8.3 ceiling holds for all consumers.
 - **Practical rule:** you may run and test on newer PHP, but do **not** hand-write or `rector:fix` your way into 8.4+ syntax. Do not bump `rector.php` beyond 8.3.
 
+## Platform Requirements (`ext-*`)
+
+`composer.json` declares only the extensions that **can actually be absent** on a supported PHP: `ext-curl` (every request goes through `CNIC\HttpTransport`) and `ext-intl` (the IDN converter needs `idn_to_ascii()` — see [RSRMID-2977](https://centralnic.atlassian.net/browse/RSRMID-2977)). Both are optional builds, so declaring them turns a runtime fatal on a stripped-down host into an install-time refusal Composer can explain.
+
+Do **not** add a requirement for an extension that is non-disableable core on PHP 8.3+. `ext-json` is the recurring candidate — `src/IBS/ResponseParser.php` does call `json_decode()`, but PHP 8.0 removed the `--disable-json` build option, so Composer's platform repository always provides `ext-json` and the constraint could never fail. The same applies to `ext-hash` and PCRE. A constraint that cannot fail is not documentation, it is noise in the one place consumers read to diagnose a failed install.
+
+Extensions used only by a dependency are that dependency's to declare — `centralnic-reseller/idn-converter` requires `ext-mbstring` itself, and `src/` uses no `mb_*` function, so the SDK does not list it. Conversely, a transitive requirement is **not** a substitute for a direct one: `ext-intl` was already pulled in via idn-converter, and was still added to `require` because this SDK's own code path depends on it.
+
+**Before adding an `ext-*` line, check two things:** that `src/` (not `tests/`, not `examples/`) actually reaches the extension, and that a supported PHP build can be missing it.
+
 ## Dependency Lockfile Policy
 
 - **`composer.lock` is committed deliberately.** Conventional guidance says a library should not commit its lockfile because consumers ignore it (Composer resolves the library's constraints fresh into the consumer's own `composer.lock`). That still holds for consumers — keeping our lockfile does **not** affect downstream installs. We commit it anyway so that CI, devcontainer, and local developer setups all resolve the exact same dependency tree, giving reproducible lint/test runs and pinning the dev toolchain (PHPUnit, PHPStan, Psalm, Rector). Do not remove or git-ignore `composer.lock`.
