@@ -37,6 +37,7 @@
   "require": {
     "php": ">=8.3.0",
     "ext-curl": "*",
+    "ext-intl": "*",
     "centralnic-reseller/idn-converter": "^2.0"
   },
   "require-dev": {

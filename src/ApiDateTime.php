@@ -20,8 +20,10 @@ use CNIC\Exception\InvalidDateTimeException;
  * IBS/Moniker send — accepted directly, rather than being rewritten upstream).
  * This class parses both into one flat struct and does nothing else — it is a
  * **parser, not a formatter**. There is no `in($tz)`, no locale formatting and
- * no ext-intl dependency; presenting a value in the viewer's timezone is a
- * display concern and belongs in the consuming application.
+ * no use of ext-intl in this class — the SDK requires that extension for IDN
+ * conversion, and this type must still never reach for it; presenting a value in
+ * the viewer's timezone is a display concern and belongs in the consuming
+ * application.
  *
  * The date separator may be `-` or `/`, but must be consistent within one
  * value — `2026-02/20` and `2026/02-20` are both rejected. {@see self::$date}

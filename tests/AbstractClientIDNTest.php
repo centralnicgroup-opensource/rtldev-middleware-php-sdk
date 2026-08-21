@@ -27,10 +27,6 @@ final class AbstractClientIDNTest extends TestCase
 {
     public function testIDNConvertReturnsPunycodeForUnicodeDomains(): void
     {
-        if (!function_exists("idn_to_ascii")) {
-            $this->markTestSkipped("ext-intl / idn_to_ascii not available");
-        }
-
         $result = CF::cnr()->IDNConvert(["münchen.de", "example.com"]);
 
         $this->assertSame("xn--mnchen-3ya.de", $result[0]["punycode"]);

@@ -63,29 +63,15 @@ final class IDNCommandRewriter
      * {@see \CNIC\CommandFormatter::flattenCommand()} has applied the priority
      * sort, and the wire output must not depend on it.
      *
-     * Without `ext-intl` the command is returned verbatim: the converter needs
-     * `idn_to_ascii()`, and an SDK that cannot convert must still be able to send
-     * the ASCII commands that make up the vast majority of traffic.
+     * `ext-intl` is a hard composer requirement (RSRMID-2977), so there is no
+     * intl-less path here: the converter needs `idn_to_ascii()`, and an install
+     * without the extension is refused before any command is ever built.
      *
      * @param array<string, string> $cmd flattened API command
      * @return array<string, string> the command with IDN values converted to punycode
      */
     public static function rewrite(array $cmd): array
     {
-        // @codeCoverageIgnoreStart
-        // Not dead code, and not the same case as HttpTransport's curl_init()
-        // guard: ext-intl is deliberately *not* a composer requirement, so this
-        // branch is reachable in a supported environment — it is what keeps an
-        // intl-less runtime getting an unconverted command instead of a fatal
-        // undefined-function error from the vendor converter. It cannot be
-        // exercised from this suite, which needs idn_to_ascii() for every other
-        // IDN assertion; reaching it would take a second PHPUnit process with the
-        // function disabled.
-        if (!function_exists("idn_to_ascii")) {
-            return $cmd;
-        }
-        // @codeCoverageIgnoreEnd
-
         $objectClass = $cmd["OBJECTCLASS"] ?? null;
         $toconvert = [];
         foreach ($cmd as $key => $val) {
