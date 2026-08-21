@@ -43,11 +43,12 @@ final class ResponseParser implements ResponseParserInterface
         $hash = [];
         /** @var array<string, list<string>> $properties */
         $properties = [];
-        $tmp = preg_replace("/\r\n/", "\n", $raw);
-        if (is_null($tmp)) {
-            $tmp = $raw;
-        }
-        $rlist = explode("\n", $tmp);
+        // str_replace, not preg_replace: the needle is a literal pair of bytes with
+        // no regex meaning, so PCRE bought nothing and cost a `?: $raw` fallback for
+        // a null return that a literal pattern cannot produce — an unreachable branch
+        // carried only to satisfy PHPStan's `string|null`, the same shape RSRMID-2977
+        // deleted rather than ignored for coverage. str_replace returns string.
+        $rlist = explode("\n", str_replace("\r\n", "\n", $raw));
         foreach ($rlist as $item) {
             if (preg_match("/^([^\=]*[^\t\= ])[\t ]*=[\t ]*(.*)$/", $item, $m)) {
                 $attr = $m[1];
