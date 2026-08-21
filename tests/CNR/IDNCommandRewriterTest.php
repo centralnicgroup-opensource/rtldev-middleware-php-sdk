@@ -21,20 +21,13 @@ use PHPUnit\Framework\TestCase;
  * OBJECTID/OBJECTCLASS special case — is asserted directly, with no client and no
  * reflection.
  *
- * The ext-intl skip now gates the rules themselves rather than a client test.
- * (CNICTEST\AbstractClientIDNTest skips on the same condition for the one thing
- * left there: IDNConvert() converts through the same vendor code and needs it too.)
+ * There is no ext-intl skip: the extension is a hard composer requirement
+ * (RSRMID-2977), so `idn_to_ascii()` is guaranteed and every case below runs
+ * unconditionally. The same holds for CNICTEST\AbstractClientIDNTest, which
+ * converts through the same vendor code.
  */
 final class IDNCommandRewriterTest extends TestCase
 {
-    #[\Override]
-    protected function setUp(): void
-    {
-        if (!function_exists("idn_to_ascii")) {
-            $this->markTestSkipped("ext-intl / idn_to_ascii not available");
-        }
-    }
-
     public function testConvertsMatchingKeys(): void
     {
         $out = R::rewrite([

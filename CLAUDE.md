@@ -28,7 +28,7 @@ Facts below; the class inventory is derivable from `src/` and the **full deep di
 Three directives have no guard test and therefore live here:
 
 - Do **not** "symmetrise" columns onto a `newColumn()` factory like records — keep the `registerColumn(ColumnInterface)` shape. The original "infeasible under PHPStan L9 / Psalm L1" argument died with `CNR\Column`; re-run the analysers before reopening, and do not quote it. (RSRMID-2899, RSRMID-2942)
-- Do **not** rewrite date columns in the response data. Do **not** grow `CNIC\ApiDateTime` beyond an opt-in UTC-only **parser** — accepting both `-` and `/` separators is in scope, but no `in($tz)`, no locale formatting, no `ext-intl`, no markup helpers. (RSRMID-2318; RSRMID-2926)
+- Do **not** rewrite date columns in the response data. Do **not** grow `CNIC\ApiDateTime` beyond an opt-in UTC-only **parser** — accepting both `-` and `/` separators is in scope, but no `in($tz)`, no locale formatting, no `ext-intl` **in this class** (the extension is a hard SDK requirement for IDN conversion only — `ApiDateTime` must still never reach for it), no markup helpers. (RSRMID-2318; RSRMID-2926; RSRMID-2977)
 - Do **not** make `dateTime` fall back to `date` for date-only values — `ts` and `dateTime` are null _together_. (RSRMID-2318)
 
 ## Coding Standards
