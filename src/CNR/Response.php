@@ -308,10 +308,20 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * "this response carries no such counter", never a stand-in value
      * (RSRMID-2943, RSRMID-2965).
      *
-     * The is_array()/is_string() narrowing is what the analysers need from an
-     * `array<string, mixed>` hash. It is not a second line of defence against a
-     * malformed wire: populate() has already refused a non-string cell through
-     * {@see stringCells()}, so no constructed response can reach those returns.
+     * The is_array()/isset()/is_string() narrowing is what the analysers need from
+     * an `array<string, mixed>` hash, not a second line of defence against a
+     * malformed wire — and the two `return null`s are unreachable for *different*
+     * reasons, which matters because only the first is covered.
+     *
+     * The is_array() one is reached normally: an absent counter key is the common
+     * case for every non-list response. The isset()/is_string() one is not, and no
+     * test drives it, so it shows in the report as this file's one uncovered line.
+     * `!is_string($cells[0])` is refused ahead of here by {@see stringCells()}. The
+     * `!isset($cells[0])` half — an entry present but empty — stringCells() does
+     * permit, but {@see ResponseParser} appends a cell whenever it creates a key,
+     * so no wire text yields one; only a substitute parser could, and pinning a
+     * shape the brand parser cannot emit would test the double, not this class.
+     * Left uncovered on purpose: the coverage entry in docs/agents/testing.md.
      */
     private function metaInt(string $key): ?int
     {

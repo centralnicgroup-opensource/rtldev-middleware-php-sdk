@@ -14,6 +14,7 @@ use CNIC\AbstractSocketConfig;
 use CNIC\ClientFactory as CF;
 use CNIC\CNR\Client as CNRClient;
 use CNIC\CNR\SocketConfig as CNRSocketConfig;
+use CNIC\Exception\UnsupportedFeatureException;
 use CNIC\IBS\Client as IBSClient;
 use CNIC\IBS\SocketConfig as IBSSocketConfig;
 use CNIC\MONIKER\Client as MONIKERClient;
@@ -296,6 +297,40 @@ final class ClientConfigSeamTest extends TestCase
         $this->assertSame(CNRClient::class, $rm->getDeclaringClass()->getName());
         $this->assertSame(CNRSocketConfig::class, (string) $rm->getReturnType());
         $this->assertInstanceOf(CNRSocketConfig::class, CF::cnr()->getSocketConfig());
+    }
+
+    /**
+     * The other half of the narrowing accessor: its documented `@throws`.
+     *
+     * `CNR\Client::getSocketConfig()` refuses a config that is not a CNR one
+     * rather than `assert()`ing, so that a subclass which seated the wrong config
+     * gets a named SDK exception instead of an undefined-method fatal under
+     * `zend.assertions=-1`. Nothing exercised that branch, which left both the
+     * exception type and the diagnostic — it names the class actually found —
+     * free to drift.
+     *
+     * Reaching it needs the one route the narrowing does not close. Both writers
+     * of `$socketConfig` are typed to `CNR\SocketConfig`, but PHP exempts
+     * constructors from LSP under class inheritance, so a subclass can skip
+     * `CNR\Client::__construct()`'s narrowed parameter and call the grandparent's
+     * widened one directly. That is precisely the "subclass supplied a non-CNR
+     * config" case the guard is written for — not a reflection poke past the
+     * type system, so the branch is genuinely reachable rather than dead code.
+     */
+    public function testCnrConfigAccessorRefusesAForeignConfig(): void
+    {
+        $cl = new class extends CNRClient {
+            public function __construct()
+            {
+                AbstractClient::__construct(new IBSSocketConfig());
+            }
+        };
+
+        $this->expectException(UnsupportedFeatureException::class);
+        $this->expectExceptionMessage(
+            "CNR session and role handling require a CNIC\\CNR\\SocketConfig, got " . IBSSocketConfig::class . "."
+        );
+        $cl->getSocketConfig();
     }
 
     /**
