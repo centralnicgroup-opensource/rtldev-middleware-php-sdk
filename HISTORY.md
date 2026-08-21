@@ -1,3 +1,11 @@
+## [33.0.1](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v33.0.0...v33.0.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* **cnr:** run the session-lifecycle cleanup in a finally ([d77de36](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/d77de36ba7c6fcd97d230192724f34f1afe10886))
+* **idn:** declare ext-intl as a production requirement ([bc80e18](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/bc80e1874dc961a014e3184372e2d7832cfed293))
+
 # [33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v32.0.0...v33.0.0) (2026-08-20)
 
 
