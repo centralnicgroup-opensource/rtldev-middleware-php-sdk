@@ -51,3 +51,20 @@ Templates only reach the translator through that argument, so this route works f
 ## MONIKER test files mirroring IBS is intentional
 
 MONIKER and IBS are the same API platform and data format; only the brand URL and credentials differ, and `MONIKER\Client extends IBS\Client` with no `Response` of its own. MONIKER test files may therefore mirror the IBS ones and import IBS classes directly. **Do not** flag that duplication as a coverage gap or propose MONIKER-specific response/parser tests — there is no MONIKER-specific behaviour for them to cover.
+
+## Coverage
+
+`composer test` runs with coverage on; the HTML report lands in `reports/html/` and Clover in `reports/clover/coverage.xml`. To see which lines are actually uncovered rather than reading the percentages:
+
+```bash
+php -r '$x = new SimpleXMLElement(file_get_contents("reports/clover/coverage.xml"));
+foreach ($x->xpath("//file") as $f) { foreach ($f->line as $l) {
+  if ((int)$l["count"] === 0) { echo $f["name"], ":", $l["num"], "\n"; } } }'
+```
+
+**Do not chase 100%.** A line that no correctly-typed caller can reach is not a coverage gap, and the two ways of making it look covered are both worse than leaving it red:
+
+- **Do not add `@codeCoverageIgnore`.** RSRMID-2977 set the precedent — the intl-less branch in `IDNCommandRewriter` was wrapped in ignore markers on a justification that had quietly become false, and the marker is what kept anyone from noticing. Unreachable by contract means **delete the branch**, not hide it. Where an analyser demands the narrowing that creates the branch (PHPStan L9 on a `string|null` return, say), prefer a call that cannot produce the null at all: `CNR\ResponseParser` uses `str_replace` for its literal CRLF fold precisely so there is no `?: $raw` fallback to leave uncovered.
+- **Do not collapse a guard onto one line** — a ternary or `??` chain moves the untaken branch onto a line the report calls covered. Line coverage rises, nothing is tested, and the next reader believes it was.
+
+What to do instead: check whether the branch is genuinely unreachable, and if a legitimate seam reaches it, write the test. `ClientConfigSeamTest::testCnrConfigAccessorRefusesAForeignConfig()` covers a guard whose own docblock called itself unreachable — PHP exempts constructors from LSP under class inheritance, so a subclass calling the grandparent constructor reaches it without reflection. If it stays unreachable, **say so in the docblock, and say which half of the condition is which** — see `CNR\Response::metaInt()`, the suite's one deliberately uncovered line. An accurate "this is why it is red" beats a green number, the same rule [architecture.md](architecture.md) applies to guard tests: state what is and is not caught rather than overclaiming.
