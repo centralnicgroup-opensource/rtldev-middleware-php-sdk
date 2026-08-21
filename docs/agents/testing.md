@@ -33,6 +33,10 @@ The server starts in `setUpBeforeClass()` and the class calls `markTestSkipped()
 
 Register mock API responses on a `ResponseTemplateManager` instance and hand that instance to the Response; do not add Mockery or Prophecy. Where a substitute for a collaborator is needed, the repo uses hand-written spies against the interface seams — `CNICTEST\Support\SpyTransport` (`TransportInterface`) and `CNICTEST\Support\SpyResponseParser` (`ResponseParserInterface`). Both reach the behaviour through public API with no reflection and no subclassing, which is the property those seams exist to provide.
 
+`SpyTransport` can end a call in three ways, and they are not interchangeable. A canned **raw** response is the happy path; a canned **error** is a cURL failure that arrives as element `[1]` and becomes a 421 response (RSRMID-2969); a canned **throw** propagates out of `request()` and past every line after it (RSRMID-2980, for the CNR `login()`/`logout()` cleanup). The throw is typed `CnicException`, not `\Throwable` — `TransportInterface::post()` declares only `UnsupportedFeatureException`, and a double that could raise a `\TypeError` would widen the seam's contract instead of reproducing it.
+
+Reach for the spy only for what the real transport cannot show. `close()`-reached-the-transport is such a case — `HttpTransport` exposes nothing to assert it on — but a *throw* is not: `HttpTransport::post()` rejects a transport-owned cURL option before it touches the handle, so a test can drive the real transport and stay offline. Prefer that, since it makes the throw a fact about production code rather than a property of a double; and when you do, point the client's URL at a closed local port, because `new Client()` defaults to the **LIVE** endpoint and the no-request guarantee otherwise rests on another class's constant.
+
 ```php
 $tpls = (new \CNIC\CNR\ResponseTemplateManager())
     ->addTemplate("OK", "200", "Command completed successfully");
