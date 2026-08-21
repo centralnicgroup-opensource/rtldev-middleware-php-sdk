@@ -248,7 +248,7 @@ ApiDateTime::tryFrom("2026-02-30");  // null — refused, not coerced
 ```
 
 > [!NOTE]
-> This is a **parser, not a formatter**. Responses are not rewritten: `getPlain()`, `getHash()` and `getListHash()` keep returning the raw API strings verbatim — internet.bs/Moniker dates keep their `/` separator — and this type is opt-in at the point where a value is actually used. There is no locale formatting, and this type never touches `ext-intl` (which the SDK requires for IDN conversion only) — presenting a value in the viewer's timezone is a display concern for the consuming application:
+> This is a **parser, not a formatter**. Responses are not rewritten: `getPlain()`, `getHash()` and `getListHash()` keep returning the raw API strings verbatim — internet.bs/Moniker dates keep their `/` separator — and this type is opt-in at the point where a value is actually used. There is no locale formatting and this type never touches `ext-intl` — presenting a value in the viewer's timezone is a display concern for the consuming application:
 >
 > ```php
 > (new \DateTimeImmutable("@{$dt->ts}"))->setTimezone(new \DateTimeZone("Europe/Berlin"));
