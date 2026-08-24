@@ -22,7 +22,9 @@
     }
   ],
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "repo:settings": "bash scripts/repo-settings.sh",
+    "repo:settings:apply": "bash scripts/repo-settings.sh --apply"
   },
   "keywords": [
     "cnr",

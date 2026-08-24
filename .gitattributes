@@ -11,6 +11,7 @@
 .devcontainer export-ignore
 .github export-ignore
 .husky export-ignore
+scripts export-ignore
 reports export-ignore
 tests export-ignore
 docs export-ignore
