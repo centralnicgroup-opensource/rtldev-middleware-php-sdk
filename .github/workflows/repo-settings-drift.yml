@@ -1,0 +1,36 @@
+---
+# Reports when this repository's GitHub settings no longer match
+# .github/repo-settings.conf. Read-only by construction: it runs the script in check
+# mode, which never writes. Applying stays manual — see the script's header for why a
+# workflow is the wrong place to hold admin rights.
+name: Repository settings drift
+
+"on":
+  schedule:
+    # Monday morning, so a drift lands at the start of the week rather than in it.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: Settings drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # GITHUB_TOKEN reads the core settings and topics fine. The security toggles
+      # need admin, which it does not have — the script reports those as "unreadable"
+      # and does not count them as drift, so this job stays honest rather than
+      # green-by-omission. Add a REPO_SETTINGS_TOKEN secret (fine-grained, read
+      # administration) to cover them too.
+      #
+      # Note this job cannot see the two settings most likely to drift here — secret
+      # scanning and push protection — without that token. Until it exists, a green
+      # run means "the settings I could read are correct", not "everything is".
+      - name: Check settings against repo-settings.conf
+        env:
+          GH_TOKEN: ${{ secrets.REPO_SETTINGS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: scripts/repo-settings.sh
