@@ -1,0 +1,15 @@
+# Set blank_issues_enabled to false only once the templates above cover the real
+# cases — otherwise a reporter with a genuine issue that fits neither has nowhere
+# to go and simply does not report it.
+blank_issues_enabled: true
+
+# No Discussions entry: this repository has Discussions disabled, and a contact
+# link to a disabled feature is a dead end rather than a route.
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/security/advisories/new
+    about: Report privately through GitHub Private Vulnerability Reporting — never as a public issue. See SECURITY.md.
+
+  - name: API documentation
+    url: https://centralnicgroup-opensource.github.io/rtldev-middleware-php-sdk/
+    about: Generated class reference for the connector library. Check here before filing a usage question.
