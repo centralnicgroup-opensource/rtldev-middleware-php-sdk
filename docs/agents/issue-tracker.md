@@ -22,7 +22,7 @@ Issues, tasks, stories, and PRDs for this repo live in **Jira Cloud**, project *
 - **Read an issue:** `getJiraIssue` (add `fields`/`expand` as needed); `searchJiraIssuesUsingJql` for lists (e.g. `project = RSRMID AND component = PHP-SDK AND statusCategory != Done`).
 - **Comment:** `addCommentToJiraIssue`.
 - **Edit / set fields:** `editJiraIssue`.
-- **Transition:** call `transitionJiraIssue` straight away with the id from **Workflow transitions** above — the ids are static and cached here precisely so this needs no lookup. Reach for `getTransitionsForJiraIssue` only to *diagnose* a transition that failed or is genuinely unavailable (workflow changed, or a condition on the target status is unmet); calling it first as a matter of course wastes a round-trip and a chunk of context on a payload whose eight useful values are already on this page.
+- **Transition:** call `transitionJiraIssue` straight away with the id from **Workflow transitions** above — the ids are static and cached here precisely so this needs no lookup. Reach for `getTransitionsForJiraIssue` only to _diagnose_ a transition that failed or is genuinely unavailable (workflow changed, or a condition on the target status is unmet); calling it first as a matter of course wastes a round-trip and a chunk of context on a payload whose eight useful values are already on this page.
 
 ## Branch / PR linkage
 
