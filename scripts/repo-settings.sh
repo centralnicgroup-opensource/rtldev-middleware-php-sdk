@@ -184,7 +184,7 @@ if [[ "$MODE" == "apply" ]]; then
         gh api --method PUT "repos/${REPO}/topics" --input - >/dev/null ||
         die "failed to set topics"
 fi
-got_topics=$(gh api "repos/${REPO}/topics" --jq '.names | sort | join(" ")' 2>/dev/null || echo unknown)
+got_topics=$(gh api "repos/${REPO}/topics" --jq '.names | sort | join(" ")' 2>/dev/null) || got_topics=unknown
 compare "topics" "$want_topics" "$got_topics"
 
 # --- security ----------------------------------------------------------------
