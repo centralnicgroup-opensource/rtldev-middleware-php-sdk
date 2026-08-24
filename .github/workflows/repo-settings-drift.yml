@@ -21,16 +21,22 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # GITHUB_TOKEN reads the core settings and topics fine. The security toggles
-      # need admin, which it does not have — the script reports those as "unreadable"
-      # and does not count them as drift, so this job stays honest rather than
-      # green-by-omission. Add a REPO_SETTINGS_TOKEN secret (fine-grained, read
-      # administration) to cover them too.
+      # GITHUB_TOKEN reads the core settings and topics fine, but the security
+      # toggles need administration:read, which it does not have — the script then
+      # reports those as "unreadable" rather than counting them as drift, so the job
+      # stays honest instead of green-by-omission. Since the two settings most likely
+      # to drift here are exactly those (secret scanning and push protection), a run
+      # on GITHUB_TOKEN alone means "the settings I could read are correct", not
+      # "everything is".
       #
-      # Note this job cannot see the two settings most likely to drift here — secret
-      # scanning and push protection — without that token. Until it exists, a green
-      # run means "the settings I could read are correct", not "everything is".
+      # RTLDEV_MW_CI_TOKEN is the existing credential with the wider scope, so it is
+      # tried first and no new secret is needed. REPO_SETTINGS_TOKEN stays ahead of
+      # it as an override, in case this job should ever run on a narrower,
+      # purpose-scoped token than the shared CI one.
+      #
+      # If the run still reports the security rows as unreadable, the token in use
+      # lacks administration:read — check that before assuming the settings are fine.
       - name: Check settings against repo-settings.conf
         env:
-          GH_TOKEN: ${{ secrets.REPO_SETTINGS_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REPO_SETTINGS_TOKEN || secrets.RTLDEV_MW_CI_TOKEN || secrets.GITHUB_TOKEN }}
         run: scripts/repo-settings.sh
