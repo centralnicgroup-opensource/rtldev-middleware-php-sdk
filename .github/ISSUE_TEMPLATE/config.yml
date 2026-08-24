@@ -1,6 +1,8 @@
-# Set blank_issues_enabled to false only once the templates above cover the real
-# cases — otherwise a reporter with a genuine issue that fits neither has nowhere
-# to go and simply does not report it.
+# Keep this true. The SDK spans three brands (CentralNic Reseller, Internet.bs,
+# Moniker) and support contacts are brand-specific, so a GitHub issue is the only
+# route a reporter can take without first knowing which backend they are on —
+# which is often the very thing they are confused about. Setting it to false, or
+# adding one brand's support page as a contact link, closes that route.
 blank_issues_enabled: true
 
 # No Discussions entry: this repository has Discussions disabled, and a contact
