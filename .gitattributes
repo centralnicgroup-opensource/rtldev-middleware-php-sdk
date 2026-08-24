@@ -1,3 +1,8 @@
+# Line endings: normalise in the repository, check out LF everywhere. Without this,
+# a Windows clone rewrites the shell scripts and .husky/pre-commit to CRLF and they
+# stop working inside the container.
+* text=auto eol=lf
+
 # The ! character is not supported in .gitattributes so we have to include all the files or directories here to exclude from composer archive
 # If a file or directory is not excluded using the export-ignore attribute, it will be included in the archive by default.
 

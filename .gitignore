@@ -32,3 +32,11 @@ tools/
 
 # Claude Code — local user settings (personal overrides, MCP permissions)
 .claude/settings.local.json
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local dotenv files (env.sh is covered above)
+.env
