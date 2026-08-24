@@ -1,6 +1,6 @@
 name: Monthly WHMCS PHP version check
 
-on:
+"on":
   schedule:
     - cron: "0 6 1 * *" # First of each month at 06:00 UTC
   workflow_dispatch:

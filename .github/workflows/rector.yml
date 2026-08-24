@@ -1,6 +1,6 @@
 name: Monthly Rector modernization
 
-on:
+"on":
   schedule:
     - cron: "0 8 1 * *" # First of each month at 08:00 UTC
   workflow_dispatch:

@@ -35,6 +35,7 @@ jobs:
     secrets: inherit
 
   ci-success:
+    name: "Tests: completed"
     needs: tests
     if: always()
     runs-on: ubuntu-latest

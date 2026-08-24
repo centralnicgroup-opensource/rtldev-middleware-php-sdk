@@ -16,7 +16,7 @@ name: Daily Node dependency refresh
 # Dependabot security alerts (GitHub Advisory Database scanning) remain active
 # independently of dependabot.yml and are not affected by this decision.
 
-on:
+"on":
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:

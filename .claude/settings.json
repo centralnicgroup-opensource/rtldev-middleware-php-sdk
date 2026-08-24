@@ -50,6 +50,11 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/tool-output-hygiene.sh\"",
             "timeout": 5,
             "statusMessage": "Checking tool-output hygiene"
+          },
+          {
+            "type": "command",
+            "command": "command -v rtk >/dev/null 2>&1 && exec rtk hook claude || exit 0",
+            "statusMessage": "Optimizing command output (RTK)"
           }
         ]
       }
