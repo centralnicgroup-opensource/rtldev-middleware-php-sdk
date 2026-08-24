@@ -9,7 +9,7 @@ There are **two independent axes** here — the runtime versions the SDK is allo
 ### Runtime support (what the SDK runs on) — floor is 8.3, no ceiling
 
 - `composer.json` declares `"php": ">=8.3.0"`. This sets the **minimum** only; there is no upper bound.
-- The SDK supports every **actively-maintained PHP version** and the CI test matrix runs against all of them — currently **8.3, 8.4, and 8.5** (matrix configured via the `RTLDEV_MW_CI_PHP_MATRIX` repo variable). The matrix is **not** a cap: add new PHP versions as they enter active support and drop versions once they reach end-of-life.
+- The SDK supports every **actively-maintained PHP version** and the CI test matrix runs against all of them — currently **8.3, 8.4, and 8.5** (matrix configured via the `RTLDEV_MW_CI_PHP_MATRIX` **organisation-level** variable — not a repository one, so it is not visible on this repo's Variables page and changing it affects every consuming repository). The matrix is **not** a cap: add new PHP versions as they enter active support and drop versions once they reach end-of-life.
 - **8.3 is the floor** because that is the minimum PHP supported by the WHMCS releases the SDK is deployed into — **WHMCS 9 (GA)** and **WHMCS 8.13 (LTS)** both support PHP 8.3. Do not raise the `composer.json` minimum above 8.3 until WHMCS raises its own minimum; track [RSRMID-2826](https://centralnic.atlassian.net/browse/RSRMID-2826) for the unblocking condition.
 
 ### Language-feature ceiling (what the source may use) — pinned at 8.3
