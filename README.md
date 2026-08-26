@@ -1,11 +1,11 @@
 # php-sdk
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![Build Status](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/workflows/Release/badge.svg?branch=master)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/workflows/Release/badge.svg?branch=master)
+[![Build Status](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/workflows/Release/badge.svg?branch=main)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/workflows/Release/badge.svg?branch=main)
 [![Packagist](https://img.shields.io/packagist/v/centralnic-reseller/php-sdk.svg)](https://packagist.org/packages/centralnic-reseller/php-sdk)
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/centralnic-reseller/php-sdk.svg)](https://packagist.org/packages/centralnic-reseller/php-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/CONTRIBUTING.md)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/CONTRIBUTING.md)
 [![codecov](https://codecov.io/gh/centralnicgroup-opensource/rtldev-middleware-php-sdk/graph/badge.svg)](https://codecov.io/gh/centralnicgroup-opensource/rtldev-middleware-php-sdk)
 
 This module is a connector library for the insanely fast CNIC Backend APIs (CentralNic Reseller, internet.bs, moniker). Do not hesitate to contact us in case of questions.
@@ -17,7 +17,7 @@ This module is a connector library for the insanely fast CNIC Backend APIs (Cent
   - [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
   - [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
 - [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
-- [Migration Guide](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md) — how to upgrade across major versions
+- [Migration Guide](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md) — how to upgrade across major versions
 
 ## Usage
 
@@ -58,7 +58,7 @@ $cl->close();
 Two brand differences the snippet is deliberately explicit about:
 
 - **The `$path` argument.** `request(array $cmd = [], string $path = "")` is symmetric across all brands, but only CNR has a meaningful default (`api/call.cgi`). On IBS/Moniker the path _is_ the operation, so omitting it sends the request to the bare host.
-- **Sessions and role logins are CNR-only, by type.** `login()`, `logout()`, `saveSession()`/`reuseSession()`, `getSession()`/`setSession()` and `setRoleCredentials()` exist on the CNR client and **do not exist** on `IBS\Client`/`MONIKER\Client` — calling one is a static-analysis error at the call site, not a runtime surprise. See [Migration Guide → v22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2200).
+- **Sessions and role logins are CNR-only, by type.** `login()`, `logout()`, `saveSession()`/`reuseSession()`, `getSession()`/`setSession()` and `setRoleCredentials()` exist on the CNR client and **do not exist** on `IBS\Client`/`MONIKER\Client` — calling one is a static-analysis error at the call site, not a runtime surprise. See [Migration Guide → v22.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md#-v2200).
 
 **Type against the interfaces, not the concrete classes.** Depending on `CNIC\ResponseInterface`, `CNIC\ColumnInterface`, `CNIC\RecordInterface` and `CNIC\LoggerInterface` is what keeps future majors from breaking you; code that reaches for `CNIC\CNR\Response` or uses `method_exists()` fallbacks is what does not survive them.
 
@@ -134,7 +134,7 @@ $expiry = $rec->getDateTimeByKey("expirationdate");   // ?ApiDateTime
 $name   = $r->getColumn("DOMAIN")?->getStringByIndex(0);   // same, by column
 ```
 
-`foreach` keeps its position in the loop rather than on the response, so iterating is repeatable, needs no rewind step, and two places iterating the same response cannot interfere. If you are coming from a version with `getNextRecord()`/`rewindRecordList()`, see [Migration Guide → v31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v3100).
+`foreach` keeps its position in the loop rather than on the response, so iterating is repeatable, needs no rewind step, and two places iterating the same response cannot interfere. If you are coming from a version with `getNextRecord()`/`rewindRecordList()`, see [Migration Guide → v31.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md#-v3100).
 
 ### Debug output
 
@@ -209,7 +209,7 @@ assert($cl->setTransport($transport)->getTransport() === $transport);
 assert($cl->setCustomLogger($myLogger)->getLogger() === $myLogger);
 ```
 
-For working, runnable examples per brand — including the CNR session flow (`saveSession()`/`reuseSession()` across two stateless requests) — see [`examples/app_CNR.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_CNR.php), [`examples/app_IBS.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_IBS.php) and [`examples/app_MONIKER.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/examples/app_MONIKER.php). Those are not part of the Composer package — clone the repository to run them, as described under [Running the Demo Application](#running-the-demo-application).
+For working, runnable examples per brand — including the CNR session flow (`saveSession()`/`reuseSession()` across two stateless requests) — see [`examples/app_CNR.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/examples/app_CNR.php), [`examples/app_IBS.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/examples/app_IBS.php) and [`examples/app_MONIKER.php`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/examples/app_MONIKER.php). Those are not part of the Composer package — clone the repository to run them, as described under [Running the Demo Application](#running-the-demo-application).
 
 ## Date & time values
 
@@ -281,7 +281,7 @@ The devcontainer looks for an `env.sh` file in the workspace root and **automati
 1. **Every new integrated-terminal session** — the file is sourced via `~/.zshenv` so credentials are available as soon as you open a terminal, without a manual `source env.sh`.
 2. **PHPUnit runs triggered from the VSCode UI** — the PHPUnit wrapper script sources `env.sh` before invoking PHP, so IDE-triggered tests see the same variables as `composer test` does from the terminal.
 
-`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need — copy [`env.example.sh`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/env.example.sh) as a starting point.
+`env.sh` is listed in `.gitignore` and will never be committed. Create it once in the workspace root with the variables you need — copy [`env.example.sh`](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/env.example.sh) as a starting point.
 
 > [!NOTE]
 > The auto-loading takes effect for **new** terminal sessions. If your terminal was already open when you created or updated `env.sh`, run `source env.sh` once in that session or open a new terminal.
@@ -316,7 +316,7 @@ CI is powered by [reusable GitHub Actions workflows](https://github.com/centraln
 The matrix is configured via the repository variable `RTLDEV_MW_CI_PHP_MATRIX` and tracks the **actively-maintained** PHP versions — new versions are added as they enter active support and dropped once they reach end-of-life.
 
 > [!NOTE]
-> `composer.json` requires `php: >=8.3.0`, which sets the **minimum** only — the SDK runs on every version in the matrix above. Note that the source code itself is deliberately held to **PHP 8.3 language features** (Rector is pinned to 8.3) because the SDK also ships inside ionCube-encoded WHMCS integrations that cannot execute newer syntax. In short: runs on 8.3–8.5, but only _uses_ 8.3-level language features. Full rationale: [PHP Version Policy](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/docs/agents/project-policies.md#php-version-policy).
+> `composer.json` requires `php: >=8.3.0`, which sets the **minimum** only — the SDK runs on every version in the matrix above. Note that the source code itself is deliberately held to **PHP 8.3 language features** (Rector is pinned to 8.3) because the SDK also ships inside ionCube-encoded WHMCS integrations that cannot execute newer syntax. In short: runs on 8.3–8.5, but only _uses_ 8.3-level language features. Full rationale: [PHP Version Policy](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/docs/agents/project-policies.md#php-version-policy).
 
 ## Maintainers
 
