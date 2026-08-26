@@ -117,14 +117,14 @@ Short reminders; full detail in the linked docs.
 
   BREAKING CHANGE: setProxy() has been removed; use HttpTransport::withProxy() instead.
 
-  See [MIGRATION.md → v20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/master/MIGRATION.md#-v2000)
+  See [MIGRATION.md → v20.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md#-v2000)
   ```
 
-- **Branch creation:** `git checkout master && git pull --ff-only` before `git checkout -b` — never branch from a stale local `master` or another feature branch.
+- **Branch creation:** `git checkout main && git pull --ff-only` before `git checkout -b` — never branch from a stale local `main` or another feature branch.
 - **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821/short-description`.
 - **Pull requests:** include the Jira issue link in the PR description; after opening, add the PR URL as a comment on the Jira issue.
 - **Merging PRs:** rebase-merge (`gh pr merge --rebase`). Squash merges are disabled at the repo level.
-- **Default branch:** `master`. Versioning: semantic-release via the CI release workflow.
+- **Default branch:** `main` (renamed from `master` in RSRMID-2995). Versioning: semantic-release via the CI release workflow.
 
 ## Important Paths
 

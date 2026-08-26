@@ -61,11 +61,11 @@ Do **not** add `Co-Authored-By:` trailers.
 
 ## Branches and pull requests
 
-- Branch from an up-to-date default branch: `git checkout master && git pull --ff-only` before `git checkout -b`. Never branch from a stale local `master` or from another feature branch.
+- Branch from an up-to-date default branch: `git checkout main && git pull --ff-only` before `git checkout -b`. Never branch from a stale local `main` or from another feature branch.
 - Name branches after the Jira issue: `RSRMID-1234/short-description`. Work is tracked in Jira (project `RSRMID`, component `PHP-SDK`), not GitHub Issues — GitHub Issues is for external reports.
 - Include the Jira issue link in the pull request description, and add the PR URL as a comment on the Jira issue after opening it. [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) prompts for both.
 - Run `composer lint` and `composer test` before opening the PR. `Lint: completed` and `Tests: completed` are required checks, so a red one blocks the merge.
-- **Rebase-merge** (`gh pr merge --rebase`). Squash merging is disabled at the repository level, and `master` requires linear history: semantic-release reads the individual commits to pick the next version, and squashing or merge-committing would hide or duplicate the messages it depends on.
+- **Rebase-merge** (`gh pr merge --rebase`). Squash merging is disabled at the repository level, and `main` requires linear history: semantic-release reads the individual commits to pick the next version, and squashing or merge-committing would hide or duplicate the messages it depends on.
 
 External contributors: you will not have a Jira issue, and that is fine — leave that line out and describe the change in the PR instead.
 
