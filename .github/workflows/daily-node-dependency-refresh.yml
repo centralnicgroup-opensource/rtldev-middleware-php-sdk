@@ -34,4 +34,4 @@ jobs:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/daily-node-dependency-refresh.yml@main
     secrets: inherit
     with:
-      base-ref: master
+      base-ref: main
