@@ -1,5 +1,6 @@
 {
   "ci": false,
+  "repositoryUrl": "git@github.com:centralnicgroup-opensource/rtldev-middleware-php-sdk.git",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
