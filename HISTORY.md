@@ -1,3 +1,10 @@
+## [33.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v33.0.2...v33.0.3) (2026-08-26)
+
+
+### Bug Fixes
+
+* **cnr:** mask the session id in the secured POST body ([c926f23](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/c926f2361640fc2fe3ccb6e068a324529a95ed2d))
+
 ## [33.0.2](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v33.0.1...v33.0.2) (2026-08-24)
 
 
