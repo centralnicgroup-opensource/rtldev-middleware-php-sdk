@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\AbstractClient | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../fonts/doctum-font.css">
+        <script src="../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../doctum.js"></script>
+        <script async defer src="../js/bootstrap.min.js"></script>
+        <script async defer src="../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_AbstractClient" data-root-path="../" data-search-index-url="../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../classes.html">Classes</a></li>
+                    <li><a href="../namespaces.html">Namespaces</a></li>
+                    <li><a href="../interfaces.html">Interfaces</a></li>
+                    <li><a href="../traits.html">Traits</a></li>
+                    <li><a href="../doc-index.html">Index</a></li>
+                    <li><a href="../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../CNIC.html">CNIC</a></li><li class="backslash">\</li><li>AbstractClient</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>AbstractClient    
+            </h1>
+    </div>
+
+    
+    <p>    abstract     class
+    <strong>AbstractClient</strong>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Shared foundation for all registrar API clients.</p></p>            <p><p>Concrete subclasses provide the request() implementation, the default
+logger, and the appropriate SocketConfig subtype.</p>
+<h2>Where configuration lives</h2>
+<p>Not here. Connection configuration has one home — {\CNIC\AbstractSocketConfig} —
+reachable through {\CNIC\getSocketConfig()} and supplyable through
+{\CNIC__construct()}. What lives here is client
+<em>behaviour</em>: the logger and debug flag, the response context, the transport
+instance, and the SDK's own identity (<code>VERSION</code>/<code>$userAgent</code>, versioned with this class
+and released from it). Do not add a copy of a config-owned value; guarded by
+tests/ClientConfigSeamTest.php.</p>
+<p>The configuration methods below are forwarders, and deliberately kept: they are
+the documented ergonomic surface (<code>$cl-&gt;useOTESystem()-&gt;setCredentials(...)</code>)
+and they read and write the config's state rather than a copy of it, so a
+forwarder cannot disagree with the config. A <em>new</em> setting needs no forwarder —
+<code>getSocketConfig()</code> is the accessor whose absence let these 18 accumulate, and
+since RSRMID-2966 the constructor covers the one case the accessor could not,
+configuring a client before it exists. With both halves present a forwarder
+carries no capability of its own, which is what makes the freeze cost nothing.</p>
+<p>Only capabilities every brand can actually honour live here. In particular
+<code>getSession()</code>/<code>setSession()</code> do <strong>not</strong> — API sessions are a CNR concept and
+live on {\CNIC\CNR\Client} beside the state they read. Do not hoist them,
+or role credentials ({\CNIC\RoleCredentialsInterface}), back up: a
+capability a brand cannot honour belongs off the shared surface, not on it
+returning a constant. Full decision record: docs/agents/architecture.md.</p></p>        </div>
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                VERSION
+                                    </td>
+                <td class="last">
+                    <p><em><p>Current module version.</p></em></p>
+                    <p><p>Kept in sync automatically by semantic-release — see .releaserc.json.</p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_context">
+                                        protected                                        <abbr title="CNIC\array&lt;string, mixed&gt;">array&lt;string, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$context</td>
+                <td class="last"><p>context data for the client</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_socketConfig">
+                                        protected                                        <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                                                                                
+                                    </td>
+                <td>$socketConfig</td>
+                <td class="last"><p>Object covering API connection data — the one home for connection
+configuration; see {getSocketConfig()}.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_debugMode">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$debugMode</td>
+                <td class="last"><p>activity flag for debug mode</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_userAgent">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$userAgent</td>
+                <td class="last"><p>User agent sent with every request. Empty until {setUserAgent()} is
+called; while it is empty {getUserAgent()} derives the SDK default.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_logger">
+                                        protected                                        <a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+                                                                                
+                                    </td>
+                <td>$logger</td>
+                <td class="last"><p>logger instance for debug mode</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_transport">
+                                        protected                                        <a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a>
+                                                                                
+                                    </td>
+                <td>$transport</td>
+                <td class="last"><p>HTTP transport layer</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(<a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>|null $socketConfig = null)
+        
+                                            <p>Constructor.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSocketConfig">getSocketConfig</a>()
+        
+                                            <p><p>The connection configuration this client uses — the accessor that means a new
+setting needs no forwarder, and the seam that lets configuration be built and
+asserted without constructing a client.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_request">request</a>(array $cmd = [], string $path = &quot;&quot;)
+        
+                                            <p><p>Perform API request using the given command.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_performRequest">performRequest</a>(array $cmd, string $path = &quot;&quot;)
+        
+                                            <p><p>Shared request lifecycle (template method). Never reimplement it in a brand;
+vary it through exactly two hooks — {buildCommand()} (command
+flattening) and {newResponse()} (covariant Response factory) — plus the
+{newSocketConfig()} subtype, which is where a brand-mandatory cURL
+option would go. No brand declares one.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_buildCommand">buildCommand</a>(array $cmd)
+        
+                                            <p><p>Flatten and normalise the given command into wire form.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newResponse">newResponse</a>(string $raw, array $cmd, array $cfg, string|null $error = null)
+        
+                                            <p><p>Instantiate the brand Response for the given raw payload.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newSocketConfig">newSocketConfig</a>()
+        
+                                            <p><p>Instantiate the SocketConfig for this client.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newTransport">newTransport</a>()
+        
+                                            <p><p>Instantiate the HTTP transport for this client. Mirrors
+{newSocketConfig()} — the default is the production cURL transport;
+override or {setTransport()} to inject a test double so the
+request() lifecycle can run offline.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setTransport">setTransport</a>(<a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a> $transport)
+        
+                                            <p><p>Inject a custom HTTP transport (e.g. a record/replay cassette transport
+for offline tests) in place of the default {HttpTransport}.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getTransport">getTransport</a>()
+        
+                                            <p><p>The transport this client posts through — the read half of
+{setTransport()}, mirroring {getSocketConfig()}.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newLogger">newLogger</a>(<a href="../CNIC/LogSinkInterface.html"><abbr title="CNIC\LogSinkInterface">LogSinkInterface</abbr></a> $sink)
+        
+                                            <p><p>Instantiate the brand's logger, writing to the given sink. Mirrors
+{newTransport()}/{@see newSocketConfig()}, and exists so a sink can be
+chosen without the brand's Logger class being named at the call site. An
+override must honour <code>$sink</code> — that is what makes {setLogSink()} work
+for a subclass.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setLogSink">setLogSink</a>(<a href="../CNIC/LogSinkInterface.html"><abbr title="CNIC\LogSinkInterface">LogSinkInterface</abbr></a> $sink)
+        
+                                            <p><p>Route debug output somewhere other than standard output, keeping this
+brand's format.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setCustomLogger">setCustomLogger</a>(<a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
+        
+                                            <p><p>Set custom logger to use instead of the default one — use this to replace
+the <em>format</em> as well as the destination. Create your own class extending
+\CNIC\AbstractLogger (format only) or implementing \CNIC\LoggerInterface
+(format and destination).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLogger">getLogger</a>()
+        
+                                            <p><p>The logger this client writes debug records through — the read half of
+{setCustomLogger()}/{@see setLogSink()}, mirroring
+{getSocketConfig()}.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_enableDebugMode">enableDebugMode</a>()
+        
+                                            <p><p>Enable debug output to STDOUT</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_disableDebugMode">disableDebugMode</a>()
+        
+                                            <p><p>Disable debug output</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPOSTData">getPOSTData</a>(array $cmd, bool $maskSecrets = false)
+        
+                                            <p><p>Serialize given command for POST request including connection configuration data</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getURL">getURL</a>()
+        
+                                            <p><p>Get the API connection url that is currently set</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setSocketTimeout">setSocketTimeout</a>(int $timeoutSeconds)
+        
+                                            <p><p>Set the request timeout in seconds (default 300).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSocketTimeout">getSocketTimeout</a>()
+        
+                                            <p><p>Get the request timeout in seconds currently configured.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setUserAgent">setUserAgent</a>(string $label, string $revision, array $modules = [])
+        
+                                            <p><p>Set a custom user agent (for platforms that use this SDK)</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getUserAgent">getUserAgent</a>()
+        
+                                            <p><p>Get the user agent string — the one set via {setUserAgent()}, or the
+SDK default when none was.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setExtraCurlOptions">setExtraCurlOptions</a>(array $opts)
+        
+                                            <p><p>Merge additional cURL options into the bag, overriding existing values on
+key collision. Forwards to {AbstractSocketConfig::setExtraCurlOptions()},
+whose docblock carries the detail: what reaches the wire, and the two sets
+of keys that are refused — the SDK-managed settings
+({AbstractSocketConfig::MANAGED_OPTIONS}, rejected here and now) and
+the transport's own ({HttpTransport::PROTECTED_OPTIONS}, rejected on
+the next request).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_resetCurlOptions">resetCurlOptions</a>()
+        
+                                            <p><p>Restore the cURL option bag to the brand defaults, discarding anything
+previously handed to {setExtraCurlOptions()}. Options only — the proxy
+and referer are separate state and survive; see
+{AbstractSocketConfig::resetCurlOptions()}.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setProxy">setProxy</a>(string $proxy = &quot;&quot;)
+        
+                                            <p><p>Set proxy to use for API communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getProxy">getProxy</a>()
+        
+                                            <p><p>Get proxy configuration for API communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setReferer">setReferer</a>(string $referer = &quot;&quot;)
+        
+                                            <p><p>Set Referer to use for API communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getReferer">getReferer</a>()
+        
+                                            <p><p>Get Referer configuration for API communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getVersion">getVersion</a>()
+        
+                                            <p><p>Get the current module version</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setURL">setURL</a>(string $url)
+        
+                                            <p><p>Set another connection url to be used for API communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setCredentials">setCredentials</a>(string $login = &quot;&quot;, string $password = &quot;&quot;)
+        
+                                            <p><p>Set Credentials to be used for API communication.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup</a>()
+        
+                                            <p><p>Activate High Performance Setup — route requests through the co-located
+proxy on loopback.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_IDNConvert">IDNConvert</a>(array $domains)
+        
+                                            <p><p>Convert domain names to idn + punycode.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_executeCurl">executeCurl</a>(string $postData, array $cfg)
+        
+                                            <p><p>Delegate cURL execution to the transport layer.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_close">close</a>()
+        
+                                            <p><p>Close all cURL connections</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLiveUrl">getLiveUrl</a>()
+        
+                                            <p><p>Get LIVE system URL.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="CNIC\System">System</abbr>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSystem">getSystem</a>()
+        
+                                            <p><p>Get the API system in use, or null when the configured URL is neither of
+the brand's two known endpoints.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isOTE">isOTE</a>()
+        
+                                            <p><p>Check whether the OT&amp;E system is in use</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useOTESystem">useOTESystem</a>()
+        
+                                            <p><p>Set OT&amp;E System for API communication</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useLIVESystem">useLIVESystem</a>()
+        
+                                            <p><p>Set LIVE System for API communication (this is the default setting)</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setContext">setContext</a>(array $context)
+        
+                                            <p><p>Set context data for the client</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L119">at line 119</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>|null $socketConfig = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p>Constructor.</p>                <p><p>The <code>$socketConfig</code> parameter is the build half of the configuration seam
+whose read half is {\CNIC\getSocketConfig()} (RSRMID-2966). Before it, a
+{\CNIC\AbstractSocketConfig} could be built standalone but never supplied, so
+configuring a client meant a setter sequence over the forwarders below —
+during which the client is already pointed at LIVE, the default system.
+Handing over a finished config means the client does not exist until its
+configuration is complete.</p>
+<p>Purely additive: omit the argument and the brand mints its own default
+exactly as before. Brands narrow this parameter to their own config subtype
+so a cross-brand config is an analysis error rather than a runtime one; see
+{<a href="../CNIC/CNR/Client.html">\CNIC\CNR\Client::__construct()}.</a></p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>|null</td>
+                <td>$socketConfig</td>
+                <td><p>connection configuration to
+adopt; null has the brand build its default via {\CNIC\newSocketConfig()}</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSocketConfig">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L143">at line 143</a></div>
+        <code>                    <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>getSocketConfig</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The connection configuration this client uses — the accessor that means a new
+setting needs no forwarder, and the seam that lets configuration be built and
+asserted without constructing a client.</p></p>                <p><p>Brands narrow the return type covariantly where they have their own config
+capabilities — {<a href="../CNIC/CNR/Client.html">\CNIC\CNR\Client::getSocketConfig()}</a> returns the CNR
+config, which is the one place the invariant property type is narrowed.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_request">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L162">at line 162</a></div>
+        <code>    abstract                <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>request</strong>(array $cmd = [], string $path = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Perform API request using the given command.</p></p>                <p><p>The shared request lifecycle lives in {\CNIC\performRequest()}; each brand's
+public <code>request()</code> is a thin wrapper that pins its default <code>$path</code> and
+declares a concrete Response return type. Every brand accepts an optional
+<code>$path</code> appended to the configured base URL to select the endpoint: for
+IBS/Moniker the path selects the operation (e.g. <code>Domain/Create</code>); for CNR
+it defaults to the single fixed script path (<code>api/call.cgi</code>) and rarely
+varies. The signature is symmetric across all brands.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td><p>path segment appended to the base URL to select the endpoint</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_performRequest">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L178">at line 178</a></div>
+        <code>            protected        <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>performRequest</strong>(array $cmd, string $path = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Shared request lifecycle (template method). Never reimplement it in a brand;
+vary it through exactly two hooks — {buildCommand()} (command
+flattening) and {newResponse()} (covariant Response factory) — plus the
+{newSocketConfig()} subtype, which is where a brand-mandatory cURL
+option would go. No brand declares one.</p></p>                <p><p>Brand-specific command rewriting belongs behind <code>buildCommand()</code>, not here:
+CNR's IDN conversion lives in {\CNIC\CNR\IDNCommandRewriter}, and a
+shared step gated by a flag only one brand sets is the shape that replaced.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td><p>path segment appended to the base URL to select the endpoint</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildCommand">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L198">at line 198</a></div>
+        <code>    abstract        protected        array
+    <strong>buildCommand</strong>(array $cmd)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Flatten and normalise the given command into wire form.</p></p>                <p><p>Brand-specific: CNR flattens as-is; IBS injects <code>ResponseFormat=JSON</code>.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newResponse">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L208">at line 208</a></div>
+        <code>    abstract        protected        <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>newResponse</strong>(string $raw, array $cmd, array $cfg, string|null $error = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the brand Response for the given raw payload.</p></p>                <p><p>Return type is covariant so each brand pins its concrete Response.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$raw</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>flattened command that produced the response</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cfg</td>
+                <td><p>connection config used for the request</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$error</td>
+                <td><p>transport error, if any; non-null means $raw is unusable and the brand's &quot;httperror&quot; template is substituted instead</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newSocketConfig">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L214">at line 214</a></div>
+        <code>    abstract        protected        <a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>newSocketConfig</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the SocketConfig for this client.</p></p>                <p><p>Subclasses return their own SocketConfig subtype.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newTransport">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L222">at line 222</a></div>
+        <code>            protected        <a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a>
+    <strong>newTransport</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the HTTP transport for this client. Mirrors
+{newSocketConfig()} — the default is the production cURL transport;
+override or {setTransport()} to inject a test double so the
+request() lifecycle can run offline.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setTransport">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L232">at line 232</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setTransport</strong>(<a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a> $transport)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Inject a custom HTTP transport (e.g. a record/replay cassette transport
+for offline tests) in place of the default {HttpTransport}.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a></td>
+                <td>$transport</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getTransport">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L248">at line 248</a></div>
+        <code>                    <a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a>
+    <strong>getTransport</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The transport this client posts through — the read half of
+{setTransport()}, mirroring {getSocketConfig()}.</p></p>                <p><p>Injecting a canned {\CNIC\TransportInterface} is how an embedding
+application drives the request() lifecycle offline; this accessor is how
+it reads the double back afterwards to assert what the client handed
+over, without reaching past the client for a protected property.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/TransportInterface.html"><abbr title="CNIC\TransportInterface">TransportInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newLogger">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L260">at line 260</a></div>
+        <code>    abstract        protected        <a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+    <strong>newLogger</strong>(<a href="../CNIC/LogSinkInterface.html"><abbr title="CNIC\LogSinkInterface">LogSinkInterface</abbr></a> $sink)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the brand's logger, writing to the given sink. Mirrors
+{newTransport()}/{@see newSocketConfig()}, and exists so a sink can be
+chosen without the brand's Logger class being named at the call site. An
+override must honour <code>$sink</code> — that is what makes {setLogSink()} work
+for a subclass.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/LogSinkInterface.html"><abbr title="CNIC\LogSinkInterface">LogSinkInterface</abbr></a></td>
+                <td>$sink</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setLogSink">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L271">at line 271</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setLogSink</strong>(<a href="../CNIC/LogSinkInterface.html"><abbr title="CNIC\LogSinkInterface">LogSinkInterface</abbr></a> $sink)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Route debug output somewhere other than standard output, keeping this
+brand's format.</p></p>                <p><p>This is the seam integrators want: the brand formatter is the part with
+the logic, the destination is the part that varies per host application.
+Passing a fresh {\CNIC\EchoSink} restores the shipped default, discarding
+any logger set via {\CNIC\setCustomLogger()}.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/LogSinkInterface.html"><abbr title="CNIC\LogSinkInterface">LogSinkInterface</abbr></a></td>
+                <td>$sink</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setCustomLogger">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L283">at line 283</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setCustomLogger</strong>(<a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a> $customLogger)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set custom logger to use instead of the default one — use this to replace
+the <em>format</em> as well as the destination. Create your own class extending
+\CNIC\AbstractLogger (format only) or implementing \CNIC\LoggerInterface
+(format and destination).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></td>
+                <td>$customLogger</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLogger">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L301">at line 301</a></div>
+        <code>                    <a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a>
+    <strong>getLogger</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The logger this client writes debug records through — the read half of
+{setCustomLogger()}/{@see setLogSink()}, mirroring
+{getSocketConfig()}.</p></p>                <p><p>Which of the two setters last ran decides what comes back: a brand logger
+built around the injected sink, or the custom logger supplied verbatim.
+That composition rule is order-dependent, so an embedding application
+that installs its own logger needs a way to confirm the one it supplied
+is the one in place.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/LoggerInterface.html"><abbr title="CNIC\LoggerInterface">LoggerInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_enableDebugMode">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L309">at line 309</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>enableDebugMode</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Enable debug output to STDOUT</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_disableDebugMode">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L318">at line 318</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>disableDebugMode</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Disable debug output</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPOSTData">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L328">at line 328</a></div>
+        <code>                    string
+    <strong>getPOSTData</strong>(array $cmd, bool $maskSecrets = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Serialize given command for POST request including connection configuration data</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cmd</td>
+                <td><p>API command to encode</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$maskSecrets</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getURL">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L336">at line 336</a></div>
+        <code>                    string
+    <strong>getURL</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the API connection url that is currently set</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSocketTimeout">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L351">at line 351</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setSocketTimeout</strong>(int $timeoutSeconds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set the request timeout in seconds (default 300).</p></p>                <p><p>The <strong>only</strong> way to change the timeout: <code>CURLOPT_TIMEOUT</code> in the option bag
+is rejected ({\CNIC\setExtraCurlOptions()}) rather than quietly overriding
+what {\CNIC\getSocketTimeout()} reports.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$timeoutSeconds</td>
+                <td><p>0 carries cURL's meaning — no timeout</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/Exception/InvalidConfigurationException.html"><abbr title="CNIC\Exception\InvalidConfigurationException">InvalidConfigurationException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSocketTimeout">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L360">at line 360</a></div>
+        <code>                    int
+    <strong>getSocketTimeout</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the request timeout in seconds currently configured.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setUserAgent">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L369">at line 369</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setUserAgent</strong>(string $label, string $revision, array $modules = [])
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set a custom user agent (for platforms that use this SDK)</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$label</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$revision</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$modules</td>
+                <td><p>further modules to add to user agent string</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserAgent">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L384">at line 384</a></div>
+        <code>                    string
+    <strong>getUserAgent</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the user agent string — the one set via {setUserAgent()}, or the
+SDK default when none was.</p></p>                <p><p>A pure read — keep it that way. Memoising the default into {$userAgent} would
+make a getter write during a request, and there is nothing worth memoising:
+the value is a handful of constants and one <code>php_uname()</code> call.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setExtraCurlOptions">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L403">at line 403</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setExtraCurlOptions</strong>(array $opts)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Merge additional cURL options into the bag, overriding existing values on
+key collision. Forwards to {AbstractSocketConfig::setExtraCurlOptions()},
+whose docblock carries the detail: what reaches the wire, and the two sets
+of keys that are refused — the SDK-managed settings
+({AbstractSocketConfig::MANAGED_OPTIONS}, rejected here and now) and
+the transport's own ({HttpTransport::PROTECTED_OPTIONS}, rejected on
+the next request).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$opts</td>
+                <td><p>cURL options keyed by CURLOPT_* constant</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_resetCurlOptions">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L415">at line 415</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>resetCurlOptions</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Restore the cURL option bag to the brand defaults, discarding anything
+previously handed to {setExtraCurlOptions()}. Options only — the proxy
+and referer are separate state and survive; see
+{AbstractSocketConfig::resetCurlOptions()}.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setProxy">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L425">at line 425</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setProxy</strong>(string $proxy = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set proxy to use for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$proxy</td>
+                <td><p>empty string resets it, restoring a direct connection</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getProxy">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L434">at line 434</a></div>
+        <code>                    string|null
+    <strong>getProxy</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get proxy configuration for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setReferer">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L443">at line 443</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setReferer</strong>(string $referer = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set Referer to use for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$referer</td>
+                <td><p>empty string resets it, so no Referer is sent</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReferer">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L452">at line 452</a></div>
+        <code>                    string|null
+    <strong>getReferer</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get Referer configuration for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getVersion">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L460">at line 460</a></div>
+        <code>                    string
+    <strong>getVersion</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the current module version</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setURL">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L468">at line 468</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setURL</strong>(string $url)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set another connection url to be used for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$url</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setCredentials">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L486">at line 486</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setCredentials</strong>(string $login = &quot;&quot;, string $password = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set Credentials to be used for API communication.</p></p>                <p><p>On CNR this <strong>discards any active API session</strong>: <code>CNR\SocketConfig::setLogin()</code>/
+<code>setPassword()</code> clear the session id, because a session and a password are
+alternative credentials on the wire and the newer one is authoritative. The
+invariant is deliberate and pinned by a test —
+<code>CNR\Client::reuseSession()</code> depends on it, restoring the login first
+and the session second. Set the session <em>after</em> the credentials, never before.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$login</td>
+                <td><p>empty string resets the stored login</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$password</td>
+                <td><p>empty string resets the stored password</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useHighPerformanceConnectionSetup">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L502">at line 502</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>useHighPerformanceConnectionSetup</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Activate High Performance Setup — route requests through the co-located
+proxy on loopback.</p></p>                <p><p>Brand-agnostic and therefore shared — the caller supplies the local proxy, so
+IBS/Moniker may opt in too. It records a flag on the config rather than
+rewriting the URL, so the selected system survives it; see
+{<a href="../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::useHighPerformanceConnectionSetup()}.</a></p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_IDNConvert">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L519">at line 519</a></div>
+        <code>                    array
+    <strong>IDNConvert</strong>(array $domains)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Convert domain names to idn + punycode.</p></p>                <p><p>Brand-agnostic and therefore shared: a thin pass-through to the vendor
+converter for callers who want to normalise a name explicitly. The automatic
+rewrite of an outbound <em>command</em> is a different thing and is deliberately not
+here — which parameters carry a domain name is CNR knowledge, and it lives in
+{\CNIC\CNR\IDNCommandRewriter}.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$domains</td>
+                <td><p>list of domain names (or tlds)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_executeCurl">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L542">at line 542</a></div>
+        <code>            protected        array
+    <strong>executeCurl</strong>(string $postData, array $cfg)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Delegate cURL execution to the transport layer.</p></p>                <p><p>The configured options are handed over as they are, and beat the
+transport's own defaults in {<a href="../CNIC/HttpTransport.html">\CNIC\HttpTransport::post()}</a> (PHP's <code>+</code> keeps
+the left operand on a duplicate key).</p>
+<p>Do not re-add a per-request options argument here: it would be a route into
+the option set that skips {<a href="../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::MANAGED_OPTIONS},</a> and so
+a way for a subclass to put a second answer behind <code>getProxy()</code>. A
+per-request option belongs on the config before the request, or on a
+transport the caller drives themselves.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$postData</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cfg</td>
+                <td><p>connection config</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>[rawResponse, errorMessage|null]</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_close">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L556">at line 556</a></div>
+        <code>                    void
+    <strong>close</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Close all cURL connections</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLiveUrl">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L568">at line 568</a></div>
+        <code>                    string
+    <strong>getLiveUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get LIVE system URL.</p></p>                <p><p>There is deliberately no matching <code>getOTEUrl()</code> here: a configuration value
+no longer needs a hand-written forwarder, so read the OT&amp;E endpoint from
+{\CNIC\getSocketConfig()}.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSystem">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L582">at line 582</a></div>
+        <code>                    <abbr title="CNIC\System">System</abbr>|null
+    <strong>getSystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the API system in use, or null when the configured URL is neither of
+the brand's two known endpoints.</p></p>                <p><p>Derived from the URL rather than stored beside it, which is what makes it
+impossible for the two to disagree — and why the return type is nullable:
+after a <code>setURL()</code> to some other host there is no honest OT&amp;E-or-LIVE answer
+to give. See {<a href="../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::getSystem()}.</a></p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="CNIC\System">System</abbr>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isOTE">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L590">at line 590</a></div>
+        <code>                    bool
+    <strong>isOTE</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check whether the OT&amp;E system is in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useOTESystem">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L598">at line 598</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>useOTESystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set OT&amp;E System for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useLIVESystem">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L607">at line 607</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>useLIVESystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set LIVE System for API communication (this is the default setting)</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setContext">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractClient.php#L617">at line 617</a></div>
+        <code>                    <a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a>
+    <strong>setContext</strong>(array $context)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set context data for the client</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$context</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/AbstractClient.html"><abbr title="CNIC\AbstractClient">AbstractClient</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
