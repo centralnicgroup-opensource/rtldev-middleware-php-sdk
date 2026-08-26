@@ -151,6 +151,34 @@ final class ClientTest extends TestCase
         $this->assertStringNotContainsString("sup3r-s3cr3t-auth", $enc);
     }
 
+    /**
+     * The session id must be masked in the secured POST body too. It is not a lesser
+     * credential than the password but an alternative to it — setSession() clears the
+     * password precisely because the newer of the two is authoritative — so on the
+     * persistent-session path the debug body used to carry a working credential with
+     * no password left beside it to mask.
+     *
+     * Asserted with a login present, which is the shape the fix is about: masking used
+     * to reduce the body to login + session, i.e. everything needed to authenticate.
+     */
+    public function testGetPostDataSecuredMasksSession(): void
+    {
+        $cfg = new SC();
+        $cl = CF::cnr(
+            $cfg->setLogin("myaccountid" . $cfg->getRoleSeparator() . "myrole")->setSession("12345678")
+        );
+        $enc = $cl->getPOSTData(["COMMAND" => "StatusAccount"], true);
+
+        $expected = http_build_query([
+            "s_login" => "myaccountid" . $cfg->getRoleSeparator() . "myrole",
+            "s_sessionid" => "***",
+            "s_command" => "COMMAND=StatusAccount"
+        ]);
+
+        $this->assertEquals($expected, $enc);
+        $this->assertStringNotContainsString("12345678", $enc);
+    }
+
     public function testGetPostDataObj(): void
     {
         $enc = (new CL())->getPOSTData([

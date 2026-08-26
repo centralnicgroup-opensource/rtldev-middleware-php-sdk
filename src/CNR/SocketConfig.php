@@ -84,8 +84,14 @@ final class SocketConfig extends AbstractSocketConfig
         if (strlen($this->password) !== 0) {
             $params[$this->parameters["password"]] = $maskSecrets ? CommandRedactor::MASK : $this->password;
         }
+        // Masked for the same reason s_pw is: a session id is not a lesser credential
+        // than the password but an alternative to it — see setSession(), which clears
+        // the password because the newer of the two is authoritative on the wire.
+        // Masking one and logging the other left the debug body carrying a working
+        // credential on exactly the persistent-session path, where there is no
+        // password left to mask.
         if (strlen($this->session) !== 0) {
-            $params[$this->parameters["session"]] = $this->session;
+            $params[$this->parameters["session"]] = $maskSecrets ? CommandRedactor::MASK : $this->session;
         }
         if ($command !== []) {
             if ($maskSecrets) {
