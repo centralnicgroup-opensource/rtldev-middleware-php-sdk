@@ -35,3 +35,7 @@ jobs:
     secrets: inherit
     with:
       base-ref: main
+      # Empty, so pnpm/action-setup resolves the version from
+      # `devEngines.packageManager` in package.json rather than installing whatever
+      # pnpm is newest. (RSRMID-3008)
+      pnpm-version: ""

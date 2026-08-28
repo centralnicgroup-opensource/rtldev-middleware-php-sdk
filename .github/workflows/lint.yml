@@ -22,6 +22,10 @@ jobs:
     uses: centralnicgroup-opensource/rtldev-middleware-shareable-workflows/.github/workflows/php-sdk-lint.yml@main
     with:
       prettier: true
+      # Empty, so pnpm/action-setup resolves the version from
+      # `devEngines.packageManager` in package.json rather than installing whatever
+      # pnpm is newest. (RSRMID-3008)
+      pnpm-version: ""
     secrets: inherit
 
   ci-success:
