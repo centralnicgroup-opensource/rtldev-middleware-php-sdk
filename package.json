@@ -9,8 +9,15 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=24.15.0",
+    "node": "^24.15.0 || ^26.0.0",
     "npm": ">=12.0.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.0.0",
+      "onFail": "error"
+    }
   },
   "homepage": "https://centralnicgroup-opensource.github.io/rtldev-middleware-php-sdk/",
   "repository": "github:centralnicgroup-opensource/rtldev-middleware-php-sdk.git",
