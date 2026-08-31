@@ -19,7 +19,7 @@ jobs:
     name: Settings drift
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       # GITHUB_TOKEN reads the core settings and topics fine, but the security
       # toggles need administration:read, which it does not have — the script then
