@@ -26,7 +26,7 @@ final class Cassettes
     public static function isRecording(): bool
     {
         $flag = getenv("RTLDEV_MW_RECORD");
-        return $flag !== false && $flag !== "" && $flag !== "0";
+        return !in_array($flag, [false, "", "0"], true);
     }
 
     /**

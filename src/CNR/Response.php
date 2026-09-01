@@ -109,7 +109,7 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
         if ($properties !== []) {
             foreach (array_keys($properties) as $k) {
                 $key = strval($k);
-                $cells = self::stringCells($key, $properties[$k]);
+                $cells = $this->stringCells($key, $properties[$k]);
                 if ($this->isMetaKey($key)) {
                     continue;
                 }
@@ -156,7 +156,7 @@ class Response extends AbstractResponse implements ExtendedResponseInterface
      * @return string[]
      * @throws MalformedResponseException if the entry is not an array, or a cell is not a string
      */
-    private static function stringCells(string $key, mixed $values): array
+    private function stringCells(string $key, mixed $values): array
     {
         if (!is_array($values)) {
             throw new MalformedResponseException(

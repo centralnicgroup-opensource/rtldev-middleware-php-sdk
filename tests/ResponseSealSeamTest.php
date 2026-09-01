@@ -220,14 +220,14 @@ final class ResponseSealSeamTest extends TestCase
     {
         $r = new IBSResponse('{"status":"SUCCESS","domain":["a.com","b.com","c.com"]}');
 
-        $first = self::domainsOf($r);
+        $first = $this->domainsOf($r);
         $this->assertSame(["a.com", "b.com", "c.com"], $first);
-        $this->assertSame($first, self::domainsOf($r), "a second walk must not need a rewind");
+        $this->assertSame($first, $this->domainsOf($r), "a second walk must not need a rewind");
 
         // Interleaved: an inner walk must not move an outer one along.
         $seen = [];
         foreach ($r as $outer) {
-            self::domainsOf($r);
+            $this->domainsOf($r);
             /** @psalm-suppress MixedAssignment getDataByKey() returns mixed by design — IBS records hold arbitrary JSON values */
             $seen[] = $outer->getDataByKey("domain");
         }
@@ -251,7 +251,7 @@ final class ResponseSealSeamTest extends TestCase
      */
     public function testADuplicateColumnNameIsRefused(): void
     {
-        $r = self::registrar();
+        $r = $this->registrar();
 
         $this->expectException(DuplicateColumnException::class);
         $this->expectExceptionMessage('Column "domain" is already registered');
@@ -266,7 +266,7 @@ final class ResponseSealSeamTest extends TestCase
      */
     public function testTheRefusalLeavesTheColumnListsConsistent(): void
     {
-        $r = self::registrar();
+        $r = $this->registrar();
         $r->register("domain", ["a.com"]);
 
         try {
@@ -292,7 +292,7 @@ final class ResponseSealSeamTest extends TestCase
      */
     public function testAssemblingTwiceDoesNotDoubleTheRecordList(): void
     {
-        $r = self::registrar();
+        $r = $this->registrar();
 
         $this->assertSame(1, $r->getRecordsCount(), "the one-data-column fixture assembles one row");
         $r->assembleAgain();
@@ -303,7 +303,7 @@ final class ResponseSealSeamTest extends TestCase
      * The "domain" cell of every record, in iteration order.
      * @return mixed[]
      */
-    private static function domainsOf(ResponseInterface $resp): array
+    private function domainsOf(ResponseInterface $resp): array
     {
         $out = [];
         foreach ($resp as $rec) {
@@ -326,7 +326,7 @@ final class ResponseSealSeamTest extends TestCase
      * as the data key so the duplicate-name tests below can register it
      * themselves.
      */
-    private static function registrar(): IBSResponse&ColumnRegistrar
+    private function registrar(): IBSResponse&ColumnRegistrar
     {
         return new class ('{"status":"SUCCESS","item":["a"]}') extends IBSResponse implements ColumnRegistrar {
             /**
