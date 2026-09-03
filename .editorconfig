@@ -8,8 +8,13 @@ indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# indent_size is pinned here rather than inherited from [*], which is 4 for this
+# PHP-leaning repository. There is no prettier config to shadow .editorconfig any
+# more: prettier reads it and maps indent_size to tabWidth, so without this line
+# Markdown lists would be reindented from 2 to 4 spaces.
 [*.md]
 trim_trailing_whitespace = false
+indent_size = 2
 
 [*.{json,jsonc,yml,yaml}]
 indent_size = 2
