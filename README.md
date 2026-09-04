@@ -1,7 +1,7 @@
 # php-sdk
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![Build Status](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/workflows/Release/badge.svg?branch=main)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/workflows/Release/badge.svg?branch=main)
+[![Release](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/actions/workflows/release.yml)
 [![Packagist](https://img.shields.io/packagist/v/centralnic-reseller/php-sdk.svg)](https://packagist.org/packages/centralnic-reseller/php-sdk)
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/centralnic-reseller/php-sdk.svg)](https://packagist.org/packages/centralnic-reseller/php-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -16,6 +16,7 @@ This module is a connector library for the insanely fast CNIC Backend APIs (Cent
   - [CentralNic Reseller (CNR)](https://support.centralnicreseller.com/hc/en-gb/articles/13513253776285-Self-Development-Kit-for-PHP)
   - [Internet.bs (IBS)](https://faq.internetbs.net/hc/en-gb/articles/24953916500381-Self-Development-Kit-for-PHP)
   - [Moniker (MONIKER)](https://support.moniker.com/hc/en-gb/articles/24954146333981-Self-Development-Kit-for-PHP)
+- [Generated API Reference](https://centralnicgroup-opensource.github.io/rtldev-middleware-php-sdk/) — every class, method and signature, republished on each release
 - [Release Notes](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/releases)
 - [Migration Guide](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md) — how to upgrade across major versions
 
@@ -84,7 +85,7 @@ Two reasons to prefer it over the setter sequence:
 - **No misconfigured window.** A default-constructed client is aimed at **LIVE**, so a `useOTESystem()` call that is skipped by a branch — or never reached because something threw first — leaves you sending real requests. A client built from a finished config is never in a state you did not ask for.
 - **The ordering rules are confined to one object.** Credentials and sessions are alternative credentials on the wire, so on CNR `setLogin()`/`setPassword()` discard an active session and `setSession()` discards the password — the newer one wins. Those rules apply wherever you write them, but on a config you resolve them once, while building, instead of across a client's lifetime.
 
-The parameter is optional and every brand takes its own config type — `ClientFactory::moniker()` wants a `MONIKER\SocketConfig`, not an IBS one, because the endpoints are what differ between those two brands. `ClientFactory::cnr()` with no argument behaves exactly as before, and the fluent setters shown earlier remain fully supported; use them when the settings are not yet known at construction time. Anything that is _not_ connection configuration — the response context, a custom logger or log sink, the user agent, a replacement transport — keeps its setter either way.
+The parameter is optional and every brand takes its own config type — `ClientFactory::moniker()` wants a `MONIKER\SocketConfig`, not an IBS one, because the endpoints are what differ between those two brands. `ClientFactory::cnr()` with no argument is fully supported, as are the fluent setters shown earlier; use them when the settings are not yet known at construction time. Anything that is _not_ connection configuration — the response context, a custom logger or log sink, the user agent, a replacement transport — keeps its setter either way.
 
 ### Reading the rows of a list response
 
@@ -103,7 +104,42 @@ $r->getColumn("DOMAIN");    // ?ColumnInterface — column-wise instead of row-w
 $r->getColumnKeys();        // string[] — the data columns, in wire order
 ```
 
-**Rows are data only.** What the API sends _about_ the response — CNR's `TOTAL`/`FIRST`/`LAST`/`COUNT`/`LIMIT`, IBS/Moniker's `status`/`message`/`code`/`transactid` and count keys — is not a column and is not part of any row, so every row of one response carries the same keys and an empty list has no rows at all. Read that metadata where it belongs: `isSuccess()`/`getCode()`/`getDescription()` for the status, `getHash()` for the raw value, and the paginator for the counters.
+**Rows are data only.** What the API sends _about_ the response — CNR's `TOTAL`/`FIRST`/`LAST`/`COUNT`/`LIMIT`, IBS/Moniker's `transactid`/`status`/`message`/`code` and count keys (`domaincount`, `total_*`) — is not a column and is not part of any row. Those keys appear in no `getColumnKeys()`, no `getColumns()`, no `getColumn()` and in no record. Read that metadata where it belongs: `isSuccess()`/`getCode()`/`getDescription()` for the status, `getHash()` for the raw value, and the paginator plus the four primitives below for the counters.
+
+> [!IMPORTANT]
+> **This changed in v33.0.0, and it is the change most likely to break an integration written against an older major.** Until v32 the counters were registered as one-cell columns sitting beside your data columns, so they showed up inside every record. Code like `$r->getRecord(0)->getData()["TOTAL"]` therefore worked, and now returns `null`. Ask the response instead — no string parsing, and `null` rather than a stand-in when the response is not a paginated list:
+>
+> ```php
+> $total = $r->getRecordsTotalCount();   // ?int — was $data["TOTAL"]
+> $limit = $r->getRecordsLimitation();   // ?int — was $data["LIMIT"]
+> $first = $r->getFirstRecordIndex();    // ?int — was $data["FIRST"]
+> $last  = $r->getLastRecordIndex();     // ?int — was $data["LAST"]
+> ```
+>
+> Full before/after, including the row-shape and `null` consequences: [Migration Guide → v33.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md#-v3300).
+
+**The exclusion matches exact key names, so CNR lookalikes are still data.** Only the five names above are reserved on CNR. A command that answers its own per-entity counters keeps them as ordinary columns — `QueryEventList` sends `property[events total]` and `property[events count]`, which the parser folds to `EVENTSTOTAL` and `EVENTSCOUNT` — and so does CNR's `COLUMN` descriptor, the entry naming which columns the list carries. `EVENTSTOTAL` is **not** a renamed `TOTAL`: the two can hold different numbers, and only `TOTAL` feeds `getRecordsTotalCount()` and the paginator.
+
+One consequence worth coding against: because those keys are columns, they size the record list, so a CNR list window that came back **empty** can still report a single record built entirely out of them.
+
+```php
+// QueryEventList over an empty window — the response carries property[column],
+// property[events count] and property[events total], but no property[event].
+$r->getRecordsCount();        // 1
+$r->getRecord(0)->getData();  // ["COLUMN" => "event", "EVENTSCOUNT" => "0", "EVENTSTOTAL" => "0"]
+```
+
+So bound the loop on the data key you actually read rather than on the record count, and take the row count from the metadata accessors:
+
+```php
+foreach ($r as $rec) {
+    $event = $rec->getStringByKey("EVENT");
+    if ($event === null) {
+        continue;   // a row carrying no EVENT is not an event
+    }
+    // … handle $event
+}
+```
 
 ### Paging through a list
 
@@ -172,7 +208,7 @@ $cl->setCustomLogger(new MyLogger(new FileSink("/var/log/cnic.log")));
 
 Order matters between the two: `setLogSink()` rebuilds the **brand** logger around your sink, so call it before `setCustomLogger()`, not after.
 
-`LoggerInterface::format()` **returns** the record rather than printing it, so you can route SDK debug output into your own logging without reimplementing a brand's format — and assert on it in your own tests without output buffering. Sensitive command values (`PASSWORD`, `AUTH`, `transferAuthInfo`) are already masked before they reach the formatter.
+`LoggerInterface::format()` **returns** the record rather than printing it, so you can route SDK debug output into your own logging without reimplementing a brand's format — and assert on it in your own tests without output buffering. Sensitive command values are already masked before they reach the formatter — `PASSWORD` and `AUTH` on CNR, `password` and `transferAuthInfo` on IBS/Moniker.
 
 ### Testing your integration offline
 
