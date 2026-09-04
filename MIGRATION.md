@@ -1516,10 +1516,11 @@ $r->getPagination()->getCurrentPageNumber(); // BEFORE: 1  AFTER: null
 
 `getNumberOfPages()` is unaffected by this: it still answers `1` for a response that holds rows but is not a paginated list (an implicit single page) and `0` when there is nothing to page through. `getRecordsCount()` is also unchanged — it counts the rows this response holds, and remains what `getRecord()` bounds-checks against.
 
-**Rows:** an empty list used to report **one record consisting entirely of metadata**, and a populated IBS list put its metadata on **row 0 only**. Both are gone:
+**Rows:** an empty list used to report **one record consisting entirely of metadata**, and a populated IBS list put its metadata on **row 0 only**. Both are gone on IBS/Moniker — and on CNR for the five counters that brand reserves, but not for all of its metadata (see the warning below):
 
 ```php
-// An empty CNR window (COUNT=0), or an empty IBS list ({"status":"SUCCESS","domaincount":0}):
+// An empty IBS list ({"status":"SUCCESS","domaincount":0}), or an empty CNR window
+// carrying nothing but the five reserved counters:
 $r->getRecordsCount();   // BEFORE: 1 (a phantom row of counters)   AFTER: 0
 $r->getRecord(0);        // BEFORE: a Record of metadata            AFTER: null
 
@@ -1528,7 +1529,30 @@ $r->getRecord(0);        // BEFORE: a Record of metadata            AFTER: null
 // AFTER:  rows 0-2 => ["domain" => …]
 ```
 
-If you were reading `$r->getRecord(0)?->getDataByKey("status")`, read `$r->getHash()["status"]` (or `isSuccess()`) instead. If you guarded a list loop with `getRecordsCount() > 1` to skip the phantom row, drop the guard — it now skips a real row.
+If you were reading `$r->getRecord(0)?->getDataByKey("status")`, read `$r->getHash()["status"]` (or `isSuccess()`) instead. On IBS/Moniker, if you guarded a list loop with `getRecordsCount() > 1` to skip the phantom row, drop the guard — it now skips a real row. On CNR, read the warning below before dropping anything.
+
+> [!WARNING]
+> **On CNR the phantom row is not fully gone, and this section overstated the fix when v33 shipped.** The exclusion matches exact key names — `TOTAL`, `COUNT`, `LIMIT`, `FIRST`, `LAST` — so two other kinds of CNR response metadata are still registered as columns, and therefore still size the record list: the `COLUMN` descriptor naming which columns the list carries, and a command's own per-entity counters, such as the `EVENTSTOTAL`/`EVENTSCOUNT` that `QueryEventList` sends as `property[events total]`/`property[events count]`. `COLUMN` is on every real CNR list response.
+>
+> ```php
+> // An empty QueryEventList window, as CNR actually answers it:
+> $r->getRecordsCount();        // 1 — not 0
+> $r->getRecord(0)->getData();  // ["COLUMN" => "event", "EVENTSCOUNT" => "0", "EVENTSTOTAL" => "0"]
+> ```
+>
+> **So do not simply drop a phantom-row guard on CNR.** Replace it with a check on the data key you actually read, which is correct on both brands and stays correct once this is fixed:
+>
+> ```php
+> foreach ($r as $rec) {
+>     $event = $rec->getStringByKey("EVENT");
+>     if ($event === null) {
+>         continue;   // a row carrying no EVENT is not an event
+>     }
+>     // … handle $event
+> }
+> ```
+>
+> Reported as [#335](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/issues/335) and tracked in RSRMID-3048. Fixing it changes CNR record counts again, so it ships with a future major; that release's own section supersedes this note. `README.md` carries the same caveat for consumers who never read this guide.
 
 **If you implement `ResponseInterface` yourself:** remove the `bool` parameter from `getColumnKeys()`, change `getPagination()` to return `CNIC\Paginator`, and delete your `getCurrentPageNumber()`/`getNextPageNumber()`/`getPreviousPageNumber()`/`getNumberOfPages()`/`hasNextPage()`/`hasPreviousPage()` implementations — the interface no longer declares them, and `AbstractResponse::getPagination()` builds the paginator from your four primitives:
 
@@ -1560,7 +1584,7 @@ If you implement `ColumnInterface` directly, add `public function getLength(): i
 
 **If you subclass a brand `Response`:** the protected `$paginationKeys` property is renamed `$metaKeys`, and it now decides which keys never become columns rather than which ones get filtered later. A subclass that set `$paginationKeys` must rename it, or its keys silently return to the column pool. If you override `populate()`, skip metadata keys with the new `protected function isMetaKey(string $key): bool`.
 
-**Why this happened:** the counters were being modelled as data. A one-cell `TOTAL` column sat beside a 200-cell `DOMAIN` column, and `assembleRecords()` sizes the record list as the maximum over _every_ column — so metadata sized rows. That produced the phantom record and the uneven row shape above, and the SDK paid for the modelling error in three more places: a brand regex, a filter parameter on the public interface, and a documented hazard note telling `hasNextPage()` not to trust the record count. Removing the metadata from the column pool fixed all of it without touching the row assembly, which was correct all along given a correct column set. The stand-in fallbacks went with it: once metadata has one home, "this response is not a list" is expressible, so it no longer has to be reported as page 1 of something. The arithmetic then had no reason to stay on the response — it reads no column, holds no state and needs no payload, so it became a value object that can be constructed and tested directly instead of through a hand-authored API response. (Ref: RSRMID-2965.)
+**Why this happened:** the counters were being modelled as data. A one-cell `TOTAL` column sat beside a 200-cell `DOMAIN` column, and `assembleRecords()` sizes the record list as the maximum over _every_ column — so metadata sized rows. That produced the phantom record and the uneven row shape above, and the SDK paid for the modelling error in three more places: a brand regex, a filter parameter on the public interface, and a documented hazard note telling `hasNextPage()` not to trust the record count. Removing the metadata from the column pool fixed all of it without touching the row assembly, which was correct all along given a correct column set — though the column set this shipped with turned out to be incomplete on CNR, which is what the warning above records. The stand-in fallbacks went with it: once metadata has one home, "this response is not a list" is expressible, so it no longer has to be reported as page 1 of something. The arithmetic then had no reason to stay on the response — it reads no column, holds no state and needs no payload, so it became a value object that can be constructed and tested directly instead of through a hand-authored API response. (Ref: RSRMID-2965.)
 
 **The template registry publishes two contracts.** `CNIC\ResponseTemplateManagerInterface` keeps only what the response pipeline consumes — `generateTemplate()`, `addTemplate()`, `hasTemplate()`, `getRawTemplates()`. The four methods that turn stored templates into `Response` objects moved to a new `CNIC\ResponseTemplateFactoryInterface`: `getTemplate()`, `getTemplates()`, `isTemplateMatchHash()`, `isTemplateMatchPlain()`.
 
