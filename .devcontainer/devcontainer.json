@@ -47,13 +47,15 @@
     // installation, the on-attach toolchain banner, and the RTK binary the
     // committed ~/.claude/settings.json hook looks for.
     //
-    // It declares Node LTS, the GitHub CLI and the Claude Code CLI as its own
-    // dependencies, so none of the three is listed here and their digests move
-    // with a devbase release instead of a per-repository Dependabot PR. Do NOT
+    // It declares Node LTS and the GitHub CLI as its own dependencies, so neither
+    // is listed here and their digests move with a devbase release instead of a
+    // per-repository Dependabot PR. The Claude Code CLI was a third until devbase
+    // 2.0.0 dropped it — the VS Code extension runs its own bundled runtime
+    // (RSRMID-3053). Do NOT
     // re-declare node:2 to change its version: one Feature id with two option
     // sets counts as two Features under the spec's equality rule, so Node would
     // install twice into the same nvm path.
-    "ghcr.io/centralnicgroup-opensource/rtldev-middleware-devcontainer-features/devbase:1": {}
+    "ghcr.io/centralnicgroup-opensource/rtldev-middleware-devcontainer-features/devbase:2": {}
   },
 
   "customizations": {
