@@ -60,7 +60,7 @@
     "@team-internet/semantic-release-plugins": "^2.5.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.8",
     "semantic-release": "^25.0.9"
   },
   "lint-staged": {
