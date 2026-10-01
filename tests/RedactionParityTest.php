@@ -33,7 +33,7 @@ final class RedactionParityTest extends TestCase
      * @param class-string $class
      * @return string[]
      */
-    private static function defaultSensitiveFields(string $class): array
+    private function defaultSensitiveFields(string $class): array
     {
         /** @var string[] $default */
         $default = (new ReflectionClass($class))->getDefaultProperties()["sensitiveFields"];
@@ -42,14 +42,14 @@ final class RedactionParityTest extends TestCase
 
     public function testCnrSocketConfigAndResponseAgreeWithSharedConstant(): void
     {
-        $this->assertSame(CNRSensitiveFields::KEYS, self::defaultSensitiveFields(CNRSocketConfig::class));
-        $this->assertSame(CNRSensitiveFields::KEYS, self::defaultSensitiveFields(CNRResponse::class));
+        $this->assertSame(CNRSensitiveFields::KEYS, $this->defaultSensitiveFields(CNRSocketConfig::class));
+        $this->assertSame(CNRSensitiveFields::KEYS, $this->defaultSensitiveFields(CNRResponse::class));
     }
 
     public function testIbsSocketConfigAndResponseAgreeWithSharedConstant(): void
     {
-        $this->assertSame(IBSSensitiveFields::KEYS, self::defaultSensitiveFields(IBSSocketConfig::class));
-        $this->assertSame(IBSSensitiveFields::KEYS, self::defaultSensitiveFields(IBSResponse::class));
+        $this->assertSame(IBSSensitiveFields::KEYS, $this->defaultSensitiveFields(IBSSocketConfig::class));
+        $this->assertSame(IBSSensitiveFields::KEYS, $this->defaultSensitiveFields(IBSResponse::class));
     }
 
     /**
@@ -63,6 +63,6 @@ final class RedactionParityTest extends TestCase
      */
     public function testMonikerInheritsTheIbsListRatherThanDeclaringItsOwn(): void
     {
-        $this->assertSame(IBSSensitiveFields::KEYS, self::defaultSensitiveFields(MonikerSocketConfig::class));
+        $this->assertSame(IBSSensitiveFields::KEYS, $this->defaultSensitiveFields(MonikerSocketConfig::class));
     }
 }

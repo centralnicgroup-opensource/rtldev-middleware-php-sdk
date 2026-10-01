@@ -226,7 +226,7 @@ final class InterfaceCoverageSeamTest extends TestCase
     {
         $failures = [];
 
-        foreach (self::concreteClassesImplementingATotalInterface() as $class) {
+        foreach ($this->concreteClassesImplementingATotalInterface() as $class) {
             $rc = new ReflectionClass($class);
 
             // Every method declared on any CNIC interface this class
@@ -301,7 +301,7 @@ final class InterfaceCoverageSeamTest extends TestCase
     {
         $failures = [];
 
-        foreach (self::concreteClassesImplementingATotalInterface() as $class) {
+        foreach ($this->concreteClassesImplementingATotalInterface() as $class) {
             $rc = new ReflectionClass($class);
 
             foreach ($rc->getProperties(ReflectionProperty::IS_PUBLIC) as $p) {
@@ -338,7 +338,7 @@ final class InterfaceCoverageSeamTest extends TestCase
      */
     public function testTheSweepActuallyExaminesTheKnownImplementors(): void
     {
-        $found = self::concreteClassesImplementingATotalInterface();
+        $found = $this->concreteClassesImplementingATotalInterface();
 
         $missing = array_diff(self::KNOWN_TOTAL_IMPLEMENTORS, $found);
         $this->assertEmpty(
@@ -354,7 +354,7 @@ final class InterfaceCoverageSeamTest extends TestCase
         // implausibly few (or none) should.
         $this->assertGreaterThanOrEqual(
             40,
-            count(self::classesUnderSrc()),
+            count($this->classesUnderSrc()),
             "classesUnderSrc() found implausibly few files under src/ — discovery is likely broken "
             . "(wrong directory, empty iterator, ...) rather than src/ having genuinely shrunk this far."
         );
@@ -365,10 +365,10 @@ final class InterfaceCoverageSeamTest extends TestCase
      * {@see self::TOTAL_INTERFACES}, as fully-qualified class names.
      * @return class-string[]
      */
-    private static function concreteClassesImplementingATotalInterface(): array
+    private function concreteClassesImplementingATotalInterface(): array
     {
         $classes = [];
-        foreach (self::classesUnderSrc() as $fqcn) {
+        foreach ($this->classesUnderSrc() as $fqcn) {
             if (!class_exists($fqcn)) {
                 if (interface_exists($fqcn) || trait_exists($fqcn) || enum_exists($fqcn)) {
                     // Legitimately not a class — e.g. ResponseInterface,
@@ -410,7 +410,7 @@ final class InterfaceCoverageSeamTest extends TestCase
      * the file path is exact.
      * @return class-string[]
      */
-    private static function classesUnderSrc(): array
+    private function classesUnderSrc(): array
     {
         $srcDir = dirname(__DIR__) . "/src";
         $fqcns = [];

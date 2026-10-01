@@ -238,7 +238,7 @@ abstract class AbstractSocketConfig
      */
     public function getURL(): string
     {
-        return $this->highPerformance ? self::toLoopback($this->url) : $this->url;
+        return $this->highPerformance ? $this->toLoopback($this->url) : $this->url;
     }
 
     /**
@@ -352,7 +352,7 @@ abstract class AbstractSocketConfig
      * hostname recurring in the path or query. A URL with no host is returned
      * unchanged, there being nothing to redirect.
      */
-    private static function toLoopback(string $url): string
+    private function toLoopback(string $url): string
     {
         $parts = parse_url($url);
         if (!isset($parts["host"]) || $parts["host"] === '') {
@@ -444,7 +444,7 @@ abstract class AbstractSocketConfig
      */
     public function setExtraCurlOptions(array $opts): static
     {
-        self::rejectManagedOptions($opts);
+        $this->rejectManagedOptions($opts);
         $this->curlOptions = $opts + $this->curlOptions;
         return $this;
     }
@@ -503,7 +503,7 @@ abstract class AbstractSocketConfig
      * @param array<int, mixed> $opts
      * @throws UnsupportedFeatureException
      */
-    private static function rejectManagedOptions(array $opts): void
+    private function rejectManagedOptions(array $opts): void
     {
         $rejected = array_intersect_key(self::MANAGED_OPTIONS, $opts);
         if ($rejected === []) {

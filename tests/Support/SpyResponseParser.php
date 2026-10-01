@@ -31,7 +31,7 @@ use CNIC\ResponseParserInterface;
 final class SpyResponseParser implements ResponseParserInterface
 {
     /** @var array<string, mixed> canned hash returned in place of a real parse */
-    private const HASH = [
+    private const array HASH = [
         "CODE" => "999",
         "DESCRIPTION" => "from the substitute",
         "status" => "FAILURE",

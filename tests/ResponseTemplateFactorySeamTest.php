@@ -95,7 +95,7 @@ final class ResponseTemplateFactorySeamTest extends TestCase
 
     public function testThePipelineContractCannotReachResponseProduction(): void
     {
-        $registryMethods = self::methodNamesOf(ResponseTemplateManagerInterface::class);
+        $registryMethods = $this->methodNamesOf(ResponseTemplateManagerInterface::class);
 
         foreach ((new ReflectionClass(ResponseTemplateManagerInterface::class))->getMethods() as $method) {
             $type = $method->getReturnType();
@@ -122,7 +122,7 @@ final class ResponseTemplateFactorySeamTest extends TestCase
 
         $this->assertSame(
             [],
-            array_values(array_intersect($registryMethods, self::methodNamesOf(ResponseTemplateFactoryInterface::class))),
+            array_values(array_intersect($registryMethods, $this->methodNamesOf(ResponseTemplateFactoryInterface::class))),
             "the registry and factory contracts must publish disjoint method sets — an overlap means the "
             . "split is decorative and a consumer can reach either role through either type"
         );
@@ -133,7 +133,7 @@ final class ResponseTemplateFactorySeamTest extends TestCase
         // Non-vacuity for the name list above: if these four were deleted rather
         // than moved, "absent from the registry contract" would be trivially
         // true and the pin would guard nothing.
-        $factoryMethods = self::methodNamesOf(ResponseTemplateFactoryInterface::class);
+        $factoryMethods = $this->methodNamesOf(ResponseTemplateFactoryInterface::class);
 
         foreach (self::FACTORY_ROLE_METHODS as $name) {
             $this->assertContains($name, $factoryMethods, "ResponseTemplateFactoryInterface must declare {$name}()");
@@ -246,7 +246,7 @@ final class ResponseTemplateFactorySeamTest extends TestCase
      * @param class-string $interface
      * @return string[]
      */
-    private static function methodNamesOf(string $interface): array
+    private function methodNamesOf(string $interface): array
     {
         return array_map(
             static fn(ReflectionMethod $m): string => $m->getName(),
