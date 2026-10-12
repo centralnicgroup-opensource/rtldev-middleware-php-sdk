@@ -121,7 +121,7 @@ Short reminders; full detail in the linked docs.
   ```
 
 - **Branch creation:** `git checkout main && git pull --ff-only` before `git checkout -b` — never branch from a stale local `main` or another feature branch.
-- **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821/short-description`.
+- **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821-short-description`.
 - **Pull requests:** include the Jira issue link in the PR description; after opening, add the PR URL as a comment on the Jira issue.
 - **Merging PRs:** rebase-merge (`gh pr merge --rebase`). Squash merges are disabled at the repo level.
 - **Default branch:** `main` (renamed from `master` in RSRMID-2995). Versioning: semantic-release via the CI release workflow.
@@ -141,12 +141,9 @@ Class inventory is derivable from `src/` in a couple of greps and is deliberatel
 
 ## Atlassian / JIRA
 
-Work is tracked in **Jira Cloud**, project `RSRMID`, component `PHP-SDK` — not GitHub Issues. Always-on rules:
-
-- **Descriptions must be ADF** (Atlassian Document Format, JSON) — never markdown, which renders literal `\n`.
-- **Log time before Done:** an issue won't stay in **Done** without a worklog — automation stamps `missing-time-spent` and reopens it. Sequence: (1) add worklog; (2) remove the label; (3) transition to Done. Ask when the amount isn't obvious.
-
-All IDs, custom fields, transitions, account IDs and JQL examples: [docs/agents/issue-tracker.md](docs/agents/issue-tracker.md) — update that file, not this section.
+Work is tracked in **Jira Cloud**, project `RSRMID` — not GitHub Issues. Load the
+`jira-conventions` skill before creating, editing or transitioning an issue: it carries the
+required fields, this repository's title prefix and component, and the worklog rule for Done and Cancelled.
 
 ## Tool-Output Hygiene
 
@@ -185,5 +182,5 @@ Detailed, on-demand reference lives under `docs/agents/` — read the relevant f
 - **[testing.md](docs/agents/testing.md)** — cassette record/replay harness, functional (loopback) tests, spies, MONIKER/IBS duplication.
 - **[project-policies.md](docs/agents/project-policies.md)** — PHP version policy, lockfiles, distribution archive, lint toolchain, Claude Code allowlist.
 - **[ci-release.md](docs/agents/ci-release.md)** — CI/GitHub Actions wiring, Rector modernization, Doctum API-doc pipeline.
-- **[issue-tracker.md](docs/agents/issue-tracker.md)** — Jira Cloud via the Atlassian MCP tools; all issue IDs/fields/transitions.
+- **[issue-tracker.md](docs/agents/issue-tracker.md)** — Jira tool usage and how other skills reach the tracker; the conventions themselves are in the `jira-conventions` skill.
 - **[domain.md](docs/agents/domain.md)** — what to do about `CONTEXT.md`/`docs/adr/`: neither exists yet, so proceed silently; the domain-modeling skill creates them lazily.

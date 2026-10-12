@@ -2,46 +2,23 @@
 
 Issues, tasks, stories, and PRDs for this repo live in **Jira Cloud**, project **RSRMID** (3rd-party Software Integrations / Middleware), component **PHP-SDK**. GitHub Issues is **not** used for tracking work. Use the Atlassian MCP tools (`mcp__claude_ai_Atlassian__*`) for all operations; there is no `gh issue` workflow here.
 
-## Coordinates
+**Conventions live in the `jira-conventions` skill** (`.claude/skills/jira-conventions/SKILL.md`) — cloud ID, required fields, this repository's title prefix and component, the parent epic, issue-type and transition IDs, Markdown descriptions, and the worklog required before Done or Cancelled. Load it before creating, editing or transitioning an issue; this page does not repeat it.
 
-- **Cloud ID:** `4e50e119-d5ea-4f89-afb1-d4cd47e40177`
-- **Project:** `RSRMID`
-- **Component:** `PHP-SDK` (id `10232`)
-- **Issue types:** Task (`10002`), Bug (`10004`), Story (`10001`), Epic (`10000`)
-- **Default parent epic:** `RSRMID-2960` ("[RSRMID] Tech Debt 2026") — set as the `parent` on new issues by default, unless a more specific epic clearly applies.
-- **Required fields on create:**
-  - Work Category `customfield_12383` (select): Strategic `13284`, Maintain Revenue/BAU `13285`, Tech Debt `13286`, Security `13287`
-  - Business Unit `customfield_10027` (multi-checkbox): CentralNic Reseller `10187` (default)
-- **Workflow transitions:** To Do `11`, In Progress `21`, In Review `41`, QA `61`, Ready for Deployment `51`, Done `31`, Stand-by `71`, Cancelled `91` — all eight re-verified against the live workflow 2026-07-31; use them directly, do **not** look them up (see below)
-- **Known account IDs:** Kai Schwarz `61358848ee2fd0006aac7b4f`, Asif Nawaz `62a84362bf7afc006f3b15e5`
+## Tool usage
 
-## Conventions
-
-- **Descriptions must be ADF** (Atlassian Document Format, JSON) — never markdown. Markdown renders literal `\n` instead of line breaks.
-- **Create an issue:** `createJiraIssue` with the project, issue type, component, both required custom fields above, and `parent` = `RSRMID-2960` (the default epic) unless a more specific one applies.
 - **Read an issue:** `getJiraIssue` (add `fields`/`expand` as needed); `searchJiraIssuesUsingJql` for lists (e.g. `project = RSRMID AND component = PHP-SDK AND statusCategory != Done`).
 - **Comment:** `addCommentToJiraIssue`.
 - **Edit / set fields:** `editJiraIssue`.
-- **Transition:** call `transitionJiraIssue` straight away with the id from **Workflow transitions** above — the ids are static and cached here precisely so this needs no lookup. Reach for `getTransitionsForJiraIssue` only to _diagnose_ a transition that failed or is genuinely unavailable (workflow changed, or a condition on the target status is unmet); calling it first as a matter of course wastes a round-trip and a chunk of context on a payload whose eight useful values are already on this page.
+- **Transition:** call `transitionJiraIssue` straight away with the id from the skill — the ids are static. Reach for `getTransitionsForJiraIssue` only to _diagnose_ a transition that failed or is genuinely unavailable (workflow changed, or a condition on the target status is unmet).
 
 ## Branch / PR linkage
 
-- Branch names are prefixed with the Jira issue id — e.g. `RSRMID-2821/short-description`.
+- Branch names are prefixed with the Jira issue id — e.g. `RSRMID-2821-short-description`.
 - Every PR description includes the Jira issue link; after opening a PR, add the PR URL as a comment on the Jira issue.
-
-## Closing an issue (mandatory time tracking)
-
-An issue will not stay in **Done** without a worklog — Jira automation stamps a `missing-time-spent` label and auto-reopens it. Correct sequence:
-
-1. Add a worklog (`addWorklogToJiraIssue`, `timeSpent`).
-2. Remove the `missing-time-spent` label.
-3. Transition to Done (`31`).
-
-When the time amount isn't obvious, ask rather than guessing.
 
 ## When a skill says "publish to the issue tracker"
 
-Create an RSRMID Jira issue (Task by default) with the component and required fields set.
+Create an RSRMID Jira issue (Task by default) as the `jira-conventions` skill describes.
 
 ## When a skill says "fetch the relevant ticket"
 
