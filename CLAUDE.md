@@ -149,6 +149,14 @@ Work is tracked in **Jira Cloud**, project `RSRMID` — not GitHub Issues. Load 
 `jira-conventions` skill before creating, editing or transitioning an issue: it carries the
 required fields, this repository's title prefix and component, and the worklog rule for Done and Cancelled.
 
+Two of its rules apply whether or not the skill is loaded:
+
+- Write every Jira issue key as a link to the issue, never bare:
+  `[RSRMID-1234](https://centralnic.atlassian.net/browse/RSRMID-1234)`.
+  Branch names and commit messages keep the bare key.
+- Once an issue's last pull request has merged and its worklog is in, close it
+  without asking if nothing is left — the skill lists what counts.
+
 ## Tool-Output Hygiene
 
 Every tool result is spent context, so prefer the bounded tool over the shell dump. A `PreToolUse` hook (`.claude/hooks/tool-output-hygiene.sh`) denies the three worst shapes and names the replacement — if it fires, take the replacement rather than working around it.
