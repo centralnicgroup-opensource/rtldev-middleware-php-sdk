@@ -41,6 +41,23 @@ final class IDNCommandRewriterTest extends TestCase
         $this->assertSame("xn--kln-sna.example", $out["PARENTDOMAIN"]);
     }
 
+    public function testAppliesTransitionalProcessingPerTld(): void
+    {
+        // idn-converter ^3 (RSRMID-3015): art|be|ca|de|swiss|fr|pm|re|tf|wf|yt are
+        // non-transitional ("ß" kept), every other TLD is transitional ("ss").
+        $out = R::rewrite([
+            "DNSZONE" => "faß.de",
+            "PARENTDOMAIN" => "faß.DE",
+            "NAMESERVER0" => "faß.com",
+            "NAMESERVER1" => "faß.de.com",
+        ]);
+
+        $this->assertSame("xn--fa-hia.de", $out["DNSZONE"]);
+        $this->assertSame("xn--fa-hia.de", $out["PARENTDOMAIN"]);
+        $this->assertSame("fass.com", $out["NAMESERVER0"]);
+        $this->assertSame("fass.de.com", $out["NAMESERVER1"]);
+    }
+
     public function testConvertsTheShortNsKeyForm(): void
     {
         // RSRBE-7149: NS/NS<n> is the short form of the nameserver parameter.

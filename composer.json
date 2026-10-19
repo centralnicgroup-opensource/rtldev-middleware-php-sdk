@@ -38,7 +38,7 @@
     "php": ">=8.3.0",
     "ext-curl": "*",
     "ext-intl": "*",
-    "centralnic-reseller/idn-converter": "^2.0"
+    "centralnic-reseller/idn-converter": "^3.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^4.0",
