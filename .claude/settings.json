@@ -61,13 +61,21 @@
     ]
   },
   "enabledPlugins": {
-    "mattpocock-skills@mattpocock": true
+    "mattpocock-skills@mattpocock": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "mattpocock": {
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman",
+        "ref": "v4.0.1"
       }
     }
   }
