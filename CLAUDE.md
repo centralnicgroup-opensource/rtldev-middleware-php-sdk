@@ -125,7 +125,7 @@ Short reminders; full detail in the linked docs.
   commits and their release tags. Never branch from a stale local `main`, from
   `origin/main` (it becomes the new branch's upstream) or from another feature
   branch.
-- **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821-short-description`.
+- **Branch naming:** prefix with the Jira issue ID — e.g. `RSRMID-2821-short-description`. `.husky/pre-push` rejects any other name, a slug that is not lowercase `[a-z0-9]` with `.`/`-` separators included, except on the default branch; `SKIP_BRANCH_CHECK=1` overrides it for a deliberate exception. There is no `RSRMID-0000` fallback — work without an issue gets one.
 - **Pull requests:** include the Jira issue link in the PR description; after opening, add the PR URL as a comment on the Jira issue.
 - **Merging PRs:** rebase-merge (`gh pr merge --rebase`). Squash merges are disabled at the repo level.
 - **Default branch:** `main` (renamed from `master` in RSRMID-2995). Versioning: semantic-release via the CI release workflow.
