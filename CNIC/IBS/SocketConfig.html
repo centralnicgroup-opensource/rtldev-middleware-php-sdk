@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\IBS\SocketConfig | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
+        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../doctum.js"></script>
+        <script async defer src="../../js/bootstrap.min.js"></script>
+        <script async defer src="../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_IBS_SocketConfig" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                    <li><a href="../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/IBS.html">IBS</a></li><li class="backslash">\</li><li>SocketConfig</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>SocketConfig    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>SocketConfig</strong>        extends <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>IBS SocketConfig</p></p>                    </div>
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        MANAGED_OPTIONS
+                                    </td>
+                <td class="last">
+                    <p><em><p>cURL options the SDK models as first-class configuration, each with the
+setter that owns it. Passing one to {setExtraCurlOptions()} raises
+{UnsupportedFeatureException} naming the replacement.</p></em></p>
+                    <p><p>They are refused not for the transport's sake — {\CNIC\HttpTransport} accepts
+all four, and a caller driving it directly still may — but because each
+already has a home, and letting the bag carry a second value would put two
+answers behind one question: <code>getProxy()</code> reporting what <code>setProxy()</code> stored
+while the wire carried the bag's value. Throw, naming constant and setter;
+never silently pick a winner.</p>
+<p>Each entry carries the <strong>class</strong> that owns the setter, and the message
+renders it, because the four are not all on one object: <code>setUserAgent()</code>
+lives on {\CNIC\AbstractClient} (the SDK's identity is versioned with that
+class), so a bare <code>setUserAgent()</code> would point a caller holding only the
+config at a method it cannot reach.</p>
+<p>Rejection is <strong>eager</strong> here, unlike {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::PROTECTED_OPTIONS}
+which</a> is checked on the next request: the config knows immediately, and the
+error belongs where the mistake is. Options the SDK does <em>not</em> model
+(CURLOPT_CONNECTTIMEOUT, CURLOPT_IPRESOLVE, ...) stay caller-owned and pass
+through untouched — the bag is for what the SDK has no opinion about.</p>
+<p>Keep the list exactly the options that have their own setter: widening it
+takes away legitimate tuning, narrowing it re-opens a second home. Pinned by
+AbstractClientCurlOptionsTest::testManagedOptionsAreExactlyTheOnesWithTheirOwnSetter().</p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_login">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$login</td>
+                <td class="last"><p>account name</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_login">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_password">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$password</td>
+                <td class="last"><p>account password</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_password">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_oteUrl">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$oteUrl</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_liveUrl">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$liveUrl</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_url">
+                                        protected                                        string
+                                                                                
+                                    </td>
+                <td>$url</td>
+                <td class="last"><p>The endpoint requests are sent to — one of {$oteUrl}/{@see $liveUrl}
+when a system was selected, or whatever {setURL()} was handed.</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_url">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_highPerformance">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$highPerformance</td>
+                <td class="last"><p>Whether requests are routed through the co-located high-performance proxy
+on loopback ({useHighPerformanceConnectionSetup()}).</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_highPerformance">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_proxy">
+                                        protected                                        string|null
+                                                                                
+                                    </td>
+                <td>$proxy</td>
+                <td class="last"><p>Proxy for API communication, or null for a direct connection.</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_proxy">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_referer">
+                                        protected                                        string|null
+                                                                                
+                                    </td>
+                <td>$referer</td>
+                <td class="last"><p>Referer sent with API requests, or null to send none. Real state for the
+same reason as {$proxy}.</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_referer">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_curlOptions">
+                                        protected                                        <abbr title="CNIC\array&lt;int, mixed&gt;">array&lt;int, mixed&gt;</abbr>
+                                                                                
+                                    </td>
+                <td>$curlOptions</td>
+                <td class="last"><p>Caller-supplied cURL options, over and above what the transport and the
+dedicated setters above provide. Seeded from {getDefaultCurlOpts()}
+by the constructor, mutated by {setExtraCurlOptions()} and restored to
+those defaults by {resetCurlOptions()}.</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_curlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_socketTimeout">
+                                        protected                                        int
+                                                                                
+                                    </td>
+                <td>$socketTimeout</td>
+                <td class="last"><p>API socket timeout in seconds</p></td>
+                <td><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#property_socketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_sensitiveFields">
+                                        protected                                        string[]
+                                                                                
+                                    </td>
+                <td>$sensitiveFields</td>
+                <td class="last"><p>IBS carries sensitive data under lower-/camel-case command keys. Declared
+once in {SensitiveFields::KEYS}, shared with {\CNIC\IBS\Response}.</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>()
+        
+                                            <p><p>Seed the runtime state that depends on the brand's property defaults.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method___construct">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setLogin">setLogin</a>(string $login)
+        
+                                            <p><p>Set account name to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLogin">getLogin</a>()
+        
+                                            <p><p>Get current login</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setPassword">setPassword</a>(string $password)
+        
+                                            <p><p>Set account password to use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getURL">getURL</a>()
+        
+                                            <p><p>Get the endpoint API requests are sent to — the <strong>effective</strong> URL.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getURL">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setURL">setURL</a>(string $url)
+        
+                                            <p><p>Set another connection url to be used for API communication.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setURL">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getOTEUrl">getOTEUrl</a>()
+        
+                                            <p><p>Get OT&amp;E endpoint URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLiveUrl">getLiveUrl</a>()
+        
+                                            <p><p>Get LIVE endpoint URL</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="CNIC\System">System</abbr>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSystem">getSystem</a>()
+        
+                                            <p><p>Get the API system currently in use, or null when the configured URL is
+neither of the brand's two known endpoints.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getSystem">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isOTE">isOTE</a>()
+        
+                                            <p><p>Check whether the OT&amp;E endpoint is in use</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_isOTE">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useOTESystem">useOTESystem</a>()
+        
+                                            <p><p>Select the OT&amp;E system for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_useOTESystem">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useLIVESystem">useLIVESystem</a>()
+        
+                                            <p><p>Select the LIVE system for API communication (the default)</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_useLIVESystem">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_useHighPerformanceConnectionSetup">useHighPerformanceConnectionSetup</a>()
+        
+                                            <p><p>Route API requests through the co-located high-performance proxy on
+loopback.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_useHighPerformanceConnectionSetup">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_usesHighPerformanceConnectionSetup">usesHighPerformanceConnectionSetup</a>()
+        
+                                            <p><p>Whether high-performance (loopback proxy) routing is switched on</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_usesHighPerformanceConnectionSetup">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setProxy">setProxy</a>(string $proxy = &quot;&quot;)
+        
+                                            <p><p>Set the proxy to use for API communication</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setProxy">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getProxy">getProxy</a>()
+        
+                                            <p><p>Get the proxy configured for API communication, or null for a direct
+connection</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getProxy">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setReferer">setReferer</a>(string $referer = &quot;&quot;)
+        
+                                            <p><p>Set the Referer to send with API requests</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setReferer">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getReferer">getReferer</a>()
+        
+                                            <p><p>Get the Referer sent with API requests, or null when none is sent</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getReferer">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getDefaultCurlOpts">getDefaultCurlOpts</a>()
+        
+                                            <p><p>Brand-default cURL options, used to seed and to reset {$curlOptions}.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getDefaultCurlOpts">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setExtraCurlOptions">setExtraCurlOptions</a>(array $opts)
+        
+                                            <p><p>Merge additional cURL options into the bag, overriding existing values on
+key collision (including brand defaults). Use {resetCurlOptions()} to
+restore the brand defaults afterwards.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setExtraCurlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_resetCurlOptions">resetCurlOptions</a>()
+        
+                                            <p><p>Restore the cURL option bag to the brand defaults
+({getDefaultCurlOpts()}), discarding anything previously handed to
+{setExtraCurlOptions()}.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_resetCurlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCurlOptions">getCurlOptions</a>()
+        
+                                            <p><p>The cURL options to hand the transport for a request: the dedicated
+proxy/referer state plus the caller's bag.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getCurlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getSocketTimeout">getSocketTimeout</a>()
+        
+                                            <p><p>Get socket timeout in seconds</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setSocketTimeout">setSocketTimeout</a>(int $timeoutSeconds)
+        
+                                            <p><p>Set the socket timeout in seconds — the ceiling on a whole API request.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_setSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_maskSensitiveCommand">maskSensitiveCommand</a>(array $command)
+        
+                                            <p><p>Mask the values of the brand's sensitive command keys (see
+$sensitiveFields) so command-level secrets — e.g. a domain transfer
+authorization code — never reach the debug log in cleartext. Delegates the
+actual matching/masking to {CommandRedactor::redact()}, which is
+shared with {AbstractResponse::sanitizeCommand()}. Matching is
+case-insensitive to stay robust against casing differences between what a
+brand documents and what it actually sends. <code>null</code> values are left
+untouched (they are dropped from the request, not logged).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_maskSensitiveCommand">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPOSTDataParams">getPOSTDataParams</a>(array $command, bool $maskSecrets)
+        
+                                            <p><p>Get POST data container of connection data</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPOSTData">getPOSTData</a>(array $command = [], bool $maskSecrets = false)
+        
+                                            <p><p>Create POST data string out of connection data.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></small></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method___construct">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L191">at line 191</a></div>
+        <code>                    
+    <strong>__construct</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Seed the runtime state that depends on the brand's property defaults.</p></p>                <p><p>Both seeds have to happen after the subclass's property initialisers, which
+is why they are here and not inline defaults: {$url} starts at the
+brand's {$liveUrl} (LIVE is the default system) and {$curlOptions}
+at the brand's {\CNIC\getDefaultCurlOpts()}.</p></p>        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setLogin">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L200">at line 200</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setLogin</strong>(string $login)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set account name to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$login</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLogin">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getLogin">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L209">at line 209</a></div>
+        <code>                    string
+    <strong>getLogin</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get current login</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setPassword">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setPassword">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L217">at line 217</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setPassword</strong>(string $password)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set account password to use</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$password</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getURL">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getURL">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L239">at line 239</a></div>
+        <code>                    string
+    <strong>getURL</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the endpoint API requests are sent to — the <strong>effective</strong> URL.</p></p>                <p><p>The stored {$url}, with the loopback rewrite applied when
+high-performance mode is on. That rewrite is resolved here on every read
+rather than burnt into {$url}, so switching systems afterwards keeps
+it and {\CNIC\getSystem()} still knows which system was selected.</p>
+<p>Note the asymmetry with {\CNIC\setURL()}, which is deliberate: this returns
+where requests <em>go</em>, while <code>setURL()</code>/{\CNIC\getSystem()}/{@see \CNIC\isOTE()}
+operate on which endpoint was <em>selected</em>. The two differ only under
+high-performance routing, and only in that direction — so do not round-trip
+one into the other: <code>setURL($cfg-&gt;getURL())</code> burns the loopback rewrite into
+the selection and loses the system, which is the very drift this class
+exists to prevent.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setURL">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setURL">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L253">at line 253</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setURL</strong>(string $url)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set another connection url to be used for API communication.</p></p>                <p><p>This replaces the endpoint selection wholesale, so a URL that is neither
+{$oteUrl} nor {$liveUrl} leaves {\CNIC\getSystem()} answering
+<code>null</code> — the SDK cannot know which system an arbitrary host fronts, and
+answering with the last selection is how a stored flag comes to disagree
+with the URL in use.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$url</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getOTEUrl">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getOTEUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L262">at line 262</a></div>
+        <code>                    string
+    <strong>getOTEUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get OT&amp;E endpoint URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getLiveUrl">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getLiveUrl">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L270">at line 270</a></div>
+        <code>                    string
+    <strong>getLiveUrl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get LIVE endpoint URL</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSystem">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getSystem">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L285">at line 285</a></div>
+        <code>                    <abbr title="CNIC\System">System</abbr>|null
+    <strong>getSystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the API system currently in use, or null when the configured URL is
+neither of the brand's two known endpoints.</p></p>                <p><p>Derived from {$url}, never stored — a stored copy is a second answer
+waiting to contradict the first. The <code>null</code> case is honest rather than
+defensive: after <code>setURL("https://staging.example/")</code> the client is on a
+system the SDK has no name for, and a caller branching on OT&amp;E-vs-LIVE needs
+to see that rather than be told &quot;LIVE&quot;.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="CNIC\System">System</abbr>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isOTE">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_isOTE">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L299">at line 299</a></div>
+        <code>                    bool
+    <strong>isOTE</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check whether the OT&amp;E endpoint is in use</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useOTESystem">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_useOTESystem">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L307">at line 307</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>useOTESystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Select the OT&amp;E system for API communication</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useLIVESystem">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_useLIVESystem">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L315">at line 315</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>useLIVESystem</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Select the LIVE system for API communication (the default)</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_useHighPerformanceConnectionSetup">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_useHighPerformanceConnectionSetup">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L331">at line 331</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>useHighPerformanceConnectionSetup</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Route API requests through the co-located high-performance proxy on
+loopback.</p></p>                <p><p>Recorded as a flag and applied by {\CNIC\getURL()} on every read, not by
+rewriting {$url} once: an eager rewrite silently costs the caller
+<code>isOTE()</code>/<code>getSystem()</code>. It therefore also survives a later
+<code>useOTESystem()</code>/<code>useLIVESystem()</code>/<code>setURL()</code> — high-performance routing is
+a property of <em>how</em> to reach the endpoint, not of <em>which</em> endpoint. There is
+no disable method; construct a fresh client if you need one without it.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_usesHighPerformanceConnectionSetup">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_usesHighPerformanceConnectionSetup">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L340">at line 340</a></div>
+        <code>                    bool
+    <strong>usesHighPerformanceConnectionSetup</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether high-performance (loopback proxy) routing is switched on</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setProxy">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setProxy">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L371">at line 371</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setProxy</strong>(string $proxy = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set the proxy to use for API communication</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$proxy</td>
+                <td><p>empty string resets it, restoring a direct connection</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getProxy">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getProxy">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L381">at line 381</a></div>
+        <code>                    string|null
+    <strong>getProxy</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the proxy configured for API communication, or null for a direct
+connection</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setReferer">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setReferer">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L390">at line 390</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setReferer</strong>(string $referer = &quot;&quot;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set the Referer to send with API requests</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$referer</td>
+                <td><p>empty string resets it, so no Referer is sent</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReferer">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getReferer">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L399">at line 399</a></div>
+        <code>                    string|null
+    <strong>getReferer</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the Referer sent with API requests, or null when none is sent</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDefaultCurlOpts">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getDefaultCurlOpts">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L416">at line 416</a></div>
+        <code>            protected        array
+    <strong>getDefaultCurlOpts</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Brand-default cURL options, used to seed and to reset {$curlOptions}.</p></p>                <p><p><strong>No brand overrides this, and new overrides should be resisted</strong> — transport
+tuning is the caller's decision via {\CNIC\setExtraCurlOptions()}, and a brand
+default that papers over one environment's networking does not qualify. The
+bar is a genuinely protocol-mandatory option. The hook is kept because it is
+the seam {\CNIC\resetCurlOptions()} is defined in terms of: reset restores
+these defaults rather than blindly wiping the bag. Guarded by
+ClientConfigSeamTest::testNoBrandOverridesTheDefaultCurlOptsHook().</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setExtraCurlOptions">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setExtraCurlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L445">at line 445</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setExtraCurlOptions</strong>(array $opts)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Merge additional cURL options into the bag, overriding existing values on
+key collision (including brand defaults). Use {resetCurlOptions()} to
+restore the brand defaults afterwards.</p></p>                <p><p>What lands here reaches the wire: {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::post()}</a> applies the
+bag <em>over</em> its own defaults, so an option of yours wins on collision. Two
+sets of keys are refused rather than allowed to become a second answer or a
+silent loser:</p>
+<ul>
+<li>{\CNIC\MANAGED_OPTIONS} — CURLOPT_TIMEOUT, USERAGENT, PROXY and REFERER
+each already have a setter that owns them. Rejected here, immediately,
+naming the setter to use instead.</li>
+<li>{<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::PROTECTED_OPTIONS}</a> — the request envelope
+(CURLOPT_URL/POST/POSTFIELDS/RETURNTRANSFER/HEADER) and the TLS
+verification posture (SSL_VERIFYPEER/SSL_VERIFYHOST). Those belong to the
+transport, which rejects them on the next request; the config does not
+pre-empt that check, because the transport is injectable
+({\CNIC\TransportInterface}) and which options it owns is its own business.</li>
+</ul>
+<p>CURLOPT_HTTPHEADER is additive at the transport: your lines are appended,
+and restating one of the transport's own throws.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$opts</td>
+                <td><p>cURL options keyed by CURLOPT_* constant</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_resetCurlOptions">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_resetCurlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L464">at line 464</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>resetCurlOptions</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Restore the cURL option bag to the brand defaults
+({getDefaultCurlOpts()}), discarding anything previously handed to
+{setExtraCurlOptions()}.</p></p>                <p><p>Scope note: <strong>options only</strong>. The proxy and the referer are not bag keys
+({$proxy}/{@see $referer}), so this does not forget them — reset those
+explicitly with <code>setProxy()</code>/<code>setReferer()</code> if that is what you meant.</p>
+<p>It restores the defaults rather than clearing the bag, so a brand default
+would survive; no brand declares one, so today this empties the bag.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getCurlOptions">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getCurlOptions">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L486">at line 486</a></div>
+        <code>                    array
+    <strong>getCurlOptions</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The cURL options to hand the transport for a request: the dedicated
+proxy/referer state plus the caller's bag.</p></p>                <p><p>The dedicated state goes on the <strong>left</strong> of the union — the side PHP's <code>+</code>
+keeps on a duplicate key — so what {\CNIC\getProxy()} reports is what goes on
+the wire, structurally rather than by convention. Do not &quot;simplify&quot; the order
+on the grounds that {\CNIC\setExtraCurlOptions()} already refuses those two
+keys: that guard is not the only writer of {$curlOptions}, since
+{\CNIC\getDefaultCurlOpts()} seeds it through the constructor and
+{\CNIC\resetCurlOptions()} re-seeds it, neither passing through the guard. A
+brand default of CURLOPT_PROXY would then leave the getter reporting the
+setter's value while the request used the default. Pinned by
+AbstractClientConfigDriftTest::testDedicatedProxyStateBeatsABrandDefaultOnTheWire().</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getSocketTimeout">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L518">at line 518</a></div>
+        <code>                    int
+    <strong>getSocketTimeout</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get socket timeout in seconds</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSocketTimeout">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_setSocketTimeout">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L538">at line 538</a></div>
+        <code>                    <a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a>
+    <strong>setSocketTimeout</strong>(int $timeoutSeconds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Set the socket timeout in seconds — the ceiling on a whole API request.</p></p>                <p><p>The single home for the request timeout: the bag rejects CURLOPT_TIMEOUT
+({\CNIC\MANAGED_OPTIONS}), so this is the only way in and
+{\CNIC\getSocketTimeout()} the only answer.
+{<a href="../../CNIC/AbstractClient.html">\CNIC\AbstractClient::setSocketTimeout()}</a> forwards here.</p>
+<p>0 carries cURL's meaning — no timeout — and is passed through unchanged.
+A negative value is rejected rather than forwarded: cURL refuses it by
+returning <code>false</code> from <code>curl_setopt()</code>, whose result <code>curl_setopt_array()</code>
+does not surface, so forwarding it would drop the setting with no signal.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$timeoutSeconds</td>
+                <td><p>0 carries cURL's meaning — no timeout</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/AbstractSocketConfig.html"><abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../CNIC/Exception/InvalidConfigurationException.html"><abbr title="CNIC\Exception\InvalidConfigurationException">InvalidConfigurationException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_maskSensitiveCommand">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_maskSensitiveCommand">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L561">at line 561</a></div>
+        <code>            protected        array
+    <strong>maskSensitiveCommand</strong>(array $command)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Mask the values of the brand's sensitive command keys (see
+$sensitiveFields) so command-level secrets — e.g. a domain transfer
+authorization code — never reach the debug log in cleartext. Delegates the
+actual matching/masking to {CommandRedactor::redact()}, which is
+shared with {AbstractResponse::sanitizeCommand()}. Matching is
+case-insensitive to stay robust against casing differences between what a
+brand documents and what it actually sends. <code>null</code> values are left
+untouched (they are dropped from the request, not logged).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$command</td>
+                <td><p>API Command to mask</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPOSTDataParams">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/IBS/SocketConfig.php#L47">at line 47</a></div>
+        <code>            protected        array
+    <strong>getPOSTDataParams</strong>(array $command, bool $maskSecrets)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get POST data container of connection data</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$command</td>
+                <td><p>API Command to request</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$maskSecrets</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPOSTData">
+        <div class="location">in <a href="../../CNIC/AbstractSocketConfig.html#method_getPOSTData">
+<abbr title="CNIC\AbstractSocketConfig">AbstractSocketConfig</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractSocketConfig.php#L583">at line 583</a></div>
+        <code>                    string
+    <strong>getPOSTData</strong>(array $command = [], bool $maskSecrets = false)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create POST data string out of connection data.</p></p>                <p><p>Purely the encoding step: every parameter, including brand-specific ones,
+comes from {\CNIC\getPOSTDataParams()}. Do not reintroduce brand knowledge at
+this level — CNR's <code>persistent=1</code> is appended by its own
+getPOSTDataParams(), which is why this method knows nothing brand-specific.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$command</td>
+                <td><p>API Command to request</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$maskSecrets</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>POST data string</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

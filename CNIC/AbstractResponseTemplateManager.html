@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\AbstractResponseTemplateManager | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../fonts/doctum-font.css">
+        <script src="../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../doctum.js"></script>
+        <script async defer src="../js/bootstrap.min.js"></script>
+        <script async defer src="../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_AbstractResponseTemplateManager" data-root-path="../" data-search-index-url="../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../classes.html">Classes</a></li>
+                    <li><a href="../namespaces.html">Namespaces</a></li>
+                    <li><a href="../interfaces.html">Interfaces</a></li>
+                    <li><a href="../traits.html">Traits</a></li>
+                    <li><a href="../doc-index.html">Index</a></li>
+                    <li><a href="../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../CNIC.html">CNIC</a></li><li class="backslash">\</li><li>AbstractResponseTemplateManager</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>AbstractResponseTemplateManager    
+            </h1>
+    </div>
+
+    
+    <p>    abstract     class
+    <strong>AbstractResponseTemplateManager</strong>        implements        <a href="../CNIC/ResponseTemplateManagerInterface.html"><abbr title="CNIC\ResponseTemplateManagerInterface">ResponseTemplateManagerInterface</abbr></a>, <a href="../CNIC/ResponseTemplateFactoryInterface.html"><abbr title="CNIC\ResponseTemplateFactoryInterface">ResponseTemplateFactoryInterface</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Shared base for all registrar ResponseTemplateManager implementations.</p></p>            <p><p>The template container plus its add/get/has/match operations are identical
+across brands; only the built-in template strings, the generateTemplate()
+wire format, the two hash keys used for matching, and the concrete Response /
+ResponseParser classes differ. Concrete subclasses supply those via the
+abstract hooks below.</p>
+<p><strong>The container is per instance</strong> (RSRMID-2941). It used to be a
+<code>public static array $templates</code> redeclared per brand, read live by
+{\CNIC\AbstractResponseTranslator}, so <code>addTemplate()</code> in one test class
+changed response translation in every later one; the <code>resetTemplates()</code> that
+tried to contain that was a no-op unless <code>addTemplate()</code> had run first and
+could not undo a direct write to the public property at all. Both are gone.
+The built-ins now live in an immutable per-brand hook and are copied into
+each new instance, so an override is scoped to the object that received it
+and there is nothing left to reset. See
+{\CNIC\ResponseTemplateManagerInterface} for the registry contract and
+{\CNIC\ResponseTemplateFactoryInterface} for the Response-production contract
+this class also implements.</p></p>        </div>
+            
+        
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_builtinTemplates">builtinTemplates</a>()
+        
+                                            <p><p>The brand's built-in templates (template id =&gt; raw wire text).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_createResponseFromTemplateId">createResponseFromTemplateId</a>(string $templateId)
+        
+                                            <p><p>Create a brand Response instance from a <strong>template id</strong>, resolving it
+against <strong>this</strong> registry.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_newResponseParser">newResponseParser</a>()
+        
+                                            <p><p>Instantiate the brand's response parser.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_matchKeys">matchKeys</a>()
+        
+                                            <p><p>The two response-hash keys this brand compares when matching a template
+(code/description equivalent, e.g. CODE/DESCRIPTION or status/message).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../CNIC/ResponseTemplateManagerInterface.html"><abbr title="CNIC\ResponseTemplateManagerInterface">ResponseTemplateManagerInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addTemplate">addTemplate</a>(string $templateId, string $plain, string|null $description = null)
+        
+                                            <p><p>Register a template on this registry.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getTemplates">getTemplates</a>()
+        
+                                            <p><p>Every template in this registry as a Response, keyed by template id.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRawTemplates">getRawTemplates</a>()
+        
+                                            <p><p>Every template in this registry as its raw wire text.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasTemplate">hasTemplate</a>(string $templateId)
+        
+                                            <p><p>Check if given template exists in this registry.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isTemplateMatchHash">isTemplateMatchHash</a>(array $responseHash, string $templateId)
+        
+                                            <p><p>Check if given API response hash matches a given template by code and description</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isTemplateMatchPlain">isTemplateMatchPlain</a>(string $plain, string $templateId)
+        
+                                            <p><p>Check if given API plain response matches a given template by code and description</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L45">at line 45</a></div>
+        <code>                    
+    <strong>__construct</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_builtinTemplates">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L58">at line 58</a></div>
+        <code>    abstract    static    protected        array
+    <strong>builtinTemplates</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The brand's built-in templates (template id =&gt; raw wire text).</p></p>                <p><p>Declared as a hook over a constant rather than a property so the
+built-ins cannot be written to: each instance gets a copy, and no route
+exists to change what the <em>next</em> instance starts from.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_createResponseFromTemplateId">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L71">at line 71</a></div>
+        <code>    abstract        protected        <a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a>
+    <strong>createResponseFromTemplateId</strong>(string $templateId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create a brand Response instance from a <strong>template id</strong>, resolving it
+against <strong>this</strong> registry.</p></p>                <p><p>Never handed wire text (RSRMID-2968): the previous <code>createResponse(string $raw)</code> carried both meanings — {\CNIC\getTemplate()} passed an id,
+{\CNIC\getTemplates()} passed wire text — and the two only agreed because
+{<a href="../CNIC/AbstractResponseTranslator.html">\CNIC\AbstractResponseTranslator::translate()}</a> substitutes a raw payload
+equal to a known id. Register a template whose wire text equals another
+template's id and they diverged.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseInterface.html"><abbr title="CNIC\ResponseInterface">ResponseInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_newResponseParser">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L80">at line 80</a></div>
+        <code>    abstract        protected        <a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a>
+    <strong>newResponseParser</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Instantiate the brand's response parser.</p></p>                <p><p>The template-manager twin of {<a href="../CNIC/AbstractResponse.html">\CNIC\AbstractResponse::newResponseParser()}:
+both</a> name the same brand parser, so the shared pipeline can parse a plain
+response without each subclass repeating the call.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseParserInterface.html"><abbr title="CNIC\ResponseParserInterface">ResponseParserInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_matchKeys">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L87">at line 87</a></div>
+        <code>    abstract    static    protected        array
+    <strong>matchKeys</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The two response-hash keys this brand compares when matching a template
+(code/description equivalent, e.g. CODE/DESCRIPTION or status/message).</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addTemplate">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L93">at line 93</a></div>
+        <code>                    <a href="../CNIC/ResponseTemplateManagerInterface.html"><abbr title="CNIC\ResponseTemplateManagerInterface">ResponseTemplateManagerInterface</abbr></a>
+    <strong>addTemplate</strong>(string $templateId, string $plain, string|null $description = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Register a template on this registry.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$plain</td>
+                <td><p>API plain response, or API response code when $description is given</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$description</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../CNIC/ResponseTemplateManagerInterface.html"><abbr title="CNIC\ResponseTemplateManagerInterface">ResponseTemplateManagerInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getTemplates">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L106">at line 106</a></div>
+        <code>                    array
+    <strong>getTemplates</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every template in this registry as a Response, keyed by template id.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRawTemplates">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L122">at line 122</a></div>
+        <code>                    array
+    <strong>getRawTemplates</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every template in this registry as its raw wire text.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasTemplate">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L131">at line 131</a></div>
+        <code>                    bool
+    <strong>hasTemplate</strong>(string $templateId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if given template exists in this registry.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isTemplateMatchHash">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L141">at line 141</a></div>
+        <code>                    bool
+    <strong>isTemplateMatchHash</strong>(array $responseHash, string $templateId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if given API response hash matches a given template by code and description</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$responseHash</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isTemplateMatchPlain">
+        <div class="location"><a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/AbstractResponseTemplateManager.php#L151">at line 151</a></div>
+        <code>                    bool
+    <strong>isTemplateMatchPlain</strong>(string $plain, string $templateId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if given API plain response matches a given template by code and description</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$plain</td>
+                <td><p>API plain response</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

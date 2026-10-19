@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CNIC\Exception\MalformedResponseException | PHP SDK by CNIC</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
+        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../doctum.js"></script>
+        <script async defer src="../../js/bootstrap.min.js"></script>
+        <script async defer src="../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:CNIC_Exception_MalformedResponseException" data-root-path="../../" data-search-index-url="../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">PHP SDK by CNIC</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                    <li><a href="../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../CNIC.html">CNIC</a></li><li class="backslash">\</li><li><a href="../../CNIC/Exception.html">Exception</a></li><li class="backslash">\</li><li>MalformedResponseException</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>MalformedResponseException    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>MalformedResponseException</strong>        extends <a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>        (<a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/MalformedResponseException.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Thrown when the API sent a shape the SDK cannot represent.</p></p>            <p><p>Raised by {<a href="../../CNIC/CNR/Response.html">\CNIC\CNR\Response::stringCells()}</a> when a <code>PROPERTY</code> entry is
+not a list, or one of its cells is not a string. This is deliberately NOT the
+&quot;capability absent on this platform or response&quot; meaning
+{\CNIC\Exception\UnsupportedFeatureException} documents on its own class — nothing is
+missing here, the wire sent something the SDK's data model has no way to
+hold.</p>
+<p>It extends {\CNIC\Exception\UnsupportedFeatureException} rather than {\CNIC\Exception\CnicException}
+<strong>deliberately</strong>: both <code>stringCells()</code> throw sites already raised
+<code>UnsupportedFeatureException</code> before this type existed, so re-parenting them
+would break an existing <code>catch (UnsupportedFeatureException)</code> at either site.
+Extending instead of replacing keeps the split purely additive. Closes the
+open item recorded under RSRMID-2924 in docs/agents/architecture.md.</p></p>        </div>
+            
+        
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_transportOwnedCurlOptions">transportOwnedCurlOptions</a>(array $rejected, string $owningClass)
+        
+                                            <p><p>Build the exception raised when {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::post()}</a> refuses
+one or more transport-owned cURL options
+({<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::PROTECTED_OPTIONS}).</a></p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_transportOwnedCurlOptions">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sdkManagedCurlOptions">sdkManagedCurlOptions</a>(array $rejected, string $owningClass)
+        
+                                            <p><p>Build the exception raised when {<a href="../../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::setExtraCurlOptions()}
+refuses</a> one or more SDK-managed cURL options
+({<a href="../../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::MANAGED_OPTIONS}).</a></p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_sdkManagedCurlOptions">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_transportOwnedHeader">transportOwnedHeader</a>(string $headerName, string $owningClass)
+        
+                                            <p><p>Build the exception raised when {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::appendHeaders()}
+refuses</a> a caller header line that restates one the transport owns.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_transportOwnedHeader">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRejectedCurlOptions">getRejectedCurlOptions</a>()
+        
+                                            <p><p>The cURL options this exception rejected, keyed by the cURL constant and
+valued with its constant name. Empty for a plainly-constructed instance.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getRejectedCurlOptions">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getReplacementSetters">getReplacementSetters</a>()
+        
+                                            <p><p>The replacement setter for each rejected cURL option that has one, keyed
+by the cURL constant and valued with <code>"Fqcn::setter()"</code>. Empty when the
+rejected options have no replacement, or for a plainly-constructed
+instance.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getReplacementSetters">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getOwningClass">getOwningClass</a>()
+        
+                                            <p><p>The class that owns the rejected option(s)/header, or null when this
+instance carries no structured context.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getOwningClass">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRejectedHeaderName">getRejectedHeaderName</a>()
+        
+                                            <p><p>The rejected header name, already lower-cased, or null when this instance
+does not describe a header rejection.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getRejectedHeaderName">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></small></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_transportOwnedCurlOptions">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_transportOwnedCurlOptions">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L85">at line 85</a></div>
+        <code>        static            <a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>
+    <strong>transportOwnedCurlOptions</strong>(array $rejected, string $owningClass)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Build the exception raised when {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::post()}</a> refuses
+one or more transport-owned cURL options
+({<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::PROTECTED_OPTIONS}).</a></p></p>                <p><p>A protected option has no replacement setter — it must simply be dropped
+from the caller's bag — so {\CNIC\Exception\getReplacementSetters()} answers empty for
+an instance built here.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$rejected</td>
+                <td><p>a slice of {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::PROTECTED_OPTIONS}</a></p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$owningClass</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sdkManagedCurlOptions">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_sdkManagedCurlOptions">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L109">at line 109</a></div>
+        <code>        static            <a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>
+    <strong>sdkManagedCurlOptions</strong>(array $rejected, string $owningClass)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Build the exception raised when {<a href="../../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::setExtraCurlOptions()}
+refuses</a> one or more SDK-managed cURL options
+({<a href="../../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::MANAGED_OPTIONS}).</a></p></p>                <p><p>Note the current message does not name $owningClass — the owner of
+<em>setExtraCurlOptions()</em> itself is not the point here, each managed option
+already names its own owner in $rejected; $owningClass is accessor-only.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$rejected</td>
+                <td><p>a slice of {<a href="../../CNIC/AbstractSocketConfig.html">\CNIC\AbstractSocketConfig::MANAGED_OPTIONS}</a></p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$owningClass</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_transportOwnedHeader">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_transportOwnedHeader">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L139">at line 139</a></div>
+        <code>        static            <a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a>
+    <strong>transportOwnedHeader</strong>(string $headerName, string $owningClass)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Build the exception raised when {<a href="../../CNIC/HttpTransport.html">\CNIC\HttpTransport::appendHeaders()}
+refuses</a> a caller header line that restates one the transport owns.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$headerName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$owningClass</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../CNIC/Exception/UnsupportedFeatureException.html"><abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRejectedCurlOptions">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getRejectedCurlOptions">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L161">at line 161</a></div>
+        <code>                    array
+    <strong>getRejectedCurlOptions</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The cURL options this exception rejected, keyed by the cURL constant and
+valued with its constant name. Empty for a plainly-constructed instance.</p></p>                <p><p>The actionable use: <code>array_diff_key($yourOptions, $e-&gt;getRejectedCurlOptions())</code>
+strips exactly the refused keys from the bag you tried to send, so the
+call can be retried with what is left.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReplacementSetters">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getReplacementSetters">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L174">at line 174</a></div>
+        <code>                    array
+    <strong>getReplacementSetters</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The replacement setter for each rejected cURL option that has one, keyed
+by the cURL constant and valued with <code>"Fqcn::setter()"</code>. Empty when the
+rejected options have no replacement, or for a plainly-constructed
+instance.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getOwningClass">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getOwningClass">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L185">at line 185</a></div>
+        <code>                    string|null
+    <strong>getOwningClass</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The class that owns the rejected option(s)/header, or null when this
+instance carries no structured context.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRejectedHeaderName">
+        <div class="location">in <a href="../../CNIC/Exception/UnsupportedFeatureException.html#method_getRejectedHeaderName">
+<abbr title="CNIC\Exception\UnsupportedFeatureException">UnsupportedFeatureException</abbr></a> <a href="https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/.github/../src/Exception/UnsupportedFeatureException.php#L195">at line 195</a></div>
+        <code>                    string|null
+    <strong>getRejectedHeaderName</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The rejected header name, already lower-cased, or null when this instance
+does not describe a header rejection.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
