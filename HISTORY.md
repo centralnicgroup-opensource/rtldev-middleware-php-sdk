@@ -1,3 +1,24 @@
+# [34.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v33.0.3...v34.0.0) (2026-10-19)
+
+
+### Bug Fixes
+
+* **deps:** require idn-converter ^3.0 so IDN conversion honours transitional processing per TLD ([98c1dd7](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/commit/98c1dd72b5acf4d4215d91ef613126a8ad7dce0a))
+
+
+### BREAKING CHANGES
+
+* **deps:** IDNConvert() and the automatic punycode rewrite of CNR command
+parameters (NAMESERVER, NS, PARENTDOMAIN, DNSZONE, OBJECTID) now return
+different results for names containing deviation characters (ß, ς, ZWJ/ZWNJ)
+outside the non-transitional TLDs: faß.com is now "fass.com" instead of
+"xn--fa-hia.com". Names under the non-transitional TLDs and names without such
+characters are unchanged.
+
+See [MIGRATION.md → v34.0.0](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/blob/main/MIGRATION.md#-v3400)
+
+Refs: RSRMID-3015
+
 ## [33.0.3](https://github.com/centralnicgroup-opensource/rtldev-middleware-php-sdk/compare/v33.0.2...v33.0.3) (2026-08-26)
 
 
