@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46433f96f8981da46ed5909c0f6b3acb",
+    "content-hash": "2068a591c062d3379be043cfd894d939",
     "packages": [
         {
             "name": "centralnic-reseller/idn-converter",
-            "version": "v2.0.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator.git",
-                "reference": "1175a59427b04c8be1be2e981c6a6d51fa45d3b0"
+                "reference": "9b3b0da2743b55c910d60ad646af488157739d30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/zipball/1175a59427b04c8be1be2e981c6a6d51fa45d3b0",
-                "reference": "1175a59427b04c8be1be2e981c6a6d51fa45d3b0",
+                "url": "https://api.github.com/repos/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/zipball/9b3b0da2743b55c910d60ad646af488157739d30",
+                "reference": "9b3b0da2743b55c910d60ad646af488157739d30",
                 "shasum": ""
             },
             "require": {
@@ -63,9 +63,9 @@
             ],
             "support": {
                 "issues": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/issues",
-                "source": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/tree/v2.0.0"
+                "source": "https://github.com/centralnicgroup-opensource/rtldev-middleware-php-idna-translator/tree/v3.0.0"
             },
-            "time": "2026-07-02T16:43:56+00:00"
+            "time": "2026-08-21T13:55:12+00:00"
         }
     ],
     "packages-dev": [
@@ -5701,7 +5701,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -5709,6 +5709,6 @@
         "ext-curl": "*",
         "ext-intl": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
