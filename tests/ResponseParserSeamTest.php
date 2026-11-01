@@ -85,7 +85,7 @@ final class ResponseParserSeamTest extends TestCase
         // policy settled in RSRMID-2919/RSRMID-2920.
         $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("PROPERTY[TOTAL] carries a int");
-        new CNRResponse("CODE=200\r\n", [], [], [], self::rogueParser(["TOTAL" => [42]]));
+        new CNRResponse("CODE=200\r\n", [], [], [], $this->rogueParser(["TOTAL" => [42]]));
     }
 
     public function testCNRRejectsAColumnThatIsNotAListAtAll(): void
@@ -96,7 +96,7 @@ final class ResponseParserSeamTest extends TestCase
         // container while refusing a bad cell.
         $this->expectException(UnsupportedFeatureException::class);
         $this->expectExceptionMessage("PROPERTY[DOMAIN] is a string");
-        new CNRResponse("CODE=200\r\n", [], [], [], self::rogueParser(["DOMAIN" => "example.com"]));
+        new CNRResponse("CODE=200\r\n", [], [], [], $this->rogueParser(["DOMAIN" => "example.com"]));
     }
 
     public function testCNRStillAcceptsAResponseWithoutAPropertyBlock(): void
@@ -104,7 +104,7 @@ final class ResponseParserSeamTest extends TestCase
         // The strictness above is about the contents of a PROPERTY block that
         // exists. A missing one is ordinary — most CNR responses have none — and
         // must stay a zero-column, zero-record response, not an exception.
-        $r = new CNRResponse("CODE=200\r\n", [], [], [], self::rogueParser(null));
+        $r = new CNRResponse("CODE=200\r\n", [], [], [], $this->rogueParser(null));
 
         $this->assertSame(200, $r->getCode());
         $this->assertSame([], $r->getColumns());
@@ -116,13 +116,13 @@ final class ResponseParserSeamTest extends TestCase
      * (omitted entirely when null).
      * @param array<string, mixed>|null $property
      */
-    private static function rogueParser(?array $property): ResponseParserInterface
+    private function rogueParser(?array $property): ResponseParserInterface
     {
-        return new class ($property) implements ResponseParserInterface {
+        return new readonly class ($property) implements ResponseParserInterface {
             /**
              * @param array<string, mixed>|null $property
              */
-            public function __construct(private readonly ?array $property)
+            public function __construct(private ?array $property)
             {
             }
 
